@@ -99,7 +99,7 @@ nav .dropdown-content a:hover {
 
 .video-section {
     display: flex;
-    flex-direction: row; /* Updated to column layout */
+    flex-direction: auto; /* Updated to column layout */
     justify-content: center;
     align-items: flex-start;
     padding: 1rem;
