@@ -131,14 +131,14 @@ footer {
 
 /* Mobile Menu Styles Testing */
 .menu-btn {
-    display: none;
+    display: flex;
     cursor: pointer;
 }
 
 .menu-btn .bar {
     width: 25px;
     height: 3px;
-    background-color: #5c5ab880;
+    background-color: #5c5ab8;
     margin: 6px 0;
 }
 
