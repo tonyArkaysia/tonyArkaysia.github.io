@@ -1,67 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Interactive Sports Labs</title>
 
     <!-- CSS file -->
-    
     <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
+    <style>
+        /* Add this style for the collapsible menu */
+        .collapsible-menu {
+            display: none;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .collapsible-menu a {
+            width: 100%;
+            padding: 10px;
+            text-decoration: none;
+            color: white;
+            font-family: 'earth_orbiter_titleregular';
+            font-size: larger;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Style the button */
+        .menu-btn {
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            text-align: left;
+            font-family: 'earth_orbiter_titleregular';
+            font-size: larger;
+        }
+
+        /* Style the button on hover */
+        .menu-btn:hover {
+            background-color: #5c5ab8;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="video-container">
-        <video autoplay muted loop class="background-video">
-            <source src="https://drive.google.com/uc?export=download&id=158jH3c1qQZxyrwF7gWKh6XbpehG_ztEB" type="video/webm">
-            Your browser does not support the video tag.
-        </video>
+<div class="video-container">
+    <video autoplay muted loop class="background-video">
+        <source src="https://drive.google.com/uc?export=download&id=158jH3c1qQZxyrwF7gWKh6XbpehG_ztEB" type="video/webm">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Add the button and collapsible menu -->
+    <button class="menu-btn" onclick="toggleMenu()">Open Menu</button>
     
-        <nav>
-            <div class="dropdown">
-                <a href="#">InfoStreams</a>
-                <div class="dropdown-content">
-                    <a href="https://interactivesportslabs.com/basketball/give-and-go-info">The Give & Go Infostream</a>
-                    <a href="https://interactivesportslabs.com/sweet-science-spotlight">Sweet Science Spotlight</a>
-                    <a href="https://interactivesportslabs.com/formula-one-research-lab">Racecraft Reconnaissance</a>
-                </div>
-            </div>
-            <div class="menu-btn" onclick="toggleNav()">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-            <div class="dropdown">
-                <a href="#">Laboratories</a>
-                <div class="dropdown-content">
-                    <a href="https://interactivesportslabs.com/basketball">Basketball Research Lab</a>
-                    <a href="https://interactivesportslabs.com/boxing">Sweet Science Research Lab</a>
-                    <a href="https://interactivesportslabs.com/formula-one">Formula One Research Lab</a>
-                </div>
-            </div>
-            <div class="menu-btn" onclick="toggleNav()">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-            <div class="dropdown">
-                <a href="#">Interactive Scoreboards</a>
-                <div class="dropdown-content">
-                    <a href="https://interactivesportslabs.com/testing_scoreboard">Basketball</a>
-                    <a href="https://interactivesportslabs.com/boxing/scoreboard">Boxing</a>
-                    <a href="https://interactivesportslabs.com/formula-one/scoreboard">Formula One</a>
-                </div>
-            </div>
-            <div class="menu-btn" onclick="toggleNav()">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-        </nav>
-    </div>
+    <nav class="collapsible-menu">
+        <a href="https://interactivesportslabs.com/basketball/give-and-go-info">The Give & Go Infostream</a>
+        <a href="https://interactivesportslabs.com/sweet-science-spotlight">Sweet Science Spotlight</a>
+        <a href="https://interactivesportslabs.com/formula-one-research-lab">Racecraft Reconnaissance</a>
+        <a href="https://interactivesportslabs.com/basketball">Basketball Research Lab</a>
+        <a href="https://interactivesportslabs.com/boxing">Sweet Science Research Lab</a>
+        <a href="https://interactivesportslabs.com/formula-one">Formula One Research Lab</a>
+        <a href="https://interactivesportslabs.com/testing_scoreboard">Basketball</a>
+        <a href="https://interactivesportslabs.com/boxing/scoreboard">Boxing</a>
+        <a href="https://interactivesportslabs.com/formula-one/scoreboard">Formula One</a>
+    </nav>
+</div>
 
 <footer>
     <video autoplay muted loop class="footer-video">
@@ -70,14 +76,12 @@
     </video>
 </footer>
 
-
 <script>
-    function toggleNav() {
-        var nav = document.querySelector('nav');
-        nav.classList.toggle('show-mobile-menu');
+    function toggleMenu() {
+        var menu = document.querySelector('.collapsible-menu');
+        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
     }
 </script>
-
 
 </body>
 </html>
