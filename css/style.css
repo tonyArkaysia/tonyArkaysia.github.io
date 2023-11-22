@@ -51,7 +51,7 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #5c5ab8;
+    background-color: #5c5ab880;
 }
 
 nav .dropdown {
@@ -81,7 +81,7 @@ nav .dropdown-content a {
 }
 
 nav .dropdown-content a:hover {
-    background-color: #5c5ab8;
+    background-color: #5c5ab880;
 }
 
 footer {
@@ -90,7 +90,7 @@ footer {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
-    padding: 10px;
+    padding: 1px;
     color: white;
     box-sizing: border-box;
 }
@@ -100,8 +100,6 @@ footer {
     height: 100px;
     object-fit: cover;
 }
-
-
 
 
 
@@ -139,7 +137,7 @@ footer {
 .menu-btn .bar {
     width: 25px;
     height: 3px;
-    background-color: white;
+    background-color: #5c5ab880;
     margin: 6px 0;
 }
 
