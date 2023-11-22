@@ -30,28 +30,6 @@ body {
 }
 
 
-/* nav .center-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-}
-
-nav .center-logo a {
-    color: white;
-    text-decoration: none;
-    padding: 10px;
-    font-family: 'earth_orbiter_titleregular';
-    font-size: large;
-    position: relative;
-}
-
-nav .center-logo a:hover {
-    background-color: #5c5ab880;
-} */
-
-
-
 nav {
     display: flex;
     justify-content: space-between;

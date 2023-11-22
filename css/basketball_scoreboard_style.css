@@ -99,14 +99,15 @@ nav .dropdown-content a:hover {
 
 .video-section {
     display: flex;
-    flex-direction: auto; /* Updated to column layout */
+    flex-direction: column; /* Updated to column layout */
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     padding: 1rem;
 }
 
 .video-section iframe {
     width: 100%; /* Adjust the width as needed */
+    height: : auto;
 }
 
 /* Plotly Section */
