@@ -1,13 +1,11 @@
 @font-face {
     font-family: 'earth_orbiter_titleregular';
-    src: url('https://github.com/tonyArkaysia/isl/blob/1d8068e3f224018dda8db3d6b471d62545a3fb29/font_kit/earthorbitertitle-webfont.woff2') format('woff2'),
-         url('https://github.com/tonyArkaysia/isl/blob/1d8068e3f224018dda8db3d6b471d62545a3fb29/font_kit/earthorbitertitle-webfont.woff') format('woff'),
-         url('https://github.com/tonyArkaysia/isl/blob/abe648af799b0f5fd8144e346a6666971078bd6c/font_kit/earthorbitertitle.ttf') format('truetype');
+    src: url('font_kit/earthorbitertitle-webfont.woff2') format('woff2'),
+         url('font_kit/earthorbitertitle-webfont.woff') format('woff'),
+         url('font_kit/earthorbitertitle.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
-
-
 
 
 
