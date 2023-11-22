@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'earth_orbiter_titleregular';
-    src: url('font_kit/earthorbitertitle-webfont.woff2') format('woff2'),
-         url('font_kit/earthorbitertitle-webfont.woff') format('woff'),
-         url('font_kit/earthorbitertitle.ttf') format('truetype');
+    src: url('earthorbitertitle-webfont.woff2') format('woff2'),
+         url('earthorbitertitle-webfont.woff') format('woff'),
+         url('earthorbitertitle.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -112,8 +112,8 @@ nav .dropdown-content a:hover {
 /* Plotly Section */
 .plotly-section {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: left;
     padding: 1rem;
     z-index: 1;
 }
@@ -124,6 +124,9 @@ nav .dropdown-content a:hover {
 
 /* Basketball Section */
 .basketball-section {
+    display: flex;
+    justify-content: right;
+    align-items: right;
     position: auto;
     top: 0; /* Adjust as needed */
     width: 45%;
