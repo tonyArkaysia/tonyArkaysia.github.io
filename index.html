@@ -1,50 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Interactive Sports Labs</title>
-
     <!-- CSS file -->
     <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
-
 </head>
 
 <body>
-
     <div class="video-container">
         <video autoplay muted loop class="background-video">
             <source src="https://drive.google.com/uc?export=download&id=158jH3c1qQZxyrwF7gWKh6XbpehG_ztEB" type="video/webm">
             Your browser does not support the video tag.
         </video>
-    
+
         <nav>
             <div class="menu-btn" onclick="toggleNav()">
                 <div class="bar"></div>
                 <div class="bar"></div>
                 <div class="bar"></div>
             </div>
-            
-            <ul class="main-menu">
+            <ul class="nav-list">
                 <li><a href="#">InfoStreams</a>
-                    <ul class="submenu">
+                    <ul class="dropdown-content">
                         <li><a href="https://interactivesportslabs.com/basketball/give-and-go-info">The Give & Go Infostream</a></li>
                         <li><a href="https://interactivesportslabs.com/sweet-science-spotlight">Sweet Science Spotlight</a></li>
                         <li><a href="https://interactivesportslabs.com/formula-one-research-lab">Racecraft Reconnaissance</a></li>
                     </ul>
                 </li>
-                
                 <li><a href="#">Laboratories</a>
-                    <ul class="submenu">
+                    <ul class="dropdown-content">
                         <li><a href="https://interactivesportslabs.com/basketball">Basketball Research Lab</a></li>
                         <li><a href="https://interactivesportslabs.com/boxing">Sweet Science Research Lab</a></li>
                         <li><a href="https://interactivesportslabs.com/formula-one">Formula One Research Lab</a></li>
                     </ul>
                 </li>
-
                 <li><a href="#">Interactive Scoreboards</a>
-                    <ul class="submenu">
+                    <ul class="dropdown-content">
                         <li><a href="https://tonyarkaysia.github.io/basketball_scoreboard.html">Basketball</a></li>
                         <li><a href="https://interactivesportslabs.com/boxing/scoreboard">Boxing</a></li>
                         <li><a href="https://interactivesportslabs.com/formula-one/scoreboard">Formula One</a></li>
@@ -67,6 +61,6 @@
             nav.classList.toggle('show-mobile-menu');
         }
     </script>
-
 </body>
+
 </html>
