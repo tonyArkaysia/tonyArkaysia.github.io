@@ -210,10 +210,12 @@ nav .dropdown-content a:hover {
 
     nav a {
         width: 100%;
+        height: 100%;
     }
 
     nav .dropdown-content {
         min-width: 100%;
+        min-height: 100%;
     }
 
     footer {
