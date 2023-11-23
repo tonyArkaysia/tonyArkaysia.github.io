@@ -87,6 +87,10 @@ nav .dropdown-content a:hover {
     background-color: #5c5ab880;
 }
 
+nav.hide-nav {
+    display: none;
+}
+
 .divider {
     height: 2rem; /* Adjust the height as needed */
 }
@@ -112,7 +116,7 @@ nav .dropdown-content a:hover {
 
 /* Plotly Section */
 .plotly-section {
-    display: flex;
+    display: auto;
     justify-content: space-evenly;
     align-items: auto;
     padding: 1rem;
