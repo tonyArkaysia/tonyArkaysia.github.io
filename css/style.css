@@ -33,6 +33,14 @@ body {
     z-index: -1;
 }
 
+nav.show-mobile-menu {
+    display: none;
+}
+
+nav.show-nav {
+    display: flex;
+}
+
 /* Navigation bar styling */
 nav {
     display: flex;
@@ -94,6 +102,12 @@ nav .dropdown-content a {
 nav .dropdown-content a:hover {
     background-color: #5c5ab880;
 }
+
+
+nav.show-mobile-menu.show-nav {
+    display: none;
+}
+
 
 /* Hidden navigation bar on small screens */
 nav.hide-nav {
