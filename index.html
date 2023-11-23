@@ -7,14 +7,26 @@
     <title>Interactive Sports Labs</title>
     <!-- CSS file -->
     <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
-
     <script>
         function toggleNav() {
             var nav = document.querySelector('nav');
             nav.classList.toggle('hide-nav');
         }
-    </script>
 
+        function toggleNav() {
+            var nav = document.querySelector('nav');
+            nav.classList.toggle('show-nav');
+        }
+   
+
+        window.onload = showNav;
+
+        function toggleNav() {
+            var nav = document.querySelector('nav');
+            nav.classList.toggle('show-mobile-menu');
+        }
+    </script>
+    
 </head>
 
 <body>
@@ -29,7 +41,7 @@
                 <div class="bar"></div>
             </div>
         </div>
-        <nav class="hide-nav">
+        <nav class="show-nav">
             <div class="dropdown">
                 <a href="https://tonyarkaysia.github.io">ISL HOME</a>
             </div>            
