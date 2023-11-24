@@ -77,8 +77,8 @@ nav .dropdown {
 
 nav .dropdown-content {
     display: none;
-    position: sticky;
-    background-color: #333;
+    position: absolute;
+    background-color: #18182380;
     min-width: 200px; 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
