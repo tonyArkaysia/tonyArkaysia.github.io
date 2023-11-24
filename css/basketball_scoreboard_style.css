@@ -154,7 +154,7 @@ nav.hide-nav {
     text-align: center;
     /* padding: 2rem; */
     color: white;
-    /* box-sizing: border-box; */
+    box-sizing: border-box;
     z-index: 1;
 }
 
@@ -192,20 +192,6 @@ nav.hide-nav {
 
 
 
-
-/* Mobile Menu Styles Testing */
-.menu-btn {
-    display: flex;
-    cursor: pointer;
-}
-
-.menu-btn .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #5c5ab8;
-    margin: 6px 0;
-}
-
 /* Media Query for Small Screens Testing */
 @media (max-width: 768px) {
     nav {
@@ -231,18 +217,4 @@ nav.hide-nav {
         height: 50px;
     }
 
-    /* Display mobile menu button */
-    .menu-btn {
-        display: block;
-    }
-
-    /* Hide regular navigation links */
-    nav a {
-        display: none;
-    }
-
-    /* Show dropdown content when mobile menu is clicked */
-    nav.show-mobile-menu .dropdown-content {
-        display: block;
-    }
 }
