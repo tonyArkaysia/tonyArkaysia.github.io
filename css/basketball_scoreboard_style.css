@@ -11,10 +11,9 @@
 body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
     box-sizing: border-box;
-    font-size: 16px;
 }
 
 .video-container {
@@ -36,7 +35,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem;
+    padding: 1rem;
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     width: 100%;
@@ -88,21 +87,38 @@ nav .dropdown-content a:hover {
     background-color: #5c5ab880;
 }
 
+.game-header{
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    text-align: center;
+    font-size: small;
+    padding-top: 5rem;
+}
 
 .highlight-video {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    height: 100vh; /* Adjust the height as needed */
-    padding: 10rem;
+    align-items: top;
+    justify-content: left;
+    height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .video-wrapper {
-    max-width: 100%; /* Set a maximum width for the video if needed */
-    width: 100%;
-    padding: 20px;
+    position: relative;
+    width: 50%;
+    height: 50%;
 }
+
+.video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+}
+
 
 footer {
     position: relative;
@@ -110,7 +126,6 @@ footer {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
-    padding: 1px;
     color: white;
     box-sizing: border-box;
 }
