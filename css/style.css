@@ -67,7 +67,7 @@ nav .dropdown-content {
     position: absolute;
     background-color: #18182380;
     min-width: 10rem; 
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 100);
     z-index: 1;
     text-align: center;
 }
@@ -81,10 +81,15 @@ nav .dropdown-content a {
     padding: 10px 0; 
     text-decoration: none;
     display: block;
+    white-space: pre;
 }
 
 nav .dropdown-content a:hover {
     background-color: #5c5ab880;
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
 }
 
 footer {

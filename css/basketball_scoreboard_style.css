@@ -47,7 +47,7 @@ nav {
 nav a {
     color: white;
     text-decoration: none;
-    padding: 1rem;
+    padding: 10px;
     font-family: 'earth_orbiter_titleregular';
     font-size: 1rem;
     position: relative;
@@ -66,8 +66,8 @@ nav .dropdown-content {
     display: none;
     position: absolute;
     background-color: #18182380;
-    min-width: 10rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    min-width: 10rem; 
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 100);
     z-index: 1;
     text-align: center;
 }
@@ -78,29 +78,32 @@ nav .dropdown:hover .dropdown-content {
 
 nav .dropdown-content a {
     color: white;
-    padding: 1rem 0;
+    padding: 10px 0; 
     text-decoration: none;
     display: block;
+    white-space: pre;
 }
 
 nav .dropdown-content a:hover {
     background-color: #5c5ab880;
 }
 
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
 
-
-.footer-container {
-    position: fixed;
+footer {
+    position: relative;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
-    /* padding: 2rem; */
+    padding: 1px;
     color: white;
     box-sizing: border-box;
 }
 
-.footer-container .footer-video {
+.footer-video {
     width: 100%;
     height: 8rem;
     object-fit: cover;
