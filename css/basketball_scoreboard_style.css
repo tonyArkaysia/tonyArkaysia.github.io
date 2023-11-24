@@ -87,64 +87,7 @@ nav .dropdown-content a:hover {
     background-color: #5c5ab880;
 }
 
-nav.hide-nav {
-    display: none;
-}
 
-.divider {
-    height: 2rem; /* Adjust the height as needed */
-}
-
-.headline-section {
-    text-align: center;
-    padding: 2rem;
-    color: #fff
-}
-
-.video-section {
-    display: flex;
-    flex-direction: column; /* Updated to column layout */
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-}
-
-.video-section iframe {
-    width: 100%; /* Adjust the width as needed */
-    height: : auto;
-}
-
-/* Plotly Section */
-.plotly-section {
-    display: auto;
-    justify-content: space-evenly;
-    align-items: auto;
-    padding: 1rem;
-    z-index: 1;
-}
-
-.plotly-chart {
-    width: 45%; /* Adjust the width as needed */
-}
-
-/* Basketball Section */
-.basketball-section {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: auto;
-    position: auto;
-    top: 0; /* Adjust as needed */
-    width: 45%;
-    padding: 1rem;
-    margin: 0 auto;
-    z-index: 1;
-}
-
-
-/* Basketball Court */
-#4f9c825d-68fe-4889-8203-d4fc9be4c609 {
-    width: 45%; /* Adjust the width as needed */
-}
 
 .footer-container {
     position: fixed;
@@ -155,7 +98,6 @@ nav.hide-nav {
     /* padding: 2rem; */
     color: white;
     box-sizing: border-box;
-    z-index: 1;
 }
 
 .footer-container .footer-video {
@@ -165,6 +107,7 @@ nav.hide-nav {
 }
 
 /* Media Queries for Responsive Design */
+
 @media screen and (max-width: 768px) {
     nav {
         flex-direction: column;
@@ -178,21 +121,10 @@ nav.hide-nav {
     nav .dropdown-content {
         min-width: 100%;
     }
-
-    .video-section,
-    .video-section iframe,
-    .plotly-chart {
-        width: 100%;
-    }
-
-    #4f9c825d-68fe-4889-8203-d4fc9be4c609 {
-        width: 100%; /* Adjust the width as needed for smaller screens */
-    }
 }
 
-
-
 /* Media Query for Small Screens Testing */
+
 @media (max-width: 768px) {
     nav {
         flex-direction: column;

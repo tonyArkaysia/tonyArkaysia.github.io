@@ -88,7 +88,7 @@ nav .dropdown-content a:hover {
 }
 
 footer {
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -100,35 +100,51 @@ footer {
 
 .footer-video {
     width: 100%;
-    height: 100px;
+    height: 8rem;
     object-fit: cover;
 }
 
-/* Media Query for Small Screens */
-@media (max-width: 768px) {
+/* Media Queries for Responsive Design */
 
+@media screen and (max-width: 768px) {
     nav {
         flex-direction: column;
         align-items: stretch;
     }
 
-    /* Full-width navigation links on small screens */
     nav a {
         width: 100%;
     }
 
-    /* Full-width dropdown content on small screens */
     nav .dropdown-content {
         min-width: 100%;
     }
+}
 
-    /* Adjusted padding for footer on small screens */
+/* Media Query for Small Screens Testing */
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    nav a {
+        width: 100%;
+        height: 100%;
+    }
+
+    nav .dropdown-content {
+        min-width: 100%;
+        min-height: 100%;
+    }
+
     footer {
         padding: 5px;
     }
 
-    /* Adjusted height for footer video on small screens */
     .footer-video {
         height: 50px;
     }
+
 }
