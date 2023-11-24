@@ -1,4 +1,3 @@
-/* Font Face */
 @font-face {
     font-family: 'earth_orbiter_titleregular';
     src: url('../earthorbitertitle-webfont.woff2') format('woff2'),
@@ -8,21 +7,21 @@
     font-style: normal;
 }
 
-/* Reset default styles */
+
 body {
     margin: 0;
     padding: 0;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     box-sizing: border-box;
+    font-size: 16px;
 }
 
-/* Video container styling */
 .video-container {
     position: relative;
     height: 100vh;
 }
 
-/* Background video styling */
 .background-video {
     position: absolute;
     top: 0;
@@ -33,15 +32,6 @@ body {
     z-index: -1;
 }
 
-nav.show-mobile-menu {
-    display: none;
-}
-
-nav.show-nav {
-    display: flex;
-}
-
-/* Navigation bar styling */
 nav {
     display: flex;
     justify-content: space-between;
@@ -54,7 +44,6 @@ nav {
     z-index: 1;
 }
 
-/* Navigation link styling */
 nav a {
     color: white;
     text-decoration: none;
@@ -64,12 +53,10 @@ nav a {
     position: relative;
 }
 
-/* Navigation link hover effect */
 nav a:hover {
     background-color: #5c5ab880;
 }
 
-/* Dropdown styling */
 nav .dropdown {
     position: relative;
     display: inline-block;
@@ -79,18 +66,16 @@ nav .dropdown-content {
     display: none;
     position: absolute;
     background-color: #18182380;
-    min-width: 200px; 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    min-width: 10rem; 
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
     z-index: 1;
     text-align: center;
 }
 
-/* Show dropdown content on hover */
 nav .dropdown:hover .dropdown-content {
     display: block;
 }
 
-/* Dropdown link styling */
 nav .dropdown-content a {
     color: white;
     padding: 10px 0; 
@@ -98,25 +83,12 @@ nav .dropdown-content a {
     display: block;
 }
 
-/* Dropdown link hover effect */
 nav .dropdown-content a:hover {
     background-color: #5c5ab880;
 }
 
-
-nav.show-mobile-menu.show-nav {
-    display: none;
-}
-
-
-/* Hidden navigation bar on small screens */
-nav.hide-nav {
-    display: none;
-}
-
-/* Footer styling */
 footer {
-    position: static;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -126,7 +98,6 @@ footer {
     box-sizing: border-box;
 }
 
-/* Footer video styling */
 .footer-video {
     width: 100%;
     height: 100px;
@@ -135,7 +106,7 @@ footer {
 
 /* Media Query for Small Screens */
 @media (max-width: 768px) {
-    /* Mobile-friendly navigation styles */
+
     nav {
         flex-direction: column;
         align-items: stretch;
@@ -160,33 +131,4 @@ footer {
     .footer-video {
         height: 50px;
     }
-
-    /* Display mobile menu button */
-    .menu-btn {
-        display: block;
-    }
-
-    /* Hide regular navigation links on small screens */
-    nav a {
-        display: none;
-    }
-
-    /* Show dropdown content when mobile menu is clicked */
-    nav.show-mobile-menu .dropdown-content {
-        display: block;
-    }
-}
-
-/* Mobile Menu Styles */
-.menu-btn {
-    display: flex;
-    cursor: pointer;
-}
-
-/* Styles for the menu button bars */
-.menu-btn .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #5c5ab8;
-    margin: 6px 0;
 }
