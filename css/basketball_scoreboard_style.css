@@ -153,24 +153,8 @@ footer {
 }
 
 
-/* Media Queries for Responsive Design */
 
-@media screen and (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    nav a {
-        width: 100%;
-    }
-
-    nav .dropdown-content {
-        min-width: 100%;
-    }
-}
-
-/* Media Query for Small Screens Testing */
+/* Media Query for Small Screens Testing & Responsive Design*/
 
 @media (max-width: 768px) {
     nav {
@@ -197,3 +181,27 @@ footer {
     }
 
 }
+
+
+/* Highlight Video Mobile */
+
+@media screen and (max-width: 768px) {
+    .highlight-video {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+    }
+}
+
+/* Plotly Stat Mobile */
+
+@media screen and (max-width: 768px) {
+    #plotly-chart {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100vh;
+    }
+}
+
