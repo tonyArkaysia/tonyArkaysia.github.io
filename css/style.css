@@ -39,6 +39,7 @@ nav {
     padding: 1.5rem;
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
+    box-shadow: 0 0.5rem 3rem rgba(24, 24, 35, 100);
     width: 100%;
     top: 0;
     z-index: 1;
@@ -67,7 +68,7 @@ nav .dropdown-content {
     position: absolute;
     background-color: #18182380;
     min-width: 10rem; 
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 100);
+    box-shadow: 0 0.5rem 3rem rgba(24, 24, 35, 100);
     z-index: 1;
     text-align: center;
 }
