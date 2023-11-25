@@ -137,16 +137,18 @@ nav .dropdown-content a:hover {
 footer {
     position: relative;
     bottom: 0;
-    /* background-color: rgba(0, 0, 0, 0.4); */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
+    padding: 1px;
+    color: white;
     box-sizing: border-box;
-    z-index: -1;
 }
 
 .footer-video {
-    width: 100%;
+    width: 100vh;
+    height: 100%;
     object-fit: cover;
-    height: 8rem;
 }
 
 
@@ -155,7 +157,7 @@ footer {
 
 @media (max-width: 1920px) {
     nav {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
     }
 
@@ -168,18 +170,20 @@ footer {
         min-width: 100%;
         min-height: 100%;
     }
+}
+
+@media (max-width: 1920px) {
 
     footer {
         position: relative;
-        justify-content: flex-start;
-        align-items: flex-end;
+        align-items: center;
         padding: 5px;
-        position: static;
         object-fit: cover;
+        background-color: rgba(0, 0, 0, 0.5);
     }
 
     .footer-video {
-        height: 50px;
+        height: 100%;
         width: 100vh;
 
     }
