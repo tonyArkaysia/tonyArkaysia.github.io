@@ -184,6 +184,19 @@ footer {
 
 }
 
+
+/* Header Mobile */
+
+@media screen and (max-width: 1920px) {
+    .game-header {
+        display: flex;
+        flex-direction: column;
+        align-items: top;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
 /* Highlight Video Mobile */
 
 @media screen and (max-width: 1920px) {
