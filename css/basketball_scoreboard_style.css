@@ -174,11 +174,13 @@ footer {
     footer {
         padding: 5px;
         position: static;
+        object-fit: cover;
     }
 
     .footer-video {
         height: 50px;
-        object-fit: cover;
+        width: 100vh;
+
     }
 
 }
@@ -186,21 +188,21 @@ footer {
 
 /* Highlight Video Mobile */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1920px) {
     .highlight-video {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        width: 100%;
+        width: 100vh;
     }
 }
 
 /* Plotly Stat Mobile */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1920px) {
     #plotly-chart {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         width: 100vh;
     }
