@@ -124,7 +124,8 @@ nav .dropdown-content a:hover {
 
 .plotly-wrapper {
     display: flex;
-    justify-content: flex-start; /* Adjust as needed */
+    flex-direction: row;
+    justify-content: right; /* Adjust as needed */
     align-items: flex-end;
 }
 
