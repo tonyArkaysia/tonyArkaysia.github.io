@@ -146,8 +146,8 @@ footer {
 }
 
 .footer-video {
-    width: 100vh;
-    height: 100%;
+    width: 100%;
+    height: 50%;
     object-fit: cover;
 }
 
@@ -177,19 +177,17 @@ footer {
     footer {
         position: relative;
         align-items: center;
-        padding: 5px;
-        object-fit: cover;
+        padding: 3px;
         background-color: rgba(0, 0, 0, 0.5);
     }
 
     .footer-video {
-        height: 100%;
-        width: 100vh;
+        height: 50%;
+        width: 100%;
 
     }
 
 }
-
 
 /* Header Mobile */
 
