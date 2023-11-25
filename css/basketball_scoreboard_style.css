@@ -22,7 +22,7 @@ body {
 }
 
 .background-video {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -121,13 +121,14 @@ nav .dropdown-content a:hover {
 
 
 footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
     color: white;
     box-sizing: border-box;
+    z-index: -1;
 }
 
 .footer-video {
