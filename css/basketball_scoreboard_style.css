@@ -17,7 +17,7 @@ body {
 }
 
 .video-container {
-    position: relative;
+    position: static;
     height: 100vh;
 }
 
@@ -118,6 +118,34 @@ nav .dropdown-content a:hover {
     width: 100%;
     height: 100%;
 }
+
+
+.plotly-wrapper {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end; /* Updated */
+    justify-content: center;  /* Updated */
+    position: absolute;
+    z-index: 1;
+    top: 0; /* Adjust top position as needed */
+    right: 0; /* Adjust right position as needed */
+    width: 50%; /* Adjust width as needed */
+    height: 100vh; /* Adjust height as needed */
+}
+
+.plotly-wrapper .bf8bdebd-58b1-429e-be66-041aa1426249 {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end; /* Updated */
+    justify-content: center;  /* Updated */
+    position: absolute;
+    z-index: 1;
+    width: 50%; /* Adjust width as needed */
+    height: 100%; /* Adjust height as needed */
+}
+
+
+ 
 
 
 footer {
