@@ -185,11 +185,11 @@ footer {
         height: 50px;
     }
 
-}
+} 
 
 /* Header Mobile */
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1280px) {
     .game-header {
         display: flex;
         flex-direction: column;
@@ -199,7 +199,7 @@ footer {
     }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1280px) {
     .section1game1 {
         display: flex;
         flex-direction: row-reverse;
@@ -210,7 +210,7 @@ footer {
 
 /* Highlight Video Mobile */
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1280px) {
     .highlight-video {
         display: flex;
         flex-direction: row-reverse;
@@ -220,7 +220,7 @@ footer {
 
 /* Plotly Stat Mobile */
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1280px) {
     #plotly-chart {
         display: flex;
         flex-direction: row-reverse;
