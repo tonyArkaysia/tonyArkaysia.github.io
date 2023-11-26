@@ -189,20 +189,19 @@ footer {
 
 /* Header Mobile */
 
-@media screen and (min-width: 1800x) {
+@media screen and (min-width: 1700px) {
     .game-header {
         display: flex;
-        flex-direction: column;
         align-items: top;
         justify-content: center;
         text-align: center;
     }
 }
 
-@media screen and (min-width: 1800px) {
+@media screen and (min-width: 1700px) {
     .section1game1 {
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: row;
         width: 100%;
     }
 }
@@ -210,21 +209,32 @@ footer {
 
 /* Highlight Video Mobile */
 
-@media screen and (min-width: 1800px) {
+@media screen and (min-width: 1700px) {
     .highlight-video {
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: row;
         width: 100%;
     }
 }
 
 /* Plotly Stat Mobile */
 
-@media screen and (min-width: 1800px) {
+@media screen and (min-width: 1700px) {
+    .plotly-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100vh;
+        height: 50vh;
+    }
+}
+
+
+@media screen and (min-width: 1700px) {
     #plotly-chart {
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: row;
         width: 100vh;
+        height: 50vh;
     }
 }
 
