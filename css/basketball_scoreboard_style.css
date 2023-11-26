@@ -189,7 +189,7 @@ footer {
 
 /* Header Mobile */
 
-@media screen and (min-width: 1753px) {
+@media screen and (min-width: 1920px) {
     .game-header {
         display: flex;
         flex-direction: column;
@@ -199,7 +199,7 @@ footer {
     }
 }
 
-@media screen and (min-width: 1753px) {
+@media screen and (min-width: 1920px) {
     .section1game1 {
         display: flex;
         flex-direction: row-reverse;
@@ -210,7 +210,7 @@ footer {
 
 /* Highlight Video Mobile */
 
-@media screen and (min-width: 1753px) {
+@media screen and (min-width: 1920px) {
     .highlight-video {
         display: flex;
         flex-direction: row-reverse;
@@ -220,7 +220,7 @@ footer {
 
 /* Plotly Stat Mobile */
 
-@media screen and (min-width: 1753px) {
+@media screen and (min-width: 1920px) {
     #plotly-chart {
         display: flex;
         flex-direction: row-reverse;
