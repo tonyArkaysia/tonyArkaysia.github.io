@@ -99,7 +99,7 @@ nav .dropdown-content a:hover {
 }
 
 .highlight-video {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     align-items: top;
     justify-content: left;
@@ -122,10 +122,11 @@ nav .dropdown-content a:hover {
 
 
 .plotly-wrapper {
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     justify-content: right; /* Adjust as needed */
     align-items: flex-end;
+    padding-top: 50px;
 }
 
 #plotly-chart {
@@ -172,10 +173,11 @@ footer {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1920px) {
 
     footer {
         padding: 5px;
+        
     }
 
     .footer-video {
