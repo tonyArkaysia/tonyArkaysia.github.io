@@ -147,7 +147,7 @@ footer {
 
 .footer-video {
     width: 100%;
-    height: 50%;
+    height: 8rem;
     object-fit: cover;
 }
 
@@ -175,16 +175,11 @@ footer {
 @media (max-width: 1920px) {
 
     footer {
-        position: relative;
-        align-items: center;
-        padding: 3px;
-        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
     }
 
     .footer-video {
-        height: 50%;
-        width: 100%;
-
+        height: 50px;
     }
 
 }
