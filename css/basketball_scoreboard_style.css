@@ -135,7 +135,7 @@ nav .dropdown-content a:hover {
 
 
 footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -172,7 +172,7 @@ footer {
     }
 }
 
-@media (max-width: 1920px) {
+@media (max-width: 768px) {
 
     footer {
         padding: 5px;
