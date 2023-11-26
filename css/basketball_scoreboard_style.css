@@ -98,21 +98,22 @@ nav .dropdown-content a:hover {
     padding-top: 5rem;
 }
 
+.section1game1 {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 10px;
+    width: 100vh;
+}
+
 .highlight-video {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: top;
-    justify-content: left;
-    width: 50%;
-    height: 50%;
-    position: relative;
+    width: 100%;
+    height: 50vh;
 }
 
 .video-wrapper {
-    position: relative;
     width: 100%;
-    height: 100%;
-    padding: 1rem;
+    height: 50vh;
+    padding: 0.15rem;
 }
 
 .video-wrapper iframe {
@@ -120,17 +121,15 @@ nav .dropdown-content a:hover {
     height: 100%;
 }
 
-
 .plotly-wrapper {
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: right; /* Adjust as needed */
-    align-items: flex-end;
-    padding-top: 50px;
+    flex-direction: row-reverse;
+    padding: 0.15rem;
+    display: inline-block;
+    width: 100%;
 }
 
 #plotly-chart {
-    width: 50%; /* Adjust the width as needed */
+    width: 100%; /* Adjust the width as needed */
     height: 50vh; /* Adjust the height as needed */
 }
 
@@ -141,7 +140,7 @@ footer {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     text-align: center;
-    padding: 1px;
+    padding: 0.5px 0px;
     color: white;
     box-sizing: border-box;
 }
@@ -156,7 +155,7 @@ footer {
 
 /* Media Query for Small Screens Testing & Responsive Design for NavBar and Footer*/
 
-@media (max-width: 1920px) {
+@media (min-width: 390px) {
     nav {
         flex-direction: row;
         align-items: stretch;
@@ -173,7 +172,7 @@ footer {
     }
 }
 
-@media (max-width: 1920px) {
+@media (min-width: 412px) {
 
     footer {
         padding: 5px;
@@ -188,7 +187,7 @@ footer {
 
 /* Header Mobile */
 
-@media screen and (max-width: 1920px) {
+@media screen and (min-width: 390px) {
     .game-header {
         display: flex;
         flex-direction: column;
@@ -198,23 +197,33 @@ footer {
     }
 }
 
+@media screen and (min-width: 390px) {
+    .section1game1 {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        width: 100%;
+    }
+}
+
+
 /* Highlight Video Mobile */
 
-@media screen and (max-width: 1920px) {
+@media screen and (min-width: 390px) {
     .highlight-video {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
-        width: 100vh;
+        width: 100%;
     }
 }
 
 /* Plotly Stat Mobile */
 
-@media screen and (max-width: 1920px) {
+@media screen and (min-width: 390px) {
     #plotly-chart {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         width: 100vh;
     }
