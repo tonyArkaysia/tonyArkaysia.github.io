@@ -8,6 +8,27 @@
 
     <!-- CSS file -->
     <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+    <audio id="hoverSound" preload="auto">
+        <source src="ding.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var hoverSound = document.getElementById("hoverSound");
+            var navLinks = document.querySelectorAll('.dropdown-content a');
+    
+            navLinks.forEach(function(link) {
+                link.addEventListener("mouseover", function() {
+                    hoverSound.currentTime = 0; // Set the playback position to the beginning
+                    hoverSound.play();
+                });
+            });
+        });
+    </script>
+    
 </head>
 
 <body>
