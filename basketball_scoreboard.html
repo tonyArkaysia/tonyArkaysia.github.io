@@ -11,6 +11,144 @@
 </head>
 
 <body>
+   
+    <audio id="islLaboratoriesMainSound" preload="auto">
+        <source src="isl_computer_short_hover.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="basketballLabSound" preload="auto">
+        <source src="isl_swish.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="sweetscienceLabSound" preload="auto">
+        <source src="isl_punching_bag.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="formulaoneLabSound" preload="auto">
+        <source src="isl_f1_labs.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="islNexusSound" preload="auto">
+        <source src="isl_computer_wave.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="formulaoneNexusSound" preload="auto">
+        <source src="isl_f1_v12_b.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <audio id="islSound" preload="auto">
+        <source src="isl_data_reveal.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="infoStreamsSound" preload="auto">
+        <source src="isl_swish_1.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="scoreboardsSound" preload="auto">
+        <source src="scoreboards_sound.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <audio id="interactiveScoreboardsSound" preload="auto">
+        <source src="isl_f1_lightsout.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var islLaboratoriesMainSound = document.getElementById("islLaboratoriesMainSound");
+            var basketballLabSound = document.getElementById("basketballLabSound");
+            var sweetscienceLabSound = document.getElementById("sweetscienceLabSound");
+            var islNexusSound = document.getElementById("islNexusSound");
+            var islSound = document.getElementById("islSound");
+            var infoStreamsSound = document.getElementById("infoStreamsSound");
+            var scoreboardsSound = document.getElementById("scoreboardsSound");
+            var interactiveScoreboardsSound = document.getElementById("interactiveScoreboardsSound");
+            var formulaoneLabSound = document.getElementById("formulaoneLabSound");
+            var formulaoneNexusSound = document.getElementById("formulaoneNexusSound");
+
+
+            // var parentLinks = document.querySelectorAll('.dropdown > a');
+
+            // parentLinks.forEach(function(link) {
+            //     link.addEventListener("mouseover", function() {
+            //         dingSound.currentTime = 0;
+            //         dingSound.play();
+            //     });
+            // });
+
+            var isllaboratoriesLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl_laboratories_main"]');
+            var basketballLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball"]');
+            var sweetscienceLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/boxing"]');
+            var formulaoneLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one"]');
+            var islNexusLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball/give-and-go-info"]');
+            var formulaoneNexusLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one-research-lab"]');
+            var islLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io"]');
+            var infoStreamsLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball/give-and-go-info"]');
+            var scoreboardsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/basketball_scoreboard.html"]');
+            var interactiveScoreboardsLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one/scoreboard"]');
+
+
+            isllaboratoriesLink.addEventListener("mouseover", function() {
+                islLaboratoriesMainSound.currentTime = 0;
+                islLaboratoriesMainSound.play();
+            });
+
+            basketballLabLink.addEventListener("mouseover", function() {
+                basketballLabSound.currentTime = 0;
+                basketballLabSound.play();
+            });
+
+            sweetscienceLabLink.addEventListener("mouseover", function() {
+                sweetscienceLabSound.currentTime = 0;
+                sweetscienceLabSound.play();
+            });
+
+            formulaoneLabLink.addEventListener("mouseover", function() {
+                formulaoneLabSound.currentTime = 0;
+                formulaoneLabSound.play();
+            });
+
+            islNexusLink.addEventListener("mouseover", function() {
+                islNexusSound.currentTime = 0;
+                islNexusSound.play();
+            });
+
+            formulaoneNexusLink.addEventListener("mouseover", function() {
+                formulaoneNexusSound.currentTime = 0;
+                formulaoneNexusSound.play();
+            });
+
+            islLink.addEventListener("mouseover", function() {
+                islSound.currentTime = 0;
+                islSound.play();
+            });
+
+            infoStreamsLink.addEventListener("mouseover", function() {
+                infoStreamsSound.currentTime = 0;
+                infoStreamsSound.play();
+            });
+
+            scoreboardsLink.addEventListener("mouseover", function() {
+                scoreboardsSound.currentTime = 0;
+                scoreboardsSound.play();
+            });
+
+            interactiveScoreboardsLink.addEventListener("mouseover", function() {
+                interactiveScoreboardsSound.currentTime = 0;
+                interactiveScoreboardsSound.play();
+            });
+        });
+    </script>
     
     <div class="video-container">
 
@@ -22,9 +160,8 @@
         <div class="nav-container">
 
             <nav class="show-nav">
-
                 <div class="dropdown">
-                    <a href="#">Laboratories</a>
+                    <a href="https://tonyarkaysia.github.io/isl_laboratories_main">Laboratories</a>
                     <div class="dropdown-content">
                         <a href="https://interactivesportslabs.com/basketball">Basketball Research Lab</a>
                         <a href="https://interactivesportslabs.com/boxing">Sweet Science Research Lab</a>
@@ -41,7 +178,7 @@
                 </div>
                 <div class="dropdown">
                     <a href="https://tonyarkaysia.github.io">ISL</a>
-                </div>
+                </div> 
                 <div class="dropdown">
                     <a href="#">InfoStreams</a>
                     <div class="dropdown-content">
@@ -61,7 +198,7 @@
 
             </nav>
 
-        </div>        
+        </div>    
 
         <div class="game-header"> 
 
