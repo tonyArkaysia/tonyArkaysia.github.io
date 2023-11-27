@@ -36,7 +36,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem;
+    padding: 1rem;
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     box-shadow: 0 0.5rem 3rem rgba(24, 24, 35, 100);
@@ -52,10 +52,19 @@ nav a {
     font-family: 'earth_orbiter_titleregular';
     font-size: 1rem;
     position: relative;
+    /* Set the background to a gradient from dark blue to yellow to grassy green */
+
 }
 
 nav a:hover {
-    background-color: #5c5ab880;
+    background-color: #5c5ab8;
+    background: linear-gradient(to right,#090909, #5c5ab8, #ffdb58, yellow, #4CAF50);
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
 }
 
 nav .dropdown {
@@ -79,14 +88,24 @@ nav .dropdown:hover .dropdown-content {
 
 nav .dropdown-content a {
     color: white;
+    font-size: 1rem;
     padding: 10px 0; 
     text-decoration: none;
     display: block;
     white-space: pre;
+    
 }
 
 nav .dropdown-content a:hover {
     background-color: #5c5ab880;
+    background: linear-gradient(to right,#090909, #5c5ab8, #ffdb58, yellow, #4CAF50);
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;    
+    /* Add a glowing effect with text-shadow */
+    text-shadow: 0 0 10px #5c5ab8, 0 0 30px #ffdb58, 0 0 30px #5c5ab8;
 }
 
 nav .dropdown:hover .dropdown-content {
