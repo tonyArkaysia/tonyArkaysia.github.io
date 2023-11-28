@@ -118,12 +118,14 @@
             //     });
             // });
 
-            var isllaboratoriesLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl_laboratories_main"]');
+            var isllaboratoriesLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-laboratories-main"]');
             var basketballLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball"]');
             var sweetscienceLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/boxing"]');
             var formulaoneLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one"]');
             var islNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl_nexus"]');
-            var formulaoneNexusLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one-research-lab"]');
+            var basketballNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-nexus"]');
+            var sweetscienceNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweetscience-nexus"]');
+            var formulaoneNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-formulaone-nexus"]');
             var islLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io"]');
             var infoStreamsLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball/give-and-go-info"]');
             var scoreboardsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/basketball_scoreboard.html"]');
@@ -141,7 +143,7 @@
             });
 
             isllaboratoriesLink.addEventListener("click", function (event) {
-                // event.preventDefault(); // Prevent the default link behavior
+                // event.preventDefault(); 
                 playSound(islNexusSoundClick);
             });
 
@@ -151,7 +153,7 @@
             });
 
             basketballLabLink.addEventListener("click", function (event) {
-                event.preventDefault(); // Prevent the default link behavior
+                event.preventDefault(); 
                 playSound(basketballLabSoundClick);
             });
 
@@ -184,21 +186,34 @@
                 playSound(islNexusSoundClick)
             });
 
-            basketballLabLink.addEventListener("mouseover", function () {
+            basketballNexusLink.addEventListener("mouseover", function () {
                 playSound(basketballLabSound);
             });
 
-            basketballLabLink.addEventListener("click", function (event) {
-                event.preventDefault(); // Prevent the default link behavior
+            basketballNexusLink.addEventListener("click", function (event) {
+                // event.preventDefault(); 
                 playSound(basketballLabSoundClick);
             });
 
 
+            sweetscienceNexusLink.addEventListener("mouseover", function() {
+                playSound(sweetscienceLabSound);
+            });
+
+            sweetscienceNexusLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(sweetscienceLabSoundClick)
+            });
 
             formulaoneNexusLink.addEventListener("mouseover", function() {
-                formulaoneNexusSound.currentTime = 0;
-                formulaoneNexusSound.play();
+                playSound(formulaoneLabSound);
             });
+
+            formulaoneNexusLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
 
             islLink.addEventListener("mouseover", function() {
                 playSound(islSound);
@@ -234,7 +249,7 @@
 
             <nav class="show-nav">
                 <div class="dropdown">
-                    <a href="https://tonyarkaysia.github.io/isl_laboratories_main">Laboratories</a>
+                    <a href="https://tonyarkaysia.github.io/isl-laboratories-main">Laboratories</a>
                     <div class="dropdown-content">
                         <a href="https://interactivesportslabs.com/basketball">Basketball Research Lab</a>
                         <a href="https://interactivesportslabs.com/boxing">Sweet Science Research Lab</a>
