@@ -133,7 +133,7 @@ footer {
 
 /* Media Query for Small Screens Testing & Responsive Design for NavBar and Footer*/
 
-@media (min-width: 390px) {
+@media (min-width: 1700px) {
     nav {
         flex-direction: row;
         align-items: stretch;
@@ -150,7 +150,7 @@ footer {
     }
 }
 
-@media (min-width: 412px) {
+@media (min-width: 1700px) {
 
     footer {
         padding: 5px;
