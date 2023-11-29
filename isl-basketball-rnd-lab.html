@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Interactive Sports Labs</title>
 
     <!-- CSS file -->
-    <link rel="stylesheet" href="css/basketball_scoreboard_style.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+    
 </head>
 
 <body>
@@ -48,6 +50,7 @@
     </audio>
 
 
+
     <audio id="islNexusSound" preload="auto">
         <source src="isl_hover_tone.mp3" type="audio/mp3">
         Your browser does not support the audio element.
@@ -58,54 +61,45 @@
         Your browser does not support the audio element.
     </audio>
 
+    <audio id="basketballNexusSound" preload="auto">
+        <source src="isl_soft_beep.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="basketballNexusSoundClick" preload="auto">
+        <source src="isl_click.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
     <audio id="formulaoneNexusSound" preload="auto">
         <source src="isl_soft_beep.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
+
+
 
     <audio id="islSoundRobot" preload="auto">
         <source src="isl_little_robot.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>
     
-    <audio id="islSound" preload="auto">
-        <source src="isl_data_reveal.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-
-    <audio id="infoStreamsSound" preload="auto">
-        <source src="isl_soft_beep.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-
-    <audio id="scoreboardsSound" preload="auto">
-        <source src="scoreboards_sound.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-    
-    <audio id="interactiveScoreboardsSound" preload="auto">
-        <source src="isl_f1_lightsout.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
 
     <script>
 
         document.addEventListener("DOMContentLoaded", function() {
+
             var islLaboratoriesMainSound = document.getElementById("islLaboratoriesMainSound");
             var basketballLabSound = document.getElementById("basketballLabSound");
             var sweetscienceLabSound = document.getElementById("sweetscienceLabSound");
             var formulaoneLabSound = document.getElementById("formulaoneLabSound");
 
             var islNexusSound = document.getElementById("islNexusSound");
+            var basketballNexusSound = document.getElementById("basketballNexusSound");
             var formulaoneNexusSound = document.getElementById("formulaoneNexusSound");
 
             var islSound = document.getElementById("islSound");
 
             var infoStreamsSound = document.getElementById("infoStreamsSound");
-            var scoreboardsSound = document.getElementById("scoreboardsSound");
-            var interactiveScoreboardsSound = document.getElementById("interactiveScoreboardsSound");
-
-
 
             // var parentLinks = document.querySelectorAll('.dropdown > a');
 
@@ -116,35 +110,49 @@
             //     });
             // });
 
+
             var isllaboratoriesLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-laboratories-main"]');
-            var basketballLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball"]');
-            var sweetscienceLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/boxing"]');
-            var formulaoneLabLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one"]');
-            var islNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl_nexus"]');
+            var basketballLabLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-rnd-lab"]');
+            var sweetscienceLabLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweetscience-rnd-lab"]');
+            var formulaoneLabLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-racecraft-rnd-lab"]');
+            
+            var islNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-nexus"]');
             var basketballNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-nexus"]');
             var sweetscienceNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweetscience-nexus"]');
-            var formulaoneNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-formulaone-nexus"]');
+            var racerNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-racer-nexus"]');
+            
             var islLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io"]');
-            var infoStreamsLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/basketball/give-and-go-info"]');
-            var scoreboardsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/basketball_scoreboard.html"]');
-            var interactiveScoreboardsLink = document.querySelector('.dropdown a[href="https://interactivesportslabs.com/formula-one/scoreboard"]');
+            
+            var infoStreamsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-infostreams"]');
+            var giveandgoinfoLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-give-and-go-info"]');
+            var sweetsciencespotlightLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweet-science-spotlight"]');    
+            var racecraftreconLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-racecraft-reconnaissance"]');
+
+            var interactivescoreboardsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-scoreboards"]');
+            var nbascoreboardLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-scoreboard"]');
+            var boxingroundbyroundLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-boxing-scoreboard"]');    
+            var formulaoneinteractiveLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard"]');
+
+            
+            /* Function playing sound, parameters: sound source, default current time to 0*/
 
             function playSound(sound, currentTime = 0) {
                 sound.currentTime = currentTime;
                 sound.play();
             }
 
-            
+
+
+            /* ISL LABS */ 
 
             isllaboratoriesLink.addEventListener("mouseover", function() {
                 playSound(islLaboratoriesMainSound);
             });
 
             isllaboratoriesLink.addEventListener("click", function (event) {
-                // event.preventDefault(); 
+                event.preventDefault(); 
                 playSound(islNexusSoundClick);
             });
-
 
             basketballLabLink.addEventListener("mouseover", function () {
                 playSound(basketballLabSound);
@@ -175,24 +183,25 @@
 
 
 
+            /* ISL NEXUS */
+
             islNexusLink.addEventListener("mouseover", function() {
                 playSound(islNexusSound)
             });
 
             islNexusLink.addEventListener("click", function(event) {
-                // event.preventDefault();
+                event.preventDefault();
                 playSound(islNexusSoundClick)
             });
 
             basketballNexusLink.addEventListener("mouseover", function () {
-                playSound(basketballLabSound);
+                playSound(basketballNexusSound);
             });
 
             basketballNexusLink.addEventListener("click", function (event) {
-                // event.preventDefault(); 
-                playSound(basketballLabSoundClick);
+                event.preventDefault(); 
+                playSound(basketballNexusSoundClick);
             });
-
 
             sweetscienceNexusLink.addEventListener("mouseover", function() {
                 playSound(sweetscienceLabSound);
@@ -203,119 +212,165 @@
                 playSound(sweetscienceLabSoundClick)
             });
 
-            formulaoneNexusLink.addEventListener("mouseover", function() {
+            racerNexusLink.addEventListener("mouseover", function() {
                 playSound(formulaoneLabSound);
             });
 
-            formulaoneNexusLink.addEventListener("click", function(event) {
+            racerNexusLink.addEventListener("click", function(event) {
                 // event.preventDefault();
                 playSound(formulaoneLabSoundClick);
             });
 
+
+            /* ISL HOME */
 
             islLink.addEventListener("mouseover", function() {
                 playSound(islSound);
                 playSound(islSoundRobot);
             });
 
-            infoStreamsLink.addEventListener("mouseover", function() {
-                infoStreamsSound.currentTime = 0;
-                infoStreamsSound.play();
+
+            /* InfoStreams */
+
+            infostreamLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
             });
 
-            scoreboardsLink.addEventListener("mouseover", function() {
-                scoreboardsSound.currentTime = 0;
-                scoreboardsSound.play();
+            infostreamLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
             });
 
-            interactiveScoreboardsLink.addEventListener("mouseover", function() {
-                interactiveScoreboardsSound.currentTime = 0;
-                interactiveScoreboardsSound.play();
+
+            givengoinfoLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
             });
+
+            givengoinfoLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
+            sweetsciencespotlightLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
+            });
+
+            sweetsciencespotlightLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
+            racecraftreconLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
+            });
+
+            racecraftreconLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
+
+
+            /* Interactive Scoreboards */ 
+
+            interactivescoreboardsLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
+            });
+
+            interactivescoreboardsLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
+            nbascoreboardLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
+            });
+
+            nbascoreboardLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
+            boxingroundbyroundLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
+            });
+
+            boxingroundbyroundLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+
+            formulaoneinteractiveLink.addEventListener("mouseover", function() {
+                playSound(formulaoneLabSound);
+            });
+
+            formulaoneinteractiveLink.addEventListener("click", function(event) {
+                // event.preventDefault();
+                playSound(formulaoneLabSoundClick);
+            });
+ 
+
         });
 
     </script>
-    
-    <div class="video-container">
 
+    <div class="video-container">
+        
         <video autoplay muted loop class="background-video">
-            <source src="isl_scoreboard_bg.webm" type="video/webm">
+            <source src="isl_white_blue_hex.webm" type="video/webm">
             Your browser does not support the video tag.
         </video>
-        
+
         <div class="nav-container">
 
             <nav class="show-nav">
+                
                 <div class="dropdown">
                     <a href="https://tonyarkaysia.github.io/isl-laboratories-main">Laboratories</a>
                     <div class="dropdown-content">
-                        <a href="https://interactivesportslabs.com/basketball">Basketball Research Lab</a>
-                        <a href="https://interactivesportslabs.com/boxing">Sweet Science Research Lab</a>
-                        <a href="https://interactivesportslabs.com/formula-one">Formula One Research Lab</a>
+                        <a href="https://tonyarkaysia.github.io/isl-basketball-rnd-lab">Basketball R&D</a>
+                        <a href="https://tonyarkaysia.github.io/isl-sweetscience-rnd-lab">Boxing R&D</a>
+                        <a href="https://tonyarkaysia.github.io/isl-racecraft-rnd-lab">Racecraft R&D</a>
                     </div>
                 </div>
+                
                 <div class="dropdown">
                     <a href="https://tonyarkaysia.github.io/isl_nexus">ISL Nexus</a>
                     <div class="dropdown-content">
                         <a href="https://tonyarkaysia.github.io/isl-basketball-nexus">Basketball Community Nexus</a>
                         <a href="https://tonyarkaysia.github.io/isl-sweetscience-nexus">Boxing Community Nexus</a>
-                        <a href="https://tonyarkaysia.github.io/isl-formulaone-nexus">Formula One Community Nexus</a>
+                        <a href="https://tonyarkaysia.github.io/isl-racer-nexus">Racing Community Nexus</a>
                     </div>
                 </div>
+
                 <div class="dropdown">
                     <a href="https://tonyarkaysia.github.io">ISL</a>
-                </div> 
+                </div>
+
                 <div class="dropdown">
-                    <a href="#">InfoStreams</a>
+                    <a href="https://tonyarkaysia.github.io/isl-infostreams">InfoStreams</a>
                     <div class="dropdown-content">
-                        <a href="https://interactivesportslabs.com/basketball/give-and-go-info">The Give & Go Infostream</a>
-                        <a href="https://interactivesportslabs.com/sweet-science-spotlight">Sweet Science Spotlight</a>
-                        <a href="https://interactivesportslabs.com/formula-one-research-lab">Racecraft Reconnaissance</a>
+                        <a href="https://tonyarkaysia.github.io/isl-give-and-go-info">The Give & Go Infostream</a>
+                        <a href="https://tonyarkaysia.github.io/isl-sweet-science-spotlight">Sweet Science Spotlight</a>
+                        <a href="https://tonyarkaysia.github.io/isl-racecraft-reconnaissance">Racecraft Reconnaissance</a>
                     </div>
-                </div>   
+                </div>
+
                 <div class="dropdown">
-                    <a href="#">Interactive Scoreboards</a>
+                    <a href="https://tonyarkaysia.github.io/isl-scoreboards">Interactive Scoreboards</a>
                     <div class="dropdown-content">
-                        <a href="https://tonyarkaysia.github.io/isl-basketball-scoreboard.html">NBA Scoreboard</a>
-                        <a href="https://interactivesportslabs.com/boxing/scoreboard">Boxing Round by Round</a>
-                        <a href="https://interactivesportslabs.com/formula-one/scoreboard">Formula One Interactive</a>
+                        <a href="https://tonyarkaysia.github.io/isl-basketball-scoreboard">NBA Scoreboard</a>
+                        <a href="https://tonyarkaysia.github.io/isl-boxing-scoreboard">Boxing Round by Round</a>
+                        <a href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard">Formula One Interactive</a>
                     </div>
                 </div>
 
             </nav>
 
-        </div>    
-
-        <div class="game-header"> 
-
-            <h1>
-                New York Knicks vs Phoenix Suns<br>
-                November 26, 2023
-            </h1>
-            
         </div>
-
-        <div class="section1game1" >
         
-            <div class="highlight-video">
+    </div>
 
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/gU9cIqgo-Is?si=NXWrQozMfk4iHqA5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-11-26_NYK_PHX.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
 
     <footer>
         
@@ -330,4 +385,3 @@
 </body>
 
 </html>
-
