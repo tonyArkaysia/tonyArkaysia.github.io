@@ -187,8 +187,7 @@
         Your browser does not support the audio element.
     </audio>
 
-
-
+    <!-- Navigation Bar Sound Functions -->
 
     <script>
 
@@ -247,13 +246,15 @@
             var boxingroundbyroundLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-boxing-scoreboard"]');    
             var formulaoneinteractiveLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard"]');
 
-            
+
+        
             /* Function playing sound, parameters: sound source, default current time to 0*/
 
             function playSound(sound, currentTime = 0) {
                 sound.currentTime = currentTime;
                 sound.play();
             }
+
 
 
             /* ISL LABS */ 
@@ -264,7 +265,7 @@
             });
 
             isllaboratoriesLink.addEventListener("click", function (event) {
-                event.preventDefault(); 
+                // event.preventDefault(); 
                 playSound(islNexusSoundClick);
             });
 
@@ -273,7 +274,7 @@
             });
 
             basketballLabLink.addEventListener("click", function (event) {
-                event.preventDefault(); 
+                // event.preventDefault(); 
                 playSound(basketballLabSoundClick);
             });
 
@@ -304,7 +305,7 @@
             });
 
             islNexusLink.addEventListener("click", function(event) {
-                event.preventDefault();
+                // event.preventDefault();
                 playSound(islNexusSoundClick)
             });
 
@@ -313,7 +314,7 @@
             });
 
             basketballNexusLink.addEventListener("click", function (event) {
-                event.preventDefault(); 
+                // event.preventDefault(); 
                 playSound(basketballNexusSoundClick);
             });
 
@@ -322,7 +323,7 @@
             });
 
             sweetscienceNexusLink.addEventListener("click", function(event) {
-                event.preventDefault();
+                // event.preventDefault();
                 playSound(sweetscienceNexusSoundClick)
             });
 
@@ -331,7 +332,7 @@
             });
 
             racerNexusLink.addEventListener("click", function(event) {
-                event.preventDefault();
+                // event.preventDefault();
                 playSound(formulaoneLabSoundClick);
             });
 
@@ -344,7 +345,7 @@
             });
 
             islLink.addEventListener("click", function(event) {
-                event.preventDefault()
+                // event.preventDefault()
                 playSound(islSoundRobot);
             });
 
@@ -439,7 +440,7 @@
     <div class="video-container">
         
         <video autoplay muted loop class="background-video">
-            <source src="isl_white_blue_hex.webm" type="video/webm">
+            <source src="resources/nexus_bgs/basketball/isl_white_blue_hex.webm" type="video/webm">
             Your browser does not support the video tag.
         </video>
 
