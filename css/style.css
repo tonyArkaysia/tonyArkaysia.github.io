@@ -37,7 +37,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background-color: rgba(0, 0, 0, 0.5);
+    /* background-color: rgba(0, 0, 0, 0.5); */
     position: fixed;
     box-shadow: 0 0.5rem 3rem rgba(24, 24, 35, 100);
     width: 100%;
@@ -113,7 +113,7 @@ nav .dropdown:hover .dropdown-content {
 }
 
 footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
