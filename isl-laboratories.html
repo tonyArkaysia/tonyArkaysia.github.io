@@ -12,7 +12,15 @@
 
     <link rel="stylesheet" href="css/stylez.css" type="text/css" charset="utf-8" />
 
+    <!-- Favicon -->
+
+    <link rel="icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
+
+
+
     <script>
+
         document.addEventListener("DOMContentLoaded", function() {
             var lastSound = localStorage.getItem('lastSound');
             if (lastSound) {
@@ -24,6 +32,7 @@
                 }
             }
         });
+        
     </script>
 
 
@@ -114,7 +123,7 @@
    </audio>
 
    <audio id="racerNexusSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
+       <source src="resources/sounds/navbar_sounds/isl_f1_labs.mp3" type="audio/mp3">
        Your browser does not support the audio element.
    </audio>
 
@@ -291,7 +300,6 @@
 
             isllaboratoriesLink.addEventListener("click", function (event) {
                 playSound(islLaboratoriesSoundClick);
-                localStorage.setItem('lastSound', 'islLaboratoriesSoundClick');
             });
 
            basketballLabLink.addEventListener("mouseover", function () {
@@ -301,7 +309,6 @@
            basketballLabLink.addEventListener("click", function (event) {
                // event.preventDefault(); 
                playSound(basketballLabSoundClick);
-               localStorage.setItem('lastSound', 'basketballLabSoundClick');
            });
 
            sweetscienceLabLink.addEventListener("mouseover", function() {
@@ -311,7 +318,6 @@
            sweetscienceLabLink.addEventListener("click", function(event) {
             //    event.preventDefault();
                playSound(sweetscienceLabSoundClick);
-               localStorage.setItem('lastSound', 'sweetscienceLabSoundClick');
 
            });
 
@@ -336,7 +342,6 @@
            islNexusLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(islNexusSoundClick);
-               localStorage.setItem('lastSound', 'islNexusSoundClick');
            });
 
            basketballNexusLink.addEventListener("mouseover", function () {
@@ -346,7 +351,6 @@
            basketballNexusLink.addEventListener("click", function (event) {
                // event.preventDefault(); 
                playSound(basketballNexusSoundClick);
-               localStorage.setItem('lastSound', 'basketballNexusSoundClick');
            });
 
            sweetscienceNexusLink.addEventListener("mouseover", function() {
@@ -356,7 +360,6 @@
            sweetscienceNexusLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(sweetscienceNexusSoundClick);
-               localStorage.setItem('lastSound', 'sweetscienceNexusSoundClick');
            });
 
            racerNexusLink.addEventListener("mouseover", function() {
@@ -380,7 +383,6 @@
            islLink.addEventListener("click", function(event) {
                // event.preventDefault()
                playSound(islSoundRobot);
-               localStorage.setItem('lastSound', 'islSoundRobot');
            });
 
 
@@ -394,7 +396,6 @@
            infostreamsLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(infostreamsSoundClick);
-               localStorage.setItem('lastSound', 'infostreamsSoundClick');
            });
 
 
@@ -405,7 +406,6 @@
            giveandgoinfoLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(giveandgoinfoSoundClick);
-               localStorage.setItem('lastSound', 'giveandgoinfoSoundClick');
            });
 
            sweetsciencespotlightLink.addEventListener("mouseover", function() {
@@ -415,7 +415,6 @@
            sweetsciencespotlightLink.addEventListener("click", function(event) {
             //    event.preventDefault();
                playSound(sweetsciencespotlightSoundClick);
-               localStorage.setItem('lastSound', 'sweetscienceLabSoundClick');
            });
 
            racecraftreconLink.addEventListener("mouseover", function() {
@@ -425,7 +424,6 @@
            racecraftreconLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(racecraftreconSoundClick);
-               localStorage.setItem('lastSound', 'racecraftreconSoundClick');
            });
 
 
@@ -439,7 +437,6 @@
            interactivescoreboardsLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(interactivescoreboardsSoundClick);
-               localStorage.setItem('lastSound', 'interactivescoreboardsSoundClick');
            });
 
            nbascoreboardLink.addEventListener("mouseover", function() {
@@ -449,7 +446,6 @@
            nbascoreboardLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(nbascoreboardSoundClick);
-               localStorage.setItem('lastSound', 'nbascoreboardSoundClick');
            });
 
            boxingroundbyroundLink.addEventListener("mouseover", function() {
@@ -459,7 +455,6 @@
            boxingroundbyroundLink.addEventListener("click", function(event) {
                // event.preventDefault();
                playSound(boxingscoreboardSoundClick);
-               localStorage.setItem('lastSound', 'boxingscoreboardSoundClick');
            });
 
            formulaoneinteractiveLink.addEventListener("mouseover", function() {
