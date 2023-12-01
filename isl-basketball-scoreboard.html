@@ -493,7 +493,7 @@
        });
 
    </script>
-    
+
     <div class="video-container">
 
         <video autoplay muted loop class="background-video">
@@ -547,16 +547,23 @@
 
             </nav>
 
-        </div>    
+        </div>
+        
+        <script>
+            var gamesData = {{ games_json | safe }};
+        </script>
+
+        <script src="script.js"></script>
 
         <div class="game-header"> 
 
-            <h1>
+            <h1 id="gameTitle">
                 Sacramento Kings vs Los Angeles Clippers<br>
                 November 29, 2023
             </h1>
             
         </div>
+
 
         <div class="section1game1" >
         
@@ -583,7 +590,7 @@
 
         <div class="game-header"> 
 
-            <h1>
+            <h1 id="gameTitle1">
                 Denver Nuggers vs Houston Rockets<br>
                 November 28, 2023
             </h1>
