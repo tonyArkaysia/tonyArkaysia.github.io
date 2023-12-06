@@ -56,8 +56,8 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #5c5ab8;
-    background: linear-gradient(to right,#090909, #5c5ab8, #ffdb58, yellow, #4CAF50);
+    background-color: #87CEEB;
+    background: linear-gradient(to right,#090909, #87CEEB, #ffdb58, yellow, #4CAF50);
     /* Use transparent text so the gradient background is visible */
     color: transparent;
     /* Apply a background clip to show the gradient only behind the text */
@@ -96,15 +96,15 @@ nav .dropdown-content a {
 }
 
 nav .dropdown-content a:hover {
-    background-color: #5c5ab880;
-    background: linear-gradient(to right,#090909, #5c5ab8, #ffdb58, yellow, #4CAF50);
+    background-color: #87CEEB80;
+    background: linear-gradient(to right,#090909, #87CEEB, #ffdb58, yellow, #4CAF50);
     /* Use transparent text so the gradient background is visible */
     color: transparent;
     /* Apply a background clip to show the gradient only behind the text */
     -webkit-background-clip: text;
     background-clip: text;    
     /* Add a glowing effect with text-shadow */
-    text-shadow: 0 0 10px #5c5ab8, 0 0 30px #ffdb58, 0 0 30px #5c5ab8;
+    text-shadow: 0 0 10px #87CEEB, 0 0 30px #ffdb58, 0 0 30px #5c5ab8;
 }
 
 nav .dropdown:hover .dropdown-content {
@@ -120,7 +120,7 @@ nav .dropdown:hover .dropdown-content {
     font-size: small;
     padding-top: 5rem;
     /* Set the background to a gradient from dark blue to yellow to grassy green */
-    background: linear-gradient(to right, #090909, #181823 , #5c5ab8, #ffdb58, #4CAF50);
+    background: linear-gradient(to right, #090909, #181823 );
     /* Use transparent text so the gradient background is visible */
     color: transparent;
     /* Apply a background clip to show the gradient only behind the text */
@@ -128,8 +128,16 @@ nav .dropdown:hover .dropdown-content {
     background-clip: text;
 }
 
+.game-time {
+    font-size: small;  /* Adjust the size as needed */
+}
 
-.section1game1 {
+.game-period {
+    font-size: medium;  /* Adjust the size as needed */
+}
+
+
+.sectiongame {
     display: flex;
     flex-direction: column;
     column-gap: 10px;
@@ -230,7 +238,7 @@ footer {
 }
 
 @media screen and (min-width: 1700px) {
-    .section1game1 {
+    .sectiongame{
         display: flex;
         flex-direction: row;
         width: 100%;
