@@ -10,14 +10,22 @@
 
     <!-- CSS file -->
 
-    <link rel="stylesheet" href="css/basketball_scoreboard_style.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="css/stylez.css" type="text/css" charset="utf-8" />
 
     <!-- Favicon -->
-    
-    <link rel="icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
-    <link rel="shortcut icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
 
+    <link rel="icon" href="../resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
+
+    <!-- D3 Library    -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/app.js"></script>
+    <!-- <script src="{{ url_for('static', filename='js/app.js') }}"></script> -->
+
+
+    <!-- Script for loading sound onto the next page -->
     <script>
+
         document.addEventListener("DOMContentLoaded", function() {
             var lastSound = localStorage.getItem('lastSound');
             if (lastSound) {
@@ -29,8 +37,8 @@
                 }
             }
         });
+        
     </script>
-    
 
 
 </head>
@@ -41,7 +49,7 @@
     <!-- Laboratory Sounds -->
 
    <audio id="islLaboratoriesSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
+       <source src="../resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
        Your browser does not support the audio element.
    </audio>
 
@@ -469,13 +477,17 @@
 
    </script>
 
-    <div class="video-container">
+    <!-- Background Video Container -->
 
+    <div class="video-container">
+        
         <video autoplay muted loop class="background-video">
             <source src="resources/isl_bgs/infostream_bgs/giveandgoinfo/giveandgoinfo.webm" type="video/webm">
             Your browser does not support the video tag.
         </video>
-        
+
+        <!-- Navigation Bar Container -->
+
         <div class="nav-container">
 
             <nav class="show-nav">
@@ -523,193 +535,26 @@
             </nav>
 
         </div>
-    
 
-    
 
+    </div>
 
-        <div class="game-header"> 
+    <!-- Standings Chart -->
+    <div id="east-conf-data" data-east-conf-standings="{{ east_conf_standings_json }}"></div>
+    <div id="west-conf-data" data-west-conf-standings="{{ west_conf_standings_json }}"></div>
 
-            <h1 id="gameTitle0022300310">
-                129.0 76ers vs pistons 111.0<br>
-                <span class="game-time">December 13, 2023 07:00PM UTC</span><br>
-                <span class="game-period">Q4.0 | </span>
-            </h1>
 
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/WH71GNsmnH8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-05-MIL-NYK.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300315">
-                126.0 pacers vs bucks 140.0<br>
-                <span class="game-time">December 13, 2023 08:00PM UTC</span><br>
-                <span class="game-period">Q4.0 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/zudTCp_R9lA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-05-MIL-NYK.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300316">
-                122.0 lakers vs spurs 119.0<br>
-                <span class="game-time">December 13, 2023 08:00PM UTC</span><br>
-                <span class="game-period">Q4.0 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/lAfbfZ4n3pI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-05-MIL-NYK.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300317">
-                116.0 nets vs suns 112.0<br>
-                <span class="game-time">December 13, 2023 09:00PM UTC</span><br>
-                <span class="game-period">Q4.0 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/OPUPrAu7veI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-05-MIL-NYK.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300318">
-                113.0 knicks vs jazz 117.0<br>
-                <span class="game-time">December 13, 2023 09:00PM UTC</span><br>
-                <span class="game-period">Q4.0 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/Hr06bMqCr8U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-05-MIL-NYK.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
+    <!-- Footer Background & Information -->
 
     <footer>
-        
+
         <video autoplay muted loop class="footer-video">
-            <source src="resources/isl_bgs/isl_tree.webm" type="video/mp4">
+            <source src="resources/isl_bgs/isl_white_footer.webm" type="video/mp4">
             Your browser does not support the video tag.
         </video>
 
     </footer>
 
-
-    <!-- Script converting to user date time -->
 
 </body>
 
