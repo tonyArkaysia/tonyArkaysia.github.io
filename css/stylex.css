@@ -1,0 +1,224 @@
+@font-face {
+    font-family: 'earth_orbiter_titleregular';
+    src: url('font_styles/earth_orbiter/earthorbitertitle-webfont.woff2') format('woff2'),
+         url('font_styles/earth_orbiter/earthorbitertitle-webfont.woff') format('woff'),
+         url('font_styles/earth_orbiter/earthorbitertitle.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.video-container {
+    position: static;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: left;
+    padding: 1rem;
+    background-color: rgb(255, 255, 255, 0);
+    position: fixed;
+    /* box-shadow: 0 0.1rem 0.3rem rgba(24, 24, 35, 100); */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+nav a {
+    color: #090909;
+    text-decoration: none;
+    padding: 10px;
+    font-family: 'earth_orbiter_titleregular';
+    font-size: 1rem;
+    position: relative;
+    /* Set the background to a gradient from dark blue to yellow to grassy green */
+
+}
+
+nav a:hover {
+    background-color: #5c5ab8;
+    background: linear-gradient(to right,#090909, #5c5ab8, #ffdb58, yellow, #4CAF50);
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+}
+
+nav .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+nav .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0);
+    min-width: 10rem;
+    box-shadow: none; 
+    /* box-shadow: 0 0.3rem 0.5rem rgba(24, 24, 35, 100); */
+    z-index: 1;
+    text-align: center;
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+nav .dropdown-content a {
+    color: #090909;
+    font-size: 1rem;
+    padding: 10px 0; 
+    text-decoration: none;
+    display: block;
+    white-space: pre;
+    
+}
+
+nav .dropdown-content a:hover {
+    background-color: #5c5ab880;
+    background: linear-gradient(to right,#090909, #5c5ab8, #ffdb58, yellow, #4CAF50);
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;    
+    /* Add a glowing effect with text-shadow */
+    /* text-shadow: 0 0 10px #5c5ab8, 0 0 30px #ffdb58, 0 0 30px #5c5ab8; */
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.login-container {
+    background: none;
+    padding: 20px;
+    max-width: 800px; /* Adjust as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    /* Additional positioning and styling */
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 1rem;
+    font-family: 'earth_orbiter_titleregular';
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-family: 'earth_orbiter_titleregular';
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'earth_orbiter_titleregular';
+}
+
+input[type="submit"]:hover {
+    background-color: #5c5ab8;
+}
+
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 0.5px 0px;
+    color: white;
+    box-sizing: border-box;
+}
+
+.footer-video {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Media Query for Small Screens Testing & Responsive Design for NavBar and Footer*/
+
+@media (min-width: 1700px) {
+    nav {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    nav a {
+        width: 100%;
+        height: 100%;
+    }
+
+    nav .dropdown-content {
+        min-width: 100%;
+        min-height: 100%;
+    }
+}
+
+@media (min-width: 1700px) {
+
+    footer {
+        padding: 5px;
+        
+    }
+
+    .footer-video {
+        height: 50px;
+    }
+
+} 

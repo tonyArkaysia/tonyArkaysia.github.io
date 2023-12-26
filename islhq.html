@@ -10,14 +10,22 @@
 
     <!-- CSS file -->
 
-    <link rel="stylesheet" href="css/basketball_scoreboard_style.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="css/stylex.css" type="text/css" charset="utf-8" />
 
     <!-- Favicon -->
-    
-    <link rel="icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
-    <link rel="shortcut icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
 
+    <link rel="icon" href="../resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
+
+    <!-- D3 Library    -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="static/js/app.js"></script>
+    <!-- <script src="{{ url_for('static', filename='js/app.js') }}"></script> -->
+
+
+    <!-- Script for loading sound onto the next page -->
     <script>
+
         document.addEventListener("DOMContentLoaded", function() {
             var lastSound = localStorage.getItem('lastSound');
             if (lastSound) {
@@ -29,8 +37,8 @@
                 }
             }
         });
+        
     </script>
-    
 
 
 </head>
@@ -41,7 +49,7 @@
     <!-- Laboratory Sounds -->
 
    <audio id="islLaboratoriesSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
+       <source src="../resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
        Your browser does not support the audio element.
    </audio>
 
@@ -469,13 +477,17 @@
 
    </script>
 
-    <div class="video-container">
+    <!-- Background Video Container -->
 
+    <div class="video-container">
+        
         <video autoplay muted loop class="background-video">
             <source src="resources/isl_bgs/infostream_bgs/giveandgoinfo/giveandgoinfo.webm" type="video/webm">
             Your browser does not support the video tag.
         </video>
-        
+
+        <!-- Navigation Bar Container -->
+
         <div class="nav-container">
 
             <nav class="show-nav">
@@ -523,194 +535,49 @@
             </nav>
 
         </div>
-    
 
-    
+        <div class="login-container"></div>
 
+            <div>
+                        <!-- Login Form -->
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        <label for="username">nama:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">miyu:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <input type="submit" value="Civilian Login">
+                </form>
 
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300401">
-                122 bucks vs knicks 129<br>
-                <span class="game-time">December 25, 2023 12:00PM UTC</span><br>
-                <span class="game-period">Q4 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/fOwn8FzmkWA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-26-Bucks-Knicks.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
+                <!-- API Key Form -->
+                <form action="/add-api-key" method="post">
+                    <div class="form-group">
+                        <label for="apikey">mahabodhi:</label>
+                        <input type="text" id="apikey" name="apikey" required>
+                    </div>
+                    <input type="submit" value="Bodhi CyberGate">
+                </form>
             </div>
 
         </div>
 
+    </div>
 
 
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300402">
-                114 warriors vs nuggets 120<br>
-                <span class="game-time">December 25, 2023 02:30PM UTC</span><br>
-                <span class="game-period">Q4 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/GiMkkbeOAVA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-26-Warriors-Nuggets.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300403">
-                126 celtics vs lakers 115<br>
-                <span class="game-time">December 25, 2023 05:00PM UTC</span><br>
-                <span class="game-period">Q4 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/tm_whThp050" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-26-Celtics-Lakers.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300404">
-                113 76ers vs heat 119<br>
-                <span class="game-time">December 25, 2023 08:00PM UTC</span><br>
-                <span class="game-period">Q4 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/f6Zu4m4sRYE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-26-76ers-Heat.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="game-header"> 
-
-            <h1 id="gameTitle0022300405">
-                128 mavericks vs suns 114<br>
-                <span class="game-time">December 25, 2023 10:30PM UTC</span><br>
-                <span class="game-period">Q4 | </span>
-            </h1>
-
-        </div>
-
-        <div class="sectiongame" >
-        
-            <div class="highlight-video">
-
-                <div class="video-wrapper">                    
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/3gBllbWY-Bc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-
-            </div>
-
-            <div class='"plotly-wrapper'>
-
-                <div id="plotly-chart">
-
-                    <iframe src="2023-12-26-Mavericks-Suns.html" width="100%" height="100%" frameborder="0"></iframe>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
+    <!-- Footer Background & Information -->
 
     <footer>
-        
+
         <video autoplay muted loop class="footer-video">
-            <source src="resources/isl_bgs/isl_tree.webm" type="video/mp4">
+            <source src="resources/isl_bgs/isl_white_footer.webm" type="video/mp4">
             Your browser does not support the video tag.
         </video>
 
     </footer>
-
-
-    <!-- Script converting to user date time -->
-
+        
 </body>
 
 </html>
