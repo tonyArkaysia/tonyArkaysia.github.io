@@ -17,6 +17,7 @@ body {
     font-size: 16px;
 }
 
+
 .video-container {
     position: static;
     height: 100vh;
@@ -24,6 +25,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 
 .background-video {
     position: fixed;
@@ -34,6 +36,7 @@ body {
     object-fit: cover;
     z-index: -1;
 }
+
 
 nav {
     display: flex;
@@ -49,6 +52,7 @@ nav {
     z-index: 1;
 }
 
+
 nav a {
     color: #090909;
     text-decoration: none;
@@ -59,6 +63,7 @@ nav a {
     /* Set the background to a gradient from dark blue to yellow to grassy green */
 
 }
+
 
 nav a:hover {
     background-color: #5c5ab8;
@@ -71,10 +76,12 @@ nav a:hover {
     
 }
 
+
 nav .dropdown {
     position: relative;
     display: inline-block;
 }
+
 
 nav .dropdown-content {
     display: none;
@@ -87,9 +94,11 @@ nav .dropdown-content {
     text-align: center;
 }
 
+
 nav .dropdown:hover .dropdown-content {
     display: block;
 }
+
 
 nav .dropdown-content a {
     color: #090909;
@@ -100,6 +109,7 @@ nav .dropdown-content a {
     white-space: pre;
     
 }
+
 
 nav .dropdown-content a:hover {
     background-color: #5c5ab880;
@@ -112,6 +122,7 @@ nav .dropdown-content a:hover {
     /* Add a glowing effect with text-shadow */
     /* text-shadow: 0 0 10px #5c5ab8, 0 0 30px #ffdb58, 0 0 30px #5c5ab8; */
 }
+
 
 nav .dropdown:hover .dropdown-content {
     display: block;
