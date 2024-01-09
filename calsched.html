@@ -10,7 +10,7 @@
 
     <!-- CSS file -->
 
-    <link rel="stylesheet" href="css/stylez.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="css/stylex.css" type="text/css" charset="utf-8" />
 
     <!-- Favicon -->
 
@@ -536,13 +536,11 @@
 
         </div>
 
+        <div id="calendar"></div>
 
+        
     </div>
-
-    <!-- Standings Chart -->
-    <div id="east-conf-data" data-east-conf-standings="{{ east_conf_standings_json }}"></div>
-    <div id="west-conf-data" data-west-conf-standings="{{ west_conf_standings_json }}"></div>
-
+    
 
     <!-- Footer Background & Information -->
 
@@ -556,24 +554,32 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Your JavaScript code here
-            const eastConfDataJsonString = document.getElementById('east-conf-data').getAttribute('data-east-conf-standings');
-            const westConfDataJsonString = document.getElementById('west-conf-data').getAttribute('data-west-conf-standings');
+        
+        function createCalendar() {
+            var calendar = document.getElementById('calendar');
+            var month = new Date().getMonth(); // Current month
+            var year = new Date().getFullYear(); // Current year
+            var daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Create basic grid structure
+            var html = '<table>';
+            for (var day = 1; day <= daysInMonth; day++) {
+                // Add your logic to create rows and cells
+                html += '<td>' + day + '</td>';
+                // Break line every 7 days to form a week
+                if (day % 7 === 0) html += '</tr><tr>';
+            }
+            html += '</table>';
             
-            // Parse the JSON strings to JavaScript objects
-            const eastConfData = JSON.parse(eastConfDataJsonString);
-            const westConfData = JSON.parse(westConfDataJsonString);
-            
-            // Now, you can work with the 'eastConfData' and 'westConfData' objects in JavaScript
-            console.log('Eastern Conference Standings:', eastConfData);
-            console.log('Western Conference Standings:', westConfData);
-        });
-        </script>
+            calendar.innerHTML = html;
+        }
+
+        window.onload = function() {
+            createCalendar();
+        };
+
+    </script>
         
 </body>
 
 </html>
-
-
-
