@@ -1,22 +1,49 @@
-import pandas as pd
-from nba_api.stats.endpoints import scoreboard
-from flask import Flask, render_template
-
-standings = scoreboard.Scoreboard(game_date='2023-12-13')
-
-east_conf_standings_data = standings.get_data_frames()[4]
-west_conf_standings_data = standings.get_data_frames()[5]
-
-east_conf_standings_json = east_conf_standings_data.to_json(orient='records')
-west_conf_standings_json = west_conf_standings_data.to_json(orient='records')
+from flask import Flask, request, session, redirect, url_for
+from flask_session import Session
 
 app = Flask(__name__)
+app.secret_key = 'Gin632Jo'  # Set a secret key for security purposes
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
-@app.route('/')
-def index():
-    # Pass the JSON data to the HTML template
-    return render_template('isl-nba-main.html', east_conf_standings_json=east_conf_standings_json, west_conf_standings_json=west_conf_standings_json)
+def is_logged_in():
+    return session.get('logged_in')
+
+@app.route('/isl-profile', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == "Prachya" and password == "californialove":  # Replace with real validation
+            session['logged_in'] = True
+            return redirect(url_for('protected_page'))
+        else:
+            return "Login Failed"
+    return "Login Page"  # Render a login template here
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return "Logged out"
+
+@app.route('/isl-profile')
+def protected_page():
+    if not is_logged_in():
+        return redirect(url_for('login'))
+    return "This is a protected page."
+
+@app.route('/add-api-key', methods=['POST'])
+def add_api_key():
+    apikey = request.form['apikey']
+    if apikey == "w-f_JoRyjxgqJKasc6glAQNFqFJIUGE7HwF_Lo0fQEA":  # Replace with real validation
+        return "API Key is valid"
+    else:
+        return "Invalid API Key", 403
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+
+
+
+
 
