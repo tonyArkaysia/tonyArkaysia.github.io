@@ -19,17 +19,21 @@ def login():
         password = request.form['password']
         if username == "prachya" and password == "californialove":  # Replace with real validation
             session['logged_in'] = True
-            return redirect(url_for('protected_page'))
+            # Redirect to an external URL
+            return redirect('https://tonyarkaysia.github.io/isl-profile')
         else:
             return "Login Failed"
-    return "Login Page"  # Render a login template here
+    return redirect('https://tonyarkaysia.github.io/hq') # Render a login template here
+
 
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
-    return "Logged out"
+    # Redirect to a specific page after logging out
+    return redirect('https://tonyarkaysia.github.io/hq')
 
-@app.route('https://tonyarkaysia.github.io/isl-profile')
+
+@app.route('/protected')
 def protected_page():
     if not is_logged_in():
         return redirect(url_for('login'))
