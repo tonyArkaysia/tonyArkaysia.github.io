@@ -1,7 +1,10 @@
 from flask import Flask, request, session, redirect, url_for
 from flask_session import Session
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app) 
+
 app.secret_key = 'Gin632Jo'  # Set a secret key for security purposes
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
