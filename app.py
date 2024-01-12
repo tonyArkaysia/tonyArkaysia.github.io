@@ -9,7 +9,7 @@ Session(app)
 def is_logged_in():
     return session.get('logged_in')
 
-@app.route('https://tonyarkaysia.github.io//login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -26,7 +26,7 @@ def logout():
     session.pop('logged_in', None)
     return "Logged out"
 
-@app.route('https://tonyarkaysia.github.io//isl-profile')
+@app.route('https://tonyarkaysia.github.io/isl-profile')
 def protected_page():
     if not is_logged_in():
         return redirect(url_for('login'))
