@@ -23,14 +23,14 @@ def login():
             return redirect('https://tonyarkaysia.github.io/isl-profile')
         else:
             return "Login Failed"
-    return redirect('https://tonyarkaysia.github.io/hq') # Render a login template here
+    return redirect('https://tonyarkaysia.github.io/isl-retry-login) # Render a login template here
 
 
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     # Redirect to a specific page after logging out
-    return redirect('https://tonyarkaysia.github.io/hq')
+    return redirect('https://tonyarkaysia.github.io/islhq')
 
 
 @app.route('/protected')
