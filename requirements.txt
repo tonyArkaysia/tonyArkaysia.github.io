@@ -1,7 +1,8 @@
 requests
 flask
 flask_session
-flask_cors 
+flask_cors
+gunicorn
 
 # Uncomment these lines to use a Postgres database. Both are needed, since in production
 # (which uses Linux) we want to install from source, so that security updates from the
