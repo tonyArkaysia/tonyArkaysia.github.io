@@ -9,7 +9,7 @@ Session(app)
 def is_logged_in():
     return session.get('logged_in')
 
-@app.route('https://tonyarkaysia.github.io/isl-signup', methods=['GET', 'POST'])
+@app.route('https://tonyarkaysia.github.io//login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
