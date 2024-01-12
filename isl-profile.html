@@ -10,7 +10,7 @@
 
     <!-- CSS file -->
 
-    <link rel="stylesheet" href="css/stylex.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
 
     <!-- Favicon -->
 
@@ -482,7 +482,7 @@
     <div class="video-container">
         
         <video autoplay muted loop class="background-video">
-            <source src="resources/isl_bgs/infostream_bgs/giveandgoinfo/giveandgoinfo.webm" type="video/webm">
+            <source src="resources/isl_bgs/isl_tree.webm" type="video/webm">
             Your browser does not support the video tag.
         </video>
 
@@ -536,11 +536,11 @@
 
         </div>
 
-        <div id="calendar"></div>
-
         
+
     </div>
-    
+
+
     <!-- Footer Background & Information -->
 
     <footer>
@@ -551,33 +551,6 @@
         </video>
 
     </footer>
-
-    <script>
-        
-        function createCalendar() {
-            var calendar = document.getElementById('calendar');
-            var month = new Date().getMonth(); // Current month
-            var year = new Date().getFullYear(); // Current year
-            var daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            // Create basic grid structure
-            var html = '<table>';
-            for (var day = 1; day <= daysInMonth; day++) {
-                // Add your logic to create rows and cells
-                html += '<td>' + day + '</td>';
-                // Break line every 7 days to form a week
-                if (day % 7 === 0) html += '</tr><tr>';
-            }
-            html += '</table>';
-            
-            calendar.innerHTML = html;
-        }
-
-        window.onload = function() {
-            createCalendar();
-        };
-
-    </script>
         
 </body>
 
