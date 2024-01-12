@@ -9,12 +9,12 @@ Session(app)
 def is_logged_in():
     return session.get('logged_in')
 
-@app.route('/isl-profile', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == "Prachya" and password == "californialove":  # Replace with real validation
+        if username == "prachya" and password == "californialove":  # Replace with real validation
             session['logged_in'] = True
             return redirect(url_for('protected_page'))
         else:
