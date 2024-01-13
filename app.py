@@ -1,9 +1,6 @@
-from flask import Flask, request, session, redirect, url_for
-from flask_session import Session
-
+from flask import Flask, request, redirect
 
 app = Flask(__name__)
- 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -13,8 +10,6 @@ def login():
         password = request.form['password']
 
         if username == "prachya" and password == "californialove":
-            # If the provided username and password match, set a session variable to indicate a successful login
-            session['logged_in'] = True
             # Redirect to an external URL (in this case, a personal profile page)
             return redirect('https://tonyarkaysia.github.io/isl-profile')
         else:
