@@ -20,6 +20,16 @@ def login():
     # It redirects to a retry login page since no login attempt has been made yet
     return redirect('https://tonyarkaysia.github.io/isl-retry-login') # Render a login template here
 
+@app.route('/add-api-key', methods=['POST'])
+def add_api_key():
+
+    apikey = request.form['apikey']
+
+    if apikey == "w-f_JoRyjxgqJKasc6glAQNFqFJIUGE7HwF_Lo0fQEA":  # Replace with real validation
+        return redirect('https://tonyarkaysia.github.io/isl-cybergateway')
+    else:
+        return redirect('https://tonyarkaysia.github.io/isl-retry-login')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
