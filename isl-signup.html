@@ -552,17 +552,60 @@
             
                             <label for="email">Email:</label>
                             <input type="email" id="email" name="email" maxlength="100" required>
-            
-                            <label for="age">Age:</label>
-                            <input type="text" id="age" name="age" pattern="\d*" maxlength="3" min="6" max="122" required>
-            
-                            <label for="gender">Gender:</label>
-                            <select id="gender" name="gender">
+        
+                            <label for="dob">Date of Birth:</label>
+                            <input type="date" id="dob" name="dob" required>
+
+                            <script>
+                                // Get the current date
+                                var currentDate = new Date();
+
+                                // Calculate the minimum date (124 years ago from the current date)
+                                currentDate.setFullYear(currentDate.getFullYear() - 4);
+
+                                // Calculate the maximum date (4 years ago from the current date)
+                                var maxDate = new Date(currentDate);
+                                maxDate.setFullYear(maxDate.getFullYear() - 120);
+
+                                // Convert the dates to the format yyyy-mm-dd
+                                var minYear = currentDate.getFullYear();
+                                var minMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                                var minDay = currentDate.getDate().toString().padStart(2, '0');
+
+                                var maxYear = maxDate.getFullYear();
+                                var maxMonth = (maxDate.getMonth() + 1).toString().padStart(2, '0');
+                                var maxDay = maxDate.getDate().toString().padStart(2, '0');
+
+                                var minDate = minYear + '-' + minMonth + '-' + minDay;
+                                var maxDateStr = maxYear + '-' + maxMonth + '-' + maxDay;
+
+                                // Set the minimum and maximum dates for the input field (yyyy-mm-dd format)
+                                document.getElementById('dob').setAttribute('min', maxDateStr);
+                                document.getElementById('dob').setAttribute('max', minDate);
+                            </script>
+
+
+                            <label for="gender_identity">Gender Identity:</label>
+                            <select id="gender_identity" name="gender_identity">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
-                                <option value="other">Other</option>
+                                <option value="non_binary">Non-Binary</option>
+                                <option value="transgender">Transgender</option>
+                                <option value="prefer_not_to_say">Prefer Not to Say</option>
+                                <option value="self_declare">Self Declare</option>
                             </select>
+
+                            <input type="text" id="other_gender" name="other_gender" placeholder="Please specify" style="display:none;">
+                            
+                            <script>
+                            document.getElementById('gender_identity').addEventListener('change', function () {
+                                var style = this.value == 'self_declare' ? 'block' : 'none';
+                                document.getElementById('other_gender').style.display = style;
+                            });
+                            </script>                            
+                            
                     </div>
+
 
                     <div class="form-section">
                             <!-- Account Information Section -->
