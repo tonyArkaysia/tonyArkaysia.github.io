@@ -10,7 +10,7 @@
 
     <!-- CSS file -->
 
-    <link rel="stylesheet" href="css/stylez.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="css/basketball_scoreboard_style1.css" type="text/css" charset="utf-8" />
 
     <!-- Favicon -->
 
@@ -20,6 +20,7 @@
     <!-- D3 Library    -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="static/js/app.js"></script>
+    
     <!-- <script src="{{ url_for('static', filename='js/app.js') }}"></script> -->
 
 
@@ -37,6 +38,8 @@
                 }
             }
         });
+
+        
         
     </script>
 
@@ -44,7 +47,7 @@
 </head>
 
 
-<body>
+<div>
 
     <!-- Laboratory Sounds -->
 
@@ -542,6 +545,40 @@
 
         </div>
 
+        <div class="game-header"> 
+
+            <h1 id="gameTitle0022300600">
+                143 knicks vs celtics 87<br>
+                <span class="game-time">January 24, 2024 03:30PM UTC</span><br>
+                <span class="game-period">Q4.0 | </span>
+            </h1>
+
+        </div>
+
+        <div class="sectiongame" >
+        
+            <div class="highlight-video">
+
+                <div class="video-wrapper">                    
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/4oiDQe8VfTU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+
+            </div>
+
+
+            <div class='"nbagamebox-wrapper'>
+
+                <div id="nbagamebox">
+
+                    <iframe src="d3_testing.html" width="100%" height="100%" frameborder="0"></iframe>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
 
     </div>
 
@@ -556,7 +593,8 @@
 
     </footer>
 
-        
+    
+
 </body>
 
 </html>
