@@ -1,62 +1,66 @@
 <!DOCTYPE html>
-<div id="container"></div>
+<div id="myChart"></div>
 <script type="module">
-
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-
-// Declare the chart dimensions and margins.
-const width = 640;
-const height = 400;
-const marginTop = 20;
-const marginRight = 20;
-const marginBottom = 30;
-const marginLeft = 40;
-
-// Declare the x (horizontal position) scale.
-const x = d3.scaleUtc()
-    .domain([new Date("2023-01-01"), new Date("2024-01-01")])
-    .range([marginLeft, width - marginRight]);
-
-// Declare the y (vertical position) scale.
-const y = d3.scaleLinear()
-    .domain([0, 100])
-    .range([height - marginBottom, marginTop]);
-
-// Create the SVG container.
-const svg = d3.create("svg")
-    .attr("width", width)
-    .attr("height", height);
-
-// Add the x-axis.
-svg.append("g")
-    .attr("transform", `translate(0,${height - marginBottom})`)
-    .call(d3.axisBottom(x));
-
-// Add the y-axis.
-svg.append("g")
-    .attr("transform", `translate(${marginLeft},0)`)
-    .call(d3.axisLeft(y));
-
-// Append the SVG element.
-container.append(svg.node());
-
-// Generate random data for each month
-const data = d3.timeMonths(new Date("2023-01-01"), new Date("2024-01-01")).map(date => ({
-  date,
-  value: Math.random() * 100 // Random value between 0 and 100
-}));
-
-// Draw circles for each data point with animation
-svg.selectAll("circle")
-    .data(data)
-    .enter().append("circle")
-    .attr("cx", d => x(d.date))
-    .attr("cy", height - marginBottom) // Start from the bottom of the chart
-    .attr("r", 5) // Initial radius
-    .attr("fill", "steelblue")
-    .transition() // Apply the transition
-    .duration(1000) // Duration of the animation in milliseconds
-    .attr("cy", d => y(d.value)) // Move the circle to its final y position
-    .attr("r", 5); // Final radius
-
+  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+  
+  // Declare the chart dimensions and margins.
+  const width = 640;
+  const height = 400;
+  const marginTop = 20;
+  const marginRight = 20;
+  const marginBottom = 30;
+  const marginLeft = 40;
+  
+  // Declare the x (horizontal position) scale.
+  const x = d3.scaleUtc()
+      .domain([new Date("2023-01-01"), new Date("2024-01-01")])
+      .range([marginLeft, width - marginRight]);
+  
+  // Declare the y (vertical position) scale.
+  const y = d3.scaleLinear()
+      .domain([0, 100])
+      .range([height - marginBottom, marginTop]);
+  
+  // Create the SVG container.
+  const svg = d3.create("svg")
+      .attr("width", width)
+      .attr("height", height);
+  
+  // Add the x-axis.
+  svg.append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x));
+  
+  // Add the y-axis.
+  svg.append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y));
+  
+  // Append the SVG element to the specified div id.
+  document.getElementById("myChart").appendChild(svg.node());
+  
+  // Generate random data for each month
+  const data = d3.timeMonths(new Date("2023-01-01"), new Date("2024-01-01")).map(date => ({
+    date,
+    value: Math.random() * 100 // Random value between 0 and 100
+  }));
+  
+  // Draw images for each data point with animation
+  svg.selectAll("image")
+      .data(data)
+      .enter().append("image")
+      .attr("x", d => x(d.date) - 10) // Adjust the x position for centering
+      .attr("y", height - marginBottom) // Start from the bottom of the chart
+      .attr("width", 20) // Set the initial width of the image
+      .attr("height", 20) // Set the initial height of the image
+      .attr("xlink:href", "/resources/data_charts/transparent_bball.png") // Replace with the path to your image
+      .transition() // Apply the transition
+      .duration(1000) // Duration of the animation in milliseconds
+      .attr("y", d => y(d.value) - 10) // Move the image to its final y position
+      .attr("width", 20) // Final width of the image
+      .attr("height", 20); // Final height of the image
 </script>
+
+
+
+

@@ -1,0 +1,280 @@
+@font-face {
+    font-family: 'earth_orbiter_titleregular';
+    src: url('font_styles/earth_orbiter/earthorbitertitle-webfont.woff2') format('woff2'),
+         url('font_styles/earth_orbiter/earthorbitertitle-webfont.woff') format('woff'),
+         url('font_styles/earth_orbiter/earthorbitertitle.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.video-container {
+    position: static;
+    height: 100vh;
+}
+
+.background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    box-shadow: 0 0.5rem 3rem rgba(24, 24, 35, 100);
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    font-family: 'earth_orbiter_titleregular';
+    font-size: 1rem;
+    position: relative;
+    /* Set the background to a gradient from dark blue to yellow to grassy green */
+
+}
+
+nav a:hover {
+    background-color: #87CEEB;
+    background: linear-gradient(to right,#090909, #87CEEB, #ffdb58, yellow, #4CAF50);
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+}
+
+nav .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+nav .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #18182380;
+    min-width: 10rem; 
+    box-shadow: 0 0.5rem 3rem rgba(24, 24, 35, 100);
+    z-index: 1;
+    text-align: center;
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+nav .dropdown-content a {
+    color: white;
+    font-size: 1rem;
+    padding: 10px 0; 
+    text-decoration: none;
+    display: block;
+    white-space: pre;
+    
+}
+
+nav .dropdown-content a:hover {
+    background-color: #87CEEB80;
+    background: linear-gradient(to right,#090909, #87CEEB, #ffdb58, yellow, #4CAF50);
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;    
+    /* Add a glowing effect with text-shadow */
+    text-shadow: 0 0 10px #87CEEB, 0 0 30px #ffdb58, 0 0 30px #5c5ab8;
+}
+
+nav .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.game-header {
+    display: flex;
+    align-items: top;
+    justify-content: center;
+    text-align: center;
+    font-family: 'earth_orbiter_titleregular';
+    font-size: small;
+    padding-top: 5rem;
+    /* Set the background to a gradient from dark blue to yellow to grassy green */
+    background: linear-gradient(to right, #090909, #181823 );
+    /* Use transparent text so the gradient background is visible */
+    color: transparent;
+    /* Apply a background clip to show the gradient only behind the text */
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.game-time {
+    font-size: small;  /* Adjust the size as needed */
+}
+
+.game-period {
+    font-size: medium;  /* Adjust the size as needed */
+}
+
+
+.sectiongame {
+    display: flex;
+    flex-direction: column;
+    column-gap: 10px;
+    width: 100vh;
+}
+
+.highlight-video {
+    width: 100%;
+    height: 50vh;
+}
+
+.video-wrapper {
+    display: inline-flex;
+    width: 50vw;
+    height: 50vh;
+    padding: 0.15rem;
+    
+}
+
+.video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.nbagamebox-wrapper {
+    flex-direction: row-reverse;
+    padding: 0.15rem;
+    display: inline-flex;
+    width: 50vw;
+    height: 50vh;
+}
+
+#nbagamebox {
+    width: 50vw; /* Adjust the width as needed */
+    height: 50vh; /* Adjust the height as needed */
+}
+
+
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 0.5px 0px;
+    color: white;
+    box-sizing: border-box;
+}
+
+.footer-video {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+}
+
+
+
+/* Media Query for Small Screens Testing & Responsive Design for NavBar and Footer*/
+
+@media (min-width: 390px) {
+    nav {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    nav a {
+        width: 100%;
+        height: 100%;
+    }
+
+    nav .dropdown-content {
+        min-width: 100%;
+        min-height: 100%;
+    }
+}
+
+@media (min-width: 412px) {
+
+    footer {
+        padding: 5px;
+        
+    }
+
+    .footer-video {
+        height: 50px;
+    }
+
+} 
+
+/* Header Mobile */
+
+@media screen and (min-width: 1700px) {
+    .game-header {
+        display: flex;
+        align-items: top;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .sectiongame{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+}
+
+
+/* Highlight Video Mobile */
+
+@media screen and (min-width: 1700px) {
+    .highlight-video {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+}
+
+/* Plotly Stat Mobile */
+
+@media screen and (min-width: 1700px) {
+    .plotly-wrapper {
+        display: flex;
+        flex-direction: row;
+        width: 100vh;
+        height: 50vh;
+    }
+}
+
+
+@media screen and (min-width: 1700px) {
+    #plotly-chart {
+        display: flex;
+        flex-direction: row;
+        width: 100vh;
+        height: 50vh;
+    }
+}
+
