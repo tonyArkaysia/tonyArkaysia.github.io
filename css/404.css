@@ -162,36 +162,26 @@ nav .dropdown:hover .dropdown-content {
     height: 100%;
 }
 
-.tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 8px;
-    background: lightsteelblue;
-    border: 1px solid grey;
-    border-radius: 8px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-family: 'earth_orbiter_titleregular';
-    font-size: 1rem;
-  }
-
-.nbagamebox-wrapper {
-    flex-direction: row-reverse;
-    padding: 0.15rem;
-    display: inline-flex;
-    width: 50vw;
-    height: 50vh;
+.top-image-container {
+    position: fixed; /* Use fixed to keep it in place even on scrolling */
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;   /* Full viewport width */
+    height: 100vh;  /* Full viewport height */
+    overflow: hidden; /* Hide any overflow */
 }
 
-#nbagamebox {
-    width: 50vw; /* Adjust the width as needed */
-    height: 50vh; /* Adjust the height as needed */
+.top-image-container img {
+    width: 100%;  /* Scale width to container */
+    height: 100%; /* Scale height to container */
+    object-fit: cover; /* Cover the container, maintaining aspect ratio */
 }
+
 
 
 footer {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -199,6 +189,7 @@ footer {
     padding: 0.5px 0px;
     color: white;
     box-sizing: border-box;
+    z-index: -1;
 }
 
 .footer-video {
