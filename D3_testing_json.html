@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NBA Stats Chart</title>
+  <link rel="stylesheet" type="text/css" href="/css/basketball_scoreboard_style_d3.css">
+  <style>
+    /* Add your CSS styling here */
+  </style>
+</head>
+<body>
+  <div id="myChart"></div>
+  <script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+    // Load data from the JSON file
+    d3.json("box_score_away.json").then(function(data) {
+      // Extract player names and points
+      const playersData = data.map(player => ({
+        name: player.name,
+        points: player.statistics.points,
+        assists: player.statistics.assists
+      }));
+
+      // Chart dimensions and margins
+      const width = 800;
+      const height = 400;
+      const margins = { top: 20, right: 20, bottom: 88, left: 40 }; // Increased bottom margin
+
+      // Scales
+      const x = d3.scaleBand()
+          .domain(playersData.map(d => d.name))
+          .range([margins.left, width - margins.right])
+          .padding(0.1);
+
+      const y = d3.scaleLinear()
+          .domain([0, d3.max(playersData, d => d.points)])
+          .range([height - margins.bottom, margins.top]);
+
+      // Create SVG container
+      const svg = d3.select("#myChart").append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+      // Create bars for the data
+      svg.selectAll(".bar")
+          .data(playersData)
+          .enter().append("rect")
+          .attr("class", "bar")
+          .attr("x", d => x(d.name))
+          .attr("y", d => y(d.points))
+          .attr("width", x.bandwidth())
+          .attr("height", d => height - margins.bottom - y(d.points));
+
+      svg.selectAll(".assist")
+          .data(playersData)
+          .enter().append("rect") // Create bars for assists
+          .attr("class", "assist") // Set the class for styling
+          .attr("x", d => x(d.name)) // X-coordinate based on player name
+          .attr("y", d => y(d.assists)) // Y-coordinate based on assists
+          .attr("width", x.bandwidth()) // Width of the bars
+          .attr("height", d => height - margins.bottom - y(d.assists)); // Height based on assists
+
+
+      // Add x-axis
+      svg.append("g")
+          .attr("transform", `translate(0,${height - margins.bottom})`)
+          .call(d3.axisBottom(x))
+          .selectAll("text")
+          .style("text-anchor", "end")
+          .attr("dx", "-.8em")
+          .attr("dy", ".15em")
+          .attr("transform", "rotate(-65)");
+
+      // Add y-axis
+      svg.append("g")
+          .attr("transform", `translate(${margins.left},0)`)
+          .call(d3.axisLeft(y));
+
+      // Append the SVG element to the specified div id
+      document.getElementById("myChart").appendChild(svg.node());
+    });
+  </script>
+</body>
+</html>
