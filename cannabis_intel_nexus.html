@@ -129,10 +129,10 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch("updated_strains.json")  // Fetch JSON data
+            fetch("cleaned_strains.json")  // Fetch JSON data
             .then(response => response.json())
             .then(data => {
-                const strainContainer = document.getElementById("strain-list");
+                const strainContainer = document.getElementById("strainList");
                 strainContainer.innerHTML = ""; // Clear existing content
 
                 data.forEach(strain => {
