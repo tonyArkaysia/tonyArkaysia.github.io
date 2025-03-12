@@ -17,7 +17,7 @@
             padding: 0;
             background-color: #090909;
             color: white;
-            transition: margin-left 0.39s;
+            transition: margin-left 0.3s;
         }
 
         /* Sidebar */
@@ -42,7 +42,7 @@
             left: -250px;
             top: 0;
             padding-top: 50px;
-            transition: left 0.39s;
+            transition: left 0.3s;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -56,7 +56,7 @@
             padding: 15px;
             display: block;
             border-radius: 5px;
-            transition: background 0.39s;
+            transition: background 0.3s;
         }
 
         .sidebar a:hover {
@@ -67,7 +67,7 @@
         .content {
             margin-left: 20px;
             padding: 20px;
-            transition: margin-left 0.39s ease-in-out; /* Smooth transition when sidebar opens */
+            transition: margin-left 0.3s ease-in-out;
         }
 
         /* Adjust when sidebar is open */
@@ -79,12 +79,45 @@
             margin-left: 270px;
         }
 
-        /* Table Styles */
+        /* Search and Buttons */
+        .search-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .search-bar {
+            padding: 10px;
+            width: 60%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .button-container {
+            margin-top: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .filter-btn:hover {
+            background-color: #333;
+        }
+
+        /* Table */
         .table-container {
             width: 100%;
             overflow-x: auto;
             margin-top: 20px;
-            transition: margin-left 0.39s ease-in-out; /* Make the table shift */
+            display: none; /* Hide initially */
         }
 
         table {
@@ -112,87 +145,110 @@
             background: #333;
         }
 
-        /* Ensure the table shifts when sidebar opens */
-        .content.shrink .table-container {
-            margin-left: 270px;
+        .phase-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
         }
 
+        .phase-zone {
+            width: 30%;
+            min-height: 150px;
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px dashed #666;
+            text-align: center;
+        }
+
+        .drop-area {
+            min-height: 50px;
+            padding: 10px;
+        }
+
+        .effects-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .effect-icon {
+            padding: 10px;
+            background: #333;
+            color: white;
+            border-radius: 5px;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .effect-icon:active {
+            cursor: grabbing;
+        }
+
+        .dropped-effect {
+            background: #444;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+        }
 
     </style>
-
-    
 </head>
+
 <body>
     <!-- Menu Button -->
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
     <!-- Sidebar Navigation -->
     <div class="sidebar" id="sidebar">
-        <a href="#">🤖 CannaDex</a>
-        <a href="#">📊 Cannabis Database</a>
-        <a href="#">💬 The Nexus</a>
+        <a href="#">🤖 The Curator (AI-Powered High Guide)</a>
+        <a href="#">📊 CannaDex (Cannabis Database)</a>
+        <a href="#">💬 The Nexus (Community)</a>
         <a href="#">🌿 The Culture</a>
         <a href="#">🧬 Cannabis Science</a>
     </div>
 
-    <!-- Main Content Section -->
+    <!-- Main Content -->
     <div class="content" id="content">
         <h1>Cannabis Intel Nexus</h1>
         <p>Your AI-powered cannabis strain curator.</p>
-        <input type="text" class="search-bar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
-        <h4>Buttons here</h4>
 
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Strain</th>
-                    <th>Brand</th>
-                    <th>Category</th>
-                    <th>Product Type</th>
-                    <th>THC (%)</th>
-                    <th>CBD (%)</th>
-                    <th>Total Terpenes (%)</th>
-                    <th>Effects</th>
-                </tr>
-            </thead>
-            <tbody id="strainTableBody">
-                <!-- Strain data will be inserted here -->
-            </tbody>
-        </table>
+        <div class="search-container">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
+            <div class="button-container">
+                <button class="filter-btn" onclick="filterByEffect('euphoric')">🌟 Euphoric</button>
+                <button class="filter-btn" onclick="filterByEffect('relaxing')">😌 Relaxing</button>
+                <button class="filter-btn" onclick="filterByEffect('energetic')">⚡ Energetic</button>
+            </div>
+        </div>
+
+        <!-- Table (Initially Hidden) -->
+        <div class="table-container" id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Strain</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Product Type</th>
+                        <th>THC (%)</th>
+                        <th>CBD (%)</th>
+                        <th>Total Terpenes (%)</th>
+                        <th>Effects</th>
+                    </tr>
+                </thead>
+                <tbody id="strainTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
-
-    <script>
-        function toggleMenu() {
-            let sidebar = document.getElementById('sidebar');
-            let content = document.getElementById('content');
-            
-            if (sidebar.classList.contains("open")) {
-                sidebar.classList.remove("open");
-                content.classList.remove("shrink");
-            } else {
-                sidebar.classList.add("open");
-                content.classList.add("shrink");
-            }
-        }
-
-        function filterStrains() {
-            let input = document.querySelector('.search-bar').value.toLowerCase();
-            let items = document.querySelectorAll('.strain-item');
-            
-            items.forEach(item => {
-                let text = item.textContent.toLowerCase();
-                item.style.display = text.includes(input) ? 'block' : 'none';
-            });
-        }
-        
-
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const strainTable = document.getElementById("strainTableBody");
-            const searchInput = document.querySelector(".search-bar");
-    
+            const searchInput = document.getElementById("searchBar");
+            const tableContainer = document.getElementById("tableContainer");
+
             // Fetch JSON Data
             fetch("cleaned_strains.json")
             .then(response => {
@@ -201,10 +257,9 @@
             })
             .then(data => {
                 window.strainData = data; // Store data globally for filtering
-                updateTable(data);
             })
             .catch(error => console.error("Error fetching strains:", error));
-    
+
             // Function to Update Table
             function updateTable(strains) {
                 strainTable.innerHTML = "";
@@ -222,8 +277,10 @@
                     `;
                     strainTable.appendChild(row);
                 });
+
+                tableContainer.style.display = strains.length > 0 ? "block" : "none"; // Show table if results found
             }
-    
+
             // Search Functionality
             searchInput.addEventListener("keyup", function() {
                 const query = searchInput.value.toLowerCase();
@@ -234,31 +291,163 @@
                 );
                 updateTable(filteredStrains);
             });
+
+            // Effect Filter Function
+            window.filterByEffect = function(effect) {
+                const filteredStrains = window.strainData.filter(strain => 
+                    strain["Effects"] && strain["Effects"].tokens.includes(effect)
+                );
+                updateTable(filteredStrains);
+            };
         });
-    
+
         // Sidebar Toggle
         function toggleMenu() {
-            let sidebar = document.getElementById('sidebar');
-            let content = document.getElementById('content');
-            let tableContainer = document.querySelector('.table-container');
-    
-            if (sidebar.classList.contains("open")) {
-                sidebar.classList.remove("open");
-                content.classList.remove("shrink");
-                tableContainer.classList.remove("shrink"); // Make table shift back
-            } else {
-                sidebar.classList.add("open");
-                content.classList.add("shrink");
-                tableContainer.classList.add("shrink"); // Make table shift when sidebar opens
-            }
+            document.getElementById('sidebar').classList.toggle("open");
+            document.getElementById('content').classList.toggle("shrink");
         }
     </script>
-    
-    
-    
-    
-      
 
-    
+    <div class="phase-selection">
+        <h3>Select Your Desired High Phases:</h3>
+        <button class="phase-btn" onclick="togglePhase('phase1')">🌅 Phase 1 - Initial High</button>
+        <button class="phase-btn" onclick="togglePhase('phase2')">🌊 Phase 2 - Balanced Mid-High</button>
+        <button class="phase-btn" onclick="togglePhase('phase3')">🌙 Phase 3 - Deep Relaxation</button>
+    </div>
+
+    <div class="intensity-slider">
+        <h3>Intensity Level:</h3>
+        <input type="range" id="intensity" min="0.5" max="5" step="0.5" value="3">
+        <label id="intensity-label">Balanced</label>
+    </div>
+
+    <button class="generate-btn" onclick="generateCustomHigh()">🎯 Generate My Perfect High</button>
+
+    <script>
+        let selectedPhases = [];
+
+        function togglePhase(phase) {
+            const index = selectedPhases.indexOf(phase);
+            if (index === -1) {
+                selectedPhases.push(phase);
+            } else {
+                selectedPhases.splice(index, 1);
+            }
+        }
+
+        function generateCustomHigh() {
+            let intensity = document.getElementById("intensity").value;
+            let results = window.strainData.filter(strain => 
+                selectedPhases.some(phase => strain["Effects"].categorized_effects[phase])
+            );
+
+            updateTable(results); // Call function to update the strain table dynamically
+        }
+    </script>
+
+<div class="phase-container">
+    <div class="phase-zone" id="phase1" ondrop="drop(event, 'phase1')" ondragover="allowDrop(event)">
+        <h3>🌅 Phase 1 - Initial High</h3>
+        <div class="drop-area"></div>
+    </div>
+    <div class="phase-zone" id="phase2" ondrop="drop(event, 'phase2')" ondragover="allowDrop(event)">
+        <h3>🌊 Phase 2 - Balanced Mid-High</h3>
+        <div class="drop-area"></div>
+    </div>
+    <div class="phase-zone" id="phase3" ondrop="drop(event, 'phase3')" ondragover="allowDrop(event)">
+        <h3>🌙 Phase 3 - Deep Relaxation</h3>
+        <div class="drop-area"></div>
+    </div>
+</div>
+
+<div class="effects-container">
+    <h3>🎯 Drag Your Desired Effects:</h3>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="euphoria">🎭 Euphoria</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="creativity">💡 Creativity</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="energy">⚡ Energy</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="focus">🎨 Focus</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="body-high">🛋️ Body High</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="sleep-aid">🌙 Sleep Aid</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="pain-relief">🩹 Pain Relief</div>
+    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="anxiety">😌 Anxiety Reduction</div>
+</div>
+
+<button class="generate-btn" onclick="generateCustomHigh()">🔎 Find My Perfect High</button>
+
+<script>
+    let selectedEffects = { phase1: [], phase2: [], phase3: [] };
+    const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event, phase) {
+        event.preventDefault();
+        let effect = event.dataTransfer.getData("text");
+        let dropArea = document.getElementById(phase).querySelector(".drop-area");
+
+        // 🛑 Rule: Check if effect is already used in another phase
+        for (let key in selectedEffects) {
+            if (selectedEffects[key].includes(effect)) {
+                alert("❌ You already selected this effect in another phase!");
+                return;
+            }
+        }
+
+        // 🛑 Rule: Check if the max limit is reached
+        if (selectedEffects[phase].length >= maxEffects[phase]) {
+            alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
+            return;
+        }
+
+        // ✅ Add effect if it passes validation
+        selectedEffects[phase].push(effect);
+        let effectElement = document.createElement("div");
+        effectElement.className = "dropped-effect";
+        effectElement.textContent = document.getElementById(effect).textContent;
+        
+        // 🗑️ Add remove button to undo mistakes
+        let removeBtn = document.createElement("span");
+        removeBtn.textContent = " ❌";
+        removeBtn.style.cursor = "pointer";
+        removeBtn.onclick = function () {
+            selectedEffects[phase] = selectedEffects[phase].filter(e => e !== effect);
+            dropArea.removeChild(effectElement);
+        };
+
+        effectElement.appendChild(removeBtn);
+        dropArea.appendChild(effectElement);
+    }
+
+    function generateCustomHigh() {
+        if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
+            alert("❌ Please select at least one effect before generating!");
+            return;
+        }
+
+        let results = window.strainData.filter(strain =>
+            Object.keys(selectedEffects).some(phase =>
+                selectedEffects[phase].some(effect =>
+                    strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
+                )
+            )
+        );
+
+        updateTable(results);
+    }
+
+    function resetSelection() {
+        selectedEffects = { phase1: [], phase2: [], phase3: [] };
+        document.querySelectorAll(".drop-area").forEach(area => area.innerHTML = "");
+    }
+
+</script>
+
+
 </body>
 </html>
