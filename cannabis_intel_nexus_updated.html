@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Cannabis Intel Nexus</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #090909;
+            color: white;
+            transition: margin-left 0.3s;
+        }
+
+        .menu-btn {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+            z-index: 1000;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #1a1a1a;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            padding-top: 50px;
+            transition: left 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #333;
+        }
+
+        .content {
+            margin-left: 20px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .content.shrink {
+            margin-left: 270px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Menu Button -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <a href="#">🤖 CannaDex</a>
+        <a href="#">📊 Cannabis Database</a>
+        <a href="#">💬 The Nexus</a>
+        <a href="#">🌿 The Culture</a>
+        <a href="#">🧬 Cannabis Science</a>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="content" id="content">
+        <h1>Cannabis Intel Nexus</h1>
+        <p>Your AI-powered cannabis strain curator.</p>
+        <input type="text" class="search-bar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
+        <div class="strain-list" id="strainList">
+            <div class="strain-item">Apple Jacks - THC: 25.97% | Limonene: 0.86%</div>
+            <div class="strain-item">Maraschino Runtz - THC: 35.55% | Myrcene: 0.33%</div>
+            <div class="strain-item">Durban Poison - THC: 27.37% | Pinene: 0.02%</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            
+            if (sidebar.classList.contains("open")) {
+                sidebar.classList.remove("open");
+                content.classList.remove("shrink");
+            } else {
+                sidebar.classList.add("open");
+                content.classList.add("shrink");
+            }
+        }
+
+        function filterStrains() {
+            let input = document.querySelector('.search-bar').value.toLowerCase();
+            let items = document.querySelectorAll('.strain-item');
+            
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                item.style.display = text.includes(input) ? 'block' : 'none';
+            });
+        }
+        
+
+    </script>  
+
+    
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch("strains.json")  // Fetch JSON data
+        .then(response => response.json())
+        .then(data => {
+            const strainContainer = document.getElementById("strain-list");
+            strainContainer.innerHTML = ""; // Clear existing content
+
+            data.forEach(strain => {
+                let strainCard = document.createElement("div");
+                strainCard.className = "strain-card";
+                strainCard.innerHTML = `
+                    <h2>${strain["Strain"]}</h2>
+                    <p><strong>Brand:</strong> ${strain["Brand"]}</p>
+                    <p><strong>Category:</strong> ${strain["Category"]}</p>
+                    <p><strong>Type:</strong> ${strain["Product Type"]}</p>
+                    <p><strong>THC:</strong> ${strain["Total THC (%)"]}% | 
+                       <strong>CBD:</strong> ${strain["Total CBD (%)"]}%</p>
+                    <p><strong>Total Terpenes:</strong> ${strain["Terpenes Total (%)"]}%</p>
+                    <p><strong>Effects:</strong> ${strain["Effects"]}</p>
+                `;
+                strainContainer.appendChild(strainCard);
+            });
+        })
+        .catch(error => console.error("Error fetching strains:", error));
+    });
+</script>
+</body>
+
+</html>

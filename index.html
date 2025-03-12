@@ -1,550 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Interactive Sports Labs</title>
+    <title>Cannabis Intel Nexus</title>
 
     <!-- CSS file -->
-
     <link rel="stylesheet" href="css/isl_home_design.css" type="text/css" charset="utf-8" />
 
     <!-- Favicon -->
-
-    <link rel="icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
-    <link rel="shortcut icon" href="resources/logo/ISL_LOGO_V2.png" type="image/x-icon">
-
-
-
-    <script>
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var lastSound = localStorage.getItem('lastSound');
-            if (lastSound) {
-                var sound = document.getElementById(lastSound);
-                if (sound) {
-                    sound.currentTime = 0;
-                    sound.play();
-                    localStorage.removeItem('lastSound'); // Clear the stored sound after playing
-                }
-            }
-        });
-        
-    </script>
-
-
+    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
 </head>
-
-
 <body>
-
-    <!-- Laboratory Sounds -->
-
-   <audio id="islLaboratoriesSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="islLaboratoriesSoundClick" preload="auto">
-        <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-
-   <audio id="basketballLabSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="basketballLabSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_swish.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="sweetscienceLabSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="sweetscienceLabSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_punch_lab.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="racecraftLabSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="racecraftLabSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_f1_v12_a.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   
-   <!-- Nexus Sounds -->
-
-
-   <audio id="islNexusSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="islNexusSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="basketballNexusSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="basketballNexusSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_swish.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="sweetscienceNexusSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="sweetscienceNexusSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_punch_lab.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="racerNexusSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="racerNexusSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_f1_labs.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <!-- ISL HOME Sounds -->
-
-   <audio id="islSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_data_reveal.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="islSoundRobot" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_little_robot.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-   
-   <!-- InfoStream Sounds -->
-
-   <audio id="infostreamsSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="infostreamsSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="giveandgoinfoSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="giveandgoinfoSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="sweetsciencespotlightSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="sweetsciencespotlightSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="racecraftreconSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="racecraftreconSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <!-- Interactive Scoreboard Sounds-->
-
-   <audio id="interactivescoreboardsSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="interactivescoreboardsSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="nbascoreboardSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="nbascoreboardSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="boxingscoreboardSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="boxingscoreboardSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="formulaonescoreboardSound" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <audio id="formulaonescoreboardSoundClick" preload="auto">
-       <source src="resources/sounds/navbar_sounds/isl_f1_lightsout.mp3" type="audio/mp3">
-       Your browser does not support the audio element.
-   </audio>
-
-   <!-- Navigation Bar Sound Functions -->
-
-   <script>
-
-       document.addEventListener("DOMContentLoaded", function() {
-
-           // var islLaboratoriesSound = document.getElementById("islLaboratoriesSound");
-           // var basketballLabSound = document.getElementById("basketballLabSound");
-           // var sweetscienceLabSound = document.getElementById("sweetscienceLabSound");
-           // var racecraftLabSound = document.getElementById("racecraftLabSound");
-
-           // var islNexusSound = document.getElementById("islNexusSound");
-           // var basketballNexusSound = document.getElementById("basketballNexusSound");
-           // var racerNexusSound = document.getElementById("racerNexusSound");
-
-           // var islSound = document.getElementById("islSound");
-
-           // var infostreamsSound = document.getElementById("infostreamsSound");
-           // var giveandgoinfoSound = document.getElementById("giveandgoinfoSound");
-           // var sweetsciencespotlightSound = document.getElementById("sweetsciencespotlightSound");
-           // var racecraftreconSound = document.getElementById("racecraftreconSound");
-
-           // var interactivescoreboardsSound = document.getElementById("interactivescoreboardsSound");
-           // var nbascoreboardSound = document.getElementById("nbascoreboardSound");
-           // var boxingscoreboardSound = document.getElementById("boxingscoreboardSound");
-           // var formulaonescoreboardSound = document.getElementById("formulaonescoreboardSound");
-
-           // var parentLinks = document.querySelectorAll('.dropdown > a');
-
-           // parentLinks.forEach(function(link) {
-           //     link.addEventListener("mouseover", function() {
-           //         dingSound.currentTime = 0;
-           //         dingSound.play();
-           //     });
-           // });
-
-
-           var isllaboratoriesLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-laboratories"]');
-           var basketballLabLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-rnd-lab"]');
-           var sweetscienceLabLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweetscience-rnd-lab"]');
-           var racecraftLabLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-racecraft-rnd-lab"]');
-           
-           var islNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-nexus"]');
-           var basketballNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-nexus"]');
-           var sweetscienceNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweetscience-nexus"]');
-           var racerNexusLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-racer-nexus"]');
-           
-           var islLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io"]');
-           
-           var infostreamsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-infostreams"]');
-           var giveandgoinfoLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-give-and-go-info"]');
-           var sweetsciencespotlightLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-sweet-science-spotlight"]');    
-           var racecraftreconLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-racecraft-reconnaissance"]');
-
-           var interactivescoreboardsLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-scoreboards"]');
-           var nbascoreboardLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-basketball-scoreboard"]');
-           var boxingroundbyroundLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-boxing-scoreboard"]');    
-           var formulaoneinteractiveLink = document.querySelector('.dropdown a[href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard"]');
-
-
-       
-           /* Function playing sound, parameters: sound source, default current time to 0*/
-
-           function playSound(sound, currentTime = 0) {
-               sound.currentTime = currentTime;
-               sound.play();
-           }
-
-
-           /* ISL LABS */ 
-
-           isllaboratoriesLink.addEventListener("mouseover", function() {
-                playSound(islLaboratoriesSound);
-            });
-
-            isllaboratoriesLink.addEventListener("click", function (event) {
-                playSound(islLaboratoriesSoundClick);
-            });
-
-           basketballLabLink.addEventListener("mouseover", function () {
-               playSound(basketballLabSound);
-           });
-
-           basketballLabLink.addEventListener("click", function (event) {
-               // event.preventDefault(); 
-               playSound(basketballLabSoundClick);
-           });
-
-           sweetscienceLabLink.addEventListener("mouseover", function() {
-               playSound(sweetscienceLabSound);
-           });
-
-           sweetscienceLabLink.addEventListener("click", function(event) {
-            //    event.preventDefault();
-               playSound(sweetscienceLabSoundClick);
-
-           });
-
-           racecraftLabLink.addEventListener("mouseover", function() {
-               playSound(racecraftLabSound);
-           });
-
-           racecraftLabLink.addEventListener("click", function(event) {
-            //    event.preventDefault();
-               playSound(racecraftLabSoundClick);
-               localStorage.setItem('lastSound', 'racecraftLabSoundClick');
-           });
-
-
-
-           /* ISL NEXUS */
-
-           islNexusLink.addEventListener("mouseover", function() {
-               playSound(islNexusSound);
-           });
-
-           islNexusLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(islNexusSoundClick);
-           });
-
-           basketballNexusLink.addEventListener("mouseover", function () {
-               playSound(basketballNexusSound);
-           });
-
-           basketballNexusLink.addEventListener("click", function (event) {
-               // event.preventDefault(); 
-               playSound(basketballNexusSoundClick);
-           });
-
-           sweetscienceNexusLink.addEventListener("mouseover", function() {
-               playSound(sweetscienceNexusSound);
-           });
-
-           sweetscienceNexusLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(sweetscienceNexusSoundClick);
-           });
-
-           racerNexusLink.addEventListener("mouseover", function() {
-               playSound(racerNexusSound);
-           });
-
-           racerNexusLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(racerNexusSoundClick);
-               localStorage.setItem('lastSound', 'racerNexusSoundClick');
-           });
-
-
-
-           /* ISL HOME */
-
-           islLink.addEventListener("mouseover", function() {
-               playSound(islSound);
-           });
-
-           islLink.addEventListener("click", function(event) {
-               // event.preventDefault()
-               playSound(islSoundRobot);
-           });
-
-
-
-           /* InfoStreams */
-
-           infostreamsLink.addEventListener("mouseover", function() {
-               playSound(infostreamsSound);
-           });
-
-           infostreamsLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(infostreamsSoundClick);
-           });
-
-
-           giveandgoinfoLink.addEventListener("mouseover", function() {
-               playSound(giveandgoinfoSound);
-           });
-
-           giveandgoinfoLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(giveandgoinfoSoundClick);
-           });
-
-           sweetsciencespotlightLink.addEventListener("mouseover", function() {
-               playSound(sweetsciencespotlightSound);
-           });
-
-           sweetsciencespotlightLink.addEventListener("click", function(event) {
-            //    event.preventDefault();
-               playSound(sweetsciencespotlightSoundClick);
-           });
-
-           racecraftreconLink.addEventListener("mouseover", function() {
-               playSound(racecraftreconSound);
-           });
-
-           racecraftreconLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(racecraftreconSoundClick);
-           });
-
-
-
-           /* Interactive Scoreboards */ 
-
-           interactivescoreboardsLink.addEventListener("mouseover", function() {
-               playSound(interactivescoreboardsSound);
-           });
-
-           interactivescoreboardsLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(interactivescoreboardsSoundClick);
-           });
-
-           nbascoreboardLink.addEventListener("mouseover", function() {
-               playSound(nbascoreboardSound);
-           });
-
-           nbascoreboardLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(nbascoreboardSoundClick);
-           });
-
-           boxingroundbyroundLink.addEventListener("mouseover", function() {
-               playSound(boxingscoreboardSound);
-           });
-
-           boxingroundbyroundLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(boxingscoreboardSoundClick);
-           });
-
-           formulaoneinteractiveLink.addEventListener("mouseover", function() {
-               playSound(formulaonescoreboardSound);
-           });
-
-           formulaoneinteractiveLink.addEventListener("click", function(event) {
-               // event.preventDefault();
-               playSound(formulaonescoreboardSoundClick);
-               localStorage.setItem('lastSound', 'formulaonescoreboardSoundClick');
-           });
-
-
-       });
-
-   </script>
-
     <!-- Background Video Container -->
-
     <div class="video-container">
-        
         <video autoplay muted loop class="background-video">
-            <source src="resources/isl_bgs/isl_main.webm" type="video/webm">
+            <source src="resources/bgs/cin_main.webm" type="video/webm">
             Your browser does not support the video tag.
         </video>
 
         <!-- Navigation Bar Container -->
-
         <div class="nav-container">
-            
             <nav class="show-nav">
-
                 <div class="dropdown">
-                    <a href="https://tonyarkaysia.github.io/isl-laboratories">Laboratories</a>
+                    <a href="#">Strains</a>
                     <div class="dropdown-content">
-                        <a href="https://tonyarkaysia.github.io/isl-basketball-rnd-lab">Basketball R&D</a>
-                        <a href="https://tonyarkaysia.github.io/isl-sweetscience-rnd-lab">Boxing R&D</a>
-                        <a href="https://tonyarkaysia.github.io/isl-racecraft-rnd-lab">Racecraft R&D</a>
+                        <a href="#">Sativa</a>
+                        <a href="#">Indica</a>
+                        <a href="#">Hybrid</a>
                     </div>
                 </div>  
-
                 <div class="dropdown">
-                    <a href="https://tonyarkaysia.github.io/isl-nexus">ISL Nexus</a>
+                    <a href="#">Lab Results</a>
                     <div class="dropdown-content">
-                        <a href="https://tonyarkaysia.github.io/isl-basketball-nexus">Basketball Community Nexus</a>
-                        <a href="https://tonyarkaysia.github.io/isl-sweetscience-nexus">Boxing Community Nexus</a>
-                        <a href="https://tonyarkaysia.github.io/isl-racer-nexus">Racing Community Nexus</a>
+                        <a href="#">THC & CBD Levels</a>
+                        <a href="#">Terpene Profiles</a>
+                        <a href="#">Full COAs</a>
                     </div>
                 </div>
-
                 <div class="dropdown">
-                    <a href="https://tonyarkaysia.github.io">ISL</a>
-                </div>
-
-                <div class="dropdown">
-                    <a href="https://tonyarkaysia.github.io/isl-infostreams">InfoStreams</a>
+                    <a href="#">Find Strains</a>
                     <div class="dropdown-content">
-                        <a href="https://tonyarkaysia.github.io/isl-give-and-go-info">The Give & Go Infostream</a>
-                        <a href="https://tonyarkaysia.github.io/isl-sweet-science-spotlight">Sweet Science Spotlight</a>
-                        <a href="https://tonyarkaysia.github.io/isl-racecraft-reconnaissance">Racecraft Reconnaissance</a>
+                        <a href="#">By Effect</a>
+                        <a href="#">By Flavor</a>
+                        <a href="#">By Potency</a>
                     </div>
                 </div>
-
                 <div class="dropdown">
-                    <a href="https://tonyarkaysia.github.io/isl-scoreboards">Interactive Scoreboards</a>
-                    <div class="dropdown-content">
-                        <a href="https://tonyarkaysia.github.io/isl-basketball-scoreboard">NBA Scoreboard</a>
-                        <a href="https://tonyarkaysia.github.io/isl-boxing-scoreboard">Boxing Round by Round</a>
-                        <a href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard">Formula One Interactive</a>
-                    </div>
+                    <a href="#">Dispensaries</a>
                 </div>
-
+                <div class="dropdown">
+                    <a href="#">About</a>
+                </div>
             </nav>
-
         </div>
+    </div>
 
-
+    <!-- Search & Strain List Section -->
+    <div class="container">
+        <h1>Cannabis Intel Nexus</h1>
+        <p>Your source for real, lab-tested cannabis data.</p>
+        <input type="text" class="search-bar" placeholder="Search strains..." onkeyup="filterStrains()">
+        <div class="strain-list" id="strainList">
+            <div class="strain-item">Apple Jacks - THC: 25.97% | Limonene: 0.86%</div>
+            <div class="strain-item">Maraschino Runtz - THC: 35.55% | Myrcene: 0.33%</div>
+            <div class="strain-item">Durban Poison - THC: 27.37% | Pinene: 0.02%</div>
+        </div>
+    </div>
 
     <!-- Footer Background & Information -->
-
     <footer>
-
         <video autoplay muted loop class="footer-video">
-            <source src="resources/isl_bgs/isl_white_footer.webm" type="video/mp4">
+            <source src="resources/bgs/cin_footer.webm" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-
     </footer>
 
-
+    <script>
+        function filterStrains() {
+            let input = document.querySelector('.search-bar').value.toLowerCase();
+            let items = document.querySelectorAll('.strain-item');
+            
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                item.style.display = text.includes(input) ? 'block' : 'none';
+            });
+        }
+    </script>
 </body>
-
 </html>
