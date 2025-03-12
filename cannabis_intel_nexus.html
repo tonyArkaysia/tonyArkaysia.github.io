@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
 
     <style>
+        /* General Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -19,6 +20,7 @@
             transition: margin-left 0.3s;
         }
 
+        /* Sidebar */
         .menu-btn {
             position: fixed;
             left: 10px;
@@ -61,12 +63,14 @@
             background-color: #333;
         }
 
+        /* Main Content */
         .content {
             margin-left: 20px;
             padding: 20px;
-            transition: margin-left 0.3s;
+            transition: margin-left 0.3s ease-in-out; /* Smooth transition when sidebar opens */
         }
 
+        /* Adjust when sidebar is open */
         .sidebar.open {
             left: 0;
         }
@@ -74,7 +78,49 @@
         .content.shrink {
             margin-left: 270px;
         }
+
+        /* Table Styles */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+            transition: margin-left 0.3s ease-in-out; /* Make the table shift */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1a1a;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background: #090909;
+        }
+
+        tr:nth-child(even) {
+            background: #222;
+        }
+
+        tr:hover {
+            background: #333;
+        }
+
+        /* Ensure the table shifts when sidebar opens */
+        .content.shrink .table-container {
+            margin-left: 270px;
+        }
+
+
     </style>
+
+    
 </head>
 <body>
     <!-- Menu Button -->
@@ -94,12 +140,27 @@
         <h1>Cannabis Intel Nexus</h1>
         <p>Your AI-powered cannabis strain curator.</p>
         <input type="text" class="search-bar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
-        <div class="strain-list" id="strainList">
-            <div class="strain-item">Apple Jacks - THC: 25.97% | Limonene: 0.86%</div>
-            <div class="strain-item">Maraschino Runtz - THC: 35.55% | Myrcene: 0.33%</div>
-            <div class="strain-item">Durban Poison - THC: 27.37% | Pinene: 0.02%</div>
-        </div>
+        <h4>Buttons here</h4>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Strain</th>
+                    <th>Brand</th>
+                    <th>Category</th>
+                    <th>Product Type</th>
+                    <th>THC (%)</th>
+                    <th>CBD (%)</th>
+                    <th>Total Terpenes (%)</th>
+                    <th>Effects</th>
+                </tr>
+            </thead>
+            <tbody id="strainTableBody">
+                <!-- Strain data will be inserted here -->
+            </tbody>
+        </table>
     </div>
+
 
     <script>
         function toggleMenu() {
@@ -129,31 +190,74 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch("cleaned_strains.json")  // Fetch JSON data
-            .then(response => response.json())
+            const strainTable = document.getElementById("strainTableBody");
+            const searchInput = document.querySelector(".search-bar");
+    
+            // Fetch JSON Data
+            fetch("cleaned_strains.json")
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load JSON");
+                return response.json();
+            })
             .then(data => {
-                const strainContainer = document.getElementById("strainList");
-                strainContainer.innerHTML = ""; // Clear existing content
-
-                data.forEach(strain => {
-                    let strainCard = document.createElement("div");
-                    strainCard.className = "strain-card";
-                    strainCard.innerHTML = `
-                        <h2>${strain["Strain"]}</h2>
-                        <p><strong>Brand:</strong> ${strain["Brand"]}</p>
-                        <p><strong>Category:</strong> ${strain["Category"]}</p>
-                        <p><strong>Type:</strong> ${strain["Product Type"]}</p>
-                        <p><strong>THC:</strong> ${strain["Total THC (%)"]}% | 
-                            <strong>CBD:</strong> ${strain["Total CBD (%)"]}%</p>
-                        <p><strong>Total Terpenes:</strong> ${strain["Terpenes Total (%)"]}%</p>
-                        <p><strong>Effects:</strong> ${strain["Effects"]}</p>
-                    `;
-                    strainContainer.appendChild(strainCard);
-                });
+                window.strainData = data; // Store data globally for filtering
+                updateTable(data);
             })
             .catch(error => console.error("Error fetching strains:", error));
+    
+            // Function to Update Table
+            function updateTable(strains) {
+                strainTable.innerHTML = "";
+                strains.forEach(strain => {
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${strain["Strain"]}</td>
+                        <td>${strain["Brand"]}</td>
+                        <td>${strain["Category"]}</td>
+                        <td>${strain["Product Type"]}</td>
+                        <td>${strain["Total THC (%)"]}%</td>
+                        <td>${strain["Total CBD (%)"]}%</td>
+                        <td>${strain["Terpenes Total (%)"] ? strain["Terpenes Total (%)"] + "%" : "N/A"}</td>
+                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
+                    `;
+                    strainTable.appendChild(row);
+                });
+            }
+    
+            // Search Functionality
+            searchInput.addEventListener("keyup", function() {
+                const query = searchInput.value.toLowerCase();
+                const filteredStrains = window.strainData.filter(strain => 
+                    strain["Strain"].toLowerCase().includes(query) ||
+                    strain["Brand"].toLowerCase().includes(query) ||
+                    strain["Category"].toLowerCase().includes(query)
+                );
+                updateTable(filteredStrains);
+            });
         });
-    </script>  
+    
+        // Sidebar Toggle
+        function toggleMenu() {
+            let sidebar = document.getElementById('sidebar');
+            let content = document.getElementById('content');
+            let tableContainer = document.querySelector('.table-container');
+    
+            if (sidebar.classList.contains("open")) {
+                sidebar.classList.remove("open");
+                content.classList.remove("shrink");
+                tableContainer.classList.remove("shrink"); // Make table shift back
+            } else {
+                sidebar.classList.add("open");
+                content.classList.add("shrink");
+                tableContainer.classList.add("shrink"); // Make table shift when sidebar opens
+            }
+        }
+    </script>
+    
+    
+    
+    
+      
 
     
 </body>
