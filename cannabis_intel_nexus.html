@@ -13,10 +13,11 @@
         /* General Styles */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #090909;
             color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
             transition: margin-left 0.3s;
         }
 
@@ -145,58 +146,75 @@
             background: #333;
         }
 
-        .phase-container {
+        .effects-container {
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
-        .phase-zone {
-            width: 30%;
-            min-height: 150px;
+        .effect {
             background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px dashed #666;
-            text-align: center;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: grab;
+            display: inline-block;
+            transition: 0.2s;
+        }
+
+        .effect:hover {
+            background: #333;
+        }
+
+        .phase-box {
+            width: 30%;
+            min-height: 100px;
+            border: 2px dashed white;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            vertical-align: top;
         }
 
         .drop-area {
             min-height: 50px;
             padding: 10px;
+            background: #222;
+            border-radius: 5px;
         }
 
-        .effects-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+        .intensity-slider {
+            width: 100%;
+            margin-top: 10px;
         }
 
-        .effect-icon {
-            padding: 10px;
-            background: #333;
+        button {
+            background: #28a745;
             color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
             border-radius: 5px;
-            cursor: grab;
-            user-select: none;
+            transition: 0.2s;
         }
 
-        .effect-icon:active {
-            cursor: grabbing;
-        }
-
-        .dropped-effect {
-            background: #444;
-            padding: 5px;
-            margin: 5px;
-            border-radius: 5px;
+        button:hover {
+            background: #218838;
         }
 
     </style>
 </head>
 
 <body>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <h1>Cannabis Intel Nexus</h1>
+        <h5>Your AI-powered cannabis strain curator.</h5>
+        
     <!-- Menu Button -->
     <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
@@ -208,11 +226,125 @@
         <a href="#">🌿 The Culture</a>
         <a href="#">🧬 Cannabis Science</a>
     </div>
+    <br><br><br>
+    <h1>Cannabis Curator</h1>
 
-    <!-- Main Content -->
+    <!-- Effects to Drag -->
+    <div class="effects-container">
+        <div class="effect" id="euphoria" draggable="true" ondragstart="drag(event)">🎭Euphoria</div>
+        <div class="effect" id="relaxation" draggable="true" ondragstart="drag(event)">🛋️Relaxation</div>
+        <div class="effect" id="focus" draggable="true" ondragstart="drag(event)">💡Focus</div>
+        <div class="effect" id="creativity" draggable="true" ondragstart="drag(event)">🎨Creativity</div>
+        <div class="effect" id="energy" draggable="true" ondragstart="drag(event)">⚡Energy</div>
+        <div class="effect" id="sedation" draggable="true" ondragstart="drag(event)">🌙Sedation</div>
+        <div class="effect" id="pain-relief" draggable="true" ondragstart="drag(event)">🩹Pain Relief</div>
+        <div class="effect" id="stress-relief" draggable="true" ondragstart="drag(event)">😌Stress Relief</div>
+    </div>
+
+    <!-- Phase Selection with Intensity Sliders -->
+    <div class="phase-box" ondrop="drop(event, 'phase1')" ondragover="allowDrop(event)">
+        <h3>Phase 1 - Initial High</h3>
+        <div class="drop-area" id="phase1"></div>
+        <label>Intensity:</label>
+        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity1">
+    </div>
+
+    <div class="phase-box" ondrop="drop(event, 'phase2')" ondragover="allowDrop(event)">
+        <h3>Phase 2 - Mid High</h3>
+        <div class="drop-area" id="phase2"></div>
+        <label>Intensity:</label>
+        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity2">
+    </div>
+
+    <div class="phase-box" ondrop="drop(event, 'phase3')" ondragover="allowDrop(event)">
+        <h3>Phase 3 - Late Effects</h3>
+        <div class="drop-area" id="phase3"></div>
+        <label>Intensity:</label>
+        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity3">
+    </div>
+
+    <!-- Buttons -->
+    <button onclick="generateCustomHigh()">Find My Strain</button>
+    <button onclick="resetSelection()">Reset</button>
+
+    <script>
+        let selectedEffects = { phase1: [], phase2: [], phase3: [] };
+        const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event, phase) {
+            event.preventDefault();
+            let effect = event.dataTransfer.getData("text");
+            let dropArea = document.getElementById(phase);
+
+            // 🛑 Prevent duplicate effects across phases
+            for (let key in selectedEffects) {
+                if (selectedEffects[key].includes(effect)) {
+                    alert("❌ You already selected this effect in another phase!");
+                    return;
+                }
+            }
+
+            // 🛑 Enforce effect limit per phase
+            if (selectedEffects[phase].length >= maxEffects[phase]) {
+                alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
+                return;
+            }
+
+            // ✅ Add effect to phase
+            selectedEffects[phase].push(effect);
+            let effectElement = document.createElement("div");
+            effectElement.className = "dropped-effect";
+            effectElement.textContent = document.getElementById(effect).textContent;
+            
+            // 🗑️ Add remove button
+            let removeBtn = document.createElement("span");
+            removeBtn.textContent = " ❌";
+            removeBtn.style.cursor = "pointer";
+            removeBtn.onclick = function () {
+                selectedEffects[phase] = selectedEffects[phase].filter(e => e !== effect);
+                dropArea.removeChild(effectElement);
+            };
+
+            effectElement.appendChild(removeBtn);
+            dropArea.appendChild(effectElement);
+        }
+
+        function generateCustomHigh() {
+            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
+                alert("❌ Please select at least one effect before generating!");
+                return;
+            }
+
+            let results = window.strainData.filter(strain =>
+                Object.keys(selectedEffects).some(phase =>
+                    selectedEffects[phase].some(effect =>
+                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
+                    )
+                )
+            );
+
+            alert(`🔥 Found ${results.length} matching strains! (We will display results in next update)`);
+        }
+
+        function resetSelection() {
+            selectedEffects = { phase1: [], phase2: [], phase3: [] };
+            document.querySelectorAll(".drop-area").forEach(area => area.innerHTML = "");
+        }
+    </script>
+    
+
+<!-- Main Content -->
     <div class="content" id="content">
-        <h1>Cannabis Intel Nexus</h1>
-        <p>Your AI-powered cannabis strain curator.</p>
+        <h1>CannaDex</h1>
+        <p>The Cannabis Database.</p>
 
         <div class="search-container">
             <input type="text" class="search-bar" id="searchBar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
@@ -307,147 +439,6 @@
             document.getElementById('content').classList.toggle("shrink");
         }
     </script>
-
-    <div class="phase-selection">
-        <h3>Select Your Desired High Phases:</h3>
-        <button class="phase-btn" onclick="togglePhase('phase1')">🌅 Phase 1 - Initial High</button>
-        <button class="phase-btn" onclick="togglePhase('phase2')">🌊 Phase 2 - Balanced Mid-High</button>
-        <button class="phase-btn" onclick="togglePhase('phase3')">🌙 Phase 3 - Deep Relaxation</button>
-    </div>
-
-    <div class="intensity-slider">
-        <h3>Intensity Level:</h3>
-        <input type="range" id="intensity" min="0.5" max="5" step="0.5" value="3">
-        <label id="intensity-label">Balanced</label>
-    </div>
-
-    <button class="generate-btn" onclick="generateCustomHigh()">🎯 Generate My Perfect High</button>
-
-    <script>
-        let selectedPhases = [];
-
-        function togglePhase(phase) {
-            const index = selectedPhases.indexOf(phase);
-            if (index === -1) {
-                selectedPhases.push(phase);
-            } else {
-                selectedPhases.splice(index, 1);
-            }
-        }
-
-        function generateCustomHigh() {
-            let intensity = document.getElementById("intensity").value;
-            let results = window.strainData.filter(strain => 
-                selectedPhases.some(phase => strain["Effects"].categorized_effects[phase])
-            );
-
-            updateTable(results); // Call function to update the strain table dynamically
-        }
-    </script>
-
-<div class="phase-container">
-    <div class="phase-zone" id="phase1" ondrop="drop(event, 'phase1')" ondragover="allowDrop(event)">
-        <h3>🌅 Phase 1 - Initial High</h3>
-        <div class="drop-area"></div>
-    </div>
-    <div class="phase-zone" id="phase2" ondrop="drop(event, 'phase2')" ondragover="allowDrop(event)">
-        <h3>🌊 Phase 2 - Balanced Mid-High</h3>
-        <div class="drop-area"></div>
-    </div>
-    <div class="phase-zone" id="phase3" ondrop="drop(event, 'phase3')" ondragover="allowDrop(event)">
-        <h3>🌙 Phase 3 - Deep Relaxation</h3>
-        <div class="drop-area"></div>
-    </div>
-</div>
-
-<div class="effects-container">
-    <h3>🎯 Drag Your Desired Effects:</h3>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="euphoria">🎭 Euphoria</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="creativity">💡 Creativity</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="energy">⚡ Energy</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="focus">🎨 Focus</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="body-high">🛋️ Body High</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="sleep-aid">🌙 Sleep Aid</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="pain-relief">🩹 Pain Relief</div>
-    <div class="effect-icon" draggable="true" ondragstart="drag(event)" id="anxiety">😌 Anxiety Reduction</div>
-</div>
-
-<button class="generate-btn" onclick="generateCustomHigh()">🔎 Find My Perfect High</button>
-
-<script>
-    let selectedEffects = { phase1: [], phase2: [], phase3: [] };
-    const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
-
-    function allowDrop(event) {
-        event.preventDefault();
-    }
-
-    function drag(event) {
-        event.dataTransfer.setData("text", event.target.id);
-    }
-
-    function drop(event, phase) {
-        event.preventDefault();
-        let effect = event.dataTransfer.getData("text");
-        let dropArea = document.getElementById(phase).querySelector(".drop-area");
-
-        // 🛑 Rule: Check if effect is already used in another phase
-        for (let key in selectedEffects) {
-            if (selectedEffects[key].includes(effect)) {
-                alert("❌ You already selected this effect in another phase!");
-                return;
-            }
-        }
-
-        // 🛑 Rule: Check if the max limit is reached
-        if (selectedEffects[phase].length >= maxEffects[phase]) {
-            alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
-            return;
-        }
-
-        // ✅ Add effect if it passes validation
-        selectedEffects[phase].push(effect);
-        let effectElement = document.createElement("div");
-        effectElement.className = "dropped-effect";
-        effectElement.textContent = document.getElementById(effect).textContent;
-        
-        // 🗑️ Add remove button to undo mistakes
-        let removeBtn = document.createElement("span");
-        removeBtn.textContent = " ❌";
-        removeBtn.style.cursor = "pointer";
-        removeBtn.onclick = function () {
-            selectedEffects[phase] = selectedEffects[phase].filter(e => e !== effect);
-            dropArea.removeChild(effectElement);
-        };
-
-        effectElement.appendChild(removeBtn);
-        dropArea.appendChild(effectElement);
-    }
-
-    function generateCustomHigh() {
-        if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
-            alert("❌ Please select at least one effect before generating!");
-            return;
-        }
-
-        let results = window.strainData.filter(strain =>
-            Object.keys(selectedEffects).some(phase =>
-                selectedEffects[phase].some(effect =>
-                    strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
-                )
-            )
-        );
-
-        updateTable(results);
-    }
-
-    function resetSelection() {
-        selectedEffects = { phase1: [], phase2: [], phase3: [] };
-        document.querySelectorAll(".drop-area").forEach(area => area.innerHTML = "");
-    }
-
-</script>
-
 
 </body>
 </html>
