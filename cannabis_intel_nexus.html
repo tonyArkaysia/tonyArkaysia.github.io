@@ -226,7 +226,7 @@
         <a href="#">📊 CannaDex (Cannabis Database)</a>
         <a href="#">💬 The Nexus (Community)</a>
         <a href="#">🌿 The Culture</a>
-        <a href="#">🧬 Cannabis Science</a>
+        <a href="#">🧬 Cann-I-Science</a>
     </div>
     <br><br><br>
     <h1>Cannabis Curator</h1>
@@ -444,6 +444,53 @@
             document.getElementById('content').classList.toggle("shrink");
         }
     </script>
+
+    <script>
+        function generateCustomHigh() {
+            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
+                alert("❌ Please select at least one effect before generating!");
+                return;
+            }
+
+            let results = window.strainData.filter(strain =>
+                Object.keys(selectedEffects).some(phase =>
+                    selectedEffects[phase].some(effect =>
+                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
+                    )
+                )
+            );
+
+            displayStrainResults(results);
+        }
+
+        function displayStrainResults(results) {
+            const tableContainer = document.getElementById("tableContainer");
+            const strainTable = document.getElementById("strainTableBody");
+            strainTable.innerHTML = "";
+
+            if (results.length === 0) {
+                strainTable.innerHTML = `<tr><td colspan='8' style='text-align:center;'>No matching strains found</td></tr>`;
+            } else {
+                results.forEach(strain => {
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank'>${strain["Strain"]}</a></td>
+                        <td>${strain["Brand"]}</td>
+                        <td>${strain["Category"]}</td>
+                        <td>${strain["Product Type"]}</td>
+                        <td>${strain["Total THC (%)"]}%</td>
+                        <td>${strain["Total CBD (%)"]}%</td>
+                        <td>${strain["Total Terpenes (%)"]}%</td>
+                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
+                    `;
+                    strainTable.appendChild(row);
+                });
+            }
+
+            tableContainer.style.display = "block";
+        }
+    </script>
+
 
 </body>
 </html>

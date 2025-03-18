@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Cann-I-Science - High Phases Breakdown</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #090909;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            transition: margin-left 0.3s;
+        }
+
+        /* Sidebar */
+        .menu-btn {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+            z-index: 1000;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #9D4EDD;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            padding-top: 50px;
+            transition: left 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+            opacity: 0.6;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 15px;
+            display: block;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #FF6B00;
+        }
+
+        /* Main Content */
+        .content {
+            margin-left: 20px;
+            padding: 20px;
+            transition: margin-left 0.3s ease-in-out;
+            max-width: 900px;
+            margin: auto;
+            text-align: left;
+        }
+
+        /* Adjust when sidebar is open */
+        .sidebar.open {
+            left: 0;
+        }
+
+        .content.shrink {
+            margin-left: 270px;
+        }
+
+        /* Chart */
+        canvas {
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        h2, h3 {
+            color: #9D4EDD;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="sidebar" id="sidebar">
+        <br>
+        <a href="index.html">🏠 Home</a>
+        <a href="#">🤖 The Curator</a>
+        <a href="#">📊 CannaDex</a>
+        <a href="#">💬 The Nexus</a>
+        <a href="#">🌿 The Culture</a>
+        <a href="#">🧬 Cann-I-Science</a>
+    </div>
+
+    <div class="content" id="content">
+        <h1>Cann-I-Science: Understanding the High Phases</h1>
+        <p>Breaking down cannabis effects into four distinct phases.</p>
+
+        <h2>🔬 Expanded Breakdown of the High Phases</h2>
+        
+        <h3>🟢 Phase 1: The Launch Pad (0 - 45 min to 1.5 hrs)</h3>
+        <p>Universal for all strains, but the way it feels varies. This phase depends on THC potency, terpene blend, and tolerance.</p>
+        <ul>
+            <li><strong>Smooth vs. Harsh:</strong> Some strains hit cleanly, while others feel overwhelming or cause slight headaches.</li>
+            <li><strong>Racy vs. Mellow:</strong> Some strains (Jack Herer) kick in with intensity, while others (Sundae Driver) feel smoother.</li>
+            <li><strong>Head vs. Body:</strong> Some strains hit mentally first (euphoria, focus), others hit the body first (relaxing, buzzing).</li>
+        </ul>
+
+        <h3>🟡 Phase 2: The Core High (1 - 3 hrs)</h3>
+        <p>This phase is where the high settles in, shaping how long it lasts and how it evolves.</p>
+        <ul>
+            <li><strong>Energizing & Focused:</strong> (Durban Poison, Sour Diesel) - Clear, sharp, and keeps you moving.</li>
+            <li><strong>Euphoric & Social:</strong> (Cheese & Chong, Apple Jacks) - Happy, talkative, and smooth.</li>
+            <li><strong>Balanced & Creative:</strong> (Sunday Driver, French Cookies) - Relaxed but not sleepy, mild euphoria, some mind-wandering.</li>
+            <li><strong>Heavy & Sedating:</strong> (Maraschino Runtz, Afghani) - A slow descent into couch-lock and warmth.</li>
+        </ul>
+
+        <h3>🟠 Phase 3: The Transition (3 - 5 hrs)</h3>
+        <p>Where the high starts shifting. Some strains fade smoothly, others crash hard.</p>
+        <ul>
+            <li><strong>Clean Finish:</strong> Black Mamba, Cheese & Chong, White Widow - Stay clear-headed even as it fades.</li>
+            <li><strong>Gradual Fade:</strong> Sunday Driver, French Cookies, Lemon Cherry Pie - Smooth come-down without crashing.</li>
+            <li><strong>Hard Crash:</strong> Maraschino Runtz, Afghani, Major-Z - Tired, heavy-limbed, time to sleep.</li>
+        </ul>
+
+        <h3>🔴 Phase 4: Aftermath (5+ hrs)</h3>
+        <p>Not everyone thinks about this, but it matters—how does the high end?</p>
+        <ul>
+            <li><strong>Clean Exit:</strong> White Widow, Cheese & Chong - No grogginess, fades smoothly.</li>
+            <li><strong>Foggy & Drained:</strong> Black Mamba, Afghani - Tired, sluggish, slight grogginess.</li>
+            <li><strong>Wake-Up Call:</strong> Durban Poison - Doesn't fully "come down", might keep you wired.</li>
+            <li><strong>Strong Munchies:</strong> Maraschino Runtz, Apple Jacks - Hits hunger HARD even in the final stages.</li>
+        </ul>
+
+        <h2>📊 Strain Effects Across Phases</h2>
+        <canvas id="highPhasesChart"></canvas>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle("open");
+            document.getElementById('content').classList.toggle("shrink");
+        }
+
+        var ctx = document.getElementById('highPhasesChart').getContext('2d');
+        var highPhasesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Phase 1", "Phase 2", "Phase 3", "Phase 4"],
+                datasets: [
+                    { label: "Sunday Driver", data: [7, 8, 6, 5], borderColor: "blue", fill: false },
+                    { label: "Maraschino Runtz", data: [9, 10, 8, 7], borderColor: "red", fill: false },
+                    { label: "Apple Jacks", data: [6, 7, 6, 6], borderColor: "green", fill: false },
+                    { label: "Black Mamba", data: [8, 9, 7, 4], borderColor: "purple", fill: false }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'top' } },
+                scales: { y: { beginAtZero: true, max: 10 } }
+            }
+        });
+    </script>
+</body>
+</html>
