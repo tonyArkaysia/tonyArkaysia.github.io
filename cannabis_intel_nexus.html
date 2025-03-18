@@ -77,26 +77,6 @@
     <button onclick="resetSelection()">Reset</button>
 
     <script>
-
-        const effectAliases = {
-            "euphoria": "euphoric",
-            "relaxation": "relaxing",
-            "focus": "focus",
-            "energy": "energetic",
-            "sedation": "sedating",
-            "pain-relief": "pain_relief",
-            "stress-relief": "anxiety_reduction"
-        };
-
-        function normalizeEffect(effect) {
-            let key = effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
-            return effectAliases[key] || key;
-        }
-
-
-    </script>
-
-    <script>
         let selectedEffects = { phase1: [], phase2: [], phase3: [] };
         const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
 
@@ -110,10 +90,10 @@
 
         function drop(event, phase) {
             event.preventDefault();
-            let effect = event.dataTransfer.getData("text").toLowerCase().replace(/[^a-zA-Z0-9-]/g, ""); // Normalize
+            let effect = event.dataTransfer.getData("text");
             let dropArea = document.getElementById(phase);
 
-            // Prevent duplicate effects across phases
+            // 🛑 Prevent duplicate effects across phases
             for (let key in selectedEffects) {
                 if (selectedEffects[key].includes(effect)) {
                     alert("❌ You already selected this effect in another phase!");
@@ -121,19 +101,19 @@
                 }
             }
 
-            // Limit effect count per phase
+            // 🛑 Enforce effect limit per phase
             if (selectedEffects[phase].length >= maxEffects[phase]) {
                 alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
                 return;
             }
 
-            // Add effect
+            // ✅ Add effect to phase
             selectedEffects[phase].push(effect);
             let effectElement = document.createElement("div");
             effectElement.className = "dropped-effect";
-            effectElement.textContent = effect.charAt(0).toUpperCase() + effect.slice(1); // Capitalize for UI
-
-            // Add remove button
+            effectElement.textContent = document.getElementById(effect).textContent;
+            
+            // 🗑️ Add remove button
             let removeBtn = document.createElement("span");
             removeBtn.textContent = " ❌";
             removeBtn.style.cursor = "pointer";
@@ -146,7 +126,6 @@
             dropArea.appendChild(effectElement);
         }
 
-
         function generateCustomHigh() {
             if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
                 alert("❌ Please select at least one effect before generating!");
@@ -155,18 +134,11 @@
 
             let results = window.strainData.filter(strain =>
                 Object.keys(selectedEffects).some(phase =>
-                    selectedEffects[phase].some(effect => {
-                        let normalizedEffect = normalizeEffect(effect);
-                        let tokensMatch = strain["Effects"].tokens.includes(normalizedEffect);
-                        let aiFeaturesMatch = strain["Effects"].ai_ready_features?.[normalizedEffect] === 1;
-                        
-                        return tokensMatch || aiFeaturesMatch;
-                    })
+                    selectedEffects[phase].some(effect =>
+                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
+                    )
                 )
             );
-
-            displayStrainResults(results);
-
 
             alert(`🔥 Found ${results.length} matching strains! (We will display results in next update)`);
         }
@@ -257,7 +229,7 @@
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='font-weight:bold;'>${strain["Strain"]}</a></td>
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank' class='${cinClass}'>${strain["Strain"]}</a></td>
                         <td>${strain["Brand"]}</td>
                         <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
@@ -276,39 +248,22 @@
             // Search Functionality
             searchInput.addEventListener("keyup", function() {
                 const query = searchInput.value.toLowerCase();
-                const filteredStrains = window.strainData.filter(strain => {
-                    const normalizedQuery = normalizeEffect(query);
-
-                    return (
-                        strain["Strain"].toLowerCase().includes(query) ||
-                        strain["Brand"].toLowerCase().includes(query) ||
-                        strain["Category"].toLowerCase().includes(query) ||
-                        strain["Product Type"].toLowerCase().includes(query) || 
-                        (strain["Effects"]?.raw_text.toLowerCase().includes(query) || false) || 
-                        (strain["Dominant Terpenes"]?.join(", ").toLowerCase().includes(query) || false) ||
-                        (strain["Flavor Profile"]?.toLowerCase().includes(query) || false) ||
-                        (strain["Official Description"]?.toLowerCase().includes(query) || false) ||
-                        (strain["Effects"]?.ai_ready_features?.[normalizedQuery] === 1) // ✅ NEW: Search AI-Ready Features
-                    );
-                });
-
-
+                const filteredStrains = window.strainData.filter(strain => 
+                    strain["Strain"].toLowerCase().includes(query) ||
+                    strain["Brand"].toLowerCase().includes(query) ||
+                    strain["Category"].toLowerCase().includes(query)
+                );
+                updateTable(filteredStrains);
+            });
 
             // Effect Filter Function
             window.filterByEffect = function(effect) {
-                const normalizedEffect = normalizeEffect(effect);
-
-
-                const filteredStrains = window.strainData.filter(strain => {
-                    const tokensMatch = strain["Effects"] && strain["Effects"].tokens.includes(normalizedEffect);
-                    const aiFeaturesMatch = strain["Effects"]?.ai_ready_features?.[normalizedEffect] === 1;
-
-                    return tokensMatch || aiFeaturesMatch;
-                });
-
+                const filteredStrains = window.strainData.filter(strain => 
+                    strain["Effects"] && strain["Effects"].tokens.includes(effect)
+                );
                 updateTable(filteredStrains);
             };
-
+        });
 
         // Sidebar Toggle
         function toggleMenu() {
@@ -327,7 +282,7 @@
             let results = window.strainData.filter(strain =>
                 Object.keys(selectedEffects).some(phase =>
                     selectedEffects[phase].some(effect =>
-                    strain["Effects"].tokens.includes(effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, ""))
+                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
                     )
                 )
             );
