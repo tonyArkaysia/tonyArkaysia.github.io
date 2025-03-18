@@ -413,24 +413,35 @@
 
             // Function to Update Table
             function updateTable(strains) {
+                const strainTable = document.getElementById("strainTableBody");
                 strainTable.innerHTML = "";
+
                 strains.forEach(strain => {
+                    // Map CIN Experience to a CSS class for color coding
+                    const cinClass = {
+                        "Crimson": "crimson",
+                        "Scarlet": "scarlet",
+                        "Amethyst": "amethyst",
+                        "Marigold": "marigold"
+                    }[strain["CIN Experience"]] || ""; // Default to no class if undefined
+
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${strain["Strain"]}</td>
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank' class='${cinClass}'>${strain["Strain"]}</a></td>
                         <td>${strain["Brand"]}</td>
                         <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
                         <td>${strain["Total THC (%)"]}%</td>
                         <td>${strain["Total CBD (%)"]}%</td>
-                        <td>${strain["Terpenes Total (%)"] ? strain["Terpenes Total (%)"] + "%" : "N/A"}</td>
-                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
+                        <td>${strain["Total Terpenes (%)"]}%</td>
+                        <td>${strain["Effects"]?.raw_text || "N/A"}</td>
                     `;
                     strainTable.appendChild(row);
                 });
 
-                tableContainer.style.display = strains.length > 0 ? "block" : "none"; // Show table if results found
+                document.getElementById("tableContainer").style.display = strains.length > 0 ? "block" : "none";
             }
+
 
             // Search Functionality
             searchInput.addEventListener("keyup", function() {
