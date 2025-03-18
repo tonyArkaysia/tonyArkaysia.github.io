@@ -320,10 +320,13 @@
             let matchingStrains = window.strainData.filter(strain => {
                 return Object.keys(selectedEffects).every(phase => {
                     return selectedEffects[phase].every(effect => {
+                        // ✅ Normalize effect: convert to lowercase and strip special characters
                         let normalizedEffect = effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
 
-                        // ✅ Check if any keyword in the phase contains the effect keyword
+                        // ✅ Get the categorized effects for the correct phase
                         let phaseKeywords = strain["Effects"]?.categorized_effects?.[phase] || [];
+
+                        // ✅ Perform a keyword match: Check if any stored effect **contains** the searched effect
                         return phaseKeywords.some(keyword => keyword.toLowerCase().includes(normalizedEffect));
                     });
                 });
@@ -337,6 +340,7 @@
 
             displayStrainResults(matchingStrains);
         }
+
 
 
 
