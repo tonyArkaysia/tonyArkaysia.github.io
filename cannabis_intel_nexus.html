@@ -391,16 +391,25 @@
             const searchInput = document.getElementById("searchBar");
             const tableContainer = document.getElementById("tableContainer");
 
-            // Fetch JSON Data
-            fetch("strain_db_2025_03_16_0000.json")
-            .then(response => {
-                if (!response.ok) throw new Error("Failed to load JSON");
-                return response.json();
-            })
+        // Fetch JSON Data
+        fetch("converted_strains_2025_03_16.json")
+            .then(response => response.json())
             .then(data => {
-                window.strainData = data; // Store data globally for filtering
+                console.log("Loaded strain data:", data); // ✅ Check what's loaded
+
+                if (Array.isArray(data)) {
+                    window.strainData = data; // ✅ Assign it directly if it's an array
+                } else if (typeof data === "object") {
+                    window.strainData = Object.values(data); // 🛠 Convert object to array
+                } else {
+                    console.error("Unexpected data format:", data);
+                    window.strainData = []; // 🚨 Prevent errors if data is invalid
+                }
+
+                console.log("Final strainData type:", Array.isArray(window.strainData) ? "Array ✅" : "Not an Array ❌");
             })
             .catch(error => console.error("Error fetching strains:", error));
+
 
             // Function to Update Table
             function updateTable(strains) {
