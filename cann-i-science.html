@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Cannabis Science - CIN</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    <div class="sidebar" id="sidebar">
+        <a href="#">🤖 The Curator</a>
+        <a href="#">📊 CannaDex</a>
+        <a href="#">💬 The Nexus</a>
+        <a href="#">🌿 The Culture</a>
+        <a href="#" class="active">🧬 Cannabis Science</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>🧬 Cannabis Science</h1>
+        <p>Dive into the scientific breakdown of cannabinoids, terpenes, and how they influence your experience.</p>
+
+        <!-- Section: Cannabinoids -->
+        <section class="info-box">
+            <h2>🌱 Cannabinoids</h2>
+            <p>Cannabinoids are active compounds in cannabis that interact with the body’s endocannabinoid system.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cannabinoid</th>
+                        <th>Effects</th>
+                        <th>Common Strains</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>THC (Δ9-Tetrahydrocannabinol)</td>
+                        <td>Psychoactive, euphoria, pain relief</td>
+                        <td>White Widow, Apple Jacks</td>
+                    </tr>
+                    <tr>
+                        <td>CBD (Cannabidiol)</td>
+                        <td>Anti-inflammatory, relaxation, anxiety relief</td>
+                        <td>Afghani, Sunday Driver</td>
+                    </tr>
+                    <tr>
+                        <td>CBG (Cannabigerol)</td>
+                        <td>Neuroprotective, anti-inflammatory</td>
+                        <td>Wild Thai, Lemon Cherry Pie</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section: Terpenes -->
+        <section class="info-box">
+            <h2>🍊 Terpenes</h2>
+            <p>Terpenes are aromatic compounds responsible for cannabis flavors and effects.</p>
+            <div class="terpene-grid">
+                <div class="terpene">
+                    <h3>🌿 Myrcene</h3>
+                    <p>Relaxation, sedation, earthy aroma.</p>
+                    <p><strong>Common Strains:</strong> Afghani, Maraschino Runtz</p>
+                </div>
+                <div class="terpene">
+                    <h3>🍋 Limonene</h3>
+                    <p>Mood elevation, citrus aroma.</p>
+                    <p><strong>Common Strains:</strong> Wild Thai, Confucius</p>
+                </div>
+                <div class="terpene">
+                    <h3>🌶️ Caryophyllene</h3>
+                    <p>Pain relief, anti-inflammatory.</p>
+                    <p><strong>Common Strains:</strong> White Widow, Major-Z</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: How It Works -->
+        <section class="info-box">
+            <h2>🧪 How It Works</h2>
+            <p>The cannabinoids and terpenes in cannabis interact with receptors in the brain and body to produce various effects.</p>
+            <img src="resources/images/endocannabinoid-system.png" alt="Endocannabinoid System">
+        </section>
+
+        <!-- Interactive Search -->
+        <section class="search-section">
+            <h2>🔎 Find the Science Behind Your Strain</h2>
+            <input type="text" class="search-bar" id="strainSearch" placeholder="Search strain by name..." onkeyup="searchStrains()">
+            <div class="search-results" id="strainResults"></div>
+        </section>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("sidebar").classList.toggle("open");
+            document.querySelector(".content").classList.toggle("shrink");
+        }
+
+        function searchStrains() {
+            let input = document.getElementById("strainSearch").value.toLowerCase();
+            let results = document.getElementById("strainResults");
+            results.innerHTML = "";
+
+            let strains = [
+                { name: "White Widow", effects: "Energizing, Focus", terpenes: "Limonene, Caryophyllene" },
+                { name: "Afghani", effects: "Relaxing, Sedative", terpenes: "Myrcene, Caryophyllene" },
+                { name: "Wild Thai", effects: "Euphoric, Stimulating", terpenes: "Limonene, Humulene" },
+            ];
+
+            let filteredStrains = strains.filter(strain => strain.name.toLowerCase().includes(input));
+            filteredStrains.forEach(strain => {
+                let div = document.createElement("div");
+                div.className = "strain-result";
+                div.innerHTML = `<strong>${strain.name}</strong> - ${strain.effects} | Terpenes: ${strain.terpenes}`;
+                results.appendChild(div);
+            });
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #090909;
+            color: white;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .menu-btn {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+            background: none;
+            border: none;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #9D4EDD;
+            height: 100vh;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            padding-top: 50px;
+            transition: left 0.3s;
+        }
+        .sidebar.open { left: 0; }
+        .content { margin-left: 20px; transition: margin-left 0.3s; }
+        .content.shrink { margin-left: 270px; }
+        .info-box {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            text-align: left;
+            max-width: 800px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #333;
+            text-align: left;
+        }
+        .terpene-grid {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .terpene {
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            width: 30%;
+        }
+        .search-bar {
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+        }
+        .strain-result {
+            background: #333;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+
+</body>
+</html>
