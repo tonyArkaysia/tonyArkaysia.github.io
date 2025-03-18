@@ -331,26 +331,26 @@
             const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
 
             let matchingStrains = window.strainData.filter(strain => {
-                // 🛑 Ensure categorized_effects exists (otherwise, ignore strain)
                 if (!strain["Effects"]?.categorized_effects) {
                     console.warn("⚠ Missing categorized_effects for strain:", strain["Strain"]);
                     return false;
                 }
 
-                return Object.keys(selectedEffects).every(phase => {
-                    let strainPhase = phaseMap[phase]; // Convert to JSON phase key
+                console.log(`📜 Checking ${strain["Strain"]}:`, JSON.stringify(strain["Effects"].categorized_effects, null, 2)); // Debug JSON
 
+                return Object.keys(selectedEffects).every(phase => {
+                    let strainPhase = phaseMap[phase]; 
                     return selectedEffects[phase].every(effect => {
-                        let normalizedEffect = effect.toLowerCase().trim().replace(/[^a-zA-Z0-9-]/g, "");
+                        let normalizedEffect = normalizeEffect(effect);
 
                         let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
 
-                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, phaseKeywords);
+                        // 🔧 Normalize every keyword stored inside categorized_effects
+                        let normalizedKeywords = phaseKeywords.map(keyword => normalizeEffect(keyword));
 
-                        // Match if any stored keyword **contains** the searched effect
-                        return phaseKeywords.some(keyword => 
-                            keyword.toLowerCase().trim().includes(normalizedEffect)
-                        );
+                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
+
+                        return normalizedKeywords.includes(normalizedEffect);
                     });
                 });
             });
@@ -364,7 +364,6 @@
 
             displayStrainResults(matchingStrains);
         }
-
 
 
 
