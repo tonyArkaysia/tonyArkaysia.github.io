@@ -273,6 +273,7 @@
     </script>
 
     <script>
+        
         function generateCustomHigh() {
             if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
                 alert("❌ Please select at least one effect before generating!");
@@ -281,14 +282,27 @@
 
             let results = window.strainData.filter(strain =>
                 Object.keys(selectedEffects).some(phase =>
-                    selectedEffects[phase].some(effect =>
-                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
-                    )
+                    selectedEffects[phase].some(effect => {
+                        let normalizedEffect = effect.toLowerCase().replace(/ /g, "-");
+
+                        // ✅ Check Categorized Effects in Initial, Mid, and Late stages
+                        let categorizedMatch = (
+                            strain["Effects"]?.categorized_effects?.initial?.includes(normalizedEffect) ||
+                            strain["Effects"]?.categorized_effects?.mid?.includes(normalizedEffect) ||
+                            strain["Effects"]?.categorized_effects?.late?.includes(normalizedEffect)
+                        );
+
+                        // ✅ Also check regular Tokens (if needed)
+                        let tokensMatch = strain["Effects"]?.tokens.includes(normalizedEffect);
+
+                        return categorizedMatch || tokensMatch;
+                    })
                 )
             );
 
             displayStrainResults(results);
         }
+
 
         function displayStrainResults(results) {
             const tableContainer = document.getElementById("tableContainer");
