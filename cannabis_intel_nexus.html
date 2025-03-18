@@ -13,6 +13,7 @@
     <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
     <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
 
+
 </head>
 
 
@@ -229,7 +230,7 @@
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold;'>${strain["Strain"]}</a></td>
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank' class='${cinClass}'>${strain["Strain"]}</a></td>
                         <td>${strain["Brand"]}</td>
                         <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
@@ -273,7 +274,7 @@
     </script>
 
     <script>
-        
+
         function generateCustomHigh() {
             if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
                 alert("❌ Please select at least one effect before generating!");
