@@ -170,23 +170,7 @@
             dropArea.appendChild(effectElement);
         }
 
-        function generateCustomHigh() {
-            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
-                alert("❌ Please select at least one effect before generating!");
-                return;
-            }
-
-            let results = window.strainData.filter(strain =>
-                Object.keys(selectedEffects).some(phase =>
-                    selectedEffects[phase].some(effect =>
-                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
-                    )
-                )
-            );
-
-            alert(`🔥 Found ${results.length} matching strains! (We will display results in next update)`);
-        }
-
+        
         function resetSelection() {
             // Reset the selected effects
             selectedEffects = { phase1: [], phase2: [], phase3: [] };
@@ -326,7 +310,7 @@
                 return;
             }
 
-            console.log("🟢 Selected Effects:", selectedEffects); // Debugging Log
+            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2)); // Debugging Log
 
             const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
 
@@ -336,16 +320,16 @@
                     return false;
                 }
 
-                console.log(`📜 Checking ${strain["Strain"]}:`, JSON.stringify(strain["Effects"].categorized_effects, null, 2)); // Debug JSON
-
                 return Object.keys(selectedEffects).every(phase => {
                     let strainPhase = phaseMap[phase]; 
-                    return selectedEffects[phase].every(effect => {
+                    let selectedEffectsForPhase = selectedEffects[phase];
+
+                    console.log(`🔍 Checking phase '${strainPhase}' for effects:`, selectedEffectsForPhase);
+
+                    return selectedEffectsForPhase.every(effect => {
                         let normalizedEffect = normalizeEffect(effect);
 
                         let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
-
-                        // 🔧 Normalize every keyword stored inside categorized_effects
                         let normalizedKeywords = phaseKeywords.map(keyword => normalizeEffect(keyword));
 
                         console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
@@ -355,7 +339,7 @@
                 });
             });
 
-            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"])); // Debugging Log
+            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"]));
 
             if (matchingStrains.length === 0) {
                 alert("❌ No exact match found! Try adjusting your selection.");
@@ -364,7 +348,6 @@
 
             displayStrainResults(matchingStrains);
         }
-
 
 
         function displayStrainResults(results) {
