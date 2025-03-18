@@ -320,10 +320,11 @@
             let matchingStrains = window.strainData.filter(strain => {
                 return Object.keys(selectedEffects).every(phase => {
                     return selectedEffects[phase].every(effect => {
-                        let normalizedEffect = effect.toLowerCase().replace(/ /g, "-");
+                        let normalizedEffect = effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
 
-                        // ✅ Strict Matching - Effect must be in the SAME phase
-                        return strain["Effects"]?.categorized_effects?.[phase]?.includes(normalizedEffect);
+                        // ✅ Check if any keyword in the phase contains the effect keyword
+                        let phaseKeywords = strain["Effects"]?.categorized_effects?.[phase] || [];
+                        return phaseKeywords.some(keyword => keyword.toLowerCase().includes(normalizedEffect));
                     });
                 });
             });
@@ -336,6 +337,7 @@
 
             displayStrainResults(matchingStrains);
         }
+
 
 
 
