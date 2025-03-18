@@ -334,10 +334,11 @@
             let results = window.strainData.filter(strain =>
                 Object.keys(selectedEffects).some(phase =>
                     selectedEffects[phase].some(effect =>
-                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
+                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, ""))
                     )
                 )
             );
+
 
             alert(`🔥 Found ${results.length} matching strains! (We will display results in next update)`);
         }
@@ -428,7 +429,7 @@
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' class='${cinClass}'>${strain["Strain"]}</a></td>
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='font-weight:bold;'>${strain["Strain"]}</a></td>
                         <td>${strain["Brand"]}</td>
                         <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
@@ -450,15 +451,22 @@
                 const filteredStrains = window.strainData.filter(strain => 
                     strain["Strain"].toLowerCase().includes(query) ||
                     strain["Brand"].toLowerCase().includes(query) ||
-                    strain["Category"].toLowerCase().includes(query)
+                    strain["Category"].toLowerCase().includes(query) ||
+                    strain["Product Type"].toLowerCase().includes(query) || 
+                    (strain["Effects"]?.raw_text.toLowerCase().includes(query) || false) || 
+                    (strain["Dominant Terpenes"]?.join(", ").toLowerCase().includes(query) || false) ||
+                    (strain["Flavor Profile"]?.toLowerCase().includes(query) || false) ||
+                    (strain["Official Description"]?.toLowerCase().includes(query) || false)
                 );
                 updateTable(filteredStrains);
             });
 
+
             // Effect Filter Function
             window.filterByEffect = function(effect) {
                 const filteredStrains = window.strainData.filter(strain => 
-                    strain["Effects"] && strain["Effects"].tokens.includes(effect)
+                    strain["Effects"] && strain["Effects"].tokens.includes(effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, ""))
+
                 );
                 updateTable(filteredStrains);
             };
@@ -481,7 +489,7 @@
             let results = window.strainData.filter(strain =>
                 Object.keys(selectedEffects).some(phase =>
                     selectedEffects[phase].some(effect =>
-                        strain["Effects"].tokens.includes(effect.toLowerCase().replace(/ /g, "-"))
+                    strain["Effects"].tokens.includes(effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, ""))
                     )
                 )
             );
