@@ -317,28 +317,26 @@
                 return;
             }
 
-            let results = window.strainData.filter(strain =>
-                Object.keys(selectedEffects).some(phase =>
-                    selectedEffects[phase].some(effect => {
+            let matchingStrains = window.strainData.filter(strain => {
+                return Object.keys(selectedEffects).every(phase => {
+                    return selectedEffects[phase].every(effect => {
                         let normalizedEffect = effect.toLowerCase().replace(/ /g, "-");
 
-                        // ✅ Check Categorized Effects in Initial, Mid, and Late stages
-                        let categorizedMatch = (
-                            strain["Effects"]?.categorized_effects?.initial?.includes(normalizedEffect) ||
-                            strain["Effects"]?.categorized_effects?.mid?.includes(normalizedEffect) ||
-                            strain["Effects"]?.categorized_effects?.late?.includes(normalizedEffect)
-                        );
+                        // ✅ Strict Matching - Effect must be in the SAME phase
+                        return strain["Effects"]?.categorized_effects?.[phase]?.includes(normalizedEffect);
+                    });
+                });
+            });
 
-                        // ✅ Also check regular Tokens (if needed)
-                        let tokensMatch = strain["Effects"]?.tokens.includes(normalizedEffect);
+            // If no exact match found, notify the user
+            if (matchingStrains.length === 0) {
+                alert("❌ No exact match found! Try adjusting your selection.");
+                return;
+            }
 
-                        return categorizedMatch || tokensMatch;
-                    })
-                )
-            );
-
-            displayStrainResults(results);
+            displayStrainResults(matchingStrains);
         }
+
 
 
         function displayStrainResults(results) {
