@@ -198,6 +198,7 @@
     </div>
 
     <script>
+        
         document.addEventListener("DOMContentLoaded", function() {
             const strainTable = document.getElementById("strainTableBody");
             const searchInput = document.getElementById("searchBar");
@@ -256,15 +257,40 @@
 
 
             // Search Functionality
-            searchInput.addEventListener("keyup", function() {
-                const query = searchInput.value.toLowerCase();
-                const filteredStrains = window.strainData.filter(strain => 
-                    strain["Strain"].toLowerCase().includes(query) ||
-                    strain["Brand"].toLowerCase().includes(query) ||
-                    strain["Category"].toLowerCase().includes(query)
-                );
-                updateTable(filteredStrains);
+            document.getElementById("searchBar").addEventListener("keyup", function() {
+                filterStrains();
             });
+
+            function filterStrains() {
+                const query = document.getElementById("searchBar").value.toLowerCase().trim();
+                if (!query) return;
+
+                const normalizedQuery = query.replace(/[^a-zA-Z0-9-]/g, "");
+
+                const filteredStrains = window.strainData.filter(strain => {
+                    // ✅ Search in Strain Name, Brand, Category
+                    let nameMatch = ["Strain", "Brand", "Category"].some(field => strain[field]?.toLowerCase().includes(query));
+
+                    // ✅ Search in Categorized Effects (Initial, Mid, Late)
+                    let categorizedMatch = ["initial", "mid", "late"].some(phase =>
+                        strain["Effects"]?.categorized_effects?.[phase]?.includes(normalizedQuery)
+                    );
+
+                    // ✅ Search in Tokens
+                    let tokensMatch = strain["Effects"]?.tokens.includes(normalizedQuery);
+
+                    // ✅ Search in AI-Ready Features
+                    let aiFeaturesMatch = strain["Effects"]?.ai_ready_features?.[normalizedQuery] === 1;
+
+                    // ✅ Search in Raw Text Description
+                    let rawTextMatch = strain["Effects"]?.raw_text.toLowerCase().includes(query) || false;
+
+                    return nameMatch || categorizedMatch || tokensMatch || aiFeaturesMatch || rawTextMatch;
+                });
+
+                updateTable(filteredStrains);
+            }
+
 
             // Effect Filter Function
             window.filterByEffect = function(effect) {
@@ -274,12 +300,13 @@
                 updateTable(filteredStrains);
             };
         });
+        
 
-        // Sidebar Toggle
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle("open");
-            document.getElementById('content').classList.toggle("shrink");
-        }
+            // Sidebar Toggle
+            function toggleMenu() {
+                document.getElementById('sidebar').classList.toggle("open");
+                document.getElementById('content').classList.toggle("shrink");
+            }
     </script>
 
     <script>
