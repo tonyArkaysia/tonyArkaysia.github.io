@@ -288,7 +288,7 @@
 
         function drop(event, phase) {
             event.preventDefault();
-            let effect = event.dataTransfer.getData("text");
+            let effect = event.dataTransfer.getData("text").toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
             let dropArea = document.getElementById(phase);
 
             // 🛑 Prevent duplicate effects across phases
