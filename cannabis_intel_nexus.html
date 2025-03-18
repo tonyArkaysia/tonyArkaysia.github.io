@@ -77,6 +77,49 @@
     <button onclick="generateCustomHigh()">Find My Strain</button>
     <button onclick="resetSelection()">Reset</button>
 
+
+
+
+
+<!-- Main Content -->
+    <div class="content" id="content">
+        <h1>CannaDex</h1>
+        <p>The Cannabis Database.</p>
+
+        <div class="search-container">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
+            <div class="button-container">
+                <button class="filter-btn" onclick="filterByEffect('euphoric')">🌟 Euphoric</button>
+                <button class="filter-btn" onclick="filterByEffect('relaxing')">😌 Relaxing</button>
+                <button class="filter-btn" onclick="filterByEffect('energetic')">⚡ Energetic</button>
+                <button class="filter-btn" onclick="filterByEffect('limonene')">🍋 Limonene</button>
+                <button class="filter-btn" onclick="filterByEffect('caryophyllene')">🌶️ Beta-Caryophyllene</button>
+                <button class="filter-btn" onclick="filterByEffect('myrcene')">🌿 Myrcene</button>
+            </div>
+        </div>
+
+        <!-- Table (Initially Hidden) -->
+        <div class="table-container" id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Strain</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Product Type</th>
+                        <th>THC (%)</th>
+                        <th>CBD (%)</th>
+                        <th>Total Terpenes (%)</th>
+                        <th>Effects</th>
+                    </tr>
+                </thead>
+                <tbody id="strainTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+
     <script>
         let selectedEffects = { phase1: [], phase2: [], phase3: [] };
         const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
@@ -160,43 +203,6 @@
     </script>
 
 
-<!-- Main Content -->
-    <div class="content" id="content">
-        <h1>CannaDex</h1>
-        <p>The Cannabis Database.</p>
-
-        <div class="search-container">
-            <input type="text" class="search-bar" id="searchBar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
-            <div class="button-container">
-                <button class="filter-btn" onclick="filterByEffect('euphoric')">🌟 Euphoric</button>
-                <button class="filter-btn" onclick="filterByEffect('relaxing')">😌 Relaxing</button>
-                <button class="filter-btn" onclick="filterByEffect('energetic')">⚡ Energetic</button>
-                <button class="filter-btn" onclick="filterByEffect('limonene')">🍋 Limonene</button>
-                <button class="filter-btn" onclick="filterByEffect('caryophyllene')">🌶️ Beta-Caryophyllene</button>
-                <button class="filter-btn" onclick="filterByEffect('myrcene')">🌿 Myrcene</button>
-            </div>
-        </div>
-
-        <!-- Table (Initially Hidden) -->
-        <div class="table-container" id="tableContainer">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Strain</th>
-                        <th>Brand</th>
-                        <th>Category</th>
-                        <th>Product Type</th>
-                        <th>THC (%)</th>
-                        <th>CBD (%)</th>
-                        <th>Total Terpenes (%)</th>
-                        <th>Effects</th>
-                    </tr>
-                </thead>
-                <tbody id="strainTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
     <script>
         
         document.addEventListener("DOMContentLoaded", function() {
@@ -276,6 +282,9 @@
                         strain["Effects"]?.categorized_effects?.[phase]?.includes(normalizedQuery)
                     );
 
+                    // ✅ Search in CIN Experience
+                    let cinxpMatch = strain["Effects"]?.cin_experience?.toLowerCase().includes(normalizedQuery) || false;
+
                     // ✅ Search in Tokens
                     let tokensMatch = strain["Effects"]?.tokens.includes(normalizedQuery);
 
@@ -285,7 +294,7 @@
                     // ✅ Search in Raw Text Description
                     let rawTextMatch = strain["Effects"]?.raw_text.toLowerCase().includes(query) || false;
 
-                    return nameMatch || categorizedMatch || tokensMatch || aiFeaturesMatch || rawTextMatch;
+                    return nameMatch || categorizedMatch || cinxpMatch || tokensMatch || aiFeaturesMatch || rawTextMatch;
                 });
 
                 updateTable(filteredStrains);
@@ -317,22 +326,37 @@
                 return;
             }
 
+            console.log("🟢 Selected Effects:", selectedEffects); // Debugging Log
+
+            const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
+
             let matchingStrains = window.strainData.filter(strain => {
+                // 🛑 Ensure categorized_effects exists (otherwise, ignore strain)
+                if (!strain["Effects"]?.categorized_effects) {
+                    console.warn("⚠ Missing categorized_effects for strain:", strain["Strain"]);
+                    return false;
+                }
+
                 return Object.keys(selectedEffects).every(phase => {
+                    let strainPhase = phaseMap[phase]; // Convert to JSON phase key
+
                     return selectedEffects[phase].every(effect => {
-                        // ✅ Normalize effect: convert to lowercase and strip special characters
-                        let normalizedEffect = effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
+                        let normalizedEffect = effect.toLowerCase().trim().replace(/[^a-zA-Z0-9-]/g, "");
 
-                        // ✅ Get the categorized effects for the correct phase
-                        let phaseKeywords = strain["Effects"]?.categorized_effects?.[phase] || [];
+                        let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
 
-                        // ✅ Perform a keyword match: Check if any stored effect **contains** the searched effect
-                        return phaseKeywords.some(keyword => keyword.toLowerCase().includes(normalizedEffect));
+                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, phaseKeywords);
+
+                        // Match if any stored keyword **contains** the searched effect
+                        return phaseKeywords.some(keyword => 
+                            keyword.toLowerCase().trim().includes(normalizedEffect)
+                        );
                     });
                 });
             });
 
-            // If no exact match found, notify the user
+            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"])); // Debugging Log
+
             if (matchingStrains.length === 0) {
                 alert("❌ No exact match found! Try adjusting your selection.");
                 return;
@@ -340,7 +364,6 @@
 
             displayStrainResults(matchingStrains);
         }
-
 
 
 
