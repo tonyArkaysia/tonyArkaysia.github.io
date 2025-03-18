@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif; /* Match The Curator */
     background-color: #090909;
     color: white;
     margin: 0;
@@ -60,7 +60,7 @@ body {
     transition: margin-left 0.3s ease-in-out;
 }
 
-/* Adjust when sidebar is open */
+/* Sidebar Open */
 .sidebar.open {
     left: 0;
 }
@@ -102,7 +102,7 @@ body {
     background-color: #333;
 }
 
-/* Table */
+/* TABLE STYLES - Unified Look for CannaDex & Curator */
 .table-container {
     width: 100%;
     overflow-x: auto;
@@ -117,6 +117,14 @@ table {
     color: white;
 }
 
+/* Make strain names bold in CannaDex */
+.table-container table tbody td:first-child a {
+    font-weight: bold;
+    color: white; /* Ensure contrast */
+    text-decoration: none;
+}
+
+/* General Table Styling */
 th, td {
     padding: 10px;
     text-align: left;
@@ -124,15 +132,17 @@ th, td {
 }
 
 th {
-    background: #090909;
+    background: #222;
+    color: white;
+    font-size: 16px;
 }
 
 tr:nth-child(even) {
-    background: #222;
+    background: #2a2a2a;
 }
 
 tr:hover {
-    background: #333;
+    background: #444;
 }
 
 /* Effects Selection */
@@ -186,7 +196,6 @@ tr:hover {
 .scarlet { color: #FF2400; }   /* Scarlet */
 .amethyst { color: #9966CC; }  /* Amethyst */
 .marigold { color: #FFBF00; }  /* Marigold */
-
 
 /* Buttons */
 button {
