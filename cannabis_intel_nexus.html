@@ -276,18 +276,22 @@
             // Search Functionality
             searchInput.addEventListener("keyup", function() {
                 const query = searchInput.value.toLowerCase();
-                const filteredStrains = window.strainData.filter(strain => 
-                    strain["Strain"].toLowerCase().includes(query) ||
-                    strain["Brand"].toLowerCase().includes(query) ||
-                    strain["Category"].toLowerCase().includes(query) ||
-                    strain["Product Type"].toLowerCase().includes(query) || 
-                    (strain["Effects"]?.raw_text.toLowerCase().includes(query) || false) || 
-                    (strain["Dominant Terpenes"]?.join(", ").toLowerCase().includes(query) || false) ||
-                    (strain["Flavor Profile"]?.toLowerCase().includes(query) || false) ||
-                    (strain["Official Description"]?.toLowerCase().includes(query) || false)
-                );
-                updateTable(filteredStrains);
-            });
+                const filteredStrains = window.strainData.filter(strain => {
+                    const normalizedQuery = normalizeEffect(query);
+
+                    return (
+                        strain["Strain"].toLowerCase().includes(query) ||
+                        strain["Brand"].toLowerCase().includes(query) ||
+                        strain["Category"].toLowerCase().includes(query) ||
+                        strain["Product Type"].toLowerCase().includes(query) || 
+                        (strain["Effects"]?.raw_text.toLowerCase().includes(query) || false) || 
+                        (strain["Dominant Terpenes"]?.join(", ").toLowerCase().includes(query) || false) ||
+                        (strain["Flavor Profile"]?.toLowerCase().includes(query) || false) ||
+                        (strain["Official Description"]?.toLowerCase().includes(query) || false) ||
+                        (strain["Effects"]?.ai_ready_features?.[normalizedQuery] === 1) // ✅ NEW: Search AI-Ready Features
+                    );
+                });
+
 
 
             // Effect Filter Function
