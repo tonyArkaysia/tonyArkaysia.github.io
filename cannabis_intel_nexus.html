@@ -220,17 +220,25 @@
                 strainTable.innerHTML = "";
 
                 strains.forEach(strain => {
-                    // Map CIN Experience to a CSS class for color coding
-                    const cinClass = {
-                        "Crimson": "crimson",
-                        "Scarlet": "scarlet",
-                        "Amethyst": "amethyst",
-                        "Marigold": "marigold"
-                    }[strain["CIN Experience"]] || ""; // Default to no class if undefined
+                    // Define CIN Experience color mapping
+                    const cinColors = {
+                        "Crimson": "#DC143C",
+                        "Scarlet": "#FF2400",
+                        "Amethyst": "#9966CC",
+                        "Marigold": "#FFC30B"
+                    };
+
+                    // Ensure there's a valid CIN Experience field, otherwise default to white
+                    let cinExperience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
+                    let color = cinColors[cinExperience] || "#FFFFFF";  // Default to white if no match
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' class='${cinClass}'>${strain["Strain"]}</a></td>
+                        <td>
+                            <a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold; text-decoration:none;'>
+                                ${strain["Strain"]}
+                            </a>
+                        </td>
                         <td>${strain["Brand"]}</td>
                         <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
@@ -244,6 +252,7 @@
 
                 document.getElementById("tableContainer").style.display = strains.length > 0 ? "block" : "none";
             }
+
 
 
             // Search Functionality
