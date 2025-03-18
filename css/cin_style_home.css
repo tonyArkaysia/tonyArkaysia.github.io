@@ -181,6 +181,13 @@ tr:hover {
     margin-top: 10px;
 }
 
+/* CIN Experience Colors */
+.crimson { color: #DC143C; }   /* Crimson */
+.scarlet { color: #FF2400; }   /* Scarlet */
+.amethyst { color: #9966CC; }  /* Amethyst */
+.marigold { color: #FFBF00; }  /* Marigold */
+
+
 /* Buttons */
 button {
     background: #E63946;

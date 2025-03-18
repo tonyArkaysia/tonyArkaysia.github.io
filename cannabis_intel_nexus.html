@@ -342,9 +342,18 @@
         }
 
         function resetSelection() {
+            // Reset the selected effects
             selectedEffects = { phase1: [], phase2: [], phase3: [] };
             document.querySelectorAll(".drop-area").forEach(area => area.innerHTML = "");
+
+            // Clear the strain results table
+            const strainTable = document.getElementById("strainTableBody");
+            strainTable.innerHTML = "";
+
+            // Hide the table container
+            document.getElementById("tableContainer").style.display = "none";
         }
+
     </script>
 
 
