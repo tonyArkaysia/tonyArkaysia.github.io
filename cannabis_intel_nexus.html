@@ -288,10 +288,10 @@
 
         function drop(event, phase) {
             event.preventDefault();
-            let effect = event.dataTransfer.getData("text").toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
+            let effect = event.dataTransfer.getData("text").toLowerCase().replace(/[^a-zA-Z0-9-]/g, ""); // Normalize
             let dropArea = document.getElementById(phase);
 
-            // 🛑 Prevent duplicate effects across phases
+            // Prevent duplicate effects across phases
             for (let key in selectedEffects) {
                 if (selectedEffects[key].includes(effect)) {
                     alert("❌ You already selected this effect in another phase!");
@@ -299,19 +299,19 @@
                 }
             }
 
-            // 🛑 Enforce effect limit per phase
+            // Limit effect count per phase
             if (selectedEffects[phase].length >= maxEffects[phase]) {
                 alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
                 return;
             }
 
-            // ✅ Add effect to phase
+            // Add effect
             selectedEffects[phase].push(effect);
             let effectElement = document.createElement("div");
             effectElement.className = "dropped-effect";
-            effectElement.textContent = document.getElementById(effect).textContent;
-            
-            // 🗑️ Add remove button
+            effectElement.textContent = effect.charAt(0).toUpperCase() + effect.slice(1); // Capitalize for UI
+
+            // Add remove button
             let removeBtn = document.createElement("span");
             removeBtn.textContent = " ❌";
             removeBtn.style.cursor = "pointer";
@@ -323,6 +323,7 @@
             effectElement.appendChild(removeBtn);
             dropArea.appendChild(effectElement);
         }
+
 
         function generateCustomHigh() {
             if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
