@@ -133,7 +133,7 @@ td {
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; /* ✅ Prevents unwanted line breaks */
+    white-space: normal; /* ✅ Prevents unwanted line breaks */
 }
 
 /* Column Width Adjustments */
