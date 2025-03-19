@@ -101,8 +101,13 @@ body {
     background-color: #333;
 }
 
+
 /* ✅ TABLE STYLES - Fixed Overlapping Issue */
-.table-container {
+/* Make strain names bold in CannaDex */
+.table-container table tbody td:first-child a {
+    font-weight: bold;
+    color: white; /* Ensure contrast */
+    text-decoration: none;
     width: 100%;
     overflow-x: auto;
 }
@@ -165,6 +170,8 @@ td.cin-experience {
 .cin-experience-gradient {
     background: linear-gradient(to right, var(--color-1), var(--color-2));
 }
+
+
 
 /* Effects Selection */
 .effects-container {
