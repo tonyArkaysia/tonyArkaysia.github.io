@@ -161,11 +161,22 @@ tr:hover { background: #444; }
     width: 180px;
 }
 
-/* ✅ Apply gradient text colors to strain names */
+/* 🎨 Strain Name Gradient Effect */
 .strain-name-gradient {
+    background: linear-gradient(to right, var(--color-1), var(--color-2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    display: inline-block;
+    color: var(--color-1); /* 🔥 Fallback Color in case gradient doesn't apply */
 }
+
+/* ✅ Fix for Firefox (No WebKit Support) */
+@supports not (-webkit-background-clip: text) {
+    .strain-name-gradient {
+        color: var(--color-1) !important; /* Use first gradient color */
+    }
+}
+
 
 /* ✅ CIN Experience Color Definitions */
 .crimson { background: #9B111E; }
@@ -180,7 +191,6 @@ tr:hover { background: #444; }
 .cin-experience-gradient {
     background: linear-gradient(to right, var(--color-1), var(--color-2));
 }
-
 
 
 /* Effects Selection */

@@ -350,12 +350,10 @@
                     let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
                     let colors = getCINExperienceColors(experience);
 
-                    // ✅ Set CSS Variables for Gradient Colors
                     let gradientStyle = colors.length > 1 
                         ? `style="--color-1: ${colors[0]}; --color-2: ${colors[1]};"`
-                        : `style="color: ${colors[0]};"`;
+                        : `style="--color-1: ${colors[0]}; color: ${colors[0]};"`; // ✅ Fallback color
 
-                    // ✅ CIN Experience Background Gradient
                     let backgroundStyle = colors.length > 1 
                         ? `background: linear-gradient(to right, ${colors.join(", ")});`
                         : `background: ${colors[0]};`;
@@ -385,6 +383,7 @@
 
                 tableContainer.style.display = "block"; // ✅ Show table only when results exist
             }
+
 
 
 
