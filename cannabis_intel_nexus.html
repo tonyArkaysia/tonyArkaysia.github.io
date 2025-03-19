@@ -310,7 +310,7 @@
                 return;
             }
 
-            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2)); // Debugging Log
+            console.log("🟢 Selected Effects:", selectedEffects); // Debugging Log
 
             const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
 
@@ -322,24 +322,19 @@
 
                 return Object.keys(selectedEffects).every(phase => {
                     let strainPhase = phaseMap[phase]; 
-                    let selectedEffectsForPhase = selectedEffects[phase];
-
-                    console.log(`🔍 Checking phase '${strainPhase}' for effects:`, selectedEffectsForPhase);
-
-                    return selectedEffectsForPhase.every(effect => {
+                    return selectedEffects[phase].every(effect => {
                         let normalizedEffect = normalizeEffect(effect);
 
                         let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
-                        let normalizedKeywords = phaseKeywords.map(keyword => normalizeEffect(keyword));
 
-                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
+                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, phaseKeywords);
 
-                        return normalizedKeywords.includes(normalizedEffect);
+                        return phaseKeywords.some(keyword => normalizeEffect(keyword).includes(normalizedEffect));
                     });
                 });
             });
 
-            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"]));
+            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"])); // Debugging Log
 
             if (matchingStrains.length === 0) {
                 alert("❌ No exact match found! Try adjusting your selection.");
@@ -348,6 +343,7 @@
 
             displayStrainResults(matchingStrains);
         }
+
 
 
         function displayStrainResults(results) {
