@@ -197,9 +197,8 @@
     <script>
 
         function normalizeEffect(effect) {
-            return effect.toLowerCase().trim().replace(/[^a-zA-Z0-9-]/g, "");
+            return effect.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
         }
-
 
         function generateCustomHigh() {
             if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
@@ -207,7 +206,7 @@
                 return;
             }
 
-            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2)); // Debugging Log
+            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2));
 
             const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
 
@@ -218,7 +217,7 @@
                 }
 
                 return Object.keys(selectedEffects).every(phase => {
-                    let strainPhase = phaseMap[phase]; 
+                    let strainPhase = phaseMap[phase];
                     let selectedEffectsForPhase = selectedEffects[phase];
 
                     console.log(`🔍 Checking phase '${strainPhase}' for effects:`, selectedEffectsForPhase);
@@ -231,9 +230,9 @@
 
                         console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
 
-                        // ✅ Fix: Check for exact match or substring match in categorized effects
+                        // ✅ FIX: Match exact term or substring (e.g., "stress relief" should match "stress-relief")
                         return normalizedKeywords.some(keyword => 
-                            keyword.includes(normalizedEffect) || normalizedEffect.includes(keyword)
+                            keyword === normalizedEffect || normalizedEffect.includes(keyword) || keyword.includes(normalizedEffect)
                         );
                     });
                 });
@@ -248,6 +247,7 @@
 
             displayStrainResults(matchingStrains);
         }
+
 
 
 
@@ -266,11 +266,12 @@
                     row.innerHTML = `
                         <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold;'>${strain["Strain"]}</a></td>
                         <td>${strain["Brand"]}</td>
-                        <td>${strain["Category"]}</td>
+                        // <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
+                        <td>${strain["CIN Experience"]}</td>
                         <td>${strain["Total THC (%)"]}%</td>
                         <td>${strain["Total CBD (%)"]}%</td>
-                        <td>${strain["Total Terpenes (%)"]}%</td>
+                        <td>${strain["Total Terpenes (%)"]}%</td>                        
                         <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
                     `;
                     strainTable.appendChild(row);
@@ -286,7 +287,7 @@
                 "Crimson": "#DC143C",  // Deep, intense euphoria
                 "Scarlet": "#FF2400",  // Energizing, productivity
                 "Amethyst": "#9966CC", // Relaxing, dreamlike
-                "Moonstone": "#CAB7E2", // Ultimate sedation, sleep aid
+                "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
                 "Onyx": "#353839", // Exotic, complex highs
                 "Marigold": "#FFC30B", // Uplifting, citrus-heavy
                 "Verdant": "#3CB371" // Smooth, functional hybrid
@@ -305,7 +306,7 @@
             const tableContainer = document.getElementById("tableContainer");
 
             // Fetch JSON Data
-            fetch("strain_db_2025_03_16_0000.json")
+            fetch("strain_db_2025_03_19_0500.json")
             .then(response => {
                 if (!response.ok) throw new Error("Failed to load JSON");
                 return response.json();
@@ -326,7 +327,7 @@
                         "Crimson": "#DC143C",  // Deep, intense euphoria
                         "Scarlet": "#FF2400",  // Energizing, productivity
                         "Amethyst": "#9966CC", // Relaxing, dreamlike
-                        "Moonstone": "#CAB7E2", // Ultimate sedation, sleep aid
+                        "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
                         "Onyx": "#353839", // Exotic, complex highs
                         "Marigold": "#FFC30B", // Uplifting, citrus-heavy
                         "Verdant": "#3CB371" // Smooth, functional hybrid
@@ -344,12 +345,13 @@
                             </a>
                         </td>
                         <td>${strain["Brand"]}</td>
-                        <td>${strain["Category"]}</td>
+                        // <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
+                        <td>${strain["CIN Experience"]}</td>
                         <td>${strain["Total THC (%)"]}%</td>
                         <td>${strain["Total CBD (%)"]}%</td>
-                        <td>${strain["Total Terpenes (%)"]}%</td>
-                        <td>${strain["Effects"]?.raw_text || "N/A"}</td>
+                        <td>${strain["Total Terpenes (%)"]}%</td>                        
+                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
                     `;
                     strainTable.appendChild(row);
                 });
