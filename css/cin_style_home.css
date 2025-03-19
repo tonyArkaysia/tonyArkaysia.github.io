@@ -109,19 +109,20 @@ body {
     color: white; /* Ensure contrast */
     text-decoration: none;
     width: 100%;
-    overflow-x: auto;
+    overflow: hidden;
+    /* overflow-x: auto; */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* ✅ Ensures even column spacing */
+    table-layout: auto; /* ✅ Ensures even column spacing */
 }
 
 th, td {
     padding: 10px;
     border: 1px solid #ddd;
-    white-space: nowrap; /* ✅ Prevents line breaks */
+    white-space: normal; /* ✅ Prevents line breaks */
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
