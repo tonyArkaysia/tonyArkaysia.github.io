@@ -1,6 +1,6 @@
 /* General Styles */
 body {
-    font-family: 'Arial', sans-serif; /* Match The Curator */
+    font-family: 'Arial', sans-serif;
     background-color: #090909;
     color: white;
     margin: 0;
@@ -60,7 +60,6 @@ body {
     transition: margin-left 0.3s ease-in-out;
 }
 
-/* Sidebar Open */
 .sidebar.open {
     left: 0;
 }
@@ -102,7 +101,7 @@ body {
     background-color: #333;
 }
 
-/* TABLE STYLES - Unified Look for CannaDex & Curator */
+/* ✅ TABLE STYLES - Fixed Overlapping Issue */
 .table-container {
     width: 100%;
     overflow-x: auto;
@@ -111,13 +110,28 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* ✅ Ensures even column spacing */
 }
 
 th, td {
     padding: 10px;
     border: 1px solid #ddd;
-    white-space: nowrap;
+    white-space: nowrap; /* ✅ Prevents line breaks */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
 }
+
+/* ✅ Fixed Widths to Prevent Overlapping */
+th:nth-child(1), td:nth-child(1) { width: 180px; }  /* Strain */
+th:nth-child(2), td:nth-child(2) { width: 150px; }  /* Brand */
+th:nth-child(3), td:nth-child(3) { width: 120px; }  /* Category */
+th:nth-child(4), td:nth-child(4) { width: 130px; }  /* Product Type */
+th:nth-child(5), td:nth-child(5) { width: 160px; }  /* CIN Experience */
+th:nth-child(6), td:nth-child(6) { width: 90px; }   /* THC % */
+th:nth-child(7), td:nth-child(7) { width: 90px; }   /* CBD % */
+th:nth-child(8), td:nth-child(8) { width: 90px; }   /* Terpenes % */
+th:nth-child(9), td:nth-child(9) { width: 250px; }  /* Effects */
 
 td a {
     display: block;
@@ -125,32 +139,31 @@ td a {
     text-decoration: none;
 }
 
-/* Make strain names bold in CannaDex */
-.table-container table tbody td:first-child a {
-    font-weight: bold;
-    color: white; /* Ensure contrast */
-    text-decoration: none;
+td:first-child {
+    text-align: left; /* ✅ Align first column (Strain Name) */
 }
 
-/* General Table Styling */
-/* th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #333;
-}
-
-th {
-    background: #222;
+/* ✅ Proper CIN Experience Column Styling */
+td.cin-experience {
+    text-align: center;
     color: white;
-    font-size: 16px;
-} */
-
-tr:nth-child(even) {
-    background: #2a2a2a;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px;
 }
 
-tr:hover {
-    background: #444;
+/* ✅ Background Gradient for CIN Experience */
+.crimson { background: #DC143C; }
+.scarlet { background: #FF2400; }
+.amethyst { background: #9966CC; }
+.moonstone { background: #4B0082; }
+.onyx { background: #353839; }
+.marigold { background: #FFC30B; }
+.verdant { background: #3CB371; }
+
+/* ✅ Handle Multi-Tier CIN Experience Colors */
+.cin-experience-gradient {
+    background: linear-gradient(to right, var(--color-1), var(--color-2));
 }
 
 /* Effects Selection */
@@ -198,12 +211,6 @@ tr:hover {
     width: 100%;
     margin-top: 10px;
 }
-
-/* CIN Experience Colors */
-.crimson { color: #DC143C; }   /* Crimson */
-.scarlet { color: #FF2400; }   /* Scarlet */
-.amethyst { color: #9966CC; }  /* Amethyst */
-.marigold { color: #FFBF00; }  /* Marigold */
 
 /* Buttons */
 button {
