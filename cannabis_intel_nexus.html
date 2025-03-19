@@ -197,8 +197,9 @@
     <script>
 
         function normalizeEffect(effect) {
-            return effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
+            return effect.toLowerCase().trim().replace(/[^a-zA-Z0-9-]/g, "");
         }
+
 
         function generateCustomHigh() {
             if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
@@ -230,7 +231,10 @@
 
                         console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
 
-                        return normalizedKeywords.includes(normalizedEffect);
+                        // ✅ Fix: Check for exact match or substring match in categorized effects
+                        return normalizedKeywords.some(keyword => 
+                            keyword.includes(normalizedEffect) || normalizedEffect.includes(keyword)
+                        );
                     });
                 });
             });
@@ -244,6 +248,7 @@
 
             displayStrainResults(matchingStrains);
         }
+
 
 
         function displayStrainResults(results) {
@@ -278,10 +283,13 @@
         // Helper function to get colors for CIN Experience
         function getCINExperienceColor(experience) {
             const colors = {
-                "Crimson": "#DC143C",
-                "Scarlet": "#FF2400",
-                "Amethyst": "#9966CC",
-                "Marigold": "#FFC30B"
+                "Crimson": "#DC143C",  // Deep, intense euphoria
+                "Scarlet": "#FF2400",  // Energizing, productivity
+                "Amethyst": "#9966CC", // Relaxing, dreamlike
+                "Moonstone": "#CAB7E2", // Ultimate sedation, sleep aid
+                "Onyx": "#353839", // Exotic, complex highs
+                "Marigold": "#FFC30B", // Uplifting, citrus-heavy
+                "Verdant": "#3CB371" // Smooth, functional hybrid
             };
             return colors[experience] || "#FFFFFF"; // Default to white if not found
         }
@@ -315,10 +323,13 @@
                 strains.forEach(strain => {
                     // Define CIN Experience color mapping
                     const cinColors = {
-                        "Crimson": "#DC143C",
-                        "Scarlet": "#FF2400",
-                        "Amethyst": "#9966CC",
-                        "Marigold": "#FFC30B"
+                        "Crimson": "#DC143C",  // Deep, intense euphoria
+                        "Scarlet": "#FF2400",  // Energizing, productivity
+                        "Amethyst": "#9966CC", // Relaxing, dreamlike
+                        "Moonstone": "#CAB7E2", // Ultimate sedation, sleep aid
+                        "Onyx": "#353839", // Exotic, complex highs
+                        "Marigold": "#FFC30B", // Uplifting, citrus-heavy
+                        "Verdant": "#3CB371" // Smooth, functional hybrid
                     };
 
                     // Ensure there's a valid CIN Experience field, otherwise default to white
