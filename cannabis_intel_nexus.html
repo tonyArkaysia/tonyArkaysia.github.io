@@ -260,15 +260,23 @@
                 strainTable.innerHTML = `<tr><td colspan='8' style='text-align:center;'>No matching strains found</td></tr>`;
             } else {
                 results.forEach(strain => {
-                    let color = getCINExperienceColor(strain["CIN Experience"]);
+                    let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
+                    let colors = getCINExperienceColors(experience);
+
+                    // Create a gradient if multiple colors exist
+                    let backgroundStyle = colors.length > 1 ? 
+                        `background: linear-gradient(to right, ${colors.join(", ")});` :
+                        `background: ${colors[0]};`;
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold;'>${strain["Strain"]}</a></td>
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:white; font-weight:bold;'>${strain["Strain"]}</a></td>
                         <td>${strain["Brand"]}</td>
-                        // <td>${strain["Category"]}</td>
+                        <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
-                        <td>${strain["CIN Experience"]}</td>
+                        <td style="${backgroundStyle}; color: white; padding: 5px; text-align:center; border-radius: 5px;">
+                            ${strain["CIN Experience"]}
+                        </td>
                         <td>${strain["Total THC (%)"]}%</td>
                         <td>${strain["Total CBD (%)"]}%</td>
                         <td>${strain["Total Terpenes (%)"]}%</td>                        
@@ -281,19 +289,26 @@
             tableContainer.style.display = "block";
         }
 
+
         // Helper function to get colors for CIN Experience
-        function getCINExperienceColor(experience) {
-            const colors = {
-                "Crimson": "#DC143C",  // Deep, intense euphoria
-                "Scarlet": "#FF2400",  // Energizing, productivity
-                "Amethyst": "#9966CC", // Relaxing, dreamlike
+        function getCINExperienceColors(experience) {
+            const colorsMap = {
+                "Crimson": "#DC143C",   // Deep, intense euphoria
+                "Scarlet": "#FF2400",   // Energizing, productivity
+                "Amethyst": "#9966CC",  // Relaxing, dreamlike
                 "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
-                "Onyx": "#353839", // Exotic, complex highs
-                "Marigold": "#FFC30B", // Uplifting, citrus-heavy
-                "Verdant": "#3CB371" // Smooth, functional hybrid
+                "Onyx": "#353839",      // Exotic, complex highs
+                "Marigold": "#FFC30B",  // Uplifting, citrus-heavy
+                "Verdant": "#3CB371"    // Smooth, functional hybrid
             };
-            return colors[experience] || "#FFFFFF"; // Default to white if not found
+
+            let experiences = experience.split("/").map(exp => exp.trim()); // Split experience into array
+            let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF"); // Convert to color
+
+            return colors;
         }
+
+
 
     </script>
 
@@ -322,32 +337,26 @@
                 strainTable.innerHTML = "";
 
                 strains.forEach(strain => {
-                    // Define CIN Experience color mapping
-                    const cinColors = {
-                        "Crimson": "#DC143C",  // Deep, intense euphoria
-                        "Scarlet": "#FF2400",  // Energizing, productivity
-                        "Amethyst": "#9966CC", // Relaxing, dreamlike
-                        "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
-                        "Onyx": "#353839", // Exotic, complex highs
-                        "Marigold": "#FFC30B", // Uplifting, citrus-heavy
-                        "Verdant": "#3CB371" // Smooth, functional hybrid
-                    };
+                    let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
+                    let colors = getCINExperienceColors(experience);
 
-                    // Ensure there's a valid CIN Experience field, otherwise default to white
-                    let cinExperience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
-                    let color = cinColors[cinExperience] || "#FFFFFF";  // Default to white if no match
+                    // Create a gradient if multiple colors exist
+                    let backgroundStyle = colors.length > 1 ? 
+                        `background: linear-gradient(to right, ${colors.join(", ")});` :
+                        `background: ${colors[0]};`;
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
                         <td>
-                            <a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold; text-decoration:none;'>
+                            <a href='${strain["Strain Webpage"]}' target='_blank' style='color:white; font-weight:bold;'>
                                 ${strain["Strain"]}
                             </a>
                         </td>
                         <td>${strain["Brand"]}</td>
-                        // <td>${strain["Category"]}</td>
                         <td>${strain["Product Type"]}</td>
-                        <td>${strain["CIN Experience"]}</td>
+                        <td style="${backgroundStyle}; color: white; padding: 5px; text-align:center; border-radius: 5px;">
+                            ${strain["CIN Experience"]}
+                        </td>
                         <td>${strain["Total THC (%)"]}%</td>
                         <td>${strain["Total CBD (%)"]}%</td>
                         <td>${strain["Total Terpenes (%)"]}%</td>                        
@@ -358,6 +367,7 @@
 
                 document.getElementById("tableContainer").style.display = strains.length > 0 ? "block" : "none";
             }
+
 
 
 
