@@ -151,17 +151,24 @@ td:nth-child(9), th:nth-child(9) { width: 300px; text-align: left; } /* Effects 
 tr:nth-child(even) { background: #2a2a2a; }
 tr:hover { background: #444; }
 
-/* CIN Experience Gradient Background */
+
+/* ✅ Background Gradient for CIN Experience */
 .cin-experience {
     color: white;
     padding: 5px;
     text-align: center;
     border-radius: 5px;
+    width: 180px;
 }
 
+/* ✅ Apply gradient text colors to strain names */
+.strain-name-gradient {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-/* ✅ Background Gradient for CIN Experience */
-.crimson { background: #DC143C; }
+/* ✅ CIN Experience Color Definitions */
+.crimson { background: #9B111E; }
 .scarlet { background: #FF2400; }
 .amethyst { background: #9966CC; }
 .moonstone { background: #4B0082; }
