@@ -293,7 +293,7 @@
         // Helper function to get colors for CIN Experience
         function getCINExperienceColors(experience) {
             const colorsMap = {
-                "Crimson": "#DC143C",   // Deep, intense euphoria
+                "Crimson": "#9B111E",   // Deep, intense euphoria
                 "Scarlet": "#FF2400",   // Energizing, productivity
                 "Amethyst": "#9966CC",  // Relaxing, dreamlike
                 "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
@@ -302,13 +302,12 @@
                 "Verdant": "#3CB371"    // Smooth, functional hybrid
             };
 
-            if (!experience) return ["#FFFFFF"]; // Default white if no experience is provided
-
-            let experiences = experience.split("/").map(exp => exp.trim()); // Split into array
-            let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF"); // Convert to colors
+            let experiences = experience.split("/").map(exp => exp.trim());
+            let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF");
 
             return colors;
         }
+
 
 
 
@@ -343,30 +342,37 @@
                     let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
                     let colors = getCINExperienceColors(experience);
 
-                    // Create a gradient if multiple colors exist
+                    // ✅ Fix: Ensure correct column count & formatting
                     let backgroundStyle = colors.length > 1 ? 
                         `background: linear-gradient(to right, ${colors.join(", ")});` :
                         `background: ${colors[0]};`;
 
                     let row = document.createElement("tr");
                     row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:white; font-weight:bold;'>${strain["Strain"]}</a></td>
-                        <td>${strain["Brand"]}</td>
-                        <td>${strain["Category"]}</td>
-                        <td>${strain["Product Type"]}</td>
+                        <td style="text-align:left; padding: 8px;">
+                            <a href='${strain["Strain Webpage"]}' target='_blank' style='color:white; font-weight:bold; text-decoration:none;'>
+                                ${strain["Strain"]}
+                            </a>
+                        </td>
+                        <td style="text-align:left;">${strain["Brand"]}</td>
+                        <td style="text-align:left;">${strain["Category"]}</td>
+                        <td style="text-align:left;">${strain["Product Type"]}</td>
                         <td style="${backgroundStyle}; color: white; padding: 5px; text-align:center; border-radius: 5px;">
                             ${strain["CIN Experience"]}
                         </td>
-                        <td>${strain["Total THC (%)"]}%</td>
-                        <td>${strain["Total CBD (%)"]}%</td>
-                        <td>${strain["Total Terpenes (%)"]}%</td>                        
-                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
+                        <td style="text-align:center;">${strain["Total THC (%)"]}%</td>
+                        <td style="text-align:center;">${strain["Total CBD (%)"]}%</td>
+                        <td style="text-align:center;">${strain["Total Terpenes (%)"]}%</td>
+                        <td style="text-align:left; max-width: 250px; overflow: hidden; text-overflow: ellipsis;">
+                            ${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}
+                        </td>
                     `;
                     strainTable.appendChild(row);
                 });
 
                 document.getElementById("tableContainer").style.display = strains.length > 0 ? "block" : "none";
             }
+
 
 
 
