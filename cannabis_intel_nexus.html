@@ -120,7 +120,15 @@
 
     <!-- Scripts -->
 
+    <script>        // Sidebar Toggle
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle("open");
+            document.getElementById('content').classList.toggle("shrink");
+        }
+    </script>
+
     <script>
+
         let selectedEffects = { phase1: [], phase2: [], phase3: [] };
         const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
 
@@ -182,6 +190,102 @@
 
             // Hide the table container
             document.getElementById("tableContainer").style.display = "none";
+        }
+
+    </script>
+
+    <script>
+
+        function normalizeEffect(effect) {
+            return effect.toLowerCase().replace(/[^a-zA-Z0-9-]/g, "");
+        }
+
+        function generateCustomHigh() {
+            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
+                alert("❌ Please select at least one effect before generating!");
+                return;
+            }
+
+            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2)); // Debugging Log
+
+            const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
+
+            let matchingStrains = window.strainData.filter(strain => {
+                if (!strain["Effects"]?.categorized_effects) {
+                    console.warn("⚠ Missing categorized_effects for strain:", strain["Strain"]);
+                    return false;
+                }
+
+                return Object.keys(selectedEffects).every(phase => {
+                    let strainPhase = phaseMap[phase]; 
+                    let selectedEffectsForPhase = selectedEffects[phase];
+
+                    console.log(`🔍 Checking phase '${strainPhase}' for effects:`, selectedEffectsForPhase);
+
+                    return selectedEffectsForPhase.every(effect => {
+                        let normalizedEffect = normalizeEffect(effect);
+
+                        let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
+                        let normalizedKeywords = phaseKeywords.map(keyword => normalizeEffect(keyword));
+
+                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
+
+                        return normalizedKeywords.includes(normalizedEffect);
+                    });
+                });
+            });
+
+            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"]));
+
+            if (matchingStrains.length === 0) {
+                alert("❌ No exact match found! Try adjusting your selection.");
+                return;
+            }
+
+            displayStrainResults(matchingStrains);
+        }
+
+
+
+
+        function displayStrainResults(results) {
+            const tableContainer = document.getElementById("tableContainer");
+            const strainTable = document.getElementById("strainTableBody");
+            strainTable.innerHTML = "";
+
+            if (results.length === 0) {
+                strainTable.innerHTML = `<tr><td colspan='8' style='text-align:center;'>No matching strains found</td></tr>`;
+            } else {
+                results.forEach(strain => {
+                    let color = getCINExperienceColor(strain["CIN Experience"]);
+
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold;'>${strain["Strain"]}</a></td>
+                        <td>${strain["Brand"]}</td>
+                        <td>${strain["Category"]}</td>
+                        <td>${strain["Product Type"]}</td>
+                        <td>${strain["Total THC (%)"]}%</td>
+                        <td>${strain["Total CBD (%)"]}%</td>
+                        <td>${strain["Total Terpenes (%)"]}%</td>
+                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
+                    `;
+                    strainTable.appendChild(row);
+                });
+            }
+
+            tableContainer.style.display = "block";
+        }
+
+        // Helper function to get colors for CIN Experience
+        function getCINExperienceColor(experience) {
+            const colors = {
+                "Crimson": "#DC143C",
+                "Scarlet": "#FF2400",
+                "Amethyst": "#9966CC",
+                "Marigold": "#FFC30B"
+            };
+            return colors[experience] || "#FFFFFF"; // Default to white if not found
         }
 
     </script>
@@ -295,98 +399,10 @@
         });
         
 
-            // Sidebar Toggle
-            function toggleMenu() {
-                document.getElementById('sidebar').classList.toggle("open");
-                document.getElementById('content').classList.toggle("shrink");
-            }
-    </script>
-
-    <script>
-
-        function generateCustomHigh() {
-            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
-                alert("❌ Please select at least one effect before generating!");
-                return;
-            }
-
-            console.log("🟢 Selected Effects:", selectedEffects); // Debugging Log
-
-            const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
-
-            let matchingStrains = window.strainData.filter(strain => {
-                if (!strain["Effects"]?.categorized_effects) {
-                    console.warn("⚠ Missing categorized_effects for strain:", strain["Strain"]);
-                    return false;
-                }
-
-                return Object.keys(selectedEffects).every(phase => {
-                    let strainPhase = phaseMap[phase]; 
-                    return selectedEffects[phase].every(effect => {
-                        let normalizedEffect = normalizeEffect(effect);
-
-                        let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
-
-                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, phaseKeywords);
-
-                        return phaseKeywords.some(keyword => normalizeEffect(keyword).includes(normalizedEffect));
-                    });
-                });
-            });
-
-            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"])); // Debugging Log
-
-            if (matchingStrains.length === 0) {
-                alert("❌ No exact match found! Try adjusting your selection.");
-                return;
-            }
-
-            displayStrainResults(matchingStrains);
-        }
-
-
-
-        function displayStrainResults(results) {
-            const tableContainer = document.getElementById("tableContainer");
-            const strainTable = document.getElementById("strainTableBody");
-            strainTable.innerHTML = "";
-
-            if (results.length === 0) {
-                strainTable.innerHTML = `<tr><td colspan='8' style='text-align:center;'>No matching strains found</td></tr>`;
-            } else {
-                results.forEach(strain => {
-                    let color = getCINExperienceColor(strain["CIN Experience"]);
-
-                    let row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td><a href='${strain["Strain Webpage"]}' target='_blank' style='color:${color}; font-weight:bold;'>${strain["Strain"]}</a></td>
-                        <td>${strain["Brand"]}</td>
-                        <td>${strain["Category"]}</td>
-                        <td>${strain["Product Type"]}</td>
-                        <td>${strain["Total THC (%)"]}%</td>
-                        <td>${strain["Total CBD (%)"]}%</td>
-                        <td>${strain["Total Terpenes (%)"]}%</td>
-                        <td>${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}</td>
-                    `;
-                    strainTable.appendChild(row);
-                });
-            }
-
-            tableContainer.style.display = "block";
-        }
-
-        // Helper function to get colors for CIN Experience
-        function getCINExperienceColor(experience) {
-            const colors = {
-                "Crimson": "#DC143C",
-                "Scarlet": "#FF2400",
-                "Amethyst": "#9966CC",
-                "Marigold": "#FFC30B"
-            };
-            return colors[experience] || "#FFFFFF"; // Default to white if not found
-        }
 
     </script>
+
+
 
 </body>
 </html>
