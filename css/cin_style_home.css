@@ -103,60 +103,62 @@ body {
 
 
 /* ✅ TABLE STYLES - Fixed Overlapping Issue */
-/* Make strain names bold in CannaDex */
-.table-container table tbody td:first-child a {
-    font-weight: bold;
-    color: white; /* Ensure contrast */
-    text-decoration: none;
+
+/* Table Container - No Scrollbar */
+.table-container {
     width: 100%;
-    overflow: hidden;
-    /* overflow-x: auto; */
+    display: none; /* ✅ Hides initially until search results appear */
+    overflow: hidden; /* ✅ No scrollbar */
 }
 
+/* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto; /* ✅ Ensures even column spacing */
+    table-layout: fixed; /* ✅ Distributes column width evenly */
 }
 
-th, td {
+/* Table Headings */
+th {
+    background: #222;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
+
+/* Table Cells */
+td {
     padding: 10px;
     border: 1px solid #ddd;
-    white-space: normal; /* ✅ Prevents line breaks */
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center;
+    white-space: nowrap; /* ✅ Prevents unwanted line breaks */
 }
 
-/* ✅ Fixed Widths to Prevent Overlapping */
-th:nth-child(1), td:nth-child(1) { width: 180px; }  /* Strain */
-th:nth-child(2), td:nth-child(2) { width: 150px; }  /* Brand */
-th:nth-child(3), td:nth-child(3) { width: 120px; }  /* Category */
-th:nth-child(4), td:nth-child(4) { width: 130px; }  /* Product Type */
-th:nth-child(5), td:nth-child(5) { width: 160px; }  /* CIN Experience */
-th:nth-child(6), td:nth-child(6) { width: 90px; }   /* THC % */
-th:nth-child(7), td:nth-child(7) { width: 90px; }   /* CBD % */
-th:nth-child(8), td:nth-child(8) { width: 90px; }   /* Terpenes % */
-th:nth-child(9), td:nth-child(9) { width: 250px; }  /* Effects */
+/* Column Width Adjustments */
+td:first-child, th:first-child { width: 180px; } /* Strain Name */
+td:nth-child(2), th:nth-child(2) { width: 140px; } /* Brand */
+td:nth-child(3), th:nth-child(3) { width: 130px; } /* Category */
+td:nth-child(4), th:nth-child(4) { width: 150px; } /* Product Type */
+td:nth-child(5), th:nth-child(5) { width: 180px; } /* CIN Experience */
+td:nth-child(6), th:nth-child(6) { width: 90px; } /* THC % */
+td:nth-child(7), th:nth-child(7) { width: 90px; } /* CBD % */
+td:nth-child(8), th:nth-child(8) { width: 110px; } /* Total Terpenes % */
+td:nth-child(9), th:nth-child(9) { width: 300px; text-align: left; } /* Effects */
 
-td a {
-    display: block;
-    width: 100%;
-    text-decoration: none;
-}
+/* Table Row Alternating Colors */
+tr:nth-child(even) { background: #2a2a2a; }
+tr:hover { background: #444; }
 
-td:first-child {
-    text-align: left; /* ✅ Align first column (Strain Name) */
-}
-
-/* ✅ Proper CIN Experience Column Styling */
-td.cin-experience {
-    text-align: center;
+/* CIN Experience Gradient Background */
+.cin-experience {
     color: white;
-    font-weight: bold;
-    border-radius: 5px;
     padding: 5px;
+    text-align: center;
+    border-radius: 5px;
 }
+
 
 /* ✅ Background Gradient for CIN Experience */
 .crimson { background: #DC143C; }
