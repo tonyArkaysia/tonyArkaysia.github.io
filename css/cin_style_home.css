@@ -166,16 +166,20 @@ tr:hover { background: #444; }
     background: linear-gradient(to right, var(--color-1), var(--color-2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: bold;  /* ✅ Ensure bold text */
+    font-family: 'Arial', sans-serif; /* ✅ Match The Curator’s font */
+    font-size: 16px;  /* ✅ Ensure proper visibility */
     display: inline-block;
-    color: var(--color-1); /* 🔥 Fallback Color in case gradient doesn't apply */
+    letter-spacing: 0.5px; /* ✅ Slightly improves readability */
 }
 
-/* ✅ Fix for Firefox (No WebKit Support) */
+/* ✅ Fallback for browsers that don't support -webkit-background-clip */
 @supports not (-webkit-background-clip: text) {
     .strain-name-gradient {
-        color: var(--color-1) !important; /* Use first gradient color */
+        color: var(--color-1) !important; /* ✅ Use first gradient color */
     }
 }
+
 
 
 /* ✅ CIN Experience Color Definitions */
