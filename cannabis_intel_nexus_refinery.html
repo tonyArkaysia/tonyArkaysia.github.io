@@ -3,96 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Community Nexus | Cannabis Intel Nexus</title>
+    <title>The Refinery | Cannabis Intel Nexus</title>
 
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="css/cin_style_home.css" type="text/css" />
     <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
     <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
 </head>
+
 <body>
-
-    <!-- Nav Sidebar -->
+    <!-- Top Content Container -->
     <div class="content" id="content">
-        <h1>Community Nexus</h1>
-        <h5>A scientific, batch-based feedback system for cannabis users and researchers.</h5>
+        <h1>The Refinery™</h1>
+        <h5>Refining your high — one session at a time.</h5>
 
+        <!-- Menu Button -->
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+        <!-- Sidebar Navigation -->
         <div class="sidebar" id="sidebar">
             <br>
             <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">🤖 The Curator (AI-Powered High Guide)</a>
             <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">📊 CannaDex (Cannabis Database)</a>
             <a href="#">💬 The Nexus (Community)</a>
             <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_culture">🌿 The Culture</a>
+            <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_refinery">⚗️ The Refinery</a>
             <a href="https://tonyarkaysia.github.io/cann-i-science.html">🧬 Cann-I-Science</a>
         </div>
 
-        <!-- Feedback Submission -->
+        <!-- Session Setup -->
         <section>
-            <h2>🧪 Submit Strain Feedback</h2>
-            <form id="strain-feedback-form">
+            <h2>🧪 Start a New Session</h2>
+            <form>
                 <label for="strain">Strain Name:</label>
-                <input type="text" id="strain" name="strain" required><br>
+                <input type="text" id="strain" name="strain" placeholder="e.g., Bushwick Berry">
 
                 <label for="batch">Batch Number (optional):</label>
-                <input type="text" id="batch" name="batch"><br>
+                <input type="text" id="batch" name="batch" placeholder="e.g., TTM-BB-010124">
 
-                <label for="verified">Dispensary (optional):</label>
-                <input type="text" id="verified" name="verified" placeholder="e.g., Terp Bros, Curaleaf"><br>
+                <label for="time">Session Start Time:</label>
+                <input type="time" id="time" name="time">
 
-                <label>Session Time:</label>
-                <input type="time" name="session_time">  
-
-                <label>Setting:</label>
-                <select name="setting">
+                <label for="setting">Setting:</label>
+                <select id="setting" name="setting">
                     <option value="home">Home</option>
                     <option value="social">Social</option>
-                    <option value="outdoors">Outdoors</option>
-                    <option value="work">Work</option>
+                    <option value="outdoor">Outdoors</option>
+                    <option value="creative">Creative Session</option>
                 </select>
 
-                <label>Dose (g):</label>
-                <input type="number" step="0.1" name="dose" min="0.1" placeholder="0.5g, 1.0g, etc.">
-
-                <h3>Effect Feedback by Phase</h3>
-                <p>Tag up to 3 effects per phase (e.g., euphoria, focus, stress relief)</p>
-
-                <label>Initial Phase Effects:</label>
-                <input type="text" name="initial_effects" placeholder="e.g., energetic, creative"><br>
-
-                <label>Mid Phase Effects:</label>
-                <input type="text" name="mid_effects" placeholder="e.g., relaxing, giggly"><br>
-
-                <label>Late Phase Effects:</label>
-                <input type="text" name="late_effects" placeholder="e.g., sleepy, sedated"><br>
-
-                <label>How accurate was the AI prediction?</label><br>
-                <input type="radio" name="ai_accuracy" value="agree"> Agree<br>
-                <input type="radio" name="ai_accuracy" value="disagree"> Disagree<br>
-
-                <label for="notes">Additional Notes:</label><br>
-                <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Describe how it hit, how long it lasted, etc."></textarea><br>
-
-                <button type="submit">Submit Feedback</button>
+                <label for="dose">Dose (g):</label>
+                <input type="number" id="dose" name="dose" step="0.1" placeholder="e.g., 1.0">
             </form>
         </section>
 
-        <!-- Research Campaign Section -->
+        <!-- Phase Logging -->
         <section>
-            <h2>🎯 Current Study: Purple Runtz Feedback Drive</h2>
-            <p>Help us calibrate our AI by submitting feedback on Purple Runtz across batches.</p>
-            <p><strong>Goal:</strong> Evaluate consistency across dispensaries and batches for AI training.</p>
-            <button>Submit Your Purple Runtz Feedback</button>
+            <h2>🌗 Log Your Experience</h2>
+
+            <!-- Phase 1 -->
+            <div class="phase-box">
+                <h3>Phase 1 – Initial High</h3>
+                <p>How are you feeling in the first 15–30 mins?</p>
+                <input type="checkbox" name="effect1" value="Euphoric"> Euphoric<br>
+                <input type="checkbox" name="effect1" value="Energetic"> Energetic<br>
+                <input type="checkbox" name="effect1" value="Talkative"> Talkative<br>
+                <input type="range" min="1" max="5" value="3"> Intensity
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-box">
+                <h3>Phase 2 – Mid High</h3>
+                <p>How’s the core of the experience feeling?</p>
+                <input type="checkbox" name="effect2" value="Relaxed"> Relaxed<br>
+                <input type="checkbox" name="effect2" value="Creative"> Creative<br>
+                <input type="checkbox" name="effect2" value="Focused"> Focused<br>
+                <input type="range" min="1" max="5" value="3"> Intensity
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase-box">
+                <h3>Phase 3 – Afterglow</h3>
+                <p>What lingers? How do you feel coming down?</p>
+                <input type="checkbox" name="effect3" value="Sedated"> Sedated<br>
+                <input type="checkbox" name="effect3" value="Clear-headed"> Clear-headed<br>
+                <input type="checkbox" name="effect3" value="Mellow"> Mellow<br>
+                <input type="range" min="1" max="5" value="3"> Intensity
+            </div>
         </section>
 
-        <!-- Future Dashboard Placeholder -->
+        <!-- Notes -->
         <section>
-            <h2>📊 Community Insights Dashboard (Coming Soon)</h2>
-            <p>Live metrics comparing lab predictions vs. user-reported effects. Including batch inconsistency flags and effect heatmaps.</p>
+            <h2>📝 Additional Notes</h2>
+            <textarea rows="4" cols="50" placeholder="Describe your overall experience, anything unique, etc."></textarea><br>
+            <button type="submit">Submit Session</button>
         </section>
 
         <!-- Footer -->
         <footer>
-            <p>&copy; 2025 Cannabis Intel Nexus. All rights reserved.</p>
+            <p>&copy; 2025 Cannabis Intel Nexus. The Refinery™ | All rights reserved.</p>
         </footer>
     </div>
 
@@ -102,6 +111,5 @@
             document.getElementById('content').classList.toggle("shrink");
         }
     </script>
-
 </body>
 </html>
