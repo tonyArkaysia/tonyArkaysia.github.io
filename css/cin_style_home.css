@@ -106,11 +106,9 @@ body {
 /* Table Container - No Scrollbar */
 .table-container {
     width: 100%;
-    display: none; /* ✅ Hides initially until search results appear */
-    overflow: hidden; /* ✅ No scrollbar */
+    display: none;
 }
 
-/* Table Styles */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -120,86 +118,42 @@ table {
 th {
     background: #222;
     color: white;
-    padding: 10px;
     font-size: 16px;
+    padding: 10px;
 }
 
-/* Fix Text Visibility */
 td {
     padding: 10px;
     border: 1px solid #ddd;
     text-align: center;
-    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* Column Width Adjustments */
-td:first-child, th:first-child { width: 180px; } /* Strain Name */
-td:nth-child(2), th:nth-child(2) { width: 140px; } /* Brand */
-td:nth-child(3), th:nth-child(3) { width: 130px; } /* Category */
-td:nth-child(4), th:nth-child(4) { width: 150px; } /* Product Type */
-td:nth-child(5), th:nth-child(5) { width: 180px; } /* CIN Experience */
-td:nth-child(6), th:nth-child(6) { width: 90px; } /* THC % */
-td:nth-child(7), th:nth-child(7) { width: 90px; } /* CBD % */
-td:nth-child(8), th:nth-child(8) { width: 110px; } /* Total Terpenes % */
-td:nth-child(9), th:nth-child(9) { width: 300px; text-align: left; } /* Effects */
-
-/* Table Row Alternating Colors */
 tr:nth-child(even) { background: #2a2a2a; }
 tr:hover { background: #444; }
 
+.strain-name {
+    font-weight: bold;
+    color: white;
+}
 
-/* ✅ Background Gradient for CIN Experience */
 .cin-experience {
     color: white;
     padding: 5px;
     text-align: center;
     border-radius: 5px;
-    width: 180px;
 }
 
-/* 🎨 Strain Name Gradient Effect */
-.strain-name-gradient {
-    font-weight: bold;
-    font-size: 16px;
-    display: inline-block;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; /* ✅ Text remains visible */
-    text-decoration: none;
-}
+.crimson { background-color: #9B111E; }
+.scarlet { background-color: #FF2400; }
+.amethyst { background-color: #9966CC; }
+.moonstone { background-color: #4B0082; }
+.onyx { background-color: #353839; }
+.marigold { background-color: #FFC30B; }
+.verdant { background-color: #3CB371; }
 
-/* ✅ Fallback for browsers that don't support -webkit-background-clip */
-@supports not (-webkit-background-clip: text) {
-    .strain-name-gradient {
-        color: var(--color-1) !important;
-    }
-}
-
-/* ✅ Ensure Parent TD does not override text visibility */
-td:first-child a {
-    display: inline-block;
-    width: 100%;
-    text-decoration: none;
-}
-
-
-
-
-/* ✅ CIN Experience Color Definitions */
-.crimson { background: #9B111E; }
-.scarlet { background: #FF2400; }
-.amethyst { background: #9966CC; }
-.moonstone { background: #4B0082; }
-.onyx { background: #353839; }
-.marigold { background: #FFC30B; }
-.verdant { background: #3CB371; }
-
-/* ✅ Handle Multi-Tier CIN Experience Colors */
-.cin-experience-gradient {
-    background: linear-gradient(to right, var(--color-1), var(--color-2));
-}
 
 
 /* Effects Selection */
