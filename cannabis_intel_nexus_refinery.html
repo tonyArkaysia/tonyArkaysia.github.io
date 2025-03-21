@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Community Nexus | Cannabis Intel Nexus</title>
+
+    <link rel="stylesheet" href="css/cin_style_home.css" type="text/css" />
+    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+</head>
+<body>
+
+    <!-- Nav Sidebar -->
+    <div class="content" id="content">
+        <h1>Community Nexus</h1>
+        <h5>A scientific, batch-based feedback system for cannabis users and researchers.</h5>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <div class="sidebar" id="sidebar">
+            <br>
+            <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">🤖 The Curator (AI-Powered High Guide)</a>
+            <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">📊 CannaDex (Cannabis Database)</a>
+            <a href="#">💬 The Nexus (Community)</a>
+            <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_culture">🌿 The Culture</a>
+            <a href="https://tonyarkaysia.github.io/cann-i-science.html">🧬 Cann-I-Science</a>
+        </div>
+
+        <!-- Feedback Submission -->
+        <section>
+            <h2>🧪 Submit Strain Feedback</h2>
+            <form id="strain-feedback-form">
+                <label for="strain">Strain Name:</label>
+                <input type="text" id="strain" name="strain" required><br>
+
+                <label for="batch">Batch Number (optional):</label>
+                <input type="text" id="batch" name="batch"><br>
+
+                <label for="verified">Dispensary (optional):</label>
+                <input type="text" id="verified" name="verified" placeholder="e.g., Terp Bros, Curaleaf"><br>
+
+                <label>Session Time:</label>
+                <input type="time" name="session_time">  
+
+                <label>Setting:</label>
+                <select name="setting">
+                    <option value="home">Home</option>
+                    <option value="social">Social</option>
+                    <option value="outdoors">Outdoors</option>
+                    <option value="work">Work</option>
+                </select>
+
+                <label>Dose (g):</label>
+                <input type="number" step="0.1" name="dose" min="0.1" placeholder="0.5g, 1.0g, etc.">
+
+                <h3>Effect Feedback by Phase</h3>
+                <p>Tag up to 3 effects per phase (e.g., euphoria, focus, stress relief)</p>
+
+                <label>Initial Phase Effects:</label>
+                <input type="text" name="initial_effects" placeholder="e.g., energetic, creative"><br>
+
+                <label>Mid Phase Effects:</label>
+                <input type="text" name="mid_effects" placeholder="e.g., relaxing, giggly"><br>
+
+                <label>Late Phase Effects:</label>
+                <input type="text" name="late_effects" placeholder="e.g., sleepy, sedated"><br>
+
+                <label>How accurate was the AI prediction?</label><br>
+                <input type="radio" name="ai_accuracy" value="agree"> Agree<br>
+                <input type="radio" name="ai_accuracy" value="disagree"> Disagree<br>
+
+                <label for="notes">Additional Notes:</label><br>
+                <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Describe how it hit, how long it lasted, etc."></textarea><br>
+
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </section>
+
+        <!-- Research Campaign Section -->
+        <section>
+            <h2>🎯 Current Study: Purple Runtz Feedback Drive</h2>
+            <p>Help us calibrate our AI by submitting feedback on Purple Runtz across batches.</p>
+            <p><strong>Goal:</strong> Evaluate consistency across dispensaries and batches for AI training.</p>
+            <button>Submit Your Purple Runtz Feedback</button>
+        </section>
+
+        <!-- Future Dashboard Placeholder -->
+        <section>
+            <h2>📊 Community Insights Dashboard (Coming Soon)</h2>
+            <p>Live metrics comparing lab predictions vs. user-reported effects. Including batch inconsistency flags and effect heatmaps.</p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Cannabis Intel Nexus. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle("open");
+            document.getElementById('content').classList.toggle("shrink");
+        }
+    </script>
+
+</body>
+</html>
