@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Interactive Notification Timeline - Mr. Arkaysia</title>
+  <title>Interactive Color-Coded Timeline - Mr. Arkaysia</title>
   <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
   <link href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css" rel="stylesheet" />
   <style>
@@ -28,13 +28,13 @@
 </head>
 <body>
   <header>
-    <h1>Interactive Notification Timeline</h1>
-    <p>Key notifications and responses in Mr. Arkaysia's Acoustic Trauma Case</p>
+    <h1>Color-Coded Interactive Timeline</h1>
+    <p>Key Notifications & Outcomes in Mr. Arkaysia's Case</p>
   </header>
   <div id="timeline-embed"></div>
   <script type="text/javascript">
     window.timeline = new TL.Timeline('timeline-embed',
-      'arkaysia_interactive_timeline_data.json', {
+      '/mnt/data/arkaysia_interactive_timeline_colored.json', {
         language: 'en',
         initial_zoom: 2
       }
