@@ -1,0 +1,100 @@
+{
+  "Strain ID": "GRASS-112724-JDZ",
+  "Strain": "Jordanz",
+  "Brand": "Grassroots",
+  "Category": "Flower",
+  "Product Type": "3.5 Gram Jar",
+  "Series/Tier": "Medical Hybrid",
+  "COA Source": "Lab Report",
+  "NeuroTerp Matrix": "Sapphire Amethyst Onyx",
+  "Date Reported": "11/27/2024",
+  "Sampling Date & Time": "11/21/2024 04:15 PM",
+  "Batch Lot ID": "P-GRWF352024-1494A",
+  "Batch Size": "7643 Units",
+  "Serving Size": "3.5g",
+  "Sample ID": "AL41122003-011",
+  "Strain Webpage": "https://grassrootscannabis.com/products/jordanz",
+  "COA Link": "https://curaleaf.com/coa/grassroots-jordanz",
+  "Official Description": "Jordanz is a curated hybrid offering smooth flavor and calming effects. Known for its clarity and composure, it delivers mental relief paired with a light emotional center. A go-to for users managing stress and cognitive fatigue without sedation.",
+  "Official Product Image": "https://grassrootscannabis.com/img/jordanz.jpg",
+  "Strain Image": "https://grassrootscannabis.com/img/jordanz.jpg",
+  "CINAI Analysis": "High Linalool, Caryophyllene, and Limonene levels suggest a strong blend of calm clarity and emotional resilience. Great for reflective activities, conversations, and daily use where anxiety or tension might otherwise dominate.",
+  "Dominant Terpenes": "Beta-Caryophyllene, Limonene, Linalool, Myrcene",
+  "Terpene Effects": "Anxiolytic, mellow, clear-headed, emotionally open, anti-inflammatory",
+  "Flavor Profile": "Earthy, Light Citrus, Sweet Floral",
+  "Total THC (%)": 28.28,
+  "Total CBD (%)": "< 0.1000",
+  "Total Cannabinoids (%)": 32.72,
+  "D9-THC (%)": 1.4550,
+  "THCA (%)": 30.4602,
+  "CBG (%)": "< 0.1000",
+  "CBGA (%)": 0.1060,
+  "CBDV (%)": "< 0.1000",
+  "CBDA (%)": "< 0.1000",
+  "THCV (%)": "< 0.1000",
+  "CBN (%)": "< 0.1000",
+  "D8-THC (%)": "< 0.1000",
+  "CBC (%)": 0.1103,
+  "Total Terpenes (%)": 1.39,
+  "Beta-Myrcene (%)": 0.20,
+  "Limonene (%)": 0.30,
+  "Beta-Caryophyllene (%)": 0.32,
+  "Linalool (%)": 0.26,
+  "Alpha-Humulene (%)": 0.09,
+  "Fenchyl Alcohol (%)": 0.04,
+  "Alpha-Terpineol (%)": 0.04,
+  "Alpha-Bisabolol (%)": 0.03,
+  "Alpha-Pinene (%)": 0.03,
+  "Beta-Pinene (%)": 0.06,
+  "Caryophyllene Oxide (%)": 0.01,
+  "Camphene (%)": 0.01,
+  "Terpinolene (%)": "< 0.0040",
+  "Farnesene (%)": "< 0.1000",
+  "Pesticides Pass/Fail": "PASS",
+  "Heavy Metals Pass/Fail": "PASS",
+  "Microbiological Pass/Fail": "PASS",
+  "Residual Solvents Pass/Fail": "NOT TESTED",
+  "Mycotoxins Pass/Fail": "PASS",
+  "Filth & Foreign Material Pass/Fail": "PASS",
+  "Moisture Content (%)": 6.6,
+  "Water Activity": 0.28,
+  "Effects": {
+    "raw_text": "Jordanz provides a focused yet calm state of mind with a relaxed emotional tone. Caryophyllene and Linalool promote tension relief while Limonene keeps the mental landscape light and pleasant. Ideal for evening decompression or intentional social use.",
+    "tokens": [
+      "emotional ease",
+      "mood stability",
+      "anxiety reduction",
+      "calm clarity",
+      "focused"
+    ],
+    "categorized_effects": {
+      "initial": ["calm clarity", "emotional ease"],
+      "mid": ["mood stability", "light creativity"],
+      "late": ["mild relaxation", "anxiety relief"]
+    },
+    "ai_ready_features": {
+      "euphoric": 0.5,
+      "relaxing": 1,
+      "sedating": 0,
+      "energetic": 0,
+      "pain_relief": 1,
+      "focus": 0.8,
+      "anxiety_reduction": 1
+    }
+  },
+  "Medical Tags": [
+    {
+      "tag": "Neuropathic Pain Relief",
+      "description": "Targets nerve-related pain with anti-inflammatory and muscle relaxant compounds.",
+      "ideal_profile": {
+        "dominant_terpenes": ["Beta-Caryophyllene", "Myrcene", "Linalool"],
+        "cannabinoids": {
+          "THC_min": 22,
+          "CBG_min": 0.2,
+          "CBD_optional": true
+        }
+      },
+      "category": "Medical Relief"
+    }
+  ]
+}
