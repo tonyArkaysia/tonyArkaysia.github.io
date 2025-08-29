@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A_LABS | Enriching Humanity Beyond Innovations</title>
+  <meta name="description" content="A_LABS designs personalized technology—software, gadgets, and 3D-printed solutions—to enrich quality of life." />
+  <style>
+    /* Global */
+    :root {
+      --brand-dark: #090909;   /* Arkaysia core */
+      --brand-accent: #0077ff; /* UI accent */
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      max-width: 100%;
+      overflow-x: hidden; /* prevent right-side cut-off */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+                   Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+      color: var(--brand-dark);
+      background: #fff;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 14px 48px;
+      background: rgba(255,255,255,0.96);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 1000;
+    }
+    .logo {
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--brand-accent);
+      font-size: 20px;
+      white-space: nowrap;
+    }
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      flex-wrap: wrap; /* stays readable on small screens without hamburger */
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--brand-dark);
+      font-weight: 600;
+      opacity: 0.9;
+      transition: opacity 0.2s ease, color 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--brand-accent); opacity: 1; }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      padding: 0 24px;
+      padding-top: 92px; /* space for fixed nav */
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: url('resources/a_labs_imgs/a_labs_index_bg.png') center center / cover no-repeat;
+    }
+    .hero-inner {
+      max-width: 980px;
+      backdrop-filter: saturate(120%) blur(0.3px);
+    }
+    .kicker {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--brand-accent);
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      text-shadow: 0 2px 4px rgba(255,255,255,0.65);
+    }
+    .est {
+      margin: 0 0 18px 0;
+      font-size: 16px;
+      color: var(--brand-accent);
+      font-weight: 600;
+      opacity: 0.95;
+    }
+    .sub {
+      margin: 0 auto;
+      max-width: 760px;
+      font-size: clamp(16px, 2.4vw, 20px);
+      line-height: 1.55;
+      opacity: 0.95;
+    }
+    .cta-row {
+      margin-top: 28px;
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+    }
+    .btn-primary {
+      background: var(--brand-accent);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(0,119,255,0.25);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(0,119,255,0.28); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.85);
+      color: var(--brand-dark);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .btn-ghost:hover { transform: translateY(-1px); }
+
+    /* Sections */
+    section {
+      padding: 80px 24px;
+    }
+    .section-inner {
+      max-width: 1060px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h2 {
+      font-size: clamp(24px, 4vw, 34px);
+      margin: 0 0 12px 0;
+      color: var(--brand-accent);
+    }
+    .lead {
+      margin: 0 auto 18px;
+      max-width: 860px;
+      font-size: 18px;
+      line-height: 1.65;
+      opacity: 0.95;
+    }
+
+    /* Footer */
+    footer {
+      padding: 24px 16px;
+      text-align: center;
+      background: var(--brand-dark);
+      color: #fff;
+    }
+    footer .tiny {
+      color: #bdbdbd;
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    /* Small screens tweaks */
+    @media (max-width: 768px) {
+      nav { padding: 12px 16px; }
+      .nav-links { gap: 14px; }
+      .hero { padding-top: 84px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">A_LABS</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Research</a></li>
+      <li><a href="#">Community</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="kicker">Enriching Humanity Beyond Innovations</span>
+      <h1>Personalized Technology for Real-World Quality of Life</h1>
+      <p class="est">Established 2024 • New York</p>
+      <p class="sub">
+        We design and build bespoke software, smart tools, and 3D-printed solutions that serve real people
+        and real communities—starting locally, scaling globally. From wellness and productivity apps to
+        modular hardware, A_LABS engineers for impact.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Explore Solutions</a>
+        <a class="btn btn-ghost" href="#">About A_LABS</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="section-inner">
+      <h2>Mission</h2>
+      <p class="lead">
+        Deliver human-centered innovation. We craft tailored products—software and physical—that integrate into daily life,
+        reduce friction, and amplify human potential. Each build cycles through local feedback, ensuring measurable
+        improvement in quality of life.
+      </p>
+    </div>
+  </section>
+
+  <!-- VISION -->
+  <section id="vision">
+    <div class="section-inner">
+      <h2>Vision</h2>
+      <p class="lead">
+        A distributed network of neighborhood labs, connected by a shared platform and modular design system.
+        Communities co-create, and A_LABS manufactures and maintains. The result: durable, secure, and scalable
+        technology for everyday living.
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2025 A_LABS. All Rights Reserved.</div>
+    <div class="tiny">Established 2024 · Enriching Humanity Beyond Innovations</div>
+  </footer>
+
+</body>
+</html>
