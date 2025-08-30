@@ -1,92 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Cannabis Intel Nexus</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive Sports Labs — ISL</title>
+  <meta name="description" content="Interactive Sports Labs (ISL): enterprise‑grade sports analysis, interactive scoreboards, and community research tools." />
+  <link rel="icon" href="resources/logo/ISL_LOGO_V2.png" type="image/png" />
 
-    <!-- CSS file -->
-    <link rel="stylesheet" href="css/isl_home_design.css" type="text/css" charset="utf-8" />
+  <!-- Fonts from index(1).html -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap" rel="stylesheet" />
 
-    <!-- Favicon -->
-    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
-    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+  <style>
+    :root{
+      /* Brand palette (from index(5).html) */
+      --arkaysia:#090909; /* base */
+      --indigo:#5c5ab8;  /* labs */
+      --gold:#ffdb58;    /* editorial */
+      --lemon:#ffff00;   /* score signals */
+      --green:#4CAF50;   /* nexus */
+
+      /* UI neutrals (from index(5).html) */
+      --ink:#0e0f12; --ink-2:#13151b; --ink-3:#181b23; --ink-4:#1f2330; /* surfaces */
+      --edge:rgba(255,255,255,.10); --edge-2:rgba(255,255,255,.16);
+      --text:#e8eaed; --muted:#a9b2c1;
+
+      --radius:16px; --radius-lg:22px;
+      --shadow: 0 10px 30px rgba(0,0,0,.38);
+      --container: 1180px;
+
+      /* Animated background (use from index(5).html) */
+      --bg: linear-gradient(to right, var(--arkaysia), var(--indigo), var(--gold), var(--lemon), var(--green));
+    }
+
+    html, body{ height:100%; }
+    body{
+      margin:0; color:var(--text); background: var(--arkaysia);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+
+    /* ======= BACKGROUND (animated gradient only) ======= */
+    .bg{ position:fixed; inset:0; z-index:-2; background: var(--bg) fixed; background-size:300% 300%; animation: shift 18s ease-in-out infinite alternate; }
+    .bg::after{ content:""; position:absolute; inset:0; background: radial-gradient(1000px 600px at 50% -10%, rgba(92,90,184,.26), transparent 55%), linear-gradient(180deg, rgba(9,9,9,.1), rgba(9,9,9,.85)); }
+    @keyframes shift{ 0%{background-position:0% 50%} 100%{background-position:100% 50%} }
+
+    /* ======= TOPBAR & NAV (from index(5).html: logo as menu + sound toggle) ======= */
+    .topbar{ position:sticky; top:0; z-index:50; backdrop-filter:saturate(130%) blur(6px); border-bottom:1px solid var(--edge); background: rgba(9,9,9,.86); }
+    .nav{ max-width:var(--container); margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:14px; }
+    .logo-btn{ display:inline-flex; align-items:center; gap:10px; background: transparent; border:1px solid var(--edge); border-radius:12px; padding:6px 8px; cursor:pointer; color:#fff; }
+    .logo-btn img{ width:36px; height:36px; border-radius:10px; box-shadow:var(--shadow); }
+    .logo-btn:hover{ background: rgba(255,255,255,.06); }
+    .spacer{ flex:1 }
+    .sound-toggle{ display:flex; align-items:center; gap:8px; margin-left:auto; font-size:12px; color:#d9e0f0; user-select:none; }
+    .switch{ position:relative; width:46px; height:26px; background:rgba(255,255,255,.12); border-radius:999px; cursor:pointer; border:1px solid var(--edge-2); }
+    .knob{ position:absolute; top:3px; left:3px; width:20px; height:20px; background:#fff; border-radius:999px; transition:left .16s ease; }
+    .switch.on{ background: rgba(92,90,184,.7); border-color: rgba(92,90,184,.9); }
+    .switch.on .knob{ left:23px; }
+
+    /* ======= LEFT DRAWER (from index(5).html) ======= */
+    .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:45; }
+    .drawer{ position:fixed; top:62px; left:16px; width:min(380px, 92vw); max-height:78vh; overflow:auto; background: linear-gradient(180deg, var(--ink-3), var(--ink-2)); border:1px solid var(--edge); border-radius:16px; box-shadow:var(--shadow); transform: translateY(10px) scale(.98); opacity:0; pointer-events:none; transition: all .16s ease; z-index:46; }
+    .drawer.show{ opacity:1; transform:none; pointer-events:auto; }
+    .scrim.show{ opacity:1; pointer-events:auto; }
+    .drawer .block{ padding:14px; border-bottom:1px solid var(--edge); }
+    .drawer .block:last-child{ border-bottom:0 }
+    .drawer h4{ margin:0 0 10px; font-size:14px; letter-spacing:.3px; color:#e3e8f6; }
+    .link{ display:flex; align-items:center; justify-content:space-between; gap:10px; color:#e6ecf8; text-decoration:none; padding:10px 12px; border-radius:10px; border:1px solid transparent; }
+    .link:hover{ background: rgba(255,255,255,.06); border-color: var(--edge); }
+    .chip{ display:inline-flex; align-items:center; gap:8px; padding:8px 10px; font-weight:700; border-radius:999px; text-decoration:none; border:1px solid var(--edge); background: rgba(255,255,255,.04); color:#eef2ff; }
+    .chip[data-accent="indigo"]{ border-color: rgba(92,90,184,.55); }
+    .chip[data-accent="gold"]  { border-color: rgba(255,219,88,.6); }
+    .chip[data-accent="green"] { border-color: rgba(76,175,80,.6); }
+
+    /* ======= LAYOUT FROM index(1).html ======= */
+    .hero{ max-width: var(--container); margin: 40px auto 10px auto; padding: 0 20px; display:grid; grid-template-columns: 1.3fr 1fr; gap:26px; align-items:center; }
+    .hero h1{ font-size: clamp(30px, 5vw, 54px); line-height:1.05; margin:0; letter-spacing:.2px; }
+    .hero p{ margin: 14px 0 22px 0; color:#d3d9e6; font-size: clamp(14px, 1.6vw, 18px); }
+    .hero-card{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.06); border-radius: 24px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.24); }
+    .value-bullets{ display:grid; gap:10px; margin-top:10px; }
+    .value-bullets li{ list-style:none; display:flex; align-items:flex-start; gap:10px; }
+    .value-bullets svg{ flex:0 0 auto; margin-top:2px; }
+    .kpi-bar{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:18px; }
+    .kpi{ padding:14px; border-radius:14px; border:1px solid rgba(255,255,255,.06); text-align:center; background:rgba(255,255,255,.03); }
+    .kpi strong{ font-size:18px; display:block; }
+    .kpi span{ font-size:12px; color:#b8c0d2; }
+
+    .pillars{ max-width: var(--container); margin: 28px auto; padding: 0 20px; }
+    .pillars-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; }
+    .pillar{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.08); border-radius: 18px; padding:18px; box-shadow: 0 4px 14px rgba(0,0,0,.18); position:relative; overflow:hidden; }
+    .pillar h3{ margin:4px 0 6px 0; font-size:18px; letter-spacing:.3px; }
+    .pillar p{ margin:0; color:#cdd5e6; font-size:13px; }
+    .accent-bar{ position:absolute; inset:0 auto auto 0; width:4px; height:100%; border-radius: 4px; opacity:.9; }
+    .accent-labs{ background: var(--indigo); }
+    .accent-nexus{ background: var(--green); }
+    .accent-info{ background: var(--gold); }
+    .accent-score{ background: var(--lemon); }
+
+    .pillar .cta{ margin-top:12px; display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; text-decoration:none; font-weight:700; }
+    .cta-labs{ color:#dedcff; background: rgba(92,90,184,.18); border:1px solid rgba(92,90,184,.42); }
+    .cta-nexus{ color:#dfffe3; background: rgba(76,175,80,.18); border:1px solid rgba(76,175,80,.42); }
+    .cta-info{ color:#fff4c9; background: rgba(255,219,88,.18); border:1px solid rgba(255,219,88,.42); }
+    .cta-score{ color:#fbffcd; background: rgba(255,255,0,.18); border:1px solid rgba(255,255,0,.38); }
+
+    .scores{ max-width: var(--container); margin: 12px auto 40px auto; padding: 0 20px; }
+    .section-head{ display:flex; align-items:baseline; justify-content:space-between; }
+    .section-head h2{ margin: 18px 0 8px 0; font-size: 22px; letter-spacing:.3px; }
+    .section-head .sub{ color:#b9c2d6; font-size: 13px; }
+    .sports-grid{ display:grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+    .sport-card{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px; text-decoration:none; color: #e6ecf8; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 4px 14px rgba(0,0,0,.18); min-height: 120px; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+    .sport-card:hover{ transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.24); border-color: rgba(255,219,88,.32); }
+    .sport-card .tag{ font-size:11px; color:#cdd5e6; opacity:.9; }
+    .sport-card h4{ margin:8px 0 6px 0; font-size:16px; }
+    .sport-card .cta{ margin-top:auto; font-weight:700; font-size:12px; opacity:.95; }
+
+    .feature{ max-width: var(--container); margin: 10px auto 46px auto; padding: 0 20px; display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    .card{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px; }
+    .card h3{ margin: 4px 0 10px 0; font-size:18px; }
+    .thumb{ aspect-ratio: 16/9; width:100%; border-radius:12px; background:#0e1016; border:1px dashed rgba(255,255,255,.08); display:grid; place-items:center; color:#8ea2c7; font-size:12px; }
+    .meta{ display:flex; gap:10px; align-items:center; margin-top:10px; font-size:12px; color:#9fb0cc; }
+
+    footer{ border-top:1px solid var(--edge); background:#0a0a0a; }
+    .footer-inner{ max-width: var(--container); margin:0 auto; padding:20px; display:grid; grid-template-columns: 1fr 1fr; gap:16px; color:#b7bfd3; font-size:12px; }
+
+    /* Responsive (from index(1).html) */
+    @media (max-width: 1100px){
+      .pillars-grid{ grid-template-columns: repeat(2, 1fr);} 
+      .sports-grid{ grid-template-columns: repeat(3, 1fr);} 
+      .hero{ grid-template-columns: 1fr; }
+      .feature{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px){ .sports-grid{ grid-template-columns: repeat(2, 1fr);} }
+  </style>
 </head>
+
 <body>
-    <!-- Background Video Container -->
-    <div class="video-container">
-        <video autoplay muted loop class="background-video">
-            <source src="resources/bgs/cin_main.webm" type="video/webm">
-            Your browser does not support the video tag.
-        </video>
+  <!-- Animated brand background (from index(5).html) -->
+  <div class="bg" aria-hidden="true"></div>
 
-        <!-- Navigation Bar Container -->
-        <div class="nav-container">
-            <nav class="show-nav">
-                <div class="dropdown">
-                    <a href="#">Strains</a>
-                    <div class="dropdown-content">
-                        <a href="#">Sativa</a>
-                        <a href="#">Indica</a>
-                        <a href="#">Hybrid</a>
-                    </div>
-                </div>  
-                <div class="dropdown">
-                    <a href="#">Lab Results</a>
-                    <div class="dropdown-content">
-                        <a href="#">THC & CBD Levels</a>
-                        <a href="#">Terpene Profiles</a>
-                        <a href="#">Full COAs</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <a href="#">Find Strains</a>
-                    <div class="dropdown-content">
-                        <a href="#">By Effect</a>
-                        <a href="#">By Flavor</a>
-                        <a href="#">By Potency</a>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <a href="#">Dispensaries</a>
-                </div>
-                <div class="dropdown">
-                    <a href="#">About</a>
-                </div>
-            </nav>
-        </div>
+  <!-- ================= AUDIO BANK (kept stable) ================= -->
+  <!-- Laboratories -->
+  <audio id="islLaboratoriesSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
+  <audio id="islLaboratoriesSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="basketballLabSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="basketballLabSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_swish.mp3" type="audio/mp3"/></audio>
+  <audio id="sweetscienceLabSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="sweetscienceLabSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_punch_lab.mp3" type="audio/mp3"/></audio>
+  <audio id="racecraftLabSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="racecraftLabSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_v12_a.mp3" type="audio/mp3"/></audio>
+  <!-- Nexus -->
+  <audio id="islNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
+  <audio id="islNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="basketballNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="basketballNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_swish.mp3" type="audio/mp3"/></audio>
+  <audio id="sweetscienceNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="sweetscienceNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_punch_lab.mp3" type="audio/mp3"/></audio>
+  <audio id="racerNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="racerNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_labs.mp3" type="audio/mp3"/></audio>
+  <!-- Home -->
+  <audio id="islSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_data_reveal.mp3" type="audio/mp3"/></audio>
+  <audio id="islSoundRobot" preload="auto"><source src="resources/sounds/navbar_sounds/isl_little_robot.mp3" type="audio/mp3"/></audio>
+  <!-- InfoStreams -->
+  <audio id="infostreamsSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
+  <audio id="infostreamsSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="giveandgoinfoSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="giveandgoinfoSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="sweetsciencespotlightSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="sweetsciencespotlightSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="racecraftreconSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="racecraftreconSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <!-- Scoreboards -->
+  <audio id="interactivescoreboardsSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
+  <audio id="interactivescoreboardsSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="nbascoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="nbascoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="boxingscoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="boxingscoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
+  <audio id="formulaonescoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
+  <audio id="formulaonescoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_lightsout.mp3" type="audio/mp3"/></audio>
+
+  <!-- ================= TOPBAR (Logo = menu button, from index(5)) ================= -->
+  <header class="topbar">
+    <nav class="nav" aria-label="Primary">
+      <button id="menuLogoBtn" class="logo-btn" aria-expanded="false" aria-controls="drawer" data-sound-hover="islSound" data-sound-click="islSoundRobot">
+        <img src="resources/logo/ISL_LOGO_V2.png" alt="Open ISL menu" />
+        <span style="font-family:Orbitron,Inter; font-weight:800; letter-spacing:.3px;">ISL</span>
+      </button>
+      <div class="spacer"></div>
+      <div class="sound-toggle" title="Toggle navigation sounds">
+        <span>Nav Sounds</span>
+        <div class="switch on" id="soundSwitch" role="switch" aria-checked="true" tabindex="0"><div class="knob"></div></div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================ LEFT DRAWER NAV (from index(5)) ================= -->
+  <div id="scrim" class="scrim" aria-hidden="true"></div>
+  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="ISL Navigation">
+    <div class="block">
+      <h4>LABS • R&D</h4>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-laboratories" data-sound-hover="islLaboratoriesSound" data-sound-click="islLaboratoriesSoundClick">All Laboratories →</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-basketball-rnd-lab" data-sound-hover="basketballLabSound" data-sound-click="basketballLabSoundClick">Basketball R&D</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-sweetscience-rnd-lab" data-sound-hover="sweetscienceLabSound" data-sound-click="sweetscienceLabSoundClick">Boxing R&D</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-racecraft-rnd-lab" data-sound-hover="racecraftLabSound" data-sound-click="racecraftLabSoundClick">Racecraft R&D</a>
     </div>
-
-    <!-- Search & Strain List Section -->
-    <div class="container">
-        <h1>Cannabis Intel Nexus</h1>
-        <p>Your source for real, lab-tested cannabis data.</p>
-        <input type="text" class="search-bar" placeholder="Search strains..." onkeyup="filterStrains()">
-        <div class="strain-list" id="strainList">
-            <div class="strain-item">Apple Jacks - THC: 25.97% | Limonene: 0.86%</div>
-            <div class="strain-item">Maraschino Runtz - THC: 35.55% | Myrcene: 0.33%</div>
-            <div class="strain-item">Durban Poison - THC: 27.37% | Pinene: 0.02%</div>
-        </div>
+    <div class="block">
+      <h4>SCOREBOARDS • Live</h4>
+      <div class="chips" id="chipsSports"></div>
     </div>
+    <div class="block">
+      <h4>INFOSTREAMS • Editorial</h4>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-infostreams" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">All InfoStreams →</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-give-and-go-info" data-sound-hover="giveandgoinfoSound" data-sound-click="giveandgoinfoSoundClick">Give & Go</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-sweet-science-spotlight" data-sound-hover="sweetsciencespotlightSound" data-sound-click="sweetsciencespotlightSoundClick">Sweet Science Spotlight</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-racecraft-reconnaissance" data-sound-hover="racecraftreconSound" data-sound-click="racecraftreconSoundClick">Racecraft Recon</a>
+    </div>
+    <div class="block">
+      <h4>NEXUS • Community</h4>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-nexus" data-sound-hover="islNexusSound" data-sound-click="islNexusSoundClick">Open Nexus →</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-basketball-nexus" data-sound-hover="basketballNexusSound" data-sound-click="basketballNexusSoundClick">Basketball Nexus</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-sweetscience-nexus" data-sound-hover="sweetscienceNexusSound" data-sound-click="sweetscienceNexusSoundClick">Sweet Science Nexus</a>
+      <a class="link" href="https://tonyarkaysia.github.io/isl-racer-nexus" data-sound-hover="racerNexusSound" data-sound-click="racerNexusSoundClick">Racer Nexus</a>
+    </div>
+    <div class="block">
+      <h4>Follow ISL</h4>
+      <div class="chips">
+        <a class="chip" data-accent="green" href="https://www.facebook.com/interactivesportslabs" target="_blank" rel="noopener" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">Facebook</a>
+        <a class="chip" data-accent="indigo" href="https://www.instagram.com/interactivesportslabs" target="_blank" rel="noopener" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">@interactivesportslabs</a>
+      </div>
+    </div>
+  </aside>
 
-    <!-- Footer Background & Information -->
-    <footer>
-        <video autoplay muted loop class="footer-video">
-            <source src="resources/bgs/cin_footer.webm" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </footer>
+  <!-- ===================== MAIN (layout/content from index(1).html) ===================== -->
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-label="ISL overview">
+      <div>
+        <div class="hero-card">
+          <h1>Sports science, built for everyone —<br/>and trusted by pros.</h1>
+          <p>Interactive Sports Labs merges editorial discipline with research‑grade tooling. Real analysis. Real dialogue. Scoreboards and labs that invite the world to learn by doing.</p>
+          <ul class="value-bullets">
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#5c5ab8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span><strong>Non‑biased coverage</strong> that elevates underdog stories and the technical side of sport.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span><strong>Community Nexus</strong> to discuss rules, tactics, physiology, and performance.</span>
+            </li>
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#ffdb58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span><strong>Interactive scoreboards</strong> for the major leagues and global events.</span>
+            </li>
+          </ul>
+          <div class="kpi-bar" aria-hidden="true">
+            <div class="kpi"><strong>4</strong><span>Pillars</span></div>
+            <div class="kpi"><strong>12+</strong><span>Sports</span></div>
+            <div class="kpi"><strong>24/7</strong><span>Coverage</span></div>
+            <div class="kpi"><strong>∞</strong><span>Research</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="thumb">Hero visual / highlight video (optional)</div>
+        <div class="meta"><span class="pill pill-info">FEATURE</span><span>Data‑driven stories, interactive by design</span></div>
+      </div>
+    </section>
 
-    <script>
-        function filterStrains() {
-            let input = document.querySelector('.search-bar').value.toLowerCase();
-            let items = document.querySelectorAll('.strain-item');
-            
-            items.forEach(item => {
-                let text = item.textContent.toLowerCase();
-                item.style.display = text.includes(input) ? 'block' : 'none';
-            });
-        }
-    </script>
+    <!-- PILLARS -->
+    <section class="pillars" aria-label="ISL pillars">
+      <div class="pillars-grid">
+        <article class="pillar">
+          <span class="accent-bar accent-labs"></span>
+          <span class="pill pill-labs">LABS</span>
+          <h3>Laboratories</h3>
+          <p>R&D hubs for basketball, boxing, and racecraft. Build tools, test theories, publish findings.</p>
+          <a class="cta cta-labs" href="https://tonyarkaysia.github.io/isl-laboratories" data-sound-hover="islLaboratoriesSound" data-sound-click="islLaboratoriesSoundClick">Enter Labs →</a>
+        </article>
+        <article class="pillar">
+          <span class="accent-bar accent-nexus"></span>
+          <span class="pill pill-nexus">NEXUS</span>
+          <h3>Global Community</h3>
+          <p>Central hub to connect, collaborate, conduct studies, and collect insights with peers and pros.</p>
+          <a class="cta cta-nexus" href="https://tonyarkaysia.github.io/isl-nexus" data-sound-hover="islNexusSound" data-sound-click="islNexusSoundClick">Open Nexus →</a>
+        </article>
+        <article class="pillar">
+          <span class="accent-bar accent-info"></span>
+          <span class="pill pill-info">INFOSTREAMS</span>
+          <h3>Editorial & Analysis</h3>
+          <p>Unbiased reporting with interactive visuals. Learn by exploring the data behind the story.</p>
+          <a class="cta cta-info" href="https://tonyarkaysia.github.io/isl-infostreams" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">Read Stories →</a>
+        </article>
+        <article class="pillar">
+          <span class="accent-bar accent-score"></span>
+          <span class="pill pill-score">SCOREBOARDS</span>
+          <h3>Interactive Scoreboards</h3>
+          <p>Clean, fast, and reliable. Major leagues today; more coming as we scale infrastructure.</p>
+          <a class="cta cta-score" href="https://tonyarkaysia.github.io/isl-scoreboards" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">View Scores →</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- SCOREBOARDS GRID (from index(1)) -->
+    <section class="scores" aria-label="Major sports scoreboards">
+      <div class="section-head">
+        <h2>Major Sports • Live Scoreboards</h2>
+        <div class="sub">Phase 1 coverage; links route to current ISL scoreboards or placeholders.</div>
+      </div>
+      <div class="sports-grid">
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-basketball-scoreboard" data-sound-hover="nbascoreboardSound" data-sound-click="nbascoreboardSoundClick">
+          <span class="tag">NBA</span>
+          <h4>Basketball</h4>
+          <span class="cta">Open scoreboard →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-boxing-scoreboard" data-sound-hover="boxingscoreboardSound" data-sound-click="boxingscoreboardSoundClick">
+          <span class="tag">BOX</span>
+          <h4>Boxing</h4>
+          <span class="cta">Round‑by‑round →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard" data-sound-hover="formulaonescoreboardSound" data-sound-click="formulaonescoreboardSoundClick">
+          <span class="tag">F1</span>
+          <h4>Formula 1</h4>
+          <span class="cta">Lights out →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">NFL</span>
+          <h4>Football</h4>
+          <span class="cta">View scores →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">MLB</span>
+          <h4>Baseball</h4>
+          <span class="cta">View scores →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nhl" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">NHL</span>
+          <h4>Hockey</h4>
+          <span class="cta">View scores →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mls" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">MLS</span>
+          <h4>Soccer</h4>
+          <span class="cta">View scores →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=ncaaf" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">NCAA</span>
+          <h4>College Football</h4>
+          <span class="cta">View scores →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=ncaab" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">NCAA</span>
+          <h4>College Basketball</h4>
+          <span class="cta">View scores →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=pga" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">PGA</span>
+          <h4>Golf</h4>
+          <span class="cta">Leaderboards →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=tennis" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">ATP/WTA</span>
+          <h4>Tennis</h4>
+          <span class="cta">Live draws →</span>
+        </a>
+        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mma" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
+          <span class="tag">MMA</span>
+          <h4>Mixed Martial Arts</h4>
+          <span class="cta">Fight nights →</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- FEATURE (from index(1)) -->
+    <section class="feature" aria-label="Featured stories">
+      <article class="card">
+        <span class="pill pill-info">FEATURE</span>
+        <h3>Bernard King: a study in scoring efficiency</h3>
+        <div class="thumb">Embed highlight video or chart</div>
+        <div class="meta">Editorial • Basketball • Scientific method approach</div>
+      </article>
+      <article class="card">
+        <span class="pill pill-labs">LABS</span>
+        <h3>Rulebook with GPT</h3>
+        <div class="thumb">Interactive rule queries per sport</div>
+        <div class="meta">Tools • Fan education • Compliance</div>
+      </article>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <strong>Interactive Sports Labs</strong> — research‑driven sports media. Non‑biased coverage, interactive scoreboards, and community‑led analysis.
+      </div>
+      <div>
+        <em>Fair Use</em>: Educational commentary & research. See platform guidelines and sources policy. © ISL
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script>
+    // ===== Utilities =====
+    const SOUND_KEY = 'islNavSounds';
+    function playSoundById(id, t=0){ if(!id) return; if(localStorage.getItem(SOUND_KEY)==='off') return; const a=document.getElementById(id); if(a){ try{ a.currentTime=t; a.play(); }catch(e){} } }
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const last=localStorage.getItem('lastSound'); if(last){ playSoundById(last,0); localStorage.removeItem('lastSound'); }
+    });
+
+    // ===== Sound toggle =====
+    const soundSwitch = document.getElementById('soundSwitch');
+    function setSoundEnabled(on){ localStorage.setItem(SOUND_KEY, on?'on':'off'); soundSwitch.classList.toggle('on',!!on); soundSwitch.setAttribute('aria-checked', on?'true':'false'); }
+    setSoundEnabled((localStorage.getItem(SOUND_KEY) ?? 'on')==='on');
+    soundSwitch.addEventListener('click', ()=> setSoundEnabled(!soundSwitch.classList.contains('on')));
+    soundSwitch.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); soundSwitch.click(); } });
+
+    // ===== Global hover/click sounds =====
+    document.addEventListener('mouseover', (e)=>{ const link=e.target.closest('a[data-sound-hover]'); if(link) playSoundById(link.getAttribute('data-sound-hover')); }, true);
+    document.addEventListener('click', (e)=>{ const link=e.target.closest('a[data-sound-click]'); if(link){ const id=link.getAttribute('data-sound-click'); playSoundById(id); if(id) localStorage.setItem('lastSound', id); } }, true);
+
+    // ===== Drawer (logo button) =====
+    const menuLogoBtn = document.getElementById('menuLogoBtn');
+    const scrim = document.getElementById('scrim');
+    const drawer = document.getElementById('drawer');
+    function openDrawer(){ drawer.classList.add('show'); scrim.classList.add('show'); menuLogoBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function closeDrawer(){ drawer.classList.remove('show'); scrim.classList.remove('show'); menuLogoBtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    menuLogoBtn.addEventListener('click', ()=> drawer.classList.contains('show')?closeDrawer():openDrawer());
+    scrim.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
+    drawer.querySelectorAll('.link, .chip').forEach(a=>a.addEventListener('click', closeDrawer));
+
+    // ===== Sports set for drawer chips (from index(5).html) =====
+    const sports = [
+      {k:'basketball', name:'Basketball', href:'https://tonyarkaysia.github.io/isl-basketball-scoreboard', hover:'nbascoreboardSound', click:'nbascoreboardSoundClick', accent:'indigo'},
+      {k:'boxing',     name:'Boxing',     href:'https://tonyarkaysia.github.io/isl-boxing-scoreboard',     hover:'boxingscoreboardSound', click:'boxingscoreboardSoundClick', accent:'gold'},
+      {k:'mma',        name:'MMA',        href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=mma', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'gold'},
+      {k:'f1',         name:'Formula 1',  href:'https://tonyarkaysia.github.io/isl-formula-one-scoreboard', hover:'formulaonescoreboardSound', click:'formulaonescoreboardSoundClick', accent:'indigo'},
+      {k:'soccer',     name:'Soccer',     href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=mls', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'green'},
+      {k:'football',   name:'Football',   href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'green'},
+      {k:'baseball',   name:'Baseball',   href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'gold'},
+      {k:'hockey',     name:'Hockey',     href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=nhl', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'indigo'},
+      {k:'golf',       name:'Golf',       href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=pga', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'green'},
+      {k:'tennis',     name:'Tennis',     href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=tennis', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'indigo'}
+    ];
+
+    const chipsSports = document.getElementById('chipsSports');
+    function buildDrawerChips(){ chipsSports.innerHTML=''; for(const s of sports){ const a=document.createElement('a'); a.className='chip'; a.dataset.accent=s.accent; a.href=s.href; a.textContent=s.name; a.setAttribute('data-sound-hover', s.hover); a.setAttribute('data-sound-click', s.click); chipsSports.appendChild(a);} }
+    buildDrawerChips();
+  </script>
 </body>
 </html>
