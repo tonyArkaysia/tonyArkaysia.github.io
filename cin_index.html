@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Cannabis Intel Nexus</title>
+
+    <!-- CSS file -->
+    <link rel="stylesheet" href="css/isl_home_design.css" type="text/css" charset="utf-8" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+</head>
+<body>
+    <!-- Background Video Container -->
+    <div class="video-container">
+        <video autoplay muted loop class="background-video">
+            <source src="resources/bgs/cin_main.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Navigation Bar Container -->
+        <div class="nav-container">
+            <nav class="show-nav">
+                <div class="dropdown">
+                    <a href="#">Strains</a>
+                    <div class="dropdown-content">
+                        <a href="#">Sativa</a>
+                        <a href="#">Indica</a>
+                        <a href="#">Hybrid</a>
+                    </div>
+                </div>  
+                <div class="dropdown">
+                    <a href="#">Lab Results</a>
+                    <div class="dropdown-content">
+                        <a href="#">THC & CBD Levels</a>
+                        <a href="#">Terpene Profiles</a>
+                        <a href="#">Full COAs</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#">Find Strains</a>
+                    <div class="dropdown-content">
+                        <a href="#">By Effect</a>
+                        <a href="#">By Flavor</a>
+                        <a href="#">By Potency</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#">Dispensaries</a>
+                </div>
+                <div class="dropdown">
+                    <a href="#">About</a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Search & Strain List Section -->
+    <div class="container">
+        <h1>Cannabis Intel Nexus</h1>
+        <p>Your source for real, lab-tested cannabis data.</p>
+        <input type="text" class="search-bar" placeholder="Search strains..." onkeyup="filterStrains()">
+        <div class="strain-list" id="strainList">
+            <div class="strain-item">Apple Jacks - THC: 25.97% | Limonene: 0.86%</div>
+            <div class="strain-item">Maraschino Runtz - THC: 35.55% | Myrcene: 0.33%</div>
+            <div class="strain-item">Durban Poison - THC: 27.37% | Pinene: 0.02%</div>
+        </div>
+    </div>
+
+    <!-- Footer Background & Information -->
+    <footer>
+        <video autoplay muted loop class="footer-video">
+            <source src="resources/bgs/cin_footer.webm" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </footer>
+
+    <script>
+        function filterStrains() {
+            let input = document.querySelector('.search-bar').value.toLowerCase();
+            let items = document.querySelectorAll('.strain-item');
+            
+            items.forEach(item => {
+                let text = item.textContent.toLowerCase();
+                item.style.display = text.includes(input) ? 'block' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
