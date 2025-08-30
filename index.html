@@ -12,14 +12,18 @@
 
   <style>
     :root{
-      /* Brand palette (from index(5).html) */
+      /* Brand palette */
       --arkaysia:#090909; /* base */
       --indigo:#5c5ab8;  /* labs */
       --gold:#ffdb58;    /* editorial */
       --lemon:#ffff00;   /* score signals */
       --green:#4CAF50;   /* nexus */
+      --sky:#2DA9FF;   /* bright clear blue (no purple) */
+      --sun:#FFEA00;   /* vivid yellow (not gold) */
+      --cloud-sun-1: #FFFDE0; /* sunlit edge (light) */
+      --cloud-sun-2: #FFF6B8; /* sunlit edge (med) */
 
-      /* UI neutrals (from index(5).html) */
+      /* UI neutrals */
       --ink:#0e0f12; --ink-2:#13151b; --ink-3:#181b23; --ink-4:#1f2330; /* surfaces */
       --edge:rgba(255,255,255,.10); --edge-2:rgba(255,255,255,.16);
       --text:#e8eaed; --muted:#a9b2c1;
@@ -28,8 +32,8 @@
       --shadow: 0 10px 30px rgba(0,0,0,.38);
       --container: 1180px;
 
-      /* Animated background (use from index(5).html) */
-      --bg: linear-gradient(to right, var(--arkaysia), var(--indigo), var(--gold), var(--lemon), var(--green));
+      /* Brand gradient token */
+      --bg: linear-gradient(to right, var(--arkaysia), var(--indigo), var(--sky), var(--cloud-sun-1), var(--sky), var(--cloud-sun-2), var(--sky),var(--lemon), var(--sun));
     }
 
     html, body{ height:100%; }
@@ -39,12 +43,53 @@
       -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     }
 
-    /* ======= BACKGROUND (animated gradient only) ======= */
-    .bg{ position:fixed; inset:0; z-index:-2; background: var(--bg) fixed; background-size:300% 300%; animation: shift 18s ease-in-out infinite alternate; }
-    .bg::after{ content:""; position:absolute; inset:0; background: radial-gradient(1000px 600px at 50% -10%, rgba(92,90,184,.26), transparent 55%), linear-gradient(180deg, rgba(9,9,9,.1), rgba(9,9,9,.85)); }
-    @keyframes shift{ 0%{background-position:0% 50%} 100%{background-position:100% 50%} }
+    /* ===================== BACKGROUND (motion variants) ===================== */
+    .bg{ position:fixed; inset:0; z-index:-2; }
+    /* Readability overlay (kept for all styles) */
+    .bg::after{ content:""; position:absolute; inset:0; background:
+      radial-gradient(1000px 600px at 50% -10%, rgba(92,90,184,.26), transparent 55%),
+      linear-gradient(180deg, rgba(9,9,9,.10), rgba(9,9,9,.85)); pointer-events:none; }
 
-    /* ======= TOPBAR & NAV (from index(5).html: logo as menu + sound toggle) ======= */
+    /* 1) PING-PONG (original) */
+    .bg[data-style="pingpong"]{ background: var(--bg) fixed; background-size:300% 300%; animation: bg-shift 18s ease-in-out infinite alternate; }
+    @keyframes bg-shift{ 0%{ background-position:0% 50%; } 100%{ background-position:100% 50%; } }
+
+    /* 2) FILM ROLL (seamless horizontal scroll) */
+    .bg[data-style="roll"]{
+      background: repeating-linear-gradient(90deg,
+        var(--arkaysia) 0 20%, var(--indigo) 20% 40%, var(--gold) 40% 60%, var(--lemon) 60% 80%, var(--green) 80% 100%);
+      background-size: 200% 100%; animation: bg-roll 30s linear infinite; }
+    @keyframes bg-roll{ from{ background-position:0% 50%; } to{ background-position:100% 50%; } }
+
+    /* 3) DIAGONAL DRIFT */
+    .bg[data-style="diagonal"]{ background: var(--bg) fixed; background-size:320% 320%; animation: bg-diag 40s cubic-bezier(.42,0,.58,1) infinite; }
+    @keyframes bg-diag{ 0%{background-position:0% 0%} 50%{background-position:100% 100%} 100%{background-position:200% 0%} }
+
+    /* 4) PARALLAX (multi-layer) */
+    .bg[data-style="parallax"]{ background: var(--arkaysia); }
+    .bg[data-style="parallax"]::before{ content:""; position:absolute; inset:-12%; background: var(--bg); background-size:280% 280%; filter: blur(12px) saturate(115%);
+      animation: pan-slow 33s ease-in-out infinite alternate; opacity:.9; }
+    @keyframes pan-slow{ 0%{ transform:translate3d(-4%,-2%,0) scale(1.06); background-position:10% 40% } 100%{ transform:translate3d(5%,3%,0) scale(1.08); background-position:80% 60% } }
+
+    /* 5) ORBIT (conic wheel) */
+    .bg[data-style="orbit"]{ background: var(--arkaysia); }
+    .bg[data-style="orbit"]::before{ content:""; position:absolute; inset:-20%; background: conic-gradient(from 0deg, var(--arkaysia), var(--indigo), var(--gold), var(--lemon), var(--green), var(--arkaysia));
+      filter: blur(18px) saturate(120%); animation: orbit 120s linear infinite; opacity:.65; }
+    @keyframes orbit{ to{ transform: rotate(360deg); } }
+
+    /* 6) AURORA (breathing light sheets) */
+    .bg[data-style="aurora"]{ background: var(--arkaysia); }
+    .bg[data-style="aurora"]::before{ content:""; position:absolute; inset:-15%; background:
+      radial-gradient(60% 40% at 20% 10%, rgba(92,90,184,.35), transparent 60%),
+      radial-gradient(50% 35% at 80% 15%, rgba(255,219,88,.28), transparent 55%),
+      radial-gradient(55% 45% at 40% 80%, rgba(76,175,80,.28), transparent 60%);
+      filter: blur(14px); animation: aurora-move 26s ease-in-out infinite alternate; }
+    @keyframes aurora-move{ 0%{ transform:translate3d(-2%,-1%,0) scale(1.05)} 50%{ transform:translate3d(3%,1%,0) scale(1.10)} 100%{ transform:translate3d(-1%,3%,0) scale(1.06)} }
+
+    /* Accessibility: reduced motion */
+    @media (prefers-reduced-motion: reduce){ .bg, .bg::before{ animation:none !important; } }
+
+    /* ===================== TOPBAR & NAV ===================== */
     .topbar{ position:sticky; top:0; z-index:50; backdrop-filter:saturate(130%) blur(6px); border-bottom:1px solid var(--edge); background: rgba(9,9,9,.86); }
     .nav{ max-width:var(--container); margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:14px; }
     .logo-btn{ display:inline-flex; align-items:center; gap:10px; background: transparent; border:1px solid var(--edge); border-radius:12px; padding:6px 8px; cursor:pointer; color:#fff; }
@@ -57,7 +102,7 @@
     .switch.on{ background: rgba(92,90,184,.7); border-color: rgba(92,90,184,.9); }
     .switch.on .knob{ left:23px; }
 
-    /* ======= LEFT DRAWER (from index(5).html) ======= */
+    /* ===================== LEFT DRAWER ===================== */
     .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:45; }
     .drawer{ position:fixed; top:62px; left:16px; width:min(380px, 92vw); max-height:78vh; overflow:auto; background: linear-gradient(180deg, var(--ink-3), var(--ink-2)); border:1px solid var(--edge); border-radius:16px; box-shadow:var(--shadow); transform: translateY(10px) scale(.98); opacity:0; pointer-events:none; transition: all .16s ease; z-index:46; }
     .drawer.show{ opacity:1; transform:none; pointer-events:auto; }
@@ -72,7 +117,7 @@
     .chip[data-accent="gold"]  { border-color: rgba(255,219,88,.6); }
     .chip[data-accent="green"] { border-color: rgba(76,175,80,.6); }
 
-    /* ======= LAYOUT FROM index(1).html ======= */
+    /* ===================== LAYOUT (from index 1) ===================== */
     .hero{ max-width: var(--container); margin: 40px auto 10px auto; padding: 0 20px; display:grid; grid-template-columns: 1.3fr 1fr; gap:26px; align-items:center; }
     .hero h1{ font-size: clamp(30px, 5vw, 54px); line-height:1.05; margin:0; letter-spacing:.2px; }
     .hero p{ margin: 14px 0 22px 0; color:#d3d9e6; font-size: clamp(14px, 1.6vw, 18px); }
@@ -122,7 +167,7 @@
     footer{ border-top:1px solid var(--edge); background:#0a0a0a; }
     .footer-inner{ max-width: var(--container); margin:0 auto; padding:20px; display:grid; grid-template-columns: 1fr 1fr; gap:16px; color:#b7bfd3; font-size:12px; }
 
-    /* Responsive (from index(1).html) */
+    /* Responsive */
     @media (max-width: 1100px){
       .pillars-grid{ grid-template-columns: repeat(2, 1fr);} 
       .sports-grid{ grid-template-columns: repeat(3, 1fr);} 
@@ -134,8 +179,8 @@
 </head>
 
 <body>
-  <!-- Animated brand background (from index(5).html) -->
-  <div class="bg" aria-hidden="true"></div>
+  <!-- Animated brand background; change the style here or press Alt+B to cycle -->
+  <div class="bg" data-style="parallax" aria-hidden="true"></div>
 
   <!-- ================= AUDIO BANK (kept stable) ================= -->
   <!-- Laboratories -->
@@ -178,7 +223,7 @@
   <audio id="formulaonescoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
   <audio id="formulaonescoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_lightsout.mp3" type="audio/mp3"/></audio>
 
-  <!-- ================= TOPBAR (Logo = menu button, from index(5)) ================= -->
+  <!-- ================= TOPBAR (Logo = menu button) ================= -->
   <header class="topbar">
     <nav class="nav" aria-label="Primary">
       <button id="menuLogoBtn" class="logo-btn" aria-expanded="false" aria-controls="drawer" data-sound-hover="islSound" data-sound-click="islSoundRobot">
@@ -193,7 +238,7 @@
     </nav>
   </header>
 
-  <!-- ================ LEFT DRAWER NAV (from index(5)) ================= -->
+  <!-- ================ LEFT DRAWER NAV ================= -->
   <div id="scrim" class="scrim" aria-hidden="true"></div>
   <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="ISL Navigation">
     <div class="block">
@@ -230,36 +275,34 @@
     </div>
   </aside>
 
-  <!-- ===================== MAIN (layout/content from index(1).html) ===================== -->
+  <!-- ===================== MAIN ===================== -->
   <main>
-    <!-- HERO -->
-    <section class="hero" aria-label="ISL overview">
-      <div>
-        <div class="hero-card">
-          <h1>Sports science, built for everyone —<br/>and trusted by pros.</h1>
-          <p>Interactive Sports Labs merges editorial discipline with research‑grade tooling. Real analysis. Real dialogue. Scoreboards and labs that invite the world to learn by doing.</p>
-          <ul class="value-bullets">
-            <li>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#5c5ab8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><strong>Non‑biased coverage</strong> that elevates underdog stories and the technical side of sport.</span>
-            </li>
-            <li>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><strong>Community Nexus</strong> to discuss rules, tactics, physiology, and performance.</span>
-            </li>
-            <li>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="#ffdb58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><strong>Interactive scoreboards</strong> for the major leagues and global events.</span>
-            </li>
-          </ul>
-          <div class="kpi-bar" aria-hidden="true">
-            <div class="kpi"><strong>4</strong><span>Pillars</span></div>
-            <div class="kpi"><strong>12+</strong><span>Sports</span></div>
-            <div class="kpi"><strong>24/7</strong><span>Coverage</span></div>
-            <div class="kpi"><strong>∞</strong><span>Research</span></div>
-          </div>
+    <!-- HERO: Today Strip -->
+    <section class="hero" id="hero-today">
+      <div class="hero-card" style="grid-column:1 / -1;">
+        <h1 style="margin:0 0 10px">Today</h1>
+        <div id="todaySports" style="display:flex; flex-wrap:wrap; gap:10px;">
+          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-basketball-scoreboard"  data-sound-hover="nbascoreboardSound" data-sound-click="nbascoreboardSoundClick">Basketball</a>
+          <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-boxing-scoreboard"      data-sound-hover="boxingscoreboardSound" data-sound-click="boxingscoreboardSoundClick">Boxing</a>
+          <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mma"  data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">MMA</a>
+          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard" data-sound-hover="formulaonescoreboardSound" data-sound-click="formulaonescoreboardSoundClick">F1</a>
+          <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mls"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Soccer</a>
+          <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Football</a>
+          <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Baseball</a>
+          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nhl"  data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Hockey</a>
+          <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=pga"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Golf</a>
+          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=tennis" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Tennis</a>
         </div>
       </div>
+    </section>
+
+    <script>
+      // Auto-append today to scoreboard links in the Today strip
+      (function(){ const today = new Date().toISOString().slice(0,10); document.querySelectorAll('#todaySports a').forEach(a=>{ const href=a.getAttribute('href'); a.setAttribute('href', href + (href.includes('?')?'&':'?') + 'date=' + today); }); })();
+    </script>
+
+    <!-- Hero visual / optional media slot -->
+    <section>
       <div class="hero-card">
         <div class="thumb">Hero visual / highlight video (optional)</div>
         <div class="meta"><span class="pill pill-info">FEATURE</span><span>Data‑driven stories, interactive by design</span></div>
@@ -300,7 +343,7 @@
       </div>
     </section>
 
-    <!-- SCOREBOARDS GRID (from index(1)) -->
+    <!-- SCOREBOARDS GRID -->
     <section class="scores" aria-label="Major sports scoreboards">
       <div class="section-head">
         <h2>Major Sports • Live Scoreboards</h2>
@@ -370,7 +413,7 @@
       </div>
     </section>
 
-    <!-- FEATURE (from index(1)) -->
+    <!-- FEATURE -->
     <section class="feature" aria-label="Featured stories">
       <article class="card">
         <span class="pill pill-info">FEATURE</span>
@@ -431,7 +474,7 @@
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
     drawer.querySelectorAll('.link, .chip').forEach(a=>a.addEventListener('click', closeDrawer));
 
-    // ===== Sports set for drawer chips (from index(5).html) =====
+    // ===== Sports chips in drawer =====
     const sports = [
       {k:'basketball', name:'Basketball', href:'https://tonyarkaysia.github.io/isl-basketball-scoreboard', hover:'nbascoreboardSound', click:'nbascoreboardSoundClick', accent:'indigo'},
       {k:'boxing',     name:'Boxing',     href:'https://tonyarkaysia.github.io/isl-boxing-scoreboard',     hover:'boxingscoreboardSound', click:'boxingscoreboardSoundClick', accent:'gold'},
@@ -448,6 +491,27 @@
     const chipsSports = document.getElementById('chipsSports');
     function buildDrawerChips(){ chipsSports.innerHTML=''; for(const s of sports){ const a=document.createElement('a'); a.className='chip'; a.dataset.accent=s.accent; a.href=s.href; a.textContent=s.name; a.setAttribute('data-sound-hover', s.hover); a.setAttribute('data-sound-click', s.click); chipsSports.appendChild(a);} }
     buildDrawerChips();
+  </script>
+
+  <!-- Background style chooser: press Alt+B to cycle; persists to localStorage -->
+  <script>
+    (function(){
+      const el = document.querySelector('.bg');
+      const STYLES = ['pingpong','roll','diagonal','parallax','orbit','aurora'];
+      const saved = localStorage.getItem('islBgStyle');
+      if(saved && STYLES.includes(saved)) el.dataset.style = saved;
+      else el.dataset.style = el.dataset.style || 'parallax';
+
+      document.addEventListener('keydown', (e)=>{
+        if(e.altKey && e.key.toLowerCase() === 'b'){
+          const i = STYLES.indexOf(el.dataset.style);
+          const next = STYLES[(i+1) % STYLES.length];
+          el.dataset.style = next;
+          localStorage.setItem('islBgStyle', next);
+          console.log('ISL background style →', next);
+        }
+      });
+    })();
   </script>
 </body>
 </html>
