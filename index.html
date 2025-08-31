@@ -59,7 +59,7 @@
     .bg{ position:fixed; inset:0; z-index:-2; }
     /* Readability overlay (kept for all styles) */
     .bg::after{ content:""; position:absolute; inset:0; background:
-      radial-gradient(1000px 600px at 50% -10%, rgba(92,90,184,.26), transparent 95%),
+      radial-gradient(1000px 600px at 50% -10%, rgba(92,90,184,.26), transparent 55%),
       linear-gradient(180deg, rgba(9,9,9,.10), rgba(9,9,9,.85)); pointer-events:none; }
 
     /* 1) PING-PONG (original) */
@@ -112,10 +112,13 @@
     .switch.on .knob{ left:23px; }
 
     /* ===================== LEFT DRAWER ===================== */
-    .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:45; }
+    .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .15s ease; z-index:45; }
     .drawer{ position:fixed; top:62px; left:16px; width:min(380px, 92vw); max-height:78vh; overflow:auto; background: linear-gradient(180deg, var(--ink-3), var(--ink-2)); border:1px solid var(--edge); border-radius:16px; box-shadow:var(--shadow); transform: translateY(10px) scale(.98); opacity:0; pointer-events:none; transition: all .16s ease; z-index:46; }
     .drawer.show{ opacity:1; transform:none; pointer-events:auto; }
-    .scrim.show{ opacity:1; pointer-events:auto; }
+    .scrim.show{
+      opacity:1; visibility:visible; pointer-events:auto;
+      transition: opacity .15s ease; /* visibility shows immediately */
+    }
     .drawer .block{ padding:14px; border-bottom:1px solid var(--edge); }
     .drawer .block:last-child{ border-bottom:0 }
     .drawer h4{ margin:0 0 10px; font-size:14px; letter-spacing:.3px; color:#e3e8f6; }
@@ -184,6 +187,13 @@
       .feature{ grid-template-columns: 1fr; }
     }
     @media (max-width: 640px){ .sports-grid{ grid-template-columns: repeat(2, 1fr);} }
+    @media (pointer: coarse){
+  .bg::after{
+    background:
+      radial-gradient(900px 540px at 50% -10%, rgba(92,90,184,.18), transparent 55%),
+      linear-gradient(180deg, rgba(9,9,9,.06), rgba(9,9,9,.35));
+  }
+}
   </style>
 </head>
 
