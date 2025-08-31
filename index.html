@@ -20,9 +20,10 @@
       --lemon:#ffff00;   /* score signals */
       --green:#4CAF50;   /* nexus */
       --sky:#2DA9FF;   /* bright clear blue (no purple) */
-      --sun:#FFEA00;   /* vivid yellow (not gold) */
+      --sun:#FFEF00;   
+      --sun1: #FFDA03;
       --cloud-sun-1: #FFFDE0; /* sunlit edge (light) */
-      --cloud-sun-2: #FFF6B8; /* sunlit edge (med) */
+      --cloud-sun-2: #FFFF00; /* sunlit edge (med) */
       --space-70-sky: color-mix(in oklab, var(--arkaysia) 70%, var(--sky));
       --space-40-sky: color-mix(in oklab, var(--arkaysia) 40%, var(--sky));
       --sky-70-sun:   color-mix(in oklab, var(--sky) 70%, var(--sun));
@@ -37,17 +38,15 @@
       --shadow: 0 10px 30px rgba(0,0,0,.38);
       --container: 1180px;
 
-      /* Brand gradient token */
+       /* Brand gradient token */
       --bg: linear-gradient(90deg,
         var(--arkaysia)   0%,
-        var(--arkaysia)  42%,
-        var(--space-70-sky) 52%,
-        var(--space-40-sky) 62%,
-        var(--sky)       74%,
-        /* var(--sky-70-sun) 86%, */
-        var(--sun)       86%
+        var(--arkaysia)  39%,
+        /* var(--space-70-sky) 43%, */
+        var(--space-40-sky) 59%,
+        var(--sun)       73%
       );
-    }
+    } 
 
     html, body{ height:100%; }
     body{
@@ -98,68 +97,6 @@
       radial-gradient(55% 45% at 40% 80%, rgba(76,175,80,.28), transparent 60%);
       filter: blur(14px); animation: aurora-move 26s ease-in-out infinite alternate; }
     @keyframes aurora-move{ 0%{ transform:translate3d(-2%,-1%,0) scale(1.05)} 50%{ transform:translate3d(3%,1%,0) scale(1.10)} 100%{ transform:translate3d(-1%,3%,0) scale(1.06)} }
-    
-    /* ===== 7) DAYCYCLE (space → peeks → clouds → FULL SUN (hold) → back) ===== */
-    .bg[data-style="daycycle"]{ background: var(--arkaysia); }
-
-    /* base sweep: Arkaysia → Sky → Sun; we pan across it */
-    .bg[data-style="daycycle"]::before{
-      content:""; position:absolute; inset:-12%;
-      background: linear-gradient(90deg,
-        var(--arkaysia) 0%,
-        color-mix(in oklab, var(--arkaysia) 55%, var(--sky)) 40%,
-        var(--sky) 65%,
-        var(--sun) 100%);
-      background-size: 300% 100%;
-      filter: blur(10px) saturate(115%);
-      animation: daycycle-pan 90s linear infinite;
-      opacity:.95;
-    }
-
-    /* overlays: two sun peeks, cloud sheets, full-sun core, night overlay */
-    .bg[data-style="daycycle"]::after{
-      content:""; position:absolute; inset:-15%;
-      --peekL:0; --peekR:0; --suncore:0; --cloud:0; --night:.55;
-      background:
-        /* sun peeks */
-        radial-gradient(40% 30% at 22% 35%, rgba(255,234,0, var(--peekL)) 0%, rgba(255,234,0,0) 60%),
-        radial-gradient(34% 26% at 78% 22%, rgba(255,234,0, var(--peekR)) 0%, rgba(255,234,0,0) 60%),
-        /* full sun core */
-        radial-gradient(50% 50% at 50% 50%, rgba(255,234,0, var(--suncore)) 0%, rgba(255,234,0,0) 60%),
-        /* clouds */
-        radial-gradient(60% 40% at 18% 18%, rgba(248,251,255, var(--cloud)) 0%, rgba(248,251,255,0) 70%),
-        radial-gradient(55% 42% at 70% 14%, rgba(239,245,255, var(--cloud)) 0%, rgba(239,245,255,0) 70%),
-        radial-gradient(65% 48% at 42% 82%, rgba(233,241,250, var(--cloud)) 0%, rgba(233,241,250,0) 70%),
-        /* readability + night */
-        linear-gradient(180deg, rgba(9,9,9, var(--night)) 0%, rgba(9,9,9,.12) 60%, rgba(9,9,9,.65) 100%);
-      animation: daycycle-phases 90s ease-in-out infinite;
-    }
-
-    @keyframes daycycle-pan{
-      0%   { background-position:   0% 50%; transform: translate3d(-2%,-1%,0) scale(1.04); }
-      50%  { background-position: 100% 50%; transform: translate3d( 2%, 1%,0)  scale(1.07); }
-      100% { background-position: 200% 50%; transform: translate3d(-1%,2%,0) scale(1.05); }
-    }
-
-    /* holds FULL SPACE (0–20%) and FULL SUN (45–65%) for equal time */
-    @keyframes daycycle-phases{
-      /* 0–20: deep space hold */
-      0%   { --peekL:0;   --peekR:0;   --suncore:0;   --cloud:0.00; --night:.55; }
-      20%  { --peekL:.55; --peekR:.00; --suncore:0;   --cloud:.15;  --night:.45; }
-      /* 20–35: first peeks + clouds */
-      35%  { --peekL:.40; --peekR:.20; --suncore:.12; --cloud:.38;  --night:.28; }
-      /* 35–45: build to sun */
-      45%  { --peekL:.20; --peekR:.15; --suncore:.80; --cloud:.18;  --night:.12; }
-      /* 45–65: FULL SUN hold (equal duration to space hold) */
-      55%  { --peekL:.10; --peekR:.10; --suncore:1.00; --cloud:.08; --night:.05; }
-      65%  { --peekL:.15; --peekR:.25; --suncore:.85;  --cloud:.12; --night:.10; }
-      /* 65–80: clouds return + second peeks */
-      75%  { --peekL:.10; --peekR:.45; --suncore:.25;  --cloud:.36; --night:.28; }
-      80%  { --peekL:0;   --peekR:0;   --suncore:.10;  --cloud:.18; --night:.42; }
-      /* 80–100: back to deep space */
-      100% { --peekL:0;   --peekR:0;   --suncore:0;    --cloud:0.00; --night:.55; }
-    }
-
 
     /* Accessibility: reduced motion */
     @media (prefers-reduced-motion: reduce){ .bg, .bg::before{ animation:none !important; } }
@@ -255,7 +192,7 @@
 
 <body>
   <!-- Animated brand background; change the style here or press Alt+B to cycle -->
-  <div class="bg" data-style="daycycle" aria-hidden="true"></div>
+  <div class="bg" data-style="parallax" aria-hidden="true"></div>
 
   <!-- ================= AUDIO BANK (kept stable) ================= -->
   <!-- Laboratories -->
