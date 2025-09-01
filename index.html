@@ -11,7 +11,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
-    :root{
+    :root{  
+      --topbar-h: 62px;
+      --container: 1180px;          /* site default */
+      --container-hero: 1440px;     /* wider hero */
+
       /* Brand palette */
       --arkaysia:#090909; /* base */
       --space-to-sky-mid:#1B5984; 
@@ -45,8 +49,78 @@
         /* var(--space-70-sky) 43%, */
         var(--space-40-sky) 59%,
         var(--sun)       73%
+
+      /* Make embedded videos fill the thumb nicely */
+      .thumb iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: 12px;}
       );
-    } 
+    }
+    
+    /* Keep :root for VARIABLES ONLY */
+:root{
+  --topbar-h: 62px;
+  --container: 1180px;          /* site default */
+  --container-hero: 1440px;     /* wider hero */
+  /* … your brand palette vars … */
+  --bg: linear-gradient(90deg,
+    var(--arkaysia) 0%,
+    var(--arkaysia) 39%,
+    var(--space-40-sky) 59%,
+    var(--sun) 73%
+  );
+}
+
+    /* HERO (moved OUT of :root and widened) */
+    #hero-dynamic{
+      min-height: calc(100svh - var(--topbar-h));
+      display: grid;
+      align-items: center;
+    }
+
+    #hero-dynamic .wrap{
+      max-width: min(var(--container-hero), 96vw);  /* wider hero */
+      margin: 0 auto;
+      padding: 0 24px;
+      display: block;                                /* single panel — no columns */
+    }
+
+    /* If you want a grid in the hero later, use a single column by default */
+    @media (min-width: 1101px){
+      #hero-dynamic .wrap.hero-grid{
+        display: grid;
+        grid-template-columns: 1fr;                  /* start wide, add cols when needed */
+        gap: 18px;
+        align-items: stretch;
+      }
+    }
+
+    #hero-dynamic .hero-card{ height: 100%; }
+
+    @media (max-width:1100px){
+      #hero-dynamic{ min-height:auto; }
+      #hero-dynamic .wrap{ max-width: none; padding: 0 clamp(16px, 4vw, 48px); }
+    }
+
+    /* De-dup & keep these OUTSIDE :root */
+    .tabbar{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tab{ padding:8px 12px; border-radius:10px; border:1px solid var(--edge); background:rgba(255,255,255,.04); cursor:pointer; font-weight:700; }
+    .tab[aria-selected="true"]{ background:rgba(255,255,255,.12); border-color:var(--edge-2); }
+    .panes{ margin-top:10px; }
+    .pane{ display:none; }
+    .pane.active{ display:block; }
+    canvas.spark{ width:100%; height:140px; background:transparent; border:1px dashed rgba(255,255,255,.12); border-radius:10px; }
+
+    /* Make embedded videos fill the thumb nicely */
+    .thumb iframe{
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 12px;
+    }
+
 
     html, body{ height:100%; }
     body{
@@ -112,13 +186,10 @@
     .switch.on .knob{ left:23px; }
 
     /* ===================== LEFT DRAWER ===================== */
-    .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; visibility:hidden; pointer-events:none; transition:opacity .15s ease; z-index:45; }
+    .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:45; }
     .drawer{ position:fixed; top:62px; left:16px; width:min(380px, 92vw); max-height:78vh; overflow:auto; background: linear-gradient(180deg, var(--ink-3), var(--ink-2)); border:1px solid var(--edge); border-radius:16px; box-shadow:var(--shadow); transform: translateY(10px) scale(.98); opacity:0; pointer-events:none; transition: all .16s ease; z-index:46; }
     .drawer.show{ opacity:1; transform:none; pointer-events:auto; }
-    .scrim.show{
-      opacity:1; visibility:visible; pointer-events:auto;
-      transition: opacity .15s ease; /* visibility shows immediately */
-    }
+    .scrim.show{ opacity:1; pointer-events:auto; }
     .drawer .block{ padding:14px; border-bottom:1px solid var(--edge); }
     .drawer .block:last-child{ border-bottom:0 }
     .drawer h4{ margin:0 0 10px; font-size:14px; letter-spacing:.3px; color:#e3e8f6; }
@@ -187,13 +258,6 @@
       .feature{ grid-template-columns: 1fr; }
     }
     @media (max-width: 640px){ .sports-grid{ grid-template-columns: repeat(2, 1fr);} }
-    @media (pointer: coarse){
-  .bg::after{
-    background:
-      radial-gradient(900px 540px at 50% -10%, rgba(92,90,184,.18), transparent 55%),
-      linear-gradient(180deg, rgba(9,9,9,.06), rgba(9,9,9,.35));
-  }
-}
   </style>
 </head>
 
@@ -304,7 +368,7 @@
           <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-basketball-scoreboard"  data-sound-hover="nbascoreboardSound" data-sound-click="nbascoreboardSoundClick">Basketball</a>
           <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-boxing-scoreboard"      data-sound-hover="boxingscoreboardSound" data-sound-click="boxingscoreboardSoundClick">Boxing</a>
           <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mma"  data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">MMA</a>
-          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard" data-sound-hover="formulaonescoreboardSound" data-sound-click="formulaonescoreboardSoundClick">F1</a>
+          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard" data-sound-hover="interactivescoreboardsSound" data-sound-click="racecraftLabSoundClick">F1</a>
           <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mls"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Soccer</a>
           <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Football</a>
           <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Baseball</a>
@@ -320,15 +384,267 @@
       (function(){ const today = new Date().toISOString().slice(0,10); document.querySelectorAll('#todaySports a').forEach(a=>{ const href=a.getAttribute('href'); a.setAttribute('href', href + (href.includes('?')?'&':'?') + 'date=' + today); }); })();
     </script>
 
-    <!-- Hero visual / optional media slot -->
-    <section>
-      <div class="hero-card">
-        <div class="thumb">Hero visual / highlight video (optional)</div>
-        <div class="meta"><span class="pill pill-info">FEATURE</span><span>Data‑driven stories, interactive by design</span></div>
+    <script>
+    // Map chip text -> sport key
+    const SPORT_KEY_MAP = {
+      basketball:'basketball', boxing:'boxing', mma:'mma', f1:'f1',
+      soccer:'soccer', football:'football', baseball:'baseball',
+      hockey:'hockey', golf:'golf', tennis:'tennis'
+    };
+
+    // Per-sport content templates (inside the single hero card)
+    const HERO_TEMPLATES = {
+      default(){
+        return `
+          <div class="thumb">Select a sport to populate this panel</div>
+          <ul class="value-bullets">
+            <li style="display:flex;gap:10px;align-items:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+              <span>Highlights + quick stats load dynamically per sport.</span>
+            </li>
+          </ul>
+        `;
+      },
+      basketball(){
+        return `
+          <div class="tabbar" role="tablist" aria-label="Basketball sections">
+            <button class="tab" role="tab" aria-selected="true" data-tab="highlights">Highlights</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="stats">Stats</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="analysis">Analysis</button>
+          </div>
+
+          <div class="panes">
+            <div class="pane active" id="pane-highlights">
+              <div class="thumb" id="bbVideo">Loading latest NBA video…</div>
+              <div class="kpi-inline">
+                <div class="kpi"><strong id="bbTopGames">10</strong><span>Games</span></div>
+                <div class="kpi"><strong id="bbTopNet">+7.3</strong><span>Best NetRtg</span></div>
+                <div class="kpi"><strong id="bbTopEFG">64%</strong><span>Top eFG%</span></div>
+              </div>
+            </div>
+
+            <div class="pane" id="pane-stats">
+              <div class="controls">
+                <span class="pill">Quarter:</span>
+                <a class="chip" data-accent="indigo" data-series="q1">Q1</a>
+                <a class="chip" data-accent="indigo" data-series="q2">Q2</a>
+                <a class="chip" data-accent="indigo" data-series="q3">Q3</a>
+                <a class="chip" data-accent="indigo" data-series="q4">Q4</a>
+              </div>
+              <canvas class="spark" id="bbSpark" width="800" height="180" aria-label="Clutch run sparkline"></canvas>
+              <div class="kpi-inline">
+                <div class="kpi"><strong id="bbClutchRun">8–0</strong><span>Best run</span></div>
+                <div class="kpi"><strong id="bbPace">98.4</strong><span>Pace</span></div>
+                <div class="kpi"><strong id="bb3pt">35%</strong><span>3PT</span></div>
+              </div>
+            </div>
+
+            <div class="pane" id="pane-analysis">
+              <details open class="card">
+                <summary style="cursor:pointer;font-weight:700">Method notes</summary>
+                <p class="muted" style="margin-top:8px">
+                  Shot quality = location + contest + shot type priors. Clutch = last 5 minutes ±5.
+                  Replace this text with links to your public methods page.
+                </p>
+              </details>
+            </div>
+          </div>
+        `;
+      },
+      boxing(){
+        return `
+          <div class="thumb">Round-by-round momentum — embed timeline here</div>
+          <ul class="value-bullets">
+            <li style="display:flex;gap:10px;align-items:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+              <span>Jab share & power accuracy by round.</span>
+            </li>
+            <li style="display:flex;gap:10px;align-items:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+              <span>Body-shot effectiveness in minutes 4–9.</span>
+            </li>
+          </ul>
+          <div class="kpi-bar">
+            <div class="kpi"><strong>3</strong><span>Title bouts</span></div>
+            <div class="kpi"><strong>28%</strong><span>Jab share</span></div>
+            <div class="kpi"><strong>41%</strong><span>Power Acc.</span></div>
+            <div class="kpi"><strong>+12</strong><span>Plus/Minus best</span></div>
+          </div>
+        `;
+      },
+      f1(){
+        return `
+          <div class="thumb">Sector deltas & tyre deg — track overlay here</div>
+          <ul class="value-bullets">
+            <li style="display:flex;gap:10px;align-items:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+              <span>Fuel-adjusted race pace (FP long runs).</span>
+            </li>
+            <li style="display:flex;gap:10px;align-items:center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
+              <span>Pit-loss estimate & undercut window.</span>
+            </li>
+          </ul>
+          <div class="kpi-bar">
+            <div class="kpi"><strong>0.23s</strong><span>Avg gap S2</span></div>
+            <div class="kpi"><strong>2.8s</strong><span>Pit loss</span></div>
+            <div class="kpi"><strong>4</strong><span>Tyre comps</span></div>
+            <div class="kpi"><strong>3</strong><span>SC (hist)</span></div>
+          </div>
+        `;
+      }
+    };
+
+    const HERO_META = {
+      default:{ tag:'ISL • Today', title:'Daily features & analysis', sub:'Pick a sport in “Today” to load tailored highlights and quick stats.' },
+      basketball:{ tag:'NBA • Today', title:'ALLEN "THE ANSWER" IVERSON', sub:'Live tracking of shot quality, PPP, and late-game momentum.' },
+      boxing:{ tag:'Boxing • Tonight', title:'Tempo, jab share, and ringcraft', sub:'Corner-style dashboard: jab %, power accuracy, momentum by round.' },
+      f1:{ tag:'F1 • Weekend', title:'Sector deltas & tyre deg preview', sub:'Long-run pace parsed by stint; quali mini-sectors highlighted.' },
+      soccer:{ tag:'Soccer • Today', title:'xThreat build-up & press resistance', sub:'Progression chains that actually bite: entries, xT, high-press breakouts.' },
+      football:{ tag:'Football • Today', title:'Early-down EPA & pressure', sub:'Success rate by personnel, protection schemes, and heat maps.' },
+      baseball:{ tag:'Baseball • Today', title:'Pitch shapes & zone value', sub:'Tunneling, PLV estimates, and run value by quadrant.' },
+      hockey:{ tag:'Hockey • Today', title:'Rush chances & xG against', sub:'Matchups by pairings and defensive zone exits.' },
+      golf:{ tag:'Golf • This week', title:'Strokes gained & approach form', sub:'Course fit comps and round-by-round SG splits.' },
+      tennis:{ tag:'Tennis • Today', title:'Rally length & serve patterns', sub:'Hold/break trends and surface-adjusted pace.' }
+    };
+
+    function renderHero(key='default'){
+      const meta = HERO_META[key] || HERO_META.default;
+      document.getElementById('heroTag').textContent = meta.tag;
+      document.getElementById('heroTitle').textContent = meta.title;
+      document.getElementById('heroSub').textContent = meta.sub;
+      const tpl = (HERO_TEMPLATES[key] || HERO_TEMPLATES.default)();
+      document.getElementById('heroContent').innerHTML = tpl;
+    }
+
+    
+
+    // Hook up Today chips → render single-panel hero (modifier keys still open links)
+    document.querySelectorAll('#todaySports a').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        const keyText = (a.textContent || '').trim().toLowerCase();
+        renderHero(SPORT_KEY_MAP[keyText] || 'default');
+        document.getElementById('hero-dynamic').scrollIntoView({behavior:'smooth', block:'start'});
+      }, true);
+    });
+
+    // Initial state
+    renderHero('default');
+  </script>
+
+  <script>
+    const HERO_ENHANCERS = {
+      basketball(el){
+        // Tabs
+        const tabs = el.querySelectorAll('.tab');
+        const panes = { highlights:'#pane-highlights', stats:'#pane-stats', analysis:'#pane-analysis' };
+        tabs.forEach(t=>{
+          t.addEventListener('click', ()=>{
+            tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+            t.setAttribute('aria-selected','true');
+            const target = panes[t.dataset.tab];
+            el.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+            el.querySelector(target).classList.add('active');
+          });
+        });
+
+        // NBA channel (official)
+        const NBA_CHANNEL_ID = "UCWJ2lWNubArHWmf3FIHbfcQ"; // uploads playlist = UUWJ2lWNubArHWmf3FIHbfcQ
+
+        function embedLatestFromUploads(container, channelId) {
+          const uploadsId = channelId.replace(/^UC/, "UU");
+          container.innerHTML = `
+            <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/GVX4sC6qKYk?si=oTHqscbQFZa4WL4A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          `;
+        }
+
+        
+
+        const videoSlot = el.querySelector("#bbVideo");
+        if (videoSlot) {
+          embedLatestFromUploads(videoSlot, NBA_CHANNEL_ID);
+        }
+
+
+        // Sparkline (tiny vanilla renderer)
+        const ctx = el.querySelector('#bbSpark')?.getContext('2d');
+        if(!ctx) return;
+        const series = {
+          q1:[2,4,3,6,5,7,6,9,7,10],
+          q2:[1,2,3,4,6,8,9,7,6,8],
+          q3:[0,1,1,3,5,6,8,10,9,11],
+          q4:[3,4,6,7,9,12,10,13,15,14]
+        };
+        function draw(arr){
+          const W = ctx.canvas.width, H = ctx.canvas.height;
+          ctx.clearRect(0,0,W,H);
+          // axes (subtle)
+          ctx.globalAlpha = 0.25; ctx.strokeStyle = '#ffffff'; ctx.beginPath();
+          ctx.moveTo(30,H-30); ctx.lineTo(W-10,H-30); ctx.moveTo(30,10); ctx.lineTo(30,H-30); ctx.stroke();
+          ctx.globalAlpha = 1;
+
+          // normalize
+          const min = Math.min(...arr), max = Math.max(...arr);
+          const padL=40, padR=10, padT=16, padB=36;
+          const x = i => padL + (i/(arr.length-1))*(W-padL-padR);
+          const y = v => padT + (1-((v-min)/(max-min||1)))*(H-padT-padB);
+
+          // area
+          ctx.beginPath();
+          ctx.moveTo(x(0), y(arr[0]));
+          for(let i=1;i<arr.length;i++) ctx.lineTo(x(i), y(arr[i]));
+          ctx.lineTo(W-padR, H-padB); ctx.lineTo(padL, H-padB); ctx.closePath();
+          ctx.fillStyle = 'rgba(255,255,255,0.10)'; ctx.fill();
+
+          // line
+          ctx.beginPath(); ctx.moveTo(x(0), y(arr[0]));
+          for(let i=1;i<arr.length;i++) ctx.lineTo(x(i), y(arr[i]));
+          ctx.lineWidth = 2; ctx.strokeStyle = '#ffffff'; ctx.stroke();
+        }
+        draw(series.q4); // default
+
+        // Quarter buttons
+        el.querySelectorAll('[data-series]').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const k = btn.dataset.series;
+            draw(series[k]);
+            // quick KPI demo updates
+            el.querySelector('#bbClutchRun').textContent = (k==='q4'?'12–2':'8–0');
+            el.querySelector('#bbPace').textContent = (k==='q2'?'101.2':'98.4');
+            el.querySelector('#bb3pt').textContent = (k==='q1'?'38%':'35%');
+          });
+        });
+      }
+    };
+
+    // Call enhancer after we render the hero content
+    const _origRenderHero = renderHero;
+    renderHero = function(key='default'){
+      _origRenderHero(key);
+      const el = document.getElementById('heroContent');
+      (HERO_ENHANCERS[key] || function(){})(el);
+    };
+  </script>
+
+
+
+    <!-- HERO: dynamic, full-viewport single panel -->
+    <section id="hero-dynamic" aria-label="Sport feature">
+      <div class="wrap">
+        <article class="hero-card hero-panel">
+          <span class="pill pill-info" id="heroTag">ISL • Today</span>
+          <h2 id="heroTitle" style="margin:6px 0 2px 0; font-size:clamp(28px,5vw,48px);">Daily features & analysis</h2>
+          <p id="heroSub" class="muted">Pick a sport in “Today” to load tailored highlights and quick stats.</p>
+          <div id="heroContent">
+            <div class="thumb">Select a sport to populate this panel</div>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- PILLARS -->
+        <!-- PILLARS -->
     <section class="pillars" aria-label="ISL pillars">
       <div class="pillars-grid">
         <article class="pillar">
@@ -361,6 +677,8 @@
         </article>
       </div>
     </section>
+
+
 
     <!-- SCOREBOARDS GRID -->
     <section class="scores" aria-label="Major sports scoreboards">
@@ -491,7 +809,9 @@
     menuLogoBtn.addEventListener('click', ()=> drawer.classList.contains('show')?closeDrawer():openDrawer());
     scrim.addEventListener('click', closeDrawer);
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
-    drawer.querySelectorAll('.link, .chip').forEach(a=>a.addEventListener('click', closeDrawer));
+    drawer.addEventListener('click', (e)=>{
+      if (e.target.closest('.link, .chip')) closeDrawer();
+    });
 
     // ===== Sports chips in drawer =====
     const sports = [
@@ -534,3 +854,5 @@
   </script>
 </body>
 </html>
+
+
