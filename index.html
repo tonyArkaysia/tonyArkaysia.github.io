@@ -1,977 +1,309 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="profilePage()" :class="dark ? 'dark' : ''">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Interactive Sports Labs — ISL</title>
-  <meta name="description" content="Interactive Sports Labs (ISL): enterprise-grade sports analysis, interactive scoreboards, and community research tools." />
-  <link rel="icon" href="resources/logo/ISL_LOGO_V2.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;700&display=swap" rel="stylesheet" />
-
+  <title>Tony Arkaysia — Interactive Profile</title>
+  <meta name="description" content="Systems builder blending data, AI, hardware, and storytelling. Interactive portfolio with live charts and expandable projects." />
+  <link rel="icon" href="favicon.png" />
+  
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js for interactivity (tiny) -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Chart.js for radar chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  
   <style>
-    /* ========= DESIGN TOKENS ========= */
-    :root{
-      --topbar-h: 62px;
-      --container: 1180px;          /* site default */
-      --container-hero: 1440px;     /* wider hero */
-
-      /* Brand palette */
-      --arkaysia:#090909; /* base */
-      --space-to-sky-mid:#1B5984;
-      --indigo:#5c5ab8;  /* labs */
-      --gold:#ffdb58;    /* editorial */
-      --lemon:#ffff00;   /* score signals */
-      --green:#4CAF50;   /* nexus */
-      --sky:#2DA9FF;     /* bright blue */
-      --sun:#FFEF00;     /* warm sun */
-
-      /* Derived mixes */
-      --space-70-sky: color-mix(in oklab, var(--arkaysia) 70%, var(--sky));
-      --space-40-sky: color-mix(in oklab, var(--arkaysia) 40%, var(--sky));
-      --sky-70-sun:   color-mix(in oklab, var(--sky) 70%, var(--sun));
-
-      /* UI neutrals */
-      --ink:#0e0f12; --ink-2:#13151b; --ink-3:#181b23; --ink-4:#1f2330;
-      --edge:rgba(255,255,255,.10); --edge-2:rgba(255,255,255,.16);
-      --text:#e8eaed; --muted:#a9b2c1;
-
-      --radius:16px; --radius-lg:22px;
-      --shadow: 0 10px 30px rgba(0,0,0,.38);
-
-      /* Brand gradient token */
-      --bg: linear-gradient(90deg,
-        var(--arkaysia) 0%,
-        var(--arkaysia) 39%,
-        var(--space-40-sky) 59%,
-        var(--sun) 73%
-      );
-    }
-
-    /* ========= GLOBALS ========= */
-    html, body{ height:100%; }
-    body{
-      margin:0; color:var(--text); background: var(--arkaysia);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-    }
-
-    /* Make embedded videos fill the thumb nicely */
-    .thumb iframe{
-      width: 100%;
-      height: 100%;
-      border: 0;
-      border-radius: 12px;
-    }
-
-    /* ========= BACKGROUND (motion variants) ========= */
-    .bg{ position:fixed; inset:0; z-index:-2; }
-    .bg::after{
-      content:""; position:absolute; inset:0; background:
-        radial-gradient(1000px 600px at 50% -10%, rgba(92,90,184,.26), transparent 55%),
-        linear-gradient(180deg, rgba(9,9,9,.10), rgba(9,9,9,.85));
-      pointer-events:none;
-    }
-    .bg[data-style="pingpong"]{ background: var(--bg) fixed; background-size:300% 300%; animation: bg-shift 18s ease-in-out infinite alternate; }
-    @keyframes bg-shift{ 0%{ background-position:0% 50%; } 100%{ background-position:100% 50%; } }
-    .bg[data-style="roll"]{
-      background: repeating-linear-gradient(90deg,
-        var(--arkaysia) 0 20%, var(--indigo) 20% 40%, var(--gold) 40% 60%, var(--lemon) 60% 80%, var(--green) 80% 100%);
-      background-size: 200% 100%; animation: bg-roll 30s linear infinite;
-    }
-    @keyframes bg-roll{ from{ background-position:0% 50%; } to{ background-position:100% 50%; } }
-    .bg[data-style="diagonal"]{ background: var(--bg) fixed; background-size:320% 320%; animation: bg-diag 40s cubic-bezier(.42,0,.58,1) infinite; }
-    @keyframes bg-diag{ 0%{background-position:0% 0%} 50%{background-position:100% 100%} 100%{background-position:200% 0%} }
-    .bg[data-style="parallax"]{ background: var(--arkaysia); }
-    .bg[data-style="parallax"]::before{
-      content:""; position:absolute; inset:-12%; background: var(--bg); background-size:280% 280%; filter: blur(12px) saturate(115%);
-      animation: pan-slow 33s ease-in-out infinite alternate; opacity:.9;
-    }
-    @keyframes pan-slow{ 0%{ transform:translate3d(-4%,-2%,0) scale(1.06); background-position:10% 40% } 100%{ transform:translate3d(5%,3%,0) scale(1.08); background-position:80% 60% } }
-    .bg[data-style="orbit"]{ background: var(--arkaysia); }
-    .bg[data-style="orbit"]::before{
-      content:""; position:absolute; inset:-20%; background: conic-gradient(from 0deg, var(--arkaysia), var(--indigo), var(--gold), var(--lemon), var(--green), var(--arkaysia));
-      filter: blur(18px) saturate(120%); animation: orbit 120s linear infinite; opacity:.65;
-    }
-    @keyframes orbit{ to{ transform: rotate(360deg); } }
-    .bg[data-style="aurora"]{ background: var(--arkaysia); }
-    .bg[data-style="aurora"]::before{
-      content:""; position:absolute; inset:-15%; background:
-        radial-gradient(60% 40% at 20% 10%, rgba(92,90,184,.35), transparent 60%),
-        radial-gradient(50% 35% at 80% 15%, rgba(255,219,88,.28), transparent 55%),
-        radial-gradient(55% 45% at 40% 80%, rgba(76,175,80,.28), transparent 60%);
-      filter: blur(14px); animation: aurora-move 26s ease-in-out infinite alternate;
-    }
-    @keyframes aurora-move{ 0%{ transform:translate3d(-2%,-1%,0) scale(1.05)} 50%{ transform:translate3d(3%,1%,0) scale(1.10)} 100%{ transform:translate3d(-1%,3%,0) scale(1.06)} }
-
-    /* ========= TOPBAR ========= */
-    .topbar{ position:sticky; top:0; z-index:50; backdrop-filter:saturate(130%) blur(6px); border-bottom:1px solid var(--edge); background: rgba(9,9,9,.86); }
-    .nav{ max-width:var(--container); margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:14px; }
-    .logo-btn{ display:inline-flex; align-items:center; gap:10px; background: transparent; border:1px solid var(--edge); border-radius:12px; padding:6px 8px; cursor:pointer; color:#fff; }
-    .logo-btn img{ width:36px; height:36px; border-radius:10px; box-shadow:var(--shadow); }
-    .logo-btn:hover{ background: rgba(255,255,255,.06); }
-    .spacer{ flex:1 }
-    .sound-toggle{ display:flex; align-items:center; gap:8px; margin-left:auto; font-size:12px; color:#d9e0f0; user-select:none; }
-    .switch{ position:relative; width:46px; height:26px; background:rgba(255,255,255,.12); border-radius:999px; cursor:pointer; border:1px solid var(--edge-2); }
-    .knob{ position:absolute; top:3px; left:3px; width:20px; height:20px; background:#fff; border-radius:999px; transition:left .16s ease; }
-    .switch.on{ background: rgba(92,90,184,.7); border-color: rgba(92,90,184,.9); }
-    .switch.on .knob{ left:23px; }
-
-    /* ========= DRAWER ========= */
-    .scrim{ position:fixed; inset:0; background: rgba(0,0,0,.55); opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:45; }
-    .drawer{ position:fixed; top:62px; left:16px; width:min(380px, 92vw); max-height:78vh; overflow:auto; background: linear-gradient(180deg, var(--ink-3), var(--ink-2)); border:1px solid var(--edge); border-radius:16px; box-shadow:var(--shadow); transform: translateY(10px) scale(.98); opacity:0; pointer-events:none; transition: all .16s ease; z-index:46; }
-    .drawer.show{ opacity:1; transform:none; pointer-events:auto; }
-    .scrim.show{ opacity:1; pointer-events:auto; }
-    .drawer .block{ padding:14px; border-bottom:1px solid var(--edge); }
-    .drawer .block:last-child{ border-bottom:0 }
-    .drawer h4{ margin:0 0 10px; font-size:14px; letter-spacing:.3px; color:#e3e8f6; }
-    .link{ display:flex; align-items:center; justify-content:space-between; gap:10px; color:#e6ecf8; text-decoration:none; padding:10px 12px; border-radius:10px; border:1px solid transparent; }
-    .link:hover{ background: rgba(255,255,255,.06); border-color: var(--edge); }
-    .chip{ display:inline-flex; align-items:center; gap:8px; padding:8px 10px; font-weight:700; border-radius:999px; text-decoration:none; border:1px solid var(--edge); background: rgba(255,255,255,.04); color:#eef2ff; }
-    .chip[data-accent="indigo"]{ border-color: rgba(92,90,184,.55); }
-    .chip[data-accent="gold"]  { border-color: rgba(255,219,88,.6); }
-    .chip[data-accent="green"] { border-color: rgba(76,175,80,.6); }
-
-    /* ========= LAYOUT/SECTIONS ========= */
-    .hero{ max-width: var(--container); margin: 40px auto 10px auto; padding: 0 20px; display:grid; grid-template-columns: 1.3fr 1fr; gap:26px; align-items:center; }
-    .hero h1{ font-size: clamp(30px, 5vw, 54px); line-height:1.05; margin:0; letter-spacing:.2px; }
-    .hero p{ margin: 14px 0 22px 0; color:#d3d9e6; font-size: clamp(14px, 1.6vw, 18px); }
-    .hero-card{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.06); border-radius: 24px; padding: 22px; box-shadow: 0 8px 24px rgba(0,0,0,.24); }
-
-    .value-bullets{ display:grid; gap:10px; margin-top:10px; }
-    .value-bullets li{ list-style:none; display:flex; align-items:flex-start; gap:10px; }
-    .value-bullets svg{ flex:0 0 auto; margin-top:2px; }
-
-    .kpi-bar{ display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:18px; }
-    .kpi{ padding:14px; border-radius:14px; border:1px solid rgba(255,255,255,.06); text-align:center; background:rgba(255,255,255,.03); }
-    .kpi strong{ font-size:18px; display:block; }
-    .kpi span{ font-size:12px; color:#b8c0d2; }
-
-    .pillars{ max-width: var(--container); margin: 28px auto; padding: 0 20px; }
-    .pillars-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; }
-    .pillar{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.08); border-radius: 18px; padding:18px; box-shadow: 0 4px 14px rgba(0,0,0,.18); position:relative; overflow:hidden; }
-    .pillar h3{ margin:4px 0 6px 0; font-size:18px; letter-spacing:.3px; }
-    .pillar p{ margin:0; color:#cdd5e6; font-size:13px; }
-    .accent-bar{ position:absolute; inset:0 auto auto 0; width:4px; height:100%; border-radius: 4px; opacity:.9; }
-    .accent-labs{ background: var(--indigo); }
-    .accent-nexus{ background: var(--green); }
-    .accent-info{ background: var(--gold); }
-    .accent-score{ background: var(--lemon); }
-
-    .pillar .cta{ margin-top:12px; display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; text-decoration:none; font-weight:700; }
-    .cta-labs{ color:#dedcff; background: rgba(92,90,184,.18); border:1px solid rgba(92,90,184,.42); }
-    .cta-nexus{ color:#dfffe3; background: rgba(76,175,80,.18); border:1px solid rgba(76,175,80,.42); }
-    .cta-info{ color:#fff4c9; background: rgba(255,219,88,.18); border:1px solid rgba(255,219,88,.42); }
-    .cta-score{ color:#fbffcd; background: rgba(255,255,0,.18); border:1px solid rgba(255,255,0,.38); }
-
-    .scores{ max-width: var(--container); margin: 12px auto 40px auto; padding: 0 20px; }
-    .section-head{ display:flex; align-items:baseline; justify-content:space-between; }
-    .section-head h2{ margin: 18px 0 8px 0; font-size: 22px; letter-spacing:.3px; }
-    .section-head .sub{ color:#b9c2d6; font-size: 13px; }
-
-    .sports-grid{ display:grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
-    .sport-card{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px; text-decoration:none; color: #e6ecf8; display:flex; flex-direction:column; justify-content:space-between; box-shadow: 0 4px 14px rgba(0,0,0,.18); min-height: 120px; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
-    .sport-card:hover{ transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.24); border-color: rgba(255,219,88,.32); }
-    .sport-card .tag{ font-size:11px; color:#cdd5e6; opacity:.9; }
-    .sport-card h4{ margin:8px 0 6px 0; font-size:16px; }
-    .sport-card .cta{ margin-top:auto; font-weight:700; font-size:12px; opacity:.95; }
-
-    .feature{ max-width: var(--container); margin: 10px auto 46px auto; padding: 0 20px; display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
-    .card{ background: linear-gradient(180deg, rgba(23,25,35,.6), rgba(15,17,21,.9)); border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px; }
-    .card h3{ margin: 4px 0 10px 0; font-size:18px; }
-    .thumb{ aspect-ratio: 16/9; width:100%; border-radius:12px; background:#0e1016; border:1px dashed rgba(255,255,255,.08); display:grid; place-items:center; color:#8ea2c7; font-size:12px; }
-    .meta{ display:flex; gap:10px; align-items:center; margin-top:10px; font-size:12px; color:#9fb0cc; }
-
-    footer{ border-top:1px solid var(--edge); background:#0a0a0a; }
-    .footer-inner{ max-width: var(--container); margin:0 auto; padding:20px; display:grid; grid-template-columns: 1fr 1fr; gap:16px; color:#b7bfd3; font-size:12px; }
-
-    /* ========= HERO (dynamic single-panel) ========= */
-    #hero-dynamic{ min-height: calc(100svh - var(--topbar-h)); display:grid; align-items:center; }
-    #hero-dynamic .wrap{ max-width:min(var(--container-hero), 96vw); margin:0 auto; padding:0 24px; display:block; }
-    #hero-dynamic .hero-card{ height:100%; }
-
-    /* Tabs + panes (shared) */
-    .tabbar{ display:flex; gap:8px; flex-wrap:wrap; }
-    .tab{ padding:8px 12px; border-radius:10px; border:1px solid var(--edge); background:rgba(255,255,255,.04); cursor:pointer; font-weight:700; }
-    .tab[aria-selected="true"]{ background:rgba(255,255,255,.12); border-color:var(--edge-2); }
-    .panes{ margin-top:10px; }
-    .pane{ display:none; }
-    .pane.active{ display:block; }
-    canvas.spark{ width:100%; height:140px; background:transparent; border:1px dashed rgba(255,255,255,.12); border-radius:10px; }
-
-    /* ========= Responsive ========= */
-    @media (max-width: 1100px){
-      .pillars-grid{ grid-template-columns: repeat(2, 1fr);} 
-      .sports-grid{ grid-template-columns: repeat(3, 1fr);} 
-      .hero{ grid-template-columns: 1fr; }
-      .feature{ grid-template-columns: 1fr; }
-    }
-    @media (max-width: 640px){ .sports-grid{ grid-template-columns: repeat(2, 1fr);} }
-    @media (pointer: coarse){
-      .bg::after{
-        background:
-          radial-gradient(900px 540px at 50% -10%, rgba(92,90,184,.18), transparent 55%),
-          linear-gradient(180deg, rgba(9,9,9,.06), rgba(9,9,9,.35));
-      }
-    }
+    html{scroll-behavior:smooth}
+    .glass{backdrop-filter: blur(8px);}
   </style>
 </head>
-
-<body>
-  <!-- Animated brand background; change the style here or press Alt+B to cycle -->
-  <div class="bg" data-style="parallax" aria-hidden="true"></div>
-
-  <!-- ================= AUDIO BANK (kept stable) ================= -->
-  <!-- Laboratories -->
-  <audio id="islLaboratoriesSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
-  <audio id="islLaboratoriesSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="basketballLabSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="basketballLabSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_swish.mp3" type="audio/mp3"/></audio>
-  <audio id="sweetscienceLabSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="sweetscienceLabSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_punch_lab.mp3" type="audio/mp3"/></audio>
-  <audio id="racecraftLabSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="racecraftLabSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_v12_a.mp3" type="audio/mp3"/></audio>
-  <!-- Nexus -->
-  <audio id="islNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
-  <audio id="islNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="basketballNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="basketballNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_swish.mp3" type="audio/mp3"/></audio>
-  <audio id="sweetscienceNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="sweetscienceNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_punch_lab.mp3" type="audio/mp3"/></audio>
-  <audio id="racerNexusSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="racerNexusSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_labs.mp3" type="audio/mp3"/></audio>
-  <!-- Home -->
-  <audio id="islSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_data_reveal.mp3" type="audio/mp3"/></audio>
-  <audio id="islSoundRobot" preload="auto"><source src="resources/sounds/navbar_sounds/isl_little_robot.mp3" type="audio/mp3"/></audio>
-  <!-- InfoStreams -->
-  <audio id="infostreamsSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
-  <audio id="infostreamsSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="giveandgoinfoSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="giveandgoinfoSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="sweetsciencespotlightSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="sweetsciencespotlightSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="racecraftreconSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="racecraftreconSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <!-- Scoreboards -->
-  <audio id="interactivescoreboardsSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_hover_tone.mp3" type="audio/mp3"/></audio>
-  <audio id="interactivescoreboardsSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="nbascoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="nbascoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="boxingscoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="boxingscoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_click.mp3" type="audio/mp3"/></audio>
-  <audio id="formulaonescoreboardSound" preload="auto"><source src="resources/sounds/navbar_sounds/isl_soft_beep.mp3" type="audio/mp3"/></audio>
-  <audio id="formulaonescoreboardSoundClick" preload="auto"><source src="resources/sounds/navbar_sounds/isl_f1_lightsout.mp3" type="audio/mp3"/></audio>
-
-  <!-- ================= TOPBAR (Logo = menu button) ================= -->
-  <header class="topbar">
-    <nav class="nav" aria-label="Primary">
-      <button id="menuLogoBtn" class="logo-btn" aria-expanded="false" aria-controls="drawer" data-sound-hover="islSound" data-sound-click="islSoundRobot">
-        <img src="resources/logo/ISL_LOGO_V2.png" alt="Open ISL menu" />
-        <span style="font-family:Orbitron,Inter; font-weight:800; letter-spacing:.3px;">ISL</span>
-      </button>
-      <div class="spacer"></div>
-      <div class="sound-toggle" title="Toggle navigation sounds">
-        <span>Nav Sounds</span>
-        <div class="switch on" id="soundSwitch" role="switch" aria-checked="true" tabindex="0"><div class="knob"></div></div>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+  <!-- Topbar -->
+  <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-950/60 glass">
+    <div class="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3 font-extrabold tracking-tight">
+        <span class="inline-block w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+        <span>Tony Arkaysia</span>
       </div>
-    </nav>
+      <div class="flex items-center gap-2">
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">Hire Me</a>
+        <button @click="dark=!dark" class="px-2 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700">🌗</button>
+      </div>
+    </div>
   </header>
 
-  <!-- ================ LEFT DRAWER NAV ================= -->
-  <div id="scrim" class="scrim" aria-hidden="true"></div>
-  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-label="ISL Navigation">
-    <div class="block">
-      <h4>LABS • R&D</h4>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-laboratories" data-sound-hover="islLaboratoriesSound" data-sound-click="islLaboratoriesSoundClick">All Laboratories →</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-basketball-rnd-lab" data-sound-hover="basketballLabSound" data-sound-click="basketballLabSoundClick">Basketball R&D</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-sweetscience-rnd-lab" data-sound-hover="sweetscienceLabSound" data-sound-click="sweetscienceLabSoundClick">Boxing R&D</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-racecraft-rnd-lab" data-sound-hover="racecraftLabSound" data-sound-click="racecraftLabSoundClick">Racecraft R&D</a>
-    </div>
-    <div class="block">
-      <h4>SCOREBOARDS • Live</h4>
-      <div class="chips" id="chipsSports"></div>
-    </div>
-    <div class="block">
-      <h4>INFOSTREAMS • Editorial</h4>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-infostreams" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">All InfoStreams →</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-give-and-go-info" data-sound-hover="giveandgoinfoSound" data-sound-click="giveandgoinfoSoundClick">Give & Go</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-sweet-science-spotlight" data-sound-hover="sweetsciencespotlightSound" data-sound-click="sweetsciencespotlightSoundClick">Sweet Science Spotlight</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-racecraft-reconnaissance" data-sound-hover="racecraftreconSound" data-sound-click="racecraftreconSoundClick">Racecraft Recon</a>
-    </div>
-    <div class="block">
-      <h4>NEXUS • Community</h4>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-nexus" data-sound-hover="islNexusSound" data-sound-click="islNexusSoundClick">Open Nexus →</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-basketball-nexus" data-sound-hover="basketballNexusSound" data-sound-click="basketballNexusSoundClick">Basketball Nexus</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-sweetscience-nexus" data-sound-hover="sweetsciencespotlightSound" data-sound-click="sweetsciencespotlightSoundClick">Sweet Science Nexus</a>
-      <a class="link" href="https://tonyarkaysia.github.io/isl-racer-nexus" data-sound-hover="racerNexusSound" data-sound-click="racerNexusSoundClick">Racer Nexus</a>
-    </div>
-    <div class="block">
-      <h4>Follow ISL</h4>
-      <div class="chips">
-        <a class="chip" data-accent="green" href="https://www.facebook.com/interactivesportslabs" target="_blank" rel="noopener" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">Facebook</a>
-        <a class="chip" data-accent="indigo" href="https://www.instagram.com/interactivesportslabs" target="_blank" rel="noopener" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">@interactivesportslabs</a>
+  <main class="max-w-6xl mx-auto px-4 md:px-6 py-10 space-y-16">
+    <!-- HERO -->
+    <section class="relative">
+      <div class="absolute -top-24 -right-20 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl"></div>
+      <div class="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl"></div>
+
+      <h1 class="text-3xl md:text-5xl font-black leading-tight">I <span class="text-sky-500">build & design</span><span class="text-blue-600"> apps, models, and devices</span> — that turn <span class="text-red-600">data</span> into 
+        <span class="bg-gradient-to-r from-sky-500 via-amber-400 to-green-500 bg-clip-text text-transparent">
+          real-world
+        </span>
+        <span class="text-slate-700 dark:text-slate-300">tools</span>.
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl text-center mx-auto">
+        I'm a builder and designer: databases, apps, 3-D models, gadgets. I  refine the designs, run the printer, solder the pieces, and deliver products aimed to improve the quality of life for people usually left outside of tech. My background is in business management and operations, but my drive is to engineer IoT devices and sustainable 3-D printed designs that upgrade daily life for everyday people.
+      </p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3 text-sm">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📍 Queens, NYC • Remote</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🗂️ Database design & data engineering</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-70">🧪 Data-science analytics</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📊 Interactive dashboards</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🏗️ 3-D modeling, printing & prototyping</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🛠️ Hardware tinkering + IoT builds</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🤖 AI + Edge sensors</span>
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🧩 Cross-discipline problem solving</span>
+        
+
+
       </div>
-    </div>
-  </aside>
 
-  <!-- ===================== MAIN ===================== -->
-  <main>
-
-    <!-- PILLARS -->
-    <section class="pillars" aria-label="ISL pillars">
-      <div class="pillars-grid">
-        <article class="pillar">
-          <span class="accent-bar accent-labs"></span>
-          <span class="pill pill-labs">LABS</span>
-          <h3>Laboratories</h3>
-          <p>R&D hubs for basketball, boxing, and racecraft. Build tools, test theories, publish findings.</p>
-          <a class="cta cta-labs" href="https://tonyarkaysia.github.io/isl-laboratories" data-sound-hover="islLaboratoriesSound" data-sound-click="islLaboratoriesSoundClick">Enter Labs →</a>
-        </article>
-        <article class="pillar">
-          <span class="accent-bar accent-nexus"></span>
-          <span class="pill pill-nexus">NEXUS</span>
-          <h3>Global Community</h3>
-          <p>Central hub to connect, collaborate, conduct studies, and collect insights with peers and pros.</p>
-          <a class="cta cta-nexus" href="https://tonyarkaysia.github.io/isl-nexus" data-sound-hover="islNexusSound" data-sound-click="islNexusSoundClick">Open Nexus →</a>
-        </article>
-        <article class="pillar">
-          <span class="accent-bar accent-info"></span>
-          <span class="pill pill-info">INFOSTREAMS</span>
-          <h3>Editorial & Analysis</h3>
-          <p>Unbiased reporting with interactive visuals. Learn by exploring the data behind the story.</p>
-          <a class="cta cta-info" href="https://tonyarkaysia.github.io/isl-infostreams" data-sound-hover="infostreamsSound" data-sound-click="infostreamsSoundClick">Read Stories →</a>
-        </article>
-        <article class="pillar">
-          <span class="accent-bar accent-score"></span>
-          <span class="pill pill-score">SCOREBOARDS</span>
-          <h3>Interactive Scoreboards</h3>
-          <p>Clean, fast, and reliable. Major leagues today; more coming as we scale infrastructure.</p>
-          <a class="cta cta-score" href="https://tonyarkaysia.github.io/isl-scoreboards" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">View Scores →</a>
-        </article>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href="resume.pdf" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">⬇️ Download Résumé</a>
+        <a href="https://github.com/TonyArkaysia" target="_blank" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">LinkedIn ↗</a>
+        <a href="https://www.printables.com/@RainMan_1957964" target="_blank" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">3-D Design Profile ↗</a>
       </div>
     </section>
 
-    <!-- HERO: Today Strip -->
-    <section class="hero" id="hero-today">
-      <div class="hero-card" style="grid-column:1 / -1;">
-        <h1 style="margin:0 0 10px">Today</h1>
-        <div id="todaySports" style="display:flex; flex-wrap:wrap; gap:10px;">
-          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-basketball-scoreboard"  data-sound-hover="nbascoreboardSound" data-sound-click="nbascoreboardSoundClick">Basketball</a>
-          <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-boxing-scoreboard"      data-sound-hover="boxingscoreboardSound" data-sound-click="boxingscoreboardSoundClick">Boxing</a>
-          <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mma"  data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">MMA</a>
-          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard" data-sound-hover="interactivescoreboardsSound" data-sound-click="racecraftLabSoundClick">F1</a>
-          <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mls"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Soccer</a>
-          <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Football</a>
-          <a class="chip" data-accent="gold"  href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Baseball</a>
-          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nhl"  data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Hockey</a>
-          <a class="chip" data-accent="green" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=pga"   data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Golf</a>
-          <a class="chip" data-accent="indigo" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=tennis" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">Tennis</a>
+    <!-- PROJECTS: single page, expandable cards, search + filter chips -->
+    <section id="projects">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-2xl md:text-3xl font-extrabold">Highlighted Projects</h2>
+        <div class="hidden md:block text-sm text-slate-500">Type to filter ↓</div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between mb-5">
+        <div class="flex items-center gap-2 flex-wrap">
+          <template x-for="c in categories" :key="c">
+            <button @click="active=c" class="px-3 py-1.5 rounded-2xl border text-sm shadow-sm"
+              :class="active===c ? 'bg-blue-600 text-white border-blue-700' : 'bg-white/70 dark:bg-white/5 border-slate-200 dark:border-slate-800 hover:border-blue-400'"
+              x-text="c"></button>
+          </template>
+        </div>
+        <div class="flex items-center gap-2">
+          <input x-model="q" placeholder="Search projects, tags…"
+                 class="w-full md:w-72 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
       </div>
-    </section>
 
-    <!-- HERO: dynamic, full-viewport single panel -->
-    <section id="hero-dynamic" aria-label="Sport feature">
-      <div class="wrap">
-        <article class="hero-card hero-panel">
-          <span class="pill pill-info" id="heroTag">ISL • Today</span>
-          <h2 id="heroTitle" style="margin:6px 0 2px 0; font-size:clamp(28px,5vw,48px);">Daily features & analysis</h2>
-          <p id="heroSub" class="muted">Pick a sport in “Today” to load tailored highlights and quick stats.</p>
-          <div id="heroContent">
-            <div class="thumb">Select a sport to populate this panel</div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <template x-for="p in filteredProjects()" :key="p.id">
+          <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 backdrop-blur shadow-sm hover:shadow-lg transition">
+            <div class="p-5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <h3 class="text-lg font-bold" x-text="p.name"></h3>
+                  <p class="text-slate-600 dark:text-slate-300 mt-1" x-text="p.tagline"></p>
+                </div>
+                <button @click="p.open=!p.open" class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" aria-label="Toggle details">▾</button>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <template x-for="t in p.tags" :key="t">
+                  <span class="text-xs px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900" x-text="t"></span>
+                </template>
+              </div>
+              <div x-show="p.open" x-collapse>
+                <div class="mt-4 grid gap-3 text-sm">
+                  <div class="flex items-start gap-2"><span class="mt-0.5">🧭</span><div><span class="font-semibold">Role:</span> <span x-text="p.role"></span></div></div>
+                  <div class="flex items-start gap-2"><span class="mt-0.5">🔥</span><div><span class="font-semibold">Impact:</span> <span x-text="p.impact"></span></div></div>
+                  <div class="flex items-center gap-2 flex-wrap" x-show="p.links && p.links.length">
+                    <template x-for="l in p.links" :key="l.href">
+                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" :href="l.href" target="_blank">🔗 <span x-text="l.label"></span></a>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </article>
+        </template>
       </div>
     </section>
 
-    <!-- SCOREBOARDS GRID -->
-    <section class="scores" aria-label="Major sports scoreboards">
-      <div class="section-head">
-        <h2>Major Sports • Live Scoreboards</h2>
-        <div class="sub">Phase 1 coverage; links route to current ISL scoreboards or placeholders.</div>
-      </div>
-      <div class="sports-grid">
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-basketball-scoreboard" data-sound-hover="nbascoreboardSound" data-sound-click="nbascoreboardSoundClick">
-          <span class="tag">NBA</span>
-          <h4>Basketball</h4>
-          <span class="cta">Open scoreboard →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-boxing-scoreboard" data-sound-hover="boxingscoreboardSound" data-sound-click="boxingscoreboardSoundClick">
-          <span class="tag">BOX</span>
-          <h4>Boxing</h4>
-          <span class="cta">Round-by-round →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-formula-one-scoreboard" data-sound-hover="formulaonescoreboardSound" data-sound-click="formulaonescoreboardSoundClick">
-          <span class="tag">F1</span>
-          <h4>Formula 1</h4>
-          <span class="cta">Lights out →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">NFL</span>
-          <h4>Football</h4>
-          <span class="cta">View scores →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">MLB</span>
-          <h4>Baseball</h4>
-          <span class="cta">View scores →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=nhl" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">NHL</span>
-          <h4>Hockey</h4>
-          <span class="cta">View scores →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mls" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">MLS</span>
-          <h4>Soccer</h4>
-          <span class="cta">View scores →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=ncaaf" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">NCAA</span>
-          <h4>College Football</h4>
-          <span class="cta">View scores →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=ncaab" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">NCAA</span>
-          <h4>College Basketball</h4>
-          <span class="cta">View scores →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=pga" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">PGA</span>
-          <h4>Golf</h4>
-          <span class="cta">Leaderboards →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=tennis" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">ATP/WTA</span>
-          <h4>Tennis</h4>
-          <span class="cta">Live draws →</span>
-        </a>
-        <a class="sport-card" href="https://tonyarkaysia.github.io/isl-scoreboards?sport=mma" data-sound-hover="interactivescoreboardsSound" data-sound-click="interactivescoreboardsSoundClick">
-          <span class="tag">MMA</span>
-          <h4>Mixed Martial Arts</h4>
-          <span class="cta">Fight nights →</span>
-        </a>
-      </div>
-    </section>
-
-    <!-- FEATURE -->
-    <section class="feature" aria-label="Featured stories">
-      <article class="card">
-        <span class="pill pill-info">FEATURE</span>
-        <h3 style="margin:4px 0 10px 0">
-          <a href="./bernard-king.html" style="text-decoration:none;color:#e6ecf8">
-            Decoding Bernard King’s Tactical & Analytical Prowess in Scoring Efficiency
-          </a>
-        </h3>
-        <div class="thumb" style="overflow:hidden">
-          <img src="resources/images/bernard-king-poster.jpg" alt="Bernard King scoring study" onerror="this.style.display='none'; this.parentElement.textContent='Watch the breakdown and read the full article →';" />
+    <!-- SKILLS Radar + bullet list -->
+    <section id="skills">
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Skills Snapshot</h2>
+      <div class="grid md:grid-cols-2 gap-6 items-center">
+        <div class="h-[340px] w-full">
+          <canvas id="skillsChart"></canvas>
         </div>
-        <div class="meta">Editorial • Basketball • ISL Atlas</div>
-      </article>
+        <ul class="text-sm grid sm:grid-cols-2 gap-2 list-disc list-inside">
+          <li>Python, Pandas, FastAPI</li>
+          <li>JavaScript/TypeScript, React</li>
+          <li>Data viz (Recharts/Plotly/Matplotlib)</li>
+          <li>3‑D/Blender; hardware tinkering</li>
+          <li>Evidence chains, legal‑grade docs</li>
+          <li>Branding, motion, interactive media</li>
+        </ul>
+      </div>
+    </section>
 
-      <article class="card">
-        <span class="pill pill-labs">LABS</span>
-        <h3>Rulebook with GPT</h3>
-        <div class="thumb">Interactive rule queries per sport</div>
-        <div class="meta">Tools • Fan education • Compliance</div>
-      </article>
+    <!-- EXPERIENCE Timeline (accordion style, same page) -->
+    <section id="experience">
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Experience & Milestones</h2>
+      <div class="grid gap-4">
+        <template x-for="exp in experiences" :key="exp.org">
+          <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+              <div>
+                <div class="text-sm text-blue-600 font-semibold" x-text="exp.when"></div>
+                <div class="text-lg font-bold" x-text="exp.title"></div>
+                <div class="text-slate-600 dark:text-slate-300" x-text="exp.org"></div>
+              </div>
+              <ul class="text-sm grid gap-2 list-disc list-inside max-w-2xl">
+                <template x-for="b in exp.bullets" :key="b"><li x-text="b"></li></template>
+              </ul>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- MEDIA Demos (lightbox modal) -->
+    <section id="media">
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Demos & Media</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+        <template x-for="m in media" :key="m.title">
+          <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
+            <button @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-slate-800/60 grid place-items-center text-slate-500">▶</button>
+            <div class="p-4">
+              <div class="font-semibold" x-text="m.title"></div>
+              <p class="text-sm text-slate-600 dark:text-slate-300" x-text="m.desc"></p>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Modal -->
+      <div x-show="lightbox" x-transition class="fixed inset-0 z-50 bg-black/70 glass grid place-items-center p-6">
+        <div class="max-w-3xl w-full rounded-2xl overflow-hidden bg-black">
+          <div class="flex justify-between items-center p-3 bg-slate-900 text-white text-sm">
+            <div x-text="lightbox?.title"></div>
+            <button @click="lightbox=null" class="px-2 py-1 rounded bg-white/10">✕</button>
+          </div>
+          <div class="aspect-video">
+            <iframe x-show="lightbox?.embed"
+                    :src="lightbox?.embed" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
+                    class="w-full h-full"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT with external links only -->
+    <section id="contact">
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Contact & Availability</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
+          <div class="grid gap-3 text-sm">
+            <div class="flex items-center gap-2">✉️ <a href="mailto:tony@arkaysia.labs" class="underline">tonyarkaysia@gmail.com</a></div>
+            <div class="flex items-center gap-2">📍 <span>Queens, NYC • Remote Availability Only</span></div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">GitHub ↗</a>
+              <a href="https://www.linkedin.com" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">LinkedIn ↗</a>
+              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">Media Kit ↗</a>
+            </div>
+          </div>
+        </div>
+        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
+          <form class="grid gap-3 text-sm" onsubmit="alert('Thanks! I\'ll reply shortly.'); return false;">
+            <input required placeholder="Your name" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60" />
+            <input required placeholder="Email" type="email" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60" />
+            <textarea required placeholder="What would you like to build together?" rows="4" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60"></textarea>
+            <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">Send Message</button>
+          </form>
+        </div>
+      </div>
     </section>
   </main>
 
-  <!-- ===================== FOOTER ===================== -->
-  <footer>
-    <div class="footer-inner">
+  <footer class="py-10 text-center text-sm muted">
+    <div class="mb-6">
+      <h3 class="font-semibold mb-1">A_LABS</h3>
       <div>
-        <strong>Interactive Sports Labs</strong> — research-driven sports media. Non-biased coverage, interactive scoreboards, and community-led analysis.
-      </div>
-      <div>
-        <em>Fair Use</em>: Educational commentary & research. See platform guidelines and sources policy. © ISL
+        Tony Arkaysia<br />
+        31-00 47th Avenue<br />
+        Suite 3100<br />
+        Long Island City, NY 11101
       </div>
     </div>
+    <div>© <span x-text="year"></span> Tony Arkaysia • A_LABS</div>
   </footer>
 
-  <!-- ===================== DATA (F1 Today) ===================== -->
   <script>
-    // F1 weekend snapshot demo data (override with ./data/f1/today.json if present)
-    const F1_TODAY = {
-      gp: "Dutch Grand Prix — Zandvoort (2025-08-31)",
-      podium: ["Oscar Piastri (McLaren)", "Max Verstappen (Red Bull)", "Isack Hadjar (Racing Bulls)"],
-      notable: "Lando Norris retired from P2 with 7 laps left; Ferrari double DNF",
-      headlines: [
-        { t:"Race: Piastri wins Dutch GP; Verstappen P2; Hadjar first F1 podium", u:"https://www.formula1.com/" },
-        { t:"Race highlights (official 7-min)", u:"https://www.formula1.com/" },
-        { t:"Qualifying: Verstappen on pole (highlights)", u:"https://www.formula1.com/" }
-      ],
-      // Sample stint shapes for the long-runs spark
-      stints: {
-        soft:[90.6,90.7,90.8,91.0,91.3,91.6,91.9,92.1,92.3,92.6],
-        medium:[91.0,91.0,91.1,91.2,91.4,91.6,91.8,92.0,92.2,92.4],
-        hard:[92.0,92.0,92.0,92.1,92.2,92.4,92.6,92.8,93.0,93.2]
-      },
-      meta:{ undercut:"1.6s" },
-      next:{
-        name:"Italian Grand Prix",
-        circuit:"Monza",
-        weekend:"Sep 5–7, 2025",
-        schedule:"https://www.espn.com/f1/schedule"
-      },
-      highlightUrl:"https://www.formula1.com/"
-    };
-  </script>
-
-  <!-- ===================== APP SCRIPTS ===================== -->
-  <script>
-    // ===== Utilities =====
-    const SOUND_KEY = 'islNavSounds';
-    function playSoundById(id, t=0){ if(!id) return; if(localStorage.getItem(SOUND_KEY)==='off') return; const a=document.getElementById(id); if(a){ try{ a.currentTime=t; a.play(); }catch(e){} } }
-
-    // Drawer controls
-    const menuLogoBtn = document.getElementById('menuLogoBtn');
-    const scrim = document.getElementById('scrim');
-    const drawer = document.getElementById('drawer');
-    function openDrawer(){ drawer.classList.add('show'); scrim.classList.add('show'); menuLogoBtn.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
-    function closeDrawer(){ drawer.classList.remove('show'); scrim.classList.remove('show'); menuLogoBtn.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
-
-    // Sports chip list in drawer
-    const sports = [
-      {k:'basketball', name:'Basketball', href:'https://tonyarkaysia.github.io/isl-basketball-scoreboard', hover:'nbascoreboardSound', click:'nbascoreboardSoundClick', accent:'indigo'},
-      {k:'boxing',     name:'Boxing',     href:'https://tonyarkaysia.github.io/isl-boxing-scoreboard',     hover:'boxingscoreboardSound', click:'boxingscoreboardSoundClick', accent:'gold'},
-      {k:'mma',        name:'MMA',        href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=mma', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'gold'},
-      {k:'f1',         name:'Formula 1',  href:'https://tonyarkaysia.github.io/isl-formula-one-scoreboard', hover:'formulaonescoreboardSound', click:'formulaonescoreboardSoundClick', accent:'indigo'},
-      {k:'soccer',     name:'Soccer',     href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=mls', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'green'},
-      {k:'football',   name:'Football',   href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=nfl', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'green'},
-      {k:'baseball',   name:'Baseball',   href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=mlb', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'gold'},
-      {k:'hockey',     name:'Hockey',     href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=nhl', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'indigo'},
-      {k:'golf',       name:'Golf',       href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=pga', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'green'},
-      {k:'tennis',     name:'Tennis',     href:'https://tonyarkaysia.github.io/isl-scoreboards?sport=tennis', hover:'interactivescoreboardsSound', click:'interactivescoreboardsSoundClick', accent:'indigo'}
-    ];
-
-    // Map chip text -> sport key
-    const SPORT_KEY_MAP = {
-      basketball:'basketball', boxing:'boxing', mma:'mma', f1:'f1',
-      soccer:'soccer', football:'football', baseball:'baseball',
-      hockey:'hockey', golf:'golf', tennis:'tennis'
-    };
-
-    // Per-sport content templates (single hero card)
-    const HERO_TEMPLATES = {
-      default(){
-        return `
-          <div class="thumb">Select a sport to populate this panel</div>
-          <ul class="value-bullets" style="margin-top:10px">
-            <li style="display:flex;gap:10px;align-items:center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" opacity=".8"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>
-              <span>Highlights + quick stats load dynamically per sport.</span>
-            </li>
-          </ul>
-        `;
-      },
-      basketball(){
-        return `
-          <div class="tabbar" role="tablist" aria-label="Basketball sections">
-            <button class="tab" role="tab" aria-selected="true" data-tab="highlights">Highlights</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="stats">Stats</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="analysis">Analysis</button>
-          </div>
-
-          <div class="panes">
-            <div class="pane active" id="pane-highlights">
-              <div class="thumb" id="bbVideo">Loading latest NBA video…</div>
-              <div class="kpi-inline" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
-                <div class="kpi"><strong id="bbTopGames">10</strong><span>Games</span></div>
-                <div class="kpi"><strong id="bbTopNet">+7.3</strong><span>Best NetRtg</span></div>
-                <div class="kpi"><strong id="bbTopEFG">64%</strong><span>Top eFG%</span></div>
-              </div>
-            </div>
-
-            <div class="pane" id="pane-stats">
-              <div class="controls" style="margin-bottom:8px">
-                <span class="pill">Quarter:</span>
-                <a class="chip" data-accent="indigo" data-series="q1">Q1</a>
-                <a class="chip" data-accent="indigo" data-series="q2">Q2</a>
-                <a class="chip" data-accent="indigo" data-series="q3">Q3</a>
-                <a class="chip" data-accent="indigo" data-series="q4">Q4</a>
-              </div>
-              <canvas class="spark" id="bbSpark" width="800" height="180" aria-label="Clutch run sparkline"></canvas>
-              <div class="kpi-inline" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
-                <div class="kpi"><strong id="bbClutchRun">8–0</strong><span>Best run</span></div>
-                <div class="kpi"><strong id="bbPace">98.4</strong><span>Pace</span></div>
-                <div class="kpi"><strong id="bb3pt">35%</strong><span>3PT</span></div>
-              </div>
-            </div>
-
-            <div class="pane" id="pane-analysis">
-              <details open class="card">
-                <summary style="cursor:pointer;font-weight:700">Method notes</summary>
-                <p class="muted" style="margin-top:8px">
-                  Shot quality = location + contest + shot type priors. Clutch = last 5 minutes ±5.
-                </p>
-              </details>
-            </div>
-          </div>
-        `;
-      },
-      boxing(){
-        return `
-          <div class="thumb">Round-by-round momentum — embed timeline here</div>
-          <div class="kpi-bar" style="margin-top:12px">
-            <div class="kpi"><strong>3</strong><span>Title bouts</span></div>
-            <div class="kpi"><strong>28%</strong><span>Jab share</span></div>
-            <div class="kpi"><strong>41%</strong><span>Power Acc.</span></div>
-            <div class="kpi"><strong>+12</strong><span>Plus/Minus best</span></div>
-          </div>
-        `;
-      },
-      f1(){
-        return `
-          <div class="tabbar" role="tablist" aria-label="F1 sections">
-            <button class="tab" role="tab" aria-selected="true"  data-tab="today">Today</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="longruns">Long runs</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="quali">Quali sectors</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="strategy">Strategy</button>
-          </div>
-
-          <div class="panes">
-            <!-- TODAY -->
-            <div class="pane active" id="pane-today">
-              <div class="card" style="display:grid;gap:12px">
-                <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px">
-                  <div class="recap" style="background:rgba(255,255,255,.03);border:1px solid var(--edge);border-radius:14px;padding:12px">
-                    <div style="font-weight:800;letter-spacing:.3px" id="f1RaceTitle"></div>
-                    <div class="muted" id="f1RaceDate" style="font-size:12px;margin-top:2px"></div>
-                    <ul id="f1Bullets" style="margin:10px 0 0 18px;line-height:1.35"></ul>
-
-                    <div class="kpi-bar" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
-                      <div class="kpi"><strong id="f1P1">—</strong><span>Winner</span></div>
-                      <div class="kpi"><strong id="f1P2">—</strong><span>P2</span></div>
-                      <div class="kpi"><strong id="f1P3">—</strong><span>P3</span></div>
-                    </div>
-
-                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px" id="f1Links"></div>
-                  </div>
-
-                  <div class="thumb" id="f1Video" style="display:grid;place-items:center">
-                    <a href="#" id="f1VideoLink" target="_blank" rel="noopener" style="text-decoration:none;color:#9fb0cc;font-weight:700">Watch race highlights ↗</a>
-                  </div>
-                </div>
-
-                <div class="next" style="display:grid;grid-template-columns:1fr 2fr;gap:12px">
-                  <div class="kpi" style="text-align:left">
-                    <strong id="f1NextName">—</strong>
-                    <span id="f1NextWhen">—</span>
-                  </div>
-                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-                    <div style="border:1px solid var(--edge);border-radius:10px;padding:10px">
-                      <div class="muted" style="font-size:12px">Circuit</div>
-                      <div id="f1NextCircuit" style="font-weight:700">—</div>
-                    </div>
-                    <div style="border:1px solid var(--edge);border-radius:10px;padding:10px">
-                      <div class="muted" style="font-size:12px">Weekend</div>
-                      <div id="f1NextWeekend" style="font-weight:700">—</div>
-                    </div>
-                    <a id="f1NextLink" class="chip" data-accent="indigo" href="#" target="_blank" rel="noopener" style="justify-self:start;align-self:center">Full schedule ↗</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- LONG RUNS -->
-            <div class="pane" id="pane-longruns">
-              <div class="controls" style="margin-bottom:8px">
-                <span class="pill">Compound:</span>
-                <a class="chip" data-accent="indigo" data-comp="soft">Soft</a>
-                <a class="chip" data-accent="indigo" data-comp="medium">Medium</a>
-                <a class="chip" data-accent="indigo" data-comp="hard">Hard</a>
-              </div>
-              <canvas class="spark" id="f1Spark" width="800" height="180" aria-label="Fuel-adjusted race pace"></canvas>
-              <div class="kpi-inline" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px">
-                <div class="kpi"><strong id="f1Deg">—</strong><span>Deg (est)</span></div>
-                <div class="kpi"><strong id="f1Stint">—</strong><span>Avg laps</span></div>
-                <div class="kpi"><strong id="f1Undercut">—</strong><span>Undercut</span></div>
-              </div>
-            </div>
-
-            <!-- QUALI -->
-            <div class="pane" id="pane-quali"><div class="thumb">Mini-sector heatmap placeholder</div></div>
-
-            <!-- STRATEGY -->
-            <div class="pane" id="pane-strategy"><div class="thumb">Pit windows & tyre life model</div></div>
-          </div>
-        `;
-      }
-    };
-
-    const HERO_META = {
-      default:{ tag:'ISL • Today', title:'Daily features & analysis', sub:'Pick a sport in “Today” to load tailored highlights and quick stats.' },
-      basketball:{ tag:'NBA • Today', title:'Half-court efficiency & clutch swings', sub:'Live tracking of shot quality, PPP, and late-game momentum.' },
-      boxing:{ tag:'Boxing • Tonight', title:'Tempo, jab share, and ringcraft', sub:'Corner-style dashboard: jab %, power accuracy, momentum by round.' },
-      f1:{ tag:'F1 • Weekend', title:'Sector deltas & tyre deg preview', sub:'Long-run pace parsed by stint; quali mini-sectors highlighted.' },
-      soccer:{ tag:'Soccer • Today', title:'xThreat build-up & press resistance', sub:'Progression chains: entries, xT, high-press breakouts.' },
-      football:{ tag:'Football • Today', title:'Early-down EPA & pressure', sub:'Success rate by personnel, protection schemes, heat maps.' },
-      baseball:{ tag:'Baseball • Today', title:'Pitch shapes & zone value', sub:'Tunneling, PLV estimates, run value by quadrant.' },
-      hockey:{ tag:'Hockey • Today', title:'Rush chances & xG against', sub:'Pairing matchups and defensive zone exits.' },
-      golf:{ tag:'Golf • This week', title:'Strokes gained & approach form', sub:'Course fit comps and round-by-round SG splits.' },
-      tennis:{ tag:'Tennis • Today', title:'Rally length & serve patterns', sub:'Hold/break trends and surface-adjusted pace.' }
-    };
-
-    // Enhancers
-    const HERO_ENHANCERS = {
-      basketball(el){
-        // Tabs
-        const tabs = el.querySelectorAll('.tab');
-        const panes = { highlights:'#pane-highlights', stats:'#pane-stats', analysis:'#pane-analysis' };
-        tabs.forEach(t=>{
-          t.addEventListener('click', ()=>{
-            tabs.forEach(x=>x.setAttribute('aria-selected','false'));
-            t.setAttribute('aria-selected','true');
-            el.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
-            el.querySelector(panes[t.dataset.tab]).classList.add('active');
-          });
-        });
-
-        // NBA video (placeholder)
-        const videoSlot = el.querySelector("#bbVideo");
-        if (videoSlot) {
-          videoSlot.innerHTML = `
-            <iframe src="https://www.youtube-nocookie.com/embed/GVX4sC6qKYk"
-                    title="NBA highlight" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
-        }
-
-        // Sparkline
-        const ctx = el.querySelector('#bbSpark')?.getContext('2d');
-        if(!ctx) return;
-        const series = {
-          q1:[2,4,3,6,5,7,6,9,7,10],
-          q2:[1,2,3,4,6,8,9,7,6,8],
-          q3:[0,1,1,3,5,6,8,10,9,11],
-          q4:[3,4,6,7,9,12,10,13,15,14]
-        };
-        function draw(arr){
-          const W = ctx.canvas.width, H = ctx.canvas.height;
-          ctx.clearRect(0,0,W,H);
-          ctx.globalAlpha = 0.25; ctx.strokeStyle = '#ffffff'; ctx.beginPath();
-          ctx.moveTo(30,H-30); ctx.lineTo(W-10,H-30); ctx.moveTo(30,10); ctx.lineTo(30,H-30); ctx.stroke();
-          ctx.globalAlpha = 1;
-          const min = Math.min(...arr), max = Math.max(...arr);
-          const padL=40, padR=10, padT=16, padB=36;
-          const x = i => padL + (i/(arr.length-1))*(W-padL-padR);
-          const y = v => padT + (1-((v-min)/(max-min||1)))*(H-padT-padB);
-          ctx.beginPath(); ctx.moveTo(x(0), y(arr[0]));
-          for(let i=1;i<arr.length;i++) ctx.lineTo(x(i), y(arr[i]));
-          ctx.lineTo(W-padR, H-padB); ctx.lineTo(padL, H-padB); ctx.closePath();
-          ctx.fillStyle = 'rgba(255,255,255,0.10)'; ctx.fill();
-          ctx.beginPath(); ctx.moveTo(x(0), y(arr[0]));
-          for(let i=1;i<arr.length;i++) ctx.lineTo(x(i), y(arr[i]));
-          ctx.lineWidth = 2; ctx.strokeStyle = '#ffffff'; ctx.stroke();
-        }
-        draw(series.q4);
-        el.querySelectorAll('[data-series]').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            const k = btn.dataset.series;
-            draw(series[k]);
-            el.querySelector('#bbClutchRun').textContent = (k==='q4'?'12–2':'8–0');
-            el.querySelector('#bbPace').textContent      = (k==='q2'?'101.2':'98.4');
-            el.querySelector('#bb3pt').textContent       = (k==='q1'?'38%':'35%');
-          });
-        });
-      },
-
-      async f1(el){
-        if(!el) return;
-
-        // Tabs
-        const tabs = el.querySelectorAll('.tab');
-        const panes = { today:'#pane-today', longruns:'#pane-longruns', quali:'#pane-quali', strategy:'#pane-strategy' };
-        tabs.forEach(t=>{
-          t.addEventListener('click', ()=>{
-            tabs.forEach(x=>x.setAttribute('aria-selected','false'));
-            t.setAttribute('aria-selected','true');
-            el.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
-            el.querySelector(panes[t.dataset.tab])?.classList.add('active');
-          });
-        });
-
-        // Try live override JSON → fallback to baked data
-        let data = F1_TODAY;
-        try{
-          const res = await fetch('./data/f1/today.json', { cache:'no-store' });
-          if(res.ok){
-            const j = await res.json();
-            data = { ...F1_TODAY, ...j };
+    function profilePage(){
+      return {
+        dark: false,
+        year: new Date().getFullYear(),
+        q: '',
+        active: 'All',
+        categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
+        projects: [
+          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI‑driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full‑stack dev', impact:'Parsed 1k+ COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://github.com/TonyArkaysia'}]},
+          {id:'isl', name:'Interactive Sports Labs', tagline:'Real‑time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[]},
+          {id:'qteam', name:'Q‑Team Civic Noise', tagline:'Citizen‑grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court‑ready workflows.', open:false, links:[]},
+          {id:'ark', name:'Arkaysia Forest', tagline:'Interactive anime/game world & toolchain', tags:['Media','3D','Web'], role:'Creator, writer, tech', impact:'Character DB, narrative systems, motion & audio prototypes.', open:false, links:[]},
+        ],
+        filteredProjects(){
+          const s = this.q.toLowerCase();
+          return this.projects
+            .filter(p => this.active==='All' || p.tags.includes(this.active))
+            .filter(p => !s || p.name.toLowerCase().includes(s) || p.tagline.toLowerCase().includes(s) || p.tags.join(' ').toLowerCase().includes(s));
+        },
+        experiences: [
+          {org:'A_LABS (Arkaysia Labs)', title:'Founder / Builder', when:'2023 — Present', bullets:['Launched multi‑track ventures across AI analytics, media, and civic tech.','End‑to‑end: research, product, code, branding, and ops/finance.']},
+          {org:'Noise Evidence & Policy Project', title:'Lead Systems Designer', when:'2021 — Present', bullets:['Built calibrated, time‑synced measurement stack (DBC/DBA meters + audio).','Produced legal‑grade documentation, timelines, and presentations.']},
+          {org:'Columbia Engineering', title:'Data Analytics Certification', when:'2021', bullets:['Data wrangling, viz, dashboards, and light ML workflows.']},
+        ],
+        media: [
+          {title:'NeuroTerp Radar Walkthrough', desc:'High‑level tour of the effects engine and charts.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+          {title:'Interactive Sports Board', desc:'Realtime scoreboard and research demo.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+          {title:'Noise Evidence Stack', desc:'How the collection, sync, and documentation works.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+        ],
+        lightbox: null,
+        openMedia(m){ this.lightbox = m; },
+        init(){
+          // Build radar chart once DOM is ready
+          const ctx = document.getElementById('skillsChart');
+          if(ctx){
+            new Chart(ctx, {
+              type: 'radar',
+              data: {
+                labels: ['Python','JS/TS','Data Viz','AI/ML','3D/Blender','Ops/Finance','Legal Docs'],
+                datasets: [{
+                  label: 'Proficiency',
+                  data: [95,88,90,86,70,82,78],
+                  fill: true,
+                  backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                  borderColor: 'rgb(37, 99, 235)',
+                  pointBackgroundColor: 'rgb(37, 99, 235)'
+                }]
+              },
+              options: { scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
+            });
           }
-        }catch(_){/* fallback already set */ }
-
-        // Fill TODAY
-        el.querySelector('#f1RaceTitle').textContent = data.gp || '—';
-        el.querySelector('#f1RaceDate').textContent  = 'Grand Prix Sunday';
-        const ul = el.querySelector('#f1Bullets');
-        ul.innerHTML = '';
-        (data.headlines?.slice(0,3) || []).forEach(h=>{
-          const li = document.createElement('li');
-          li.innerHTML = `<a href="${h.u}" target="_blank" rel="noopener">${h.t}</a>`;
-          ul.appendChild(li);
-        });
-        el.querySelector('#f1P1').textContent = data.podium?.[0] || '—';
-        el.querySelector('#f1P2').textContent = data.podium?.[1] || '—';
-        el.querySelector('#f1P3').textContent = data.podium?.[2] || '—';
-
-        const links = el.querySelector('#f1Links');
-        links.innerHTML = '';
-        (data.headlines||[]).forEach(h=>{
-          const a = document.createElement('a');
-          a.href = h.u; a.target = '_blank'; a.rel = 'noopener';
-          a.className = 'chip'; a.dataset.accent = 'indigo';
-          a.textContent = h.t;
-          links.appendChild(a);
-        });
-
-        const v = el.querySelector('#f1VideoLink');
-        if(v){ v.href = data.highlightUrl || '#'; }
-
-        // Next race
-        el.querySelector('#f1NextName').textContent = data.next?.name || '—';
-        el.querySelector('#f1NextWhen').textContent = data.next?.weekend || '—';
-        el.querySelector('#f1NextCircuit').textContent = data.next?.circuit || '—';
-        el.querySelector('#f1NextWeekend').textContent = data.next?.weekend || '—';
-        const nextA = el.querySelector('#f1NextLink');
-        if(nextA) nextA.href = data.next?.schedule || '#';
-
-        // LONG RUNS spark
-        const canvas = el.querySelector('#f1Spark');
-        const ctx = canvas ? canvas.getContext('2d') : null;
-        function draw(arr){
-          if(!ctx || !canvas || !arr?.length) return;
-          const W=canvas.width,H=canvas.height;
-          ctx.clearRect(0,0,W,H);
-          ctx.globalAlpha=.25; ctx.strokeStyle='#fff'; ctx.beginPath();
-          ctx.moveTo(30,H-30); ctx.lineTo(W-10,H-30); ctx.moveTo(30,10); ctx.lineTo(30,H-30); ctx.stroke();
-          ctx.globalAlpha=1;
-          const min=Math.min(...arr), max=Math.max(...arr);
-          const padL=40,padR=10,padT=16,padB=36;
-          const x=i=>padL+(i/(arr.length-1))*(W-padL-padR);
-          const y=v=>padT+(1-((v-min)/(max-min||1)))*(H-padT-padB);
-          ctx.beginPath(); ctx.moveTo(x(0),y(arr[0])); for(let i=1;i<arr.length;i++) ctx.lineTo(x(i),y(arr[i]));
-          ctx.lineTo(W-padR,H-padB); ctx.lineTo(padL,H-padB); ctx.closePath(); ctx.fillStyle='rgba(255,255,255,.10)'; ctx.fill();
-          ctx.beginPath(); ctx.moveTo(x(0),y(arr[0])); for(let i=1;i<arr.length;i++) ctx.lineTo(x(i),y(arr[i]));
-          ctx.lineWidth=2; ctx.strokeStyle='#fff'; ctx.stroke();
         }
-        function estDeg(arr){ if(!arr || arr.length<2) return '—'; const perLap=(arr.at(-1)-arr[0])/(arr.length-1); return (perLap>0?perLap.toFixed(2):'0.00')+'s/lap'; }
-        function avgLen(arr){ return arr?.length ? arr.length : '—'; }
-
-        draw(data.stints?.medium || []);
-        el.querySelector('#f1Deg').textContent   = estDeg(data.stints?.medium);
-        el.querySelector('#f1Stint').textContent = avgLen(data.stints?.medium);
-        el.querySelector('#f1Undercut').textContent = data.meta?.undercut ?? '1.6s';
-
-        el.querySelectorAll('[data-comp]').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            const k = btn.dataset.comp || 'medium';
-            draw(data.stints?.[k] || []);
-            el.querySelector('#f1Deg').textContent   = estDeg(data.stints?.[k]);
-            el.querySelector('#f1Stint').textContent = avgLen(data.stints?.[k]);
-            el.querySelector('#f1Undercut').textContent = (k==='soft'?'1.9s':k==='hard'?'1.2s':'1.6s');
-          });
-        });
       }
-    };
-
-    // Render hero and run enhancer
-    function renderHero(key='default'){
-      const meta = HERO_META[key] || HERO_META.default;
-      const tagEl   = document.getElementById('heroTag');
-      const titleEl = document.getElementById('heroTitle');
-      const subEl   = document.getElementById('heroSub');
-      const contentEl = document.getElementById('heroContent');
-      if(!tagEl || !titleEl || !subEl || !contentEl) return;
-
-      tagEl.textContent = meta.tag;
-      titleEl.textContent = meta.title;
-      subEl.textContent = meta.sub;
-
-      const tpl = (HERO_TEMPLATES[key] || HERO_TEMPLATES.default)();
-      contentEl.innerHTML = tpl;
-
-      // run enhancer for that sport (if any)
-      (HERO_ENHANCERS[key] || (()=>{}))(contentEl);
     }
-
-    // DOM READY
-    document.addEventListener('DOMContentLoaded', ()=>{
-      // Initial sound switch state + handlers
-      const soundSwitch = document.getElementById('soundSwitch');
-      function setSoundEnabled(on){ localStorage.setItem(SOUND_KEY, on?'on':'off'); soundSwitch.classList.toggle('on',!!on); soundSwitch.setAttribute('aria-checked', on?'true':'false'); }
-      setSoundEnabled((localStorage.getItem(SOUND_KEY) ?? 'on')==='on');
-      soundSwitch.addEventListener('click', ()=> setSoundEnabled(!soundSwitch.classList.contains('on')));
-      soundSwitch.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); soundSwitch.click(); } });
-
-      // last sound resume
-      const last=localStorage.getItem('lastSound'); if(last){ playSoundById(last,0); localStorage.removeItem('lastSound'); }
-
-      // Global hover/click sounds
-      document.addEventListener('mouseover', (e)=>{ const link=e.target.closest('a[data-sound-hover]'); if(link) playSoundById(link.getAttribute('data-sound-hover')); }, true);
-      document.addEventListener('click', (e)=>{ const link=e.target.closest('a[data-sound-click]'); if(link){ const id=link.getAttribute('data-sound-click'); playSoundById(id); if(id) localStorage.setItem('lastSound', id); } }, true);
-
-      // Drawer
-      menuLogoBtn.addEventListener('click', ()=> drawer.classList.contains('show')?closeDrawer():openDrawer());
-      scrim.addEventListener('click', closeDrawer);
-      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeDrawer(); });
-      drawer.addEventListener('click', (e)=>{ if (e.target.closest('.link, .chip')) closeDrawer(); });
-
-      // Build drawer sports chips
-      const chipsSports = document.getElementById('chipsSports');
-      function buildDrawerChips(){
-        chipsSports.innerHTML='';
-        for(const s of sports){
-          const a=document.createElement('a');
-          a.className='chip'; a.dataset.accent=s.accent; a.href=s.href; a.textContent=s.name;
-          a.setAttribute('data-sound-hover', s.hover); a.setAttribute('data-sound-click', s.click);
-          chipsSports.appendChild(a);
+    // Alpine collapse helper (minimal)
+    document.addEventListener('alpine:init', () => {
+      Alpine.directive('collapse', (el, {expression}, {evaluate}) => {
+        const isOpen = () => evaluate(expression)
+        const sync = () => {
+          el.style.overflow = 'hidden'
+          el.style.transition = 'height 200ms ease'
+          el.style.height = isOpen() ? el.scrollHeight + 'px' : '0px'
         }
-      }
-      buildDrawerChips();
-
-      // Auto-append today=date to Today-strip links
-      (function(){
-        const today = new Date().toISOString().slice(0,10);
-        document.querySelectorAll('#todaySports a').forEach(a=>{
-          const href=a.getAttribute('href');
-          a.setAttribute('href', href + (href.includes('?')?'&':'?') + 'date=' + today);
-        });
-      })();
-
-      // Hook Today chips to render hero (unless user is opening in new tab)
-      document.querySelectorAll('#todaySports a').forEach(a=>{
-        a.addEventListener('click', (e)=>{
-          if(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let it open link
-          e.preventDefault();
-          const keyText = (a.textContent || '').trim().toLowerCase();
-          renderHero(SPORT_KEY_MAP[keyText] || 'default');
-          document.getElementById('hero-dynamic').scrollIntoView({behavior:'smooth', block:'start'});
-        }, true);
-      });
-
-      // First paint AFTER hero exists
-      renderHero('default');
-    });
-
-    // Background style chooser: press Alt+B to cycle; persists to localStorage
-    (function(){
-      const el = document.querySelector('.bg');
-      const STYLES = ['pingpong','roll','diagonal','parallax','orbit','aurora'];
-      const saved = localStorage.getItem('islBgStyle');
-      if(saved && STYLES.includes(saved)) el.dataset.style = saved;
-      else el.dataset.style = el.dataset.style || 'parallax';
-
-      document.addEventListener('keydown', (e)=>{
-        if(e.altKey && e.key.toLowerCase() === 'b'){
-          const i = STYLES.indexOf(el.dataset.style);
-          const next = STYLES[(i+1) % STYLES.length];
-          el.dataset.style = next;
-          localStorage.setItem('islBgStyle', next);
-          console.log('ISL background style →', next);
-        }
-      });
-    })();
+        requestAnimationFrame(sync)
+        new MutationObserver(sync).observe(el, {childList:true,subtree:true})
+      })
+    })
   </script>
 </body>
 </html>
