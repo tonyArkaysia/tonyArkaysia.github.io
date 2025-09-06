@@ -1,0 +1,32 @@
+[2025-09-05T22:21:31.904681] CIN reconcile step 1
+== INPUT SUMMARY ==
+Strain file: cleaned_strains.json
+ - Wrapper: {'wrapper': None}
+ - Rows: 22
+ - Columns: 43
+ - Sample cols: ['Strain', 'Brand', 'Category', 'Product Type', 'COA Source', 'Total THC (%)', 'Total CBD (%)', 'Total Cannabinoids (%)', 'D9-THC (%)', 'THCA (%)', 'CBG (%)', 'CBGA (%)', 'Beta-Caryophyllene (%)', 'Limonene (%)', 'Linalool (%)', 'Alpha-Humulene (%)', 'Beta-Myrcene (%)', 'Alpha-Terpineol (%)', 'Farnesene (%)', 'Fenchyl Alcohol (%)']
+Tiers file: neuroterp_matrix_tiers.json
+ - Wrapper: {'wrapper': 'medical_tags'}
+ - Rows: 10
+ - Columns: 3
+ - Sample cols: ['tag', 'primary_effects', 'ideal_terpenes']
+
+== GUESSED COLUMN SETS ==
+brand_cols: ['Brand']
+strain_cols: ['Strain']
+category_cols: ['Category', 'Product Type']
+product_type_cols: ['Batch Size', 'Serving Size ', 'Serving Size']
+sku_cols: ['Total Cannabinoids (%)', 'Batch Lot ID', 'Sample ID', 'Effects__categorized_effects__mid']
+tier_cols_in_strain_db: []
+
+== OUTPUT SEEDS ==
+seed_brands.csv rows: 3
+seed_strains.csv rows: 21
+seed_products.csv rows: 22
+seed_neuroterp_tiers.csv rows: 0
+
+== RECONCILIATION CHECKS ==
+No tier column detected in strain DB.
+
+Null counts in product seed: {'brand_name': 0, 'strain_name': 0, 'category': 0, 'product_type': 12, 'sku': 0}
+Duplicate rows — brands: 0, strains: 0, products: 0
