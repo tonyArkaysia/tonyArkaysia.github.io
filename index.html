@@ -41,7 +41,15 @@
       </div>
       <div class="flex items-center gap-2">
         <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">Hire Me</a>
-        <button @click="dark=!dark" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl">🌗</button>
+        <button
+          @click="
+            dark = !dark;
+            document.documentElement.classList.toggle('dark', dark);
+            localStorage.setItem('themeDark', String(dark));
+          "
+          class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl" x-bind:aria-pressed="dark.toString()" aria-label="Toggle dark mode">
+          🌗
+        </button>
       </div>
     </div>
   </header>
@@ -61,7 +69,7 @@
           </h1>
 
           <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl text-center mx-auto">
-            I'm a builder and a designer — always have been. Databases, apps, 3-D models, gadgets. I refine the designs, operate and calibrate 3-D printers, solder the bits, and deliver products aimed to improve the quality of life for people usually left outside of tech. My background is in business management and operations, and my drive is to engineer IoT devices and sustainable 3-D printed designs that upgrade daily life for everyday people.
+            I'm a builder and a designer — always have been. Databases, apps, 3-D models, gadgets. I refine the designs, calibrate the printers, solder the bits, and deliver products aimed to improve the quality of life for people usually left outside of tech. My background is in business management and operations, and my drive is to engineer IoT devices and sustainable 3-D printed designs that upgrade daily life for everyday people.
           </p>
 
           <div class="mt-6 flex flex-wrap items-center gap-3 text-sm">
@@ -81,7 +89,7 @@
               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-sky-300 dark:hover:bg-slate-800">
               ⬇️ Download Résumé
             </a>
-            <a href="https://github.com/TonyArkaysia" target="_blank" rel="noopener"
+            <a href="https://github.com/rainmannyc" target="_blank" rel="noopener"
               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 
                       hover:text-slate-50 dark:hover:text-gray-200 hover:bg-slate-800 dark:hover:bg-slate-800 transition">
               GitHub ↗
@@ -273,7 +281,7 @@
         active: 'All',
         categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
         projects: [
-          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI‑driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full‑stack dev', impact:'Parsed 1k+ COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://github.com/TonyArkaysia'}]},
+          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI‑driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full‑stack dev', impact:'Parsed 1k+ COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
           {id:'isl', name:'Interactive Sports Labs', tagline:'Real‑time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[]},
           {id:'qteam', name:'Q‑Team Civic Noise', tagline:'Citizen‑grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court‑ready workflows.', open:false, links:[]},
           {id:'ark', name:'Arkaysia Forest', tagline:'Interactive anime/game world & toolchain', tags:['Media','3D','Web'], role:'Creator, writer, tech', impact:'Character DB, narrative systems, motion & audio prototypes.', open:false, links:[]},

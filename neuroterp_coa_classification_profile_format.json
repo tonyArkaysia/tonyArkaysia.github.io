@@ -1,100 +1,150 @@
 {
-  "Strain ID": "GRASS-112724-JDZ",
-  "Strain": "Jordanz",
-  "Brand": "Grassroots",
+  "Strain ID": "AL50516002-005",
+  "Strain": "Purple Urkle",
+  "Brand": "Platinum Reserve",
   "Category": "Flower",
-  "Product Type": "3.5 Gram Jar",
-  "Series/Tier": "Medical Hybrid",
-  "COA Source": "Lab Report",
-  "NeuroTerp Matrix": "Sapphire Amethyst Onyx",
-  "Date Reported": "11/27/2024",
-  "Sampling Date & Time": "11/21/2024 04:15 PM",
-  "Batch Lot ID": "P-GRWF352024-1494A",
-  "Batch Size": "7643 Units",
-  "Serving Size": "3.5g",
-  "Sample ID": "AL41122003-011",
-  "Strain Webpage": "https://grassrootscannabis.com/products/jordanz",
-  "COA Link": "https://curaleaf.com/coa/grassroots-jordanz",
-  "Official Description": "Jordanz is a curated hybrid offering smooth flavor and calming effects. Known for its clarity and composure, it delivers mental relief paired with a light emotional center. A go-to for users managing stress and cognitive fatigue without sedation.",
-  "Official Product Image": "https://grassrootscannabis.com/img/jordanz.jpg",
-  "Strain Image": "https://grassrootscannabis.com/img/jordanz.jpg",
-  "CINAI Analysis": "High Linalool, Caryophyllene, and Limonene levels suggest a strong blend of calm clarity and emotional resilience. Great for reflective activities, conversations, and daily use where anxiety or tension might otherwise dominate.",
-  "Dominant Terpenes": "Beta-Caryophyllene, Limonene, Linalool, Myrcene",
-  "Terpene Effects": "Anxiolytic, mellow, clear-headed, emotionally open, anti-inflammatory",
-  "Flavor Profile": "Earthy, Light Citrus, Sweet Floral",
-  "Total THC (%)": 28.28,
+  "Product Type": "14 Gram",
+  "Series/Tier": "Recreational Indica",
+  "COA Source": "Lab Report (Kaycha Labs)",
+  "NeuroTerp Matrix": "Heliodor-Marigold Onyx",
+  "Date Reported": "05/20/2025",
+  "Sampling Date & Time": "05/16/2025 02:30 PM",
+  "Batch Lot ID": "PLAT-13025-PU",
+  "Batch Size": "1020 Units",
+  "Serving Size": "14 g",
+  "Sample ID": "AL50516002-005",
+  "Strain Webpage": null,
+  "COA Link": null,
+
+  "Official Description": null,
+  "Official Product Image": null,
+  "Strain Image": null,
+
+  "Total THC (%)": 31.4193,
   "Total CBD (%)": "< 0.1000",
-  "Total Cannabinoids (%)": 32.72,
-  "D9-THC (%)": 1.4550,
-  "THCA (%)": 30.4602,
+  "Total Cannabinoids (%)": 35.6743,
+  "D9-THC (%)": 3.6626,
+  "THCA (%)": 31.6497,
   "CBG (%)": "< 0.1000",
-  "CBGA (%)": 0.1060,
+  "CBGA (%)": 0.3620,
   "CBDV (%)": "< 0.1000",
   "CBDA (%)": "< 0.1000",
   "THCV (%)": "< 0.1000",
   "CBN (%)": "< 0.1000",
   "D8-THC (%)": "< 0.1000",
-  "CBC (%)": 0.1103,
-  "Total Terpenes (%)": 1.39,
-  "Beta-Myrcene (%)": 0.20,
-  "Limonene (%)": 0.30,
-  "Beta-Caryophyllene (%)": 0.32,
-  "Linalool (%)": 0.26,
-  "Alpha-Humulene (%)": 0.09,
-  "Fenchyl Alcohol (%)": 0.04,
+  "CBC (%)": "< 0.1000",
+
+  "Total Terpenes (%)": 2.91,
+  "Beta-Myrcene (%)": 0.73,
+  "Limonene (%)": 0.73,
+  "Beta-Caryophyllene (%)": 0.60,
+  "Alpha-Humulene (%)": 0.26,
+  "Alpha-Bisabolol (%)": 0.16,
+  "Linalool (%)": 0.12,
+  "Beta-Pinene (%)": 0.09,
+  "Fenchyl Alcohol (%)": 0.08,
+  "Alpha-Pinene (%)": 0.05,
   "Alpha-Terpineol (%)": 0.04,
-  "Alpha-Bisabolol (%)": 0.03,
-  "Alpha-Pinene (%)": 0.03,
-  "Beta-Pinene (%)": 0.06,
-  "Caryophyllene Oxide (%)": 0.01,
+  "Caryophyllene Oxide (%)": 0.02,
   "Camphene (%)": 0.01,
-  "Terpinolene (%)": "< 0.0040",
+  "Terpinolene (%)": 0.01,
+  "Valencene (%)": 0.01,
   "Farnesene (%)": "< 0.1000",
+  "Ocimene (%)": "< 0.0040",
+  "Alpha-Phellandrene (%)": "< 0.0040",
+  "Geraniol (%)": "< 0.0040",
+  "Guaiol (%)": "< 0.0040",
+  "Menthol (%)": "< 0.0040",
+  "Alpha-Terpinene (%)": "< 0.0040",
+
   "Pesticides Pass/Fail": "PASS",
   "Heavy Metals Pass/Fail": "PASS",
   "Microbiological Pass/Fail": "PASS",
   "Residual Solvents Pass/Fail": "NOT TESTED",
   "Mycotoxins Pass/Fail": "PASS",
   "Filth & Foreign Material Pass/Fail": "PASS",
-  "Moisture Content (%)": 6.6,
-  "Water Activity": 0.28,
+
+  "Moisture Content (%)": null,
+  "Water Activity": null,
+
+  "CINAI Analysis": "Massively terp-forward Heliodor profile (Limonene + Myrcene + Caryophyllene) with Humulene and Linalool support. Expect bright mood lift that settles into anchored body relief and social calm; late-phase cozy sedation at higher doses. Iconic lineage merits Obsidian; potency and chem output meet Onyx.",
+  "Dominant Terpenes": "Limonene, Beta-Myrcene, Beta-Caryophyllene, Alpha-Humulene",
+  "Terpene Effects": "Euphoric uplift, body relief, anti-inflammatory calm, anxiety reduction",
+  "Flavor Profile": "Citrus zest, earthy-sweet grape, pepper-spice, soft floral",
+
+
   "Effects": {
-    "raw_text": "Jordanz provides a focused yet calm state of mind with a relaxed emotional tone. Caryophyllene and Linalool promote tension relief while Limonene keeps the mental landscape light and pleasant. Ideal for evening decompression or intentional social use.",
+    "raw_text": "Sunny mood lift with grounded, anti-inflammatory body ease; socially smooth and emotionally steady. At higher intake, transitions into cozy relaxation with gentle sedation.",
     "tokens": [
-      "emotional ease",
-      "mood stability",
+      "euphoric",
+      "body relief",
       "anxiety reduction",
-      "calm clarity",
-      "focused"
+      "social calm",
+      "functional comfort",
+      "late-phase sedation"
     ],
     "categorized_effects": {
-      "initial": ["calm clarity", "emotional ease"],
-      "mid": ["mood stability", "light creativity"],
-      "late": ["mild relaxation", "anxiety relief"]
+      "initial": ["bright mood", "low social friction"],
+      "mid": ["body comfort", "functional calm"],
+      "late": ["cozy relaxation", "mild-to-moderate sedation"]
     },
     "ai_ready_features": {
-      "euphoric": 0.5,
+      "euphoric": 0.9,
       "relaxing": 1,
-      "sedating": 0,
-      "energetic": 0,
+      "sedating": 0.6,
+      "energetic": 0.2,
       "pain_relief": 1,
-      "focus": 0.8,
-      "anxiety_reduction": 1
+      "focus": 0.4,
+      "anxiety_reduction": 0.9
     }
   },
-  "Medical Tags": [
-    {
-      "tag": "Neuropathic Pain Relief",
-      "description": "Targets nerve-related pain with anti-inflammatory and muscle relaxant compounds.",
-      "ideal_profile": {
-        "dominant_terpenes": ["Beta-Caryophyllene", "Myrcene", "Linalool"],
-        "cannabinoids": {
-          "THC_min": 22,
-          "CBG_min": 0.2,
-          "CBD_optional": true
-        }
-      },
-      "category": "Medical Relief"
-    }
-  ]
+
+  "Experience Tags": [
+    { "tag": "Body Relief", "score_norm": 0.94 },
+    { "tag": "Anxiety Relief", "score_norm": 0.90 },
+    { "tag": "Creative Flow", "score_norm": 0.72 }
+  ],
+
+  "Recreational Radar": {
+    "Euphoria": 0.85,
+    "Sedation": 0.65,
+    "Body Relief": 0.90,
+    "Mental Clarity": 0.60,
+    "Anxiety Relief": 0.85,
+    "Emotional Reset": 0.80,
+    "Focus Retention": 0.55,
+    "Sensory Enhancement": 0.78,
+    "Physical Energy / Motivation": 0.45,
+    "Time Distortion / Psychedelia": 0.40
+  },
+
+  "Medical Radar": {
+    "Anti-Inflammatory": 0.90,
+    "Muscle Relaxation": 0.85,
+    "Nerve Calm / Neuropathic Relief": 0.80,
+    "Sleep Aid / Sedation": 0.65,
+    "Anxiety / PTSD Relief": 0.80,
+    "Headache / Pressure Relief": 0.65,
+    "Functional Clarity": 0.55
+  },
+
+  "Tier Radar": {
+    "Heliodor": 0.95,
+    "Marigold": 0.78,
+    "Amethyst": 0.62,
+    "Moonstone": 0.55,
+    "Verdant": 0.52,
+    "Sapphire": 0.45,
+    "Scarlet": 0.20,
+    "Silver": 0.18,
+    "Crimson": 0.22
+  },
+
+  "Lineage Tags": ["Obsidian"],
+  "Potency Tag": "Onyx"
 }
+
+
+
+
+
