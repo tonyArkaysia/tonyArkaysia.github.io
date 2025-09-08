@@ -7,30 +7,42 @@
   <meta name="description" content="Systems builder blending data, AI, hardware, and storytelling. Interactive portfolio with live charts and expandable projects." />
   <link rel="icon" href="favicon.png" />
   
+  <!-- Pre-paint theme (no flash) -->
   <script>
-  tailwind.config = { darkMode: 'class' };
-
-    // Apply initial theme before paint (no flash)
-    const saved = localStorage.getItem('themeDark');
-    const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'true' || (saved === null && prefers)) {
-      document.documentElement.classList.add('dark');
-    }
+    (function () {
+      const saved = localStorage.getItem('themeDark');
+      const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'true' || (saved === null && prefers)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
   </script>
 
-  <!-- Tailwind (CDN) -->
+  <!-- ✅ Correct Tailwind config (must be BEFORE the CDN script) -->
+  <script>
+    tailwind = {};                  /* keep this for safety in some browsers */
+    tailwind.config = { darkMode: 'class' };
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Alpine.js for interactivity (tiny) -->
+  <!-- Alpine.js -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <!-- Chart.js for radar chart -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
   
+  <!-- Plain CSS fallback so you SEE the toggle even if Tailwind breaks -->
   <style>
-    html{scroll-behavior:smooth}
-    .glass{backdrop-filter: blur(8px);}
+    html { scroll-behavior: smooth; }
+    body { transition: background-color .2s, color .2s; }
+    /* Fallback colors so toggle is always visible */
+    body { background:#f8fafc; color:#0f172a; }            /* light  */ 
+    .dark body { background:#090909; color:#e2e8f0; }      /* dark default color code #020617*/
+    .glass { backdrop-filter: blur(8px); }
   </style>
 
 </head>
+
+
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
   <!-- Topbar -->
   <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-950/60 glass">
@@ -42,12 +54,11 @@
       <div class="flex items-center gap-2">
         <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">Hire Me</a>
         <button
-          @click="
-            dark = !dark;
-            document.documentElement.classList.toggle('dark', dark);
-            localStorage.setItem('themeDark', String(dark));
-          "
-          class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl" x-bind:aria-pressed="dark.toString()" aria-label="Toggle dark mode">
+          @click="toggleTheme()"
+          class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl"
+          :aria-pressed="dark.toString()"
+          aria-label="Toggle dark mode"
+        >
           🌗
         </button>
       </div>
@@ -144,7 +155,7 @@
                   <span class="text-xs px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900" x-text="t"></span>
                 </template>
               </div>
-              <div x-show="p.open" x-collapse>
+              <div x-show="p.open" x-collapse="p.open">
                 <div class="mt-4 grid gap-3 text-sm">
                   <div class="flex items-start gap-2"><span class="mt-0.5">🧭</span><div><span class="font-semibold">Role:</span> <span x-text="p.role"></span></div></div>
                   <div class="flex items-start gap-2"><span class="mt-0.5">🔥</span><div><span class="font-semibold">Impact:</span> <span x-text="p.impact"></span></div></div>
@@ -275,7 +286,11 @@
   <script>
     function profilePage(){
       return {
-        dark: false,
+        // make Alpine match what you set before paint
+        dark: document.documentElement.classList.contains('dark'),
+        toggleTheme(){
+          this.dark = !this.dark; document.documentElement.classList.toggle('dark', this.dark); localStorage.setItem('cinThemeDark', this.dark);
+        },
         year: new Date().getFullYear(),
         q: '',
         active: 'All',
