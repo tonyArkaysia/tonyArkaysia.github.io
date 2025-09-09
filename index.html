@@ -7,38 +7,43 @@
   <meta name="description" content="Systems builder blending data, AI, hardware, and storytelling. Interactive portfolio with live charts and expandable projects." />
   <link rel="icon" href="favicon.png" />
 
-  <!-- Pre-paint theme (no flash) -->
+  <!-- Pre-paint theme (no flash) — uses SAME key as cin_login.html -->
   <script>
     (function () {
-      const saved = localStorage.getItem('themeDark');
-      const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      try {
+        var saved = localStorage.getItem('cinDark'); // <-- synced to login page
+      } catch (e) {
+        var saved = null;
+      }
+      var prefers = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) || false;
       if (saved === 'true' || (saved === null && prefers)) {
         document.documentElement.classList.add('dark');
       }
     })();
   </script>
 
-  <!-- Tailwind (config BEFORE CDN) -->
+  <!-- Tailwind config BEFORE CDN -->
   <script>
     tailwind = {};
     tailwind.config = { darkMode: 'class' };
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Alpine collapse plugin must load BEFORE Alpine core -->
-  <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js" defer></script>
-  <!-- Alpine core (single include) -->
+  <!-- Alpine core (once) + official Collapse plugin -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js" defer></script>
 
-  <!-- (Optional) Chart.js for radar chart -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4" defer></script>
+  <!-- Chart.js (optional; radar uses it if canvas exists) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
-  <!-- Plain CSS fallback so the theme toggle is always visible -->
+  <!-- Plain CSS fallback so toggle is visible even if Tailwind fails -->
   <style>
     html { scroll-behavior: smooth; }
+    [x-cloak] { display: none !important; } /* avoid FOUC */
     body { transition: background-color .2s, color .2s; }
-    body { background:#f8fafc; color:#0f172a; }     /* light  */
-    .dark body { background:#090909; color:#e2e8f0; }/* dark   */
+    /* Fallback colors */
+    body { background:#f8fafc; color:#0f172a; }           /* light  */
+    .dark body { background:#090909; color:#e2e8f0; }     /* dark   */
     .glass { backdrop-filter: blur(8px); }
   </style>
 </head>
@@ -52,16 +57,14 @@
         <span>Tony Arkaysia</span>
       </div>
       <div class="flex items-center gap-2">
-        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">
-          Let’s Chat 🐱
-        </a>
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">Let’s Chat 🐱</a>
         <button
-          type="button"
-          @click="toggleTheme()"
+          @click="toggleTheme"
           class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl"
           :aria-pressed="dark.toString()"
           aria-label="Toggle dark mode"
-        >🐶</button>
+          x-text="dark ? '🐶' : '🌞'">
+        </button>
       </div>
     </div>
   </header>
@@ -69,7 +72,6 @@
   <main class="max-w-6xl mx-auto px-4 md:px-6 py-10 space-y-16">
     <!-- HERO -->
     <section class="relative isolate">
-      <!-- background blobs -->
       <div class="absolute -top-24 -right-20 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none -z-10"></div>
       <div class="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none -z-10"></div>
 
@@ -99,7 +101,7 @@
             ⬇️ Download Résumé
           </a>
           <a href="https://github.com/rainmannyc" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 transition">
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-800 dark:hover:bg-slate-800 hover:text-white transition">
             GitHub ↗
           </a>
           <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" rel="noopener"
@@ -124,7 +126,7 @@
       <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between mb-5">
         <div class="flex items-center gap-2 flex-wrap">
           <template x-for="c in categories" :key="c">
-            <button type="button" @click="active=c" class="px-3 py-1.5 rounded-2xl border text-sm shadow-sm"
+            <button @click="active=c" class="px-3 py-1.5 rounded-2xl border text-sm shadow-sm"
               :class="active===c ? 'bg-blue-600 text-white border-blue-700' : 'bg-white/70 dark:bg-white/5 border-slate-200 dark:border-slate-800 hover:border-blue-400'"
               x-text="c"></button>
           </template>
@@ -144,17 +146,11 @@
                   <h3 class="text-lg font-bold" x-text="p.name"></h3>
                   <p class="text-slate-600 dark:text-slate-300 mt-1" x-text="p.tagline"></p>
                 </div>
-
-                <!-- Toggle button -->
                 <button
-                  type="button"
                   @click="p.open = !p.open"
-                  class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
-                  :aria-expanded="p.open ? 'true' : 'false'"
-                  :aria-controls="`details-${p.id}`"
-                  aria-label="Toggle details">
-                  <span class="inline-block transition-transform duration-200" :class="p.open ? 'rotate-180' : ''">▾</span>
-                </button>
+                  :aria-expanded="p.open.toString()"
+                  class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  aria-label="Toggle details">▾</button>
               </div>
 
               <div class="mt-3 flex flex-wrap gap-2">
@@ -163,8 +159,8 @@
                 </template>
               </div>
 
-              <!-- Collapsible details -->
-              <div :id="`details-${p.id}`" x-show="p.open" x-collapse.duration.200ms>
+              <!-- Works on mobile: x-show + official x-collapse -->
+              <div x-show="p.open" x-collapse.duration.250ms x-cloak>
                 <div class="mt-4 grid gap-3 text-sm">
                   <div class="flex items-start gap-2">
                     <span class="mt-0.5">🧭</span>
@@ -176,7 +172,7 @@
                   </div>
                   <div class="flex items-center gap-2 flex-wrap" x-show="p.links && p.links.length">
                     <template x-for="l in p.links" :key="l.href">
-                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" :href="l.href" target="_blank" rel="noopener">🔗 <span x-text="l.label"></span></a>
+                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" :href="l.href" target="_blank">🔗 <span x-text="l.label"></span></a>
                     </template>
                   </div>
                 </div>
@@ -188,7 +184,7 @@
       </div>
     </section>
 
-    <!-- SKILLS (Chart init is optional; will no-op if Chart.js failed to load) -->
+    <!-- SKILLS -->
     <section id="skills">
       <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Skills Snapshot</h2>
       <div class="grid md:grid-cols-2 gap-6 items-center">
@@ -233,7 +229,7 @@
       <div class="grid md:grid-cols-3 gap-4">
         <template x-for="m in media" :key="m.title">
           <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
-            <button type="button" @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-slate-800/60 grid place-items-center text-slate-500">▶</button>
+            <button @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-slate-800/60 grid place-items-center text-slate-500">▶</button>
             <div class="p-4">
               <div class="font-semibold" x-text="m.title"></div>
               <p class="text-sm text-slate-600 dark:text-slate-300" x-text="m.desc"></p>
@@ -243,17 +239,15 @@
       </div>
 
       <!-- Modal -->
-      <div x-show="lightbox" x-transition class="fixed inset-0 z-50 bg-black/70 glass grid place-items-center p-6">
+      <div x-show="lightbox" x-transition x-cloak class="fixed inset-0 z-50 bg-black/70 glass grid place-items-center p-6">
         <div class="max-w-3xl w-full rounded-2xl overflow-hidden bg-black">
           <div class="flex justify-between items-center p-3 bg-slate-900 text-white text-sm">
             <div x-text="lightbox?.title"></div>
-            <button type="button" @click="lightbox=null" class="px-2 py-1 rounded bg-white/10">✕</button>
+            <button @click="lightbox=null" class="px-2 py-1 rounded bg-white/10">✕</button>
           </div>
           <div class="aspect-video">
             <iframe x-show="lightbox?.embed"
-                    :src="lightbox?.embed"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
+                    :src="lightbox?.embed" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
                     class="w-full h-full"></iframe>
           </div>
         </div>
@@ -269,9 +263,9 @@
             <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">tonyarkaysia@gmail.com</a></div>
             <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
             <div class="flex items-center gap-2 flex-wrap">
-              <a href="https://github.com/TonyArkaysia" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 dark:hover:text-gray-200 hover:bg-slate-800">GitHub ↗</a>
-              <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
-              <a href="#" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-rose-500">Media Kit ↗</a>
+              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 dark:hover:text-gray-200 hover:bg-slate-800">GitHub ↗</a>
+              <a href="https://www.linkedin.com" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
+              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-rose-500">Media Kit ↗</a>
             </div>
           </div>
         </div>
@@ -304,14 +298,15 @@
   <script>
     function profilePage(){
       return {
-        // make Alpine match what you set before paint
+        // Alpine state mirrors pre-paint class
         dark: document.documentElement.classList.contains('dark'),
         toggleTheme(){
           this.dark = !this.dark;
           document.documentElement.classList.toggle('dark', this.dark);
-          localStorage.setItem('themeDark', String(this.dark));
+          try { localStorage.setItem('cinDark', String(this.dark)); } catch(e){}
         },
         year: new Date().getFullYear(),
+
         q: '',
         active: 'All',
         categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
@@ -339,11 +334,12 @@
         ],
         lightbox: null,
         openMedia(m){ this.lightbox = m; },
+
         init(){
-          // Chart init (safe if Chart.js not loaded)
-          const el = document.getElementById('skillsChart');
-          if (el && window.Chart) {
-            new Chart(el, {
+          // Build radar chart once DOM is ready (optional)
+          const ctx = document.getElementById('skillsChart');
+          if(ctx && window.Chart){
+            new Chart(ctx, {
               type: 'radar',
               data: {
                 labels: ['Python','JS/TS','Data Viz','AI/ML','3D/Blender','Ops/Finance','Legal Docs'],
@@ -351,9 +347,9 @@
                   label: 'Proficiency',
                   data: [95,88,90,86,70,82,78],
                   fill: true,
-                  backgroundColor: 'rgba(37,99,235,0.2)',
-                  borderColor: 'rgb(37,99,235)',
-                  pointBackgroundColor: 'rgb(37,99,235)'
+                  backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                  borderColor: 'rgb(37, 99, 235)',
+                  pointBackgroundColor: 'rgb(37, 99, 235)'
                 }]
               },
               options: { scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
