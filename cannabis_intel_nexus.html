@@ -1,505 +1,242 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="cinLayout()" :class="dark ? 'dark' : ''">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Cannabis Intel Nexus</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cannabis Intel Nexus — Layout Scaffold</title>
+  <meta name="description" content="Layout-first scaffold for Cannabis Intel Nexus. Header, collapsible sidebar, responsive content grid. No data wiring yet." />
 
-    <!-- CSS file -->
-    <link rel="stylesheet" href="css/cin_style_home.css" type="text/css" charset="utf-8" />
-
-
-    <!-- Favicon -->
-    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
-    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
-
-
-</head>
-
-
-<body>
-
-    <!-- Main Content -->
-    <div class="content" id="content">
-        <h1>Cannabis Intel Nexus</h1>
-        <h5>An AI-powered cannabis strain database interface.</h5>
-        
-    <!-- Menu Button -->
-    <button class="menu-btn" onclick="toggleMenu()">☰</button>
-
-    <!-- Sidebar Navigation -->
-    <div class="sidebar" id="sidebar">
-        <br>
-        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">🤖 The Curator (AI-Powered High Guide)</a>
-        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">📊 CannaDex (Cannabis Database)</a>
-        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_refinery.html">💬 The Nexus (Community)</a>
-        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_culture.html">🌿 The Culture</a>
-        <a href="https://tonyarkaysia.github.io/cann-i-science.html">🧬 Cann-I-Science</a>
-    </div>
-    <br><br><br>
-    <h1>Cannabis Curator</h1>
-
-    <!-- Effects to Drag -->
-    <div class="effects-container">
-        <div class="effect" id="euphoria" draggable="true" ondragstart="drag(event)">🎭Euphoria</div>
-        <div class="effect" id="relaxation" draggable="true" ondragstart="drag(event)">🛋️Relaxation</div>
-        <div class="effect" id="focus" draggable="true" ondragstart="drag(event)">💡Focus</div>
-        <div class="effect" id="creativity" draggable="true" ondragstart="drag(event)">🎨Creativity</div>
-        <div class="effect" id="energy" draggable="true" ondragstart="drag(event)">⚡Energy</div>
-        <div class="effect" id="sedation" draggable="true" ondragstart="drag(event)">🌙Sedation</div>
-        <div class="effect" id="pain-relief" draggable="true" ondragstart="drag(event)">🩹Pain Relief</div>
-        <div class="effect" id="stress-relief" draggable="true" ondragstart="drag(event)">😌Stress Relief</div>
-    </div>
-
-    <!-- Phase Selection with Intensity Sliders -->
-    <div class="phase-box" ondrop="drop(event, 'phase1')" ondragover="allowDrop(event)">
-        <h3>Phase 1 - Initial High</h3>
-        <div class="drop-area" id="phase1"></div>
-        <label>Intensity:</label>
-        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity1">
-    </div>
-
-    <div class="phase-box" ondrop="drop(event, 'phase2')" ondragover="allowDrop(event)">
-        <h3>Phase 2 - Mid High</h3>
-        <div class="drop-area" id="phase2"></div>
-        <label>Intensity:</label>
-        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity2">
-    </div>
-
-    <div class="phase-box" ondrop="drop(event, 'phase3')" ondragover="allowDrop(event)">
-        <h3>Phase 3 - Late Effects</h3>
-        <div class="drop-area" id="phase3"></div>
-        <label>Intensity:</label>
-        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity3">
-    </div>
-
-    <!-- Buttons -->
-    <button onclick="generateCustomHigh()">Find My Strain</button>
-    <button onclick="resetSelection()">Reset</button>
-
-
-
-
-
-<!-- Main Content -->
-    <div class="content" id="content">
-        <h1>CannaDex</h1>
-        <p>The Cannabis Database.</p>
-
-        <div class="search-container">
-            <input type="text" class="search-bar" id="searchBar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
-            <div class="button-container">
-                <button class="filter-btn" onclick="filterByEffect('euphoric')">🌟 Euphoric</button>
-                <button class="filter-btn" onclick="filterByEffect('relaxation')">😌 Relaxing</button>
-                <button class="filter-btn" onclick="filterByEffect('energetic')">⚡ Energetic</button>
-                <button class="filter-btn" onclick="filterByEffect('limonene')">🍋 Limonene</button>
-                <button class="filter-btn" onclick="filterByEffect('caryophyllene')">🌶️ Beta-Caryophyllene</button>
-                <button class="filter-btn" onclick="filterByEffect('myrcene')">🌿 Myrcene</button>
-            </div>
-        </div>
-
-        <!-- Table (Initially Hidden) -->
-        <div class="table-container" id="tableContainer">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Strain</th>
-                        <th>Brand</th>
-                        <th>Category</th>
-                        <th>Product Type</th>
-                        <th>CIN Experience</th>
-                        <th>THC (%)</th>
-                        <th>CBD (%)</th>
-                        <th>Total Terpenes (%)</th>
-                        <th>Effects</th>
-                    </tr>
-                </thead>
-                <tbody id="strainTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-
-    <script>        // Sidebar Toggle
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle("open");
-            document.getElementById('content').classList.toggle("shrink");
-        }
-    </script>
-
-    <script>
-
-        let selectedEffects = { phase1: [], phase2: [], phase3: [] };
-        const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
-
-        function allowDrop(event) {
-            event.preventDefault();
-        }
-
-        function drag(event) {
-            event.dataTransfer.setData("text", event.target.id);
-        }
-
-        function drop(event, phase) {
-            event.preventDefault();
-            let effect = event.dataTransfer.getData("text");
-            let dropArea = document.getElementById(phase);
-
-            // 🛑 Prevent duplicate effects across phases
-            for (let key in selectedEffects) {
-                if (selectedEffects[key].includes(effect)) {
-                    alert("❌ You already selected this effect in another phase!");
-                    return;
-                }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:'#f8f5ff', 100:'#efe9ff', 200:'#d9c7ff', 300:'#c0a2ff', 400:'#a777ff',
+              500:'#9D4EDD', /* matches CIN purple */
+              600:'#8535c7', 700:'#6c2aa5', 800:'#561f83', 900:'#421864'
             }
-
-            // 🛑 Enforce effect limit per phase
-            if (selectedEffects[phase].length >= maxEffects[phase]) {
-                alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
-                return;
-            }
-
-            // ✅ Add effect to phase
-            selectedEffects[phase].push(effect);
-            let effectElement = document.createElement("div");
-            effectElement.className = "dropped-effect";
-            effectElement.textContent = document.getElementById(effect).textContent;
-            
-            // 🗑️ Add remove button
-            let removeBtn = document.createElement("span");
-            removeBtn.textContent = " ❌";
-            removeBtn.style.cursor = "pointer";
-            removeBtn.onclick = function () {
-                selectedEffects[phase] = selectedEffects[phase].filter(e => e !== effect);
-                dropArea.removeChild(effectElement);
-            };
-
-            effectElement.appendChild(removeBtn);
-            dropArea.appendChild(effectElement);
+          },
+          boxShadow: { soft: '0 6px 24px rgba(0,0,0,.08)' }
         }
-
-        
-        function resetSelection() {
-            // Reset the selected effects
-            selectedEffects = { phase1: [], phase2: [], phase3: [] };
-            document.querySelectorAll(".drop-area").forEach(area => area.innerHTML = "");
-
-            // Clear the strain results table
-            const strainTable = document.getElementById("strainTableBody");
-            strainTable.innerHTML = "";
-
-            // Hide the table container
-            document.getElementById("tableContainer").style.display = "none";
-        }
-
-    </script>
-
-    <script>
-
-        function normalizeEffect(effect) {
-            return effect.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-        }
-
-        function generateCustomHigh() {
-            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
-                alert("❌ Please select at least one effect before generating!");
-                return;
-            }
-
-            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2));
-
-            const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
-
-            let matchingStrains = window.strainData.filter(strain => {
-                if (!strain["Effects"]?.categorized_effects) {
-                    console.warn("⚠ Missing categorized_effects for strain:", strain["Strain"]);
-                    return false;
-                }
-
-                return Object.keys(selectedEffects).every(phase => {
-                    let strainPhase = phaseMap[phase];
-                    let selectedEffectsForPhase = selectedEffects[phase];
-
-                    console.log(`🔍 Checking phase '${strainPhase}' for effects:`, selectedEffectsForPhase);
-
-                    return selectedEffectsForPhase.every(effect => {
-                        let normalizedEffect = normalizeEffect(effect);
-
-                        let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
-                        let normalizedKeywords = phaseKeywords.map(keyword => normalizeEffect(keyword));
-
-                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
-
-                        // ✅ FIX: Match exact term or substring (e.g., "stress relief" should match "stress-relief")
-                        return normalizedKeywords.some(keyword => 
-                            keyword === normalizedEffect || normalizedEffect.includes(keyword) || keyword.includes(normalizedEffect)
-                        );
-                    });
-                });
-            });
-
-            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"]));
-
-            if (matchingStrains.length === 0) {
-                alert("❌ No exact match found! Try adjusting your selection.");
-                return;
-            }
-
-            displayStrainResults(matchingStrains);
-        }
-
-
-
-        function displayStrainResults(results) {
-    const tableContainer = document.getElementById("tableContainer");
-    const strainTable = document.getElementById("strainTableBody");
-    strainTable.innerHTML = "";
-
-    if (results.length === 0) {
-        strainTable.innerHTML = `<tr><td colspan='9' style='text-align:center;'>No matching strains found</td></tr>`;
-        tableContainer.style.display = "none";
-        return;
+      }
     }
+  </script>
+  
+  <!-- Alpine.js -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-    results.forEach(strain => {
-        let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
-        let colors = getCINExperienceColors(experience);
+  <style>
+    html{scroll-behavior:smooth}
+    .glass { backdrop-filter: blur(10px); }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
 
-        // Inline style for strain name gradient
-        let nameStyle = `
-            background: ${colors.length > 1 ? `linear-gradient(to right, ${colors.join(', ')})` : colors[0]};
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            display: inline-block;
-        `;
+  <!-- Topbar -->
+  <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/80 dark:bg-slate-950/60 glass">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900" aria-label="Toggle sidebar">☰</button>
+        <div class="flex items-center gap-2 font-extrabold tracking-tight">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-brand-500"></span>
+          <span>Cannabis Intel Nexus</span>
+        </div>
+        <span class="ml-2 text-xs px-2 py-1 rounded-lg bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-200">Layout-Only</span>
+      </div>
 
-        // Background style for CIN Experience column
-        let backgroundStyle = colors.length > 1 
-            ? `background: linear-gradient(to right, ${colors.join(", ")});`
-            : `background: ${colors[0]};`;
+      <div class="hidden md:flex items-center gap-3 w-[40%]">
+        <div class="flex-1 relative">
+          <input placeholder="Search (UI only)" class="w-full px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70 focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          <span class="absolute right-3 top-2.5 text-slate-400">⌘K</span>
+        </div>
+        <div class="text-xs text-slate-500">DB: <span class="font-semibold" x-text="pgStatus"></span></div>
+        <button @click="toggleTheme" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700" :aria-pressed="dark.toString()" aria-label="Toggle dark mode">🌗</button>
+      </div>
+    </div>
+  </header>
 
-        let row = document.createElement("tr");
-        row.innerHTML = `
-            <td style="text-align:left; padding: 8px;">
-                <a href='${strain["Strain Webpage"]}' target='_blank' style="${nameStyle}">
-                    ${strain["Strain"]}
-                </a>
-            </td>
-            <td>${strain["Brand"]}</td>
-            <td>${strain["Category"]}</td>
-            <td>${strain["Product Type"]}</td>
-            <td style="text-align:center; ${backgroundStyle} color: white; padding: 5px; border-radius: 5px;">
-                ${strain["CIN Experience"]}
-            </td>
-            <td>${strain["Total THC (%)"]}%</td>
-            <td>${strain["Total CBD (%)"]}%</td>
-            <td>${strain["Total Terpenes (%)"]}%</td>
-            <td style="text-align:left;">${strain["Effects"]?.raw_text || "N/A"}</td>
-        `;
-        strainTable.appendChild(row);
-    });
+  <!-- Shell -->
+  <div class="max-w-7xl mx-auto">
+    <div class="flex">
+      <!-- Sidebar -->
+      <aside class="fixed md:static z-30 inset-y-16 md:inset-y-auto left-0 w-72 shrink-0 p-4 border-r border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/60 backdrop-blur transition -translate-x-full md:translate-x-0" :class="sidebarOpen ? 'translate-x-0' : ''">
+        <nav class="space-y-1 text-sm">
+          <p class="px-2 mb-2 text-xs uppercase tracking-widest text-slate-500">Sections</p>
+          <template x-for="item in nav" :key="item.id">
+            <a :href="item.href" @click="active=item.id" class="flex items-center gap-2 px-3 py-2 rounded-xl border hover:border-brand-400 transition"
+               :class="active===item.id ? 'bg-brand-50 dark:bg-brand-900/20 border-brand-300 dark:border-brand-800' : 'bg-white/60 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800'">
+              <span x-text="item.icon"></span>
+              <div>
+                <div class="font-semibold" x-text="item.label"></div>
+                <div class="text-xs text-slate-500" x-text="item.desc"></div>
+              </div>
+            </a>
+          </template>
 
-    tableContainer.style.display = "block";
-}
+          <p class="px-2 mt-6 mb-2 text-xs uppercase tracking-widest text-slate-500">Utilities</p>
+          <a href="#style-guide" class="flex items-center gap-2 px-3 py-2 rounded-xl border bg-white/60 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 hover:border-brand-400">
+            🎨 <span>Style Guide</span>
+          </a>
+          <a href="#components" class="flex items-center gap-2 px-3 py-2 rounded-xl border bg-white/60 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 hover:border-brand-400">
+            🧩 <span>Components</span>
+          </a>
+        </nav>
+      </aside>
 
-        /* 🎨 CIN Experience Colors */
-        function getCINExperienceColors(experience) {
-            const colorsMap = {
-                "Crimson": "#9B111E",
-                "Scarlet": "#FF2400",
-                "Amethyst": "#9966CC",
-                "Moonstone": "#4B0082",
-                "Onyx": "#353839",
-                "Marigold": "#FFC30B",
-                "Verdant": "#3CB371"
-            };
+      <!-- Main -->
+      <main class="flex-1 min-h-[calc(100vh-4rem)] p-4 md:p-6 md:ml-0 ml-0 md:pl-6 lg:pl-8 w-full md:w-auto md:overflow-visible">
+        <!-- Hero / Intro -->
+        <section id="intro" class="relative isolate rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-brand-50/60 via-white/60 to-slate-50/60 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 shadow-soft">
+          <h1 class="text-2xl md:text-3xl font-black">Build the Nexus UI first</h1>
+          <p class="mt-2 text-slate-600 dark:text-slate-300 max-w-2xl">This scaffold focuses strictly on the layout: header, sidebar, and a responsive content grid with empty cards for each feature. We’ll wire Postgres and data flows after the surface is locked.</p>
+          <div class="mt-4 flex flex-wrap gap-2 text-xs">
+            <span class="px-2 py-1 rounded-full bg-brand-100 text-brand-800 dark:bg-brand-900/30 dark:text-brand-200 border border-brand-200/50">Tailwind</span>
+            <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Alpine.js</span>
+            <span class="px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">Layout-only</span>
+          </div>
+        </section>
 
-            let experiences = experience.split("/").map(exp => exp.trim());
-            return experiences.map(exp => colorsMap[exp] || "#FFFFFF");
+        <!-- Content Grid -->
+        <section class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="grid">
+          <!-- Curator -->
+          <article id="curator" class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 shadow-soft">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">🤖 The Curator (AI Guide)</h2>
+              <span class="text-xs text-slate-500">wireframe</span>
+            </div>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Placeholder for drag‑and‑drop effects + phase sliders. No logic wired.</p>
+            <div class="mt-4 grid grid-cols-2 gap-2">
+              <button class="px-3 py-2 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">🎭 Euphoria</button>
+              <button class="px-3 py-2 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">😌 Relaxation</button>
+              <button class="px-3 py-2 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">⚡ Energy</button>
+              <button class="px-3 py-2 rounded-xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">💡 Focus</button>
+            </div>
+          </article>
+
+          <!-- CannaDex -->
+          <article id="cannadex" class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 shadow-soft">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">📊 CannaDex (Database)</h2>
+              <span class="text-xs text-slate-500">wireframe</span>
+            </div>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Search + filters + results table shell. Data source TBD (Postgres).</p>
+            <div class="mt-3 flex items-center gap-2">
+              <input placeholder="Search strains…" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/70" />
+              <button class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800">Filters</button>
+            </div>
+            <div class="mt-4 h-28 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 grid place-items-center text-xs text-slate-500">
+              Results table placeholder
+            </div>
+          </article>
+
+          <!-- Cann‑I‑Science -->
+          <article id="science" class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 shadow-soft">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">🧬 Cann‑I‑Science</h2>
+              <span class="text-xs text-slate-500">wireframe</span>
+            </div>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Educational blocks for cannabinoids & terpenes. Static for now.</p>
+            <ul class="mt-3 text-sm list-disc list-inside text-slate-600 dark:text-slate-300">
+              <li>THC, CBD, CBG — short blurbs</li>
+              <li>Limonene, Myrcene, Caryophyllene cards</li>
+              <li>Endocannabinoid diagram slot</li>
+            </ul>
+          </article>
+
+          <!-- Community -->
+          <article id="community" class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 shadow-soft">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">💬 The Nexus (Community)</h2>
+              <span class="text-xs text-slate-500">wireframe</span>
+            </div>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Forum/feed placeholder. Think threads, comments, reactions.</p>
+            <div class="mt-4 h-28 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 grid place-items-center text-xs text-slate-500">
+              Activity feed placeholder
+            </div>
+          </article>
+
+          <!-- Culture -->
+          <article id="culture" class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 shadow-soft">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">🌿 The Culture</h2>
+              <span class="text-xs text-slate-500">wireframe</span>
+            </div>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Long-form stories, playlists, pairings, guides.</p>
+            <div class="mt-4 h-28 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 grid place-items-center text-xs text-slate-500">
+              Feature article placeholder
+            </div>
+          </article>
+
+          <!-- CIN Legend -->
+          <article id="legend" class="rounded-2xl p-5 border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 shadow-soft">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-bold">🎨 CIN Experience Legend</h2>
+              <span class="text-xs text-slate-500">visual only</span>
+            </div>
+            <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+              <template x-for="chip in legend" :key="chip.name">
+                <div class="px-3 py-2 rounded-xl border text-white" :style="`background:${chip.color}`" x-text="chip.name"></div>
+              </template>
+            </div>
+          </article>
+        </section>
+
+        <!-- Style Guide & Components (empty anchors for now) -->
+        <section id="style-guide" class="mt-10 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50">
+          <h3 class="text-lg font-bold">Style Guide (Stub)</h3>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Buttons, inputs, badges, cards — to be filled after layout sign‑off.</p>
+        </section>
+
+        <section id="components" class="mt-6 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/50">
+          <h3 class="text-lg font-bold">Reusable Components (Stub)</h3>
+          <ul class="mt-2 text-sm list-disc list-inside text-slate-600 dark:text-slate-300">
+            <li>DataTable (sortable, pageable)</li>
+            <li>EffectChip (color-coded)</li>
+            <li>GradientBadge (CIN Experience)</li>
+          </ul>
+        </section>
+
+        <footer class="py-10 text-center text-xs text-slate-500">CIN Layout Scaffold • v0.1 — No data sources connected</footer>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function cinLayout(){
+      const saved = localStorage.getItem('cinDark');
+      return {
+        dark: saved ? saved === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches,
+        sidebarOpen: false,
+        active: 'curator',
+        pgStatus: 'disconnected', // UI-only; will reflect PG wiring later
+        nav: [
+          { id:'curator',  href:'#curator',  icon:'🤖', label:'The Curator', desc:'AI guide UI shell' },
+          { id:'cannadex', href:'#cannadex', icon:'📊', label:'CannaDex',   desc:'Search/table shell' },
+          { id:'science',  href:'#science',  icon:'🧬', label:'Cann‑I‑Science', desc:'Education blocks' },
+          { id:'community',href:'#community',icon:'💬', label:'The Nexus',  desc:'Community feed stub' },
+          { id:'culture',  href:'#culture',  icon:'🌿', label:'The Culture',desc:'Stories & guides' },
+          { id:'legend',   href:'#legend',   icon:'🎨', label:'CIN Legend', desc:'Experience chips' }
+        ],
+        legend: [
+          { name:'Crimson',  color:'#9B111E' },
+          { name:'Scarlet',  color:'#FF2400' },
+          { name:'Amethyst', color:'#9966CC' },
+          { name:'Moonstone',color:'#4B0082' },
+          { name:'Onyx',     color:'#353839' },
+          { name:'Marigold', color:'#FFC30B' },
+          { name:'Verdant',  color:'#3CB371' },
+        ],
+        toggleTheme(){
+          this.dark = !this.dark;
+          document.documentElement.classList.toggle('dark', this.dark);
+          localStorage.setItem('cinDark', String(this.dark));
         }
-
-
-
-
-        // Helper function to get colors for CIN Experience
-        function getCINExperienceColors(experience) {
-            const colorsMap = {
-                "Crimson": "#9B111E",   // Deep, intense euphoria
-                "Scarlet": "#FF2400",   // Energizing, productivity
-                "Amethyst": "#9966CC",  // Relaxing, dreamlike
-                "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
-                "Onyx": "#353839",      // Exotic, complex highs
-                "Marigold": "#FFC30B",  // Uplifting, citrus-heavy
-                "Verdant": "#3CB371"    // Smooth, functional hybrid
-            };
-
-            let experiences = experience.split("/").map(exp => exp.trim());
-            let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF");
-
-            return colors;
-        }
-
-
-
-
-
-    </script>
-
-
-    <script>
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            const strainTable = document.getElementById("strainTableBody");
-            const searchInput = document.getElementById("searchBar");
-            const tableContainer = document.getElementById("tableContainer");
-
-            // Fetch JSON Data
-            fetch("strain_db_2025_03_19_0600.json")
-            .then(response => {
-                if (!response.ok) throw new Error("Failed to load JSON");
-                return response.json();
-            })
-            .then(data => {
-                window.strainData = data; // Store data globally for filtering
-            })
-            .catch(error => console.error("Error fetching strains:", error));
-
-            // Function to Update Table
-            function updateTable(strains) {
-                const strainTable = document.getElementById("strainTableBody");
-                const tableContainer = document.getElementById("tableContainer");
-
-                strainTable.innerHTML = "";
-
-                if (strains.length === 0) {
-                    tableContainer.style.display = "none"; // ✅ Hide table when empty
-                    return;
-                }
-
-                strains.forEach(strain => {
-                    let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
-                    let colors = getCINExperienceColors(experience);
-
-                    let gradientStyle = colors.length > 1 
-                        ? `style="--color-1: ${colors[0]}; --color-2: ${colors[1]};"`
-                        : `style="--color-1: ${colors[0]}; color: ${colors[0]};"`; // ✅ Fallback color
-
-                    let backgroundStyle = colors.length > 1 
-                        ? `background: linear-gradient(to right, ${colors.join(", ")});`
-                        : `background: ${colors[0]};`;
-
-                    let row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td style="text-align:left; padding: 8px; width: 180px;">
-                            <a href='${strain["Strain Webpage"]}' target='_blank' class="strain-name-gradient" ${gradientStyle}>
-                                ${strain["Strain"]}
-                            </a>
-                        </td>
-                        <td style="text-align:left; width: 140px;">${strain["Brand"]}</td>
-                        <td style="text-align:left; width: 130px;">${strain["Category"]}</td>
-                        <td style="text-align:left; width: 150px;">${strain["Product Type"]}</td>
-                        <td class="cin-experience" style="width: 180px; color: white; text-align:center; border-radius: 5px; padding: 5px; ${backgroundStyle};">
-                            ${strain["CIN Experience"]}
-                        </td>
-                        <td style="text-align:center; width: 90px;">${strain["Total THC (%)"]}%</td>
-                        <td style="text-align:center; width: 90px;">${strain["Total CBD (%)"]}%</td>
-                        <td style="text-align:center; width: 110px;">${strain["Total Terpenes (%)"]}%</td>
-                        <td style="text-align:left; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
-                            ${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}
-                        </td>
-                    `;
-                    strainTable.appendChild(row);
-                });
-
-                tableContainer.style.display = "block"; // ✅ Show table only when results exist
-            }
-
-
-
-
-
-            /* 🎨 CIN Experience Colors */
-            function getCINExperienceColors(experience) {
-                const colorsMap = {
-                    "Crimson": "#9B111E",   /* Deep, intense euphoria */
-                    "Scarlet": "#FF2400",   /* Energizing, productivity */
-                    "Amethyst": "#9966CC",  /* Relaxing, dreamlike */
-                    "Moonstone": "#4B0082", /* Ultimate sedation, sleep aid */
-                    "Onyx": "#353839",      /* Exotic, complex highs */
-                    "Marigold": "#FFC30B",  /* Uplifting, citrus-heavy */
-                    "Verdant": "#3CB371"    /* Smooth, functional hybrid */
-                };
-
-                let experiences = experience.split("/").map(exp => exp.trim());
-                let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF");
-
-                return colors;
-            }
-
-
-
-
-
-
-
-
-            // Search Functionality
-            document.getElementById("searchBar").addEventListener("keyup", function() {
-                filterStrains();
-            });
-
-            function filterStrains() {
-                const query = document.getElementById("searchBar").value.toLowerCase().trim();
-                if (!query) return;
-
-                const normalizedQuery = query.replace(/[^a-zA-Z0-9-]/g, "");
-
-                const filteredStrains = window.strainData.filter(strain => {
-                    // ✅ Search in Strain Name, Brand, Category
-                    let nameMatch = ["Strain", "Brand", "Category"].some(field => strain[field]?.toLowerCase().includes(query));
-
-                    // ✅ Search in Categorized Effects (Initial, Mid, Late)
-                    let categorizedMatch = ["initial", "mid", "late"].some(phase =>
-                        strain["Effects"]?.categorized_effects?.[phase]?.includes(normalizedQuery)
-                    );
-
-                    // ✅ Search in CIN Experience
-                    let cinxpMatch = strain["Effects"]?.cin_experience?.toLowerCase().includes(normalizedQuery) || false;
-
-                    // ✅ Search in Tokens
-                    let tokensMatch = strain["Effects"]?.tokens.includes(normalizedQuery);
-
-                    // ✅ Search in AI-Ready Features
-                    let aiFeaturesMatch = strain["Effects"]?.ai_ready_features?.[normalizedQuery] === 1;
-
-                    // ✅ Search in Raw Text Description
-                    let rawTextMatch = strain["Effects"]?.raw_text.toLowerCase().includes(query) || false;
-
-                    return nameMatch || categorizedMatch || cinxpMatch || tokensMatch || aiFeaturesMatch || rawTextMatch;
-                });
-
-                updateTable(filteredStrains);
-            }
-
-
-            // Effect Filter Function
-            window.filterByEffect = function(effect) {
-                const filteredStrains = window.strainData.filter(strain => 
-                    strain["Effects"] && strain["Effects"].tokens.includes(effect)
-                );
-                updateTable(filteredStrains);
-            };
-        });
-        
-
-
-    </script>
-
-
-
+      }
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Cannabis Intel Nexus</title>
+
+    <!-- CSS file -->
+    <link rel="stylesheet" href="css/cin_style_home.css" type="text/css" charset="utf-8" />
+
+
+    <!-- Favicon -->
+    <link rel="icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+    <link rel="shortcut icon" href="resources/logo/CIN_LOGO.png" type="image/x-icon">
+
+
+</head>
+
+
+<body>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <h1>Cannabis Intel Nexus</h1>
+        <h5>An AI-powered cannabis strain database interface.</h5>
+        
+    <!-- Menu Button -->
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <br>
+        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">🤖 The Curator (AI-Powered High Guide)</a>
+        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus.html">📊 CannaDex (Cannabis Database)</a>
+        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_refinery.html">💬 The Nexus (Community)</a>
+        <a href="https://tonyarkaysia.github.io/cannabis_intel_nexus_culture.html">🌿 The Culture</a>
+        <a href="https://tonyarkaysia.github.io/cann-i-science.html">🧬 Cann-I-Science</a>
+    </div>
+    <br><br><br>
+    <h1>Cannabis Curator</h1>
+
+    <!-- Effects to Drag -->
+    <div class="effects-container">
+        <div class="effect" id="euphoria" draggable="true" ondragstart="drag(event)">🎭Euphoria</div>
+        <div class="effect" id="relaxation" draggable="true" ondragstart="drag(event)">🛋️Relaxation</div>
+        <div class="effect" id="focus" draggable="true" ondragstart="drag(event)">💡Focus</div>
+        <div class="effect" id="creativity" draggable="true" ondragstart="drag(event)">🎨Creativity</div>
+        <div class="effect" id="energy" draggable="true" ondragstart="drag(event)">⚡Energy</div>
+        <div class="effect" id="sedation" draggable="true" ondragstart="drag(event)">🌙Sedation</div>
+        <div class="effect" id="pain-relief" draggable="true" ondragstart="drag(event)">🩹Pain Relief</div>
+        <div class="effect" id="stress-relief" draggable="true" ondragstart="drag(event)">😌Stress Relief</div>
+    </div>
+
+    <!-- Phase Selection with Intensity Sliders -->
+    <div class="phase-box" ondrop="drop(event, 'phase1')" ondragover="allowDrop(event)">
+        <h3>Phase 1 - Initial High</h3>
+        <div class="drop-area" id="phase1"></div>
+        <label>Intensity:</label>
+        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity1">
+    </div>
+
+    <div class="phase-box" ondrop="drop(event, 'phase2')" ondragover="allowDrop(event)">
+        <h3>Phase 2 - Mid High</h3>
+        <div class="drop-area" id="phase2"></div>
+        <label>Intensity:</label>
+        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity2">
+    </div>
+
+    <div class="phase-box" ondrop="drop(event, 'phase3')" ondragover="allowDrop(event)">
+        <h3>Phase 3 - Late Effects</h3>
+        <div class="drop-area" id="phase3"></div>
+        <label>Intensity:</label>
+        <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity3">
+    </div>
+
+    <!-- Buttons -->
+    <button onclick="generateCustomHigh()">Find My Strain</button>
+    <button onclick="resetSelection()">Reset</button>
+
+
+
+
+
+<!-- Main Content -->
+    <div class="content" id="content">
+        <h1>CannaDex</h1>
+        <p>The Cannabis Database.</p>
+
+        <div class="search-container">
+            <input type="text" class="search-bar" id="searchBar" placeholder="Find your perfect strain..." onkeyup="filterStrains()">
+            <div class="button-container">
+                <button class="filter-btn" onclick="filterByEffect('euphoric')">🌟 Euphoric</button>
+                <button class="filter-btn" onclick="filterByEffect('relaxation')">😌 Relaxing</button>
+                <button class="filter-btn" onclick="filterByEffect('energetic')">⚡ Energetic</button>
+                <button class="filter-btn" onclick="filterByEffect('limonene')">🍋 Limonene</button>
+                <button class="filter-btn" onclick="filterByEffect('caryophyllene')">🌶️ Beta-Caryophyllene</button>
+                <button class="filter-btn" onclick="filterByEffect('myrcene')">🌿 Myrcene</button>
+            </div>
+        </div>
+
+        <!-- Table (Initially Hidden) -->
+        <div class="table-container" id="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Strain</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Product Type</th>
+                        <th>CIN Experience</th>
+                        <th>THC (%)</th>
+                        <th>CBD (%)</th>
+                        <th>Total Terpenes (%)</th>
+                        <th>Effects</th>
+                    </tr>
+                </thead>
+                <tbody id="strainTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+
+    <script>        // Sidebar Toggle
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle("open");
+            document.getElementById('content').classList.toggle("shrink");
+        }
+    </script>
+
+    <script>
+
+        let selectedEffects = { phase1: [], phase2: [], phase3: [] };
+        const maxEffects = { phase1: 3, phase2: 4, phase3: 3 };
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function drag(event) {
+            event.dataTransfer.setData("text", event.target.id);
+        }
+
+        function drop(event, phase) {
+            event.preventDefault();
+            let effect = event.dataTransfer.getData("text");
+            let dropArea = document.getElementById(phase);
+
+            // 🛑 Prevent duplicate effects across phases
+            for (let key in selectedEffects) {
+                if (selectedEffects[key].includes(effect)) {
+                    alert("❌ You already selected this effect in another phase!");
+                    return;
+                }
+            }
+
+            // 🛑 Enforce effect limit per phase
+            if (selectedEffects[phase].length >= maxEffects[phase]) {
+                alert(`❌ You can only choose ${maxEffects[phase]} effects in ${phase.toUpperCase()}`);
+                return;
+            }
+
+            // ✅ Add effect to phase
+            selectedEffects[phase].push(effect);
+            let effectElement = document.createElement("div");
+            effectElement.className = "dropped-effect";
+            effectElement.textContent = document.getElementById(effect).textContent;
+            
+            // 🗑️ Add remove button
+            let removeBtn = document.createElement("span");
+            removeBtn.textContent = " ❌";
+            removeBtn.style.cursor = "pointer";
+            removeBtn.onclick = function () {
+                selectedEffects[phase] = selectedEffects[phase].filter(e => e !== effect);
+                dropArea.removeChild(effectElement);
+            };
+
+            effectElement.appendChild(removeBtn);
+            dropArea.appendChild(effectElement);
+        }
+
+        
+        function resetSelection() {
+            // Reset the selected effects
+            selectedEffects = { phase1: [], phase2: [], phase3: [] };
+            document.querySelectorAll(".drop-area").forEach(area => area.innerHTML = "");
+
+            // Clear the strain results table
+            const strainTable = document.getElementById("strainTableBody");
+            strainTable.innerHTML = "";
+
+            // Hide the table container
+            document.getElementById("tableContainer").style.display = "none";
+        }
+
+    </script>
+
+    <script>
+
+        function normalizeEffect(effect) {
+            return effect.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+        }
+
+        function generateCustomHigh() {
+            if (Object.values(selectedEffects).every(arr => arr.length === 0)) {
+                alert("❌ Please select at least one effect before generating!");
+                return;
+            }
+
+            console.log("🟢 Selected Effects:", JSON.stringify(selectedEffects, null, 2));
+
+            const phaseMap = { phase1: "initial", phase2: "mid", phase3: "late" };
+
+            let matchingStrains = window.strainData.filter(strain => {
+                if (!strain["Effects"]?.categorized_effects) {
+                    console.warn("⚠ Missing categorized_effects for strain:", strain["Strain"]);
+                    return false;
+                }
+
+                return Object.keys(selectedEffects).every(phase => {
+                    let strainPhase = phaseMap[phase];
+                    let selectedEffectsForPhase = selectedEffects[phase];
+
+                    console.log(`🔍 Checking phase '${strainPhase}' for effects:`, selectedEffectsForPhase);
+
+                    return selectedEffectsForPhase.every(effect => {
+                        let normalizedEffect = normalizeEffect(effect);
+
+                        let phaseKeywords = strain["Effects"].categorized_effects[strainPhase] || [];
+                        let normalizedKeywords = phaseKeywords.map(keyword => normalizeEffect(keyword));
+
+                        console.log(`🔍 Searching for '${normalizedEffect}' in ${strain["Strain"]} → ${strainPhase}:`, normalizedKeywords);
+
+                        // ✅ FIX: Match exact term or substring (e.g., "stress relief" should match "stress-relief")
+                        return normalizedKeywords.some(keyword => 
+                            keyword === normalizedEffect || normalizedEffect.includes(keyword) || keyword.includes(normalizedEffect)
+                        );
+                    });
+                });
+            });
+
+            console.log("✅ Matching Strains:", matchingStrains.map(s => s["Strain"]));
+
+            if (matchingStrains.length === 0) {
+                alert("❌ No exact match found! Try adjusting your selection.");
+                return;
+            }
+
+            displayStrainResults(matchingStrains);
+        }
+
+
+
+        function displayStrainResults(results) {
+    const tableContainer = document.getElementById("tableContainer");
+    const strainTable = document.getElementById("strainTableBody");
+    strainTable.innerHTML = "";
+
+    if (results.length === 0) {
+        strainTable.innerHTML = `<tr><td colspan='9' style='text-align:center;'>No matching strains found</td></tr>`;
+        tableContainer.style.display = "none";
+        return;
+    }
+
+    results.forEach(strain => {
+        let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
+        let colors = getCINExperienceColors(experience);
+
+        // Inline style for strain name gradient
+        let nameStyle = `
+            background: ${colors.length > 1 ? `linear-gradient(to right, ${colors.join(', ')})` : colors[0]};
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            display: inline-block;
+        `;
+
+        // Background style for CIN Experience column
+        let backgroundStyle = colors.length > 1 
+            ? `background: linear-gradient(to right, ${colors.join(", ")});`
+            : `background: ${colors[0]};`;
+
+        let row = document.createElement("tr");
+        row.innerHTML = `
+            <td style="text-align:left; padding: 8px;">
+                <a href='${strain["Strain Webpage"]}' target='_blank' style="${nameStyle}">
+                    ${strain["Strain"]}
+                </a>
+            </td>
+            <td>${strain["Brand"]}</td>
+            <td>${strain["Category"]}</td>
+            <td>${strain["Product Type"]}</td>
+            <td style="text-align:center; ${backgroundStyle} color: white; padding: 5px; border-radius: 5px;">
+                ${strain["CIN Experience"]}
+            </td>
+            <td>${strain["Total THC (%)"]}%</td>
+            <td>${strain["Total CBD (%)"]}%</td>
+            <td>${strain["Total Terpenes (%)"]}%</td>
+            <td style="text-align:left;">${strain["Effects"]?.raw_text || "N/A"}</td>
+        `;
+        strainTable.appendChild(row);
+    });
+
+    tableContainer.style.display = "block";
+}
+
+        /* 🎨 CIN Experience Colors */
+        function getCINExperienceColors(experience) {
+            const colorsMap = {
+                "Crimson": "#9B111E",
+                "Scarlet": "#FF2400",
+                "Amethyst": "#9966CC",
+                "Moonstone": "#4B0082",
+                "Onyx": "#353839",
+                "Marigold": "#FFC30B",
+                "Verdant": "#3CB371"
+            };
+
+            let experiences = experience.split("/").map(exp => exp.trim());
+            return experiences.map(exp => colorsMap[exp] || "#FFFFFF");
+        }
+
+
+
+
+        // Helper function to get colors for CIN Experience
+        function getCINExperienceColors(experience) {
+            const colorsMap = {
+                "Crimson": "#9B111E",   // Deep, intense euphoria
+                "Scarlet": "#FF2400",   // Energizing, productivity
+                "Amethyst": "#9966CC",  // Relaxing, dreamlike
+                "Moonstone": "#4B0082", // Ultimate sedation, sleep aid
+                "Onyx": "#353839",      // Exotic, complex highs
+                "Marigold": "#FFC30B",  // Uplifting, citrus-heavy
+                "Verdant": "#3CB371"    // Smooth, functional hybrid
+            };
+
+            let experiences = experience.split("/").map(exp => exp.trim());
+            let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF");
+
+            return colors;
+        }
+
+
+
+
+
+    </script>
+
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            const strainTable = document.getElementById("strainTableBody");
+            const searchInput = document.getElementById("searchBar");
+            const tableContainer = document.getElementById("tableContainer");
+
+            // Fetch JSON Data
+            fetch("strain_db_2025_03_19_0600.json")
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load JSON");
+                return response.json();
+            })
+            .then(data => {
+                window.strainData = data; // Store data globally for filtering
+            })
+            .catch(error => console.error("Error fetching strains:", error));
+
+            // Function to Update Table
+            function updateTable(strains) {
+                const strainTable = document.getElementById("strainTableBody");
+                const tableContainer = document.getElementById("tableContainer");
+
+                strainTable.innerHTML = "";
+
+                if (strains.length === 0) {
+                    tableContainer.style.display = "none"; // ✅ Hide table when empty
+                    return;
+                }
+
+                strains.forEach(strain => {
+                    let experience = strain["CIN Experience"] ? strain["CIN Experience"].trim() : "";
+                    let colors = getCINExperienceColors(experience);
+
+                    let gradientStyle = colors.length > 1 
+                        ? `style="--color-1: ${colors[0]}; --color-2: ${colors[1]};"`
+                        : `style="--color-1: ${colors[0]}; color: ${colors[0]};"`; // ✅ Fallback color
+
+                    let backgroundStyle = colors.length > 1 
+                        ? `background: linear-gradient(to right, ${colors.join(", ")});`
+                        : `background: ${colors[0]};`;
+
+                    let row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td style="text-align:left; padding: 8px; width: 180px;">
+                            <a href='${strain["Strain Webpage"]}' target='_blank' class="strain-name-gradient" ${gradientStyle}>
+                                ${strain["Strain"]}
+                            </a>
+                        </td>
+                        <td style="text-align:left; width: 140px;">${strain["Brand"]}</td>
+                        <td style="text-align:left; width: 130px;">${strain["Category"]}</td>
+                        <td style="text-align:left; width: 150px;">${strain["Product Type"]}</td>
+                        <td class="cin-experience" style="width: 180px; color: white; text-align:center; border-radius: 5px; padding: 5px; ${backgroundStyle};">
+                            ${strain["CIN Experience"]}
+                        </td>
+                        <td style="text-align:center; width: 90px;">${strain["Total THC (%)"]}%</td>
+                        <td style="text-align:center; width: 90px;">${strain["Total CBD (%)"]}%</td>
+                        <td style="text-align:center; width: 110px;">${strain["Total Terpenes (%)"]}%</td>
+                        <td style="text-align:left; max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
+                            ${strain["Effects"] && strain["Effects"].raw_text ? strain["Effects"].raw_text : "N/A"}
+                        </td>
+                    `;
+                    strainTable.appendChild(row);
+                });
+
+                tableContainer.style.display = "block"; // ✅ Show table only when results exist
+            }
+
+
+
+
+
+            /* 🎨 CIN Experience Colors */
+            function getCINExperienceColors(experience) {
+                const colorsMap = {
+                    "Crimson": "#9B111E",   /* Deep, intense euphoria */
+                    "Scarlet": "#FF2400",   /* Energizing, productivity */
+                    "Amethyst": "#9966CC",  /* Relaxing, dreamlike */
+                    "Moonstone": "#4B0082", /* Ultimate sedation, sleep aid */
+                    "Onyx": "#353839",      /* Exotic, complex highs */
+                    "Marigold": "#FFC30B",  /* Uplifting, citrus-heavy */
+                    "Verdant": "#3CB371"    /* Smooth, functional hybrid */
+                };
+
+                let experiences = experience.split("/").map(exp => exp.trim());
+                let colors = experiences.map(exp => colorsMap[exp] || "#FFFFFF");
+
+                return colors;
+            }
+
+
+
+
+
+
+
+
+            // Search Functionality
+            document.getElementById("searchBar").addEventListener("keyup", function() {
+                filterStrains();
+            });
+
+            function filterStrains() {
+                const query = document.getElementById("searchBar").value.toLowerCase().trim();
+                if (!query) return;
+
+                const normalizedQuery = query.replace(/[^a-zA-Z0-9-]/g, "");
+
+                const filteredStrains = window.strainData.filter(strain => {
+                    // ✅ Search in Strain Name, Brand, Category
+                    let nameMatch = ["Strain", "Brand", "Category"].some(field => strain[field]?.toLowerCase().includes(query));
+
+                    // ✅ Search in Categorized Effects (Initial, Mid, Late)
+                    let categorizedMatch = ["initial", "mid", "late"].some(phase =>
+                        strain["Effects"]?.categorized_effects?.[phase]?.includes(normalizedQuery)
+                    );
+
+                    // ✅ Search in CIN Experience
+                    let cinxpMatch = strain["Effects"]?.cin_experience?.toLowerCase().includes(normalizedQuery) || false;
+
+                    // ✅ Search in Tokens
+                    let tokensMatch = strain["Effects"]?.tokens.includes(normalizedQuery);
+
+                    // ✅ Search in AI-Ready Features
+                    let aiFeaturesMatch = strain["Effects"]?.ai_ready_features?.[normalizedQuery] === 1;
+
+                    // ✅ Search in Raw Text Description
+                    let rawTextMatch = strain["Effects"]?.raw_text.toLowerCase().includes(query) || false;
+
+                    return nameMatch || categorizedMatch || cinxpMatch || tokensMatch || aiFeaturesMatch || rawTextMatch;
+                });
+
+                updateTable(filteredStrains);
+            }
+
+
+            // Effect Filter Function
+            window.filterByEffect = function(effect) {
+                const filteredStrains = window.strainData.filter(strain => 
+                    strain["Effects"] && strain["Effects"].tokens.includes(effect)
+                );
+                updateTable(filteredStrains);
+            };
+        });
+        
+
+
+    </script>
+
+
+
+</body>
+</html>
