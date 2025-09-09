@@ -54,14 +54,17 @@
         <span>Tony Arkaysia</span>
       </div>
       <div class="flex items-center gap-2">
-        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">Hire Me</a>
+        <!-- Dog/Cat contact button -->
+        <a href="#contact"
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">
+          <span x-text="dark ? 'Let\'s Chat' : 'Git @ Me'"></span>
+        </a>
         <button
           @click="toggleTheme()"
           class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl"
           :aria-pressed="dark.toString()"
           aria-label="Toggle dark mode"
-        >
-          🌗
+          x-text="dark ? '🐱' : '🐶'">
         </button>
       </div>
     </div>
@@ -262,7 +265,7 @@
       <div class="grid md:grid-cols-2 gap-6">
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
           <div class="grid gap-3 text-sm">
-            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">tonyarkaysia@gmail.com</a></div>
+            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">TonyArkaysia@gmail.com</a></div>
             <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
             <div class="flex items-center gap-2 flex-wrap">
               <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800">GitHub ↗</a>
@@ -316,7 +319,7 @@
         categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
 
         projects: [
-          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed 1k+ COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
+          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed hundreds COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
           {id:'isl', name:'Interactive Sports Labs', tagline:'Real-time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[]},
           {id:'qteam', name:'Q-Team Civic Noise', tagline:'Citizen-grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court-ready workflows.', open:false, links:[]},
           {id:'ark', name:'Arkaysia Forest', tagline:'Interactive anime/game world & toolchain', tags:['Media','3D','Web'], role:'Creator, writer, tech', impact:'Character DB, narrative systems, motion & audio prototypes.', open:false, links:[]},
