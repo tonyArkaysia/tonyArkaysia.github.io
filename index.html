@@ -3,52 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tony Arkaysia — Interactive Profile</title>
+  <title>Tony Arkaysia — Profile</title>
   <meta name="description" content="Systems builder blending data, AI, hardware, and storytelling. Interactive portfolio with live charts and expandable projects." />
   <link rel="icon" href="favicon.png" />
 
-  <!-- Pre-paint theme (no flash) — uses SAME key as cin_login.html -->
+  <!-- Pre-paint theme (no flash) -->
   <script>
     (function () {
-      try {
-        var saved = localStorage.getItem('cinDark'); // <-- synced to login page
-      } catch (e) {
-        var saved = null;
-      }
-      var prefers = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) || false;
+      const saved = localStorage.getItem('themeDark');
+      const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (saved === 'true' || (saved === null && prefers)) {
         document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
     })();
   </script>
 
-  <!-- Tailwind config BEFORE CDN -->
+  <!-- Tailwind config must be BEFORE the CDN script -->
   <script>
     tailwind = {};
     tailwind.config = { darkMode: 'class' };
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Alpine core (once) + official Collapse plugin -->
+  <!-- Alpine core + collapse plugin -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js" defer></script>
 
-  <!-- Chart.js (optional; radar uses it if canvas exists) -->
+  <!-- Chart.js (for the radar chart) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
-  <!-- Plain CSS fallback so toggle is visible even if Tailwind fails -->
+  <!-- Plain CSS fallback so the theme toggle is always visible -->
   <style>
     html { scroll-behavior: smooth; }
-    [x-cloak] { display: none !important; } /* avoid FOUC */
     body { transition: background-color .2s, color .2s; }
-    /* Fallback colors */
-    body { background:#f8fafc; color:#0f172a; }           /* light  */
-    .dark body { background:#090909; color:#e2e8f0; }     /* dark   */
+    /* Fallback colors (overridden by Tailwind when loaded) */
+    body { background:#f8fafc; color:#0f172a; }   /* light */
+    .dark body { background:#020617; color:#e2e8f0; } /* dark */
     .glass { backdrop-filter: blur(8px); }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+<body x-init="init()" class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
   <!-- Topbar -->
   <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-950/60 glass">
     <div class="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
@@ -57,13 +54,17 @@
         <span>Tony Arkaysia</span>
       </div>
       <div class="flex items-center gap-2">
-        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">Let’s Chat 🐱</a>
+        <!-- Dog/Cat contact button -->
+        <a href="#contact"
+          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">
+          <span x-text="dark ? 'Let\'s Chat' : 'Git @ Me'"></span>
+        </a>
         <button
-          @click="toggleTheme"
+          @click="toggleTheme()"
           class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl"
           :aria-pressed="dark.toString()"
           aria-label="Toggle dark mode"
-          x-text="dark ? '🐶' : '🌞'">
+          x-text="dark ? '🐱' : '🐶'">
         </button>
       </div>
     </div>
@@ -72,6 +73,7 @@
   <main class="max-w-6xl mx-auto px-4 md:px-6 py-10 space-y-16">
     <!-- HERO -->
     <section class="relative isolate">
+      <!-- background blobs -->
       <div class="absolute -top-24 -right-20 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl pointer-events-none -z-10"></div>
       <div class="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none -z-10"></div>
 
@@ -84,32 +86,33 @@
         </h1>
 
         <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl text-center mx-auto">
-          I'm a builder and a designer — databases, apps, 3-D models, gadgets. I refine the designs, calibrate the printers,
-          solder the bits, and ship. Focus: IoT devices & sustainable 3-D printed designs that upgrade daily life.
+          I'm a builder and a designer — always have been. Databases, apps, 3-D models, gadgets. I refine the designs,
+          calibrate the printers, solder the bits, and deliver products aimed at improving daily life.
         </p>
 
         <div class="mt-6 flex flex-wrap items-center gap-3 text-sm">
           <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📍 Queens, NYC • Remote</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🗂️ Data engineering</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🗂️ Database design & data engineering</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🧪 Data-science analytics</span>
           <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📊 Interactive dashboards</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🏗️ 3-D + IoT builds</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🏗️ 3-D modeling & IoT</span>
         </div>
 
         <div class="mt-7 flex flex-wrap gap-3">
           <a href="assets/tony_arkaysia_resume.pdf" download target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
             ⬇️ Download Résumé
           </a>
           <a href="https://github.com/rainmannyc" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-800 dark:hover:bg-slate-800 hover:text-white transition">
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 transition">
             GitHub ↗
           </a>
           <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-sky-500 hover:text-white dark:hover:bg-slate-800">
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-sky-500 dark:hover:bg-slate-800">
             LinkedIn ↗
           </a>
           <a href="https://www.printables.com/@RainMan_1957964" target="_blank" rel="noopener"
-             class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-orange-500 hover:text-white dark:hover:bg-slate-800">
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-orange-500 dark:hover:bg-slate-800">
             3-D Design Profile ↗
           </a>
         </div>
@@ -148,9 +151,11 @@
                 </div>
                 <button
                   @click="p.open = !p.open"
-                  :aria-expanded="p.open.toString()"
                   class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
-                  aria-label="Toggle details">▾</button>
+                  aria-label="Toggle details"
+                  :aria-expanded="p.open ? 'true' : 'false'">
+                  ▾
+                </button>
               </div>
 
               <div class="mt-3 flex flex-wrap gap-2">
@@ -159,8 +164,8 @@
                 </template>
               </div>
 
-              <!-- Works on mobile: x-show + official x-collapse -->
-              <div x-show="p.open" x-collapse.duration.250ms x-cloak>
+              <!-- Details (collapsible) -->
+              <div x-show="p.open" x-collapse.duration.200ms>
                 <div class="mt-4 grid gap-3 text-sm">
                   <div class="flex items-start gap-2">
                     <span class="mt-0.5">🧭</span>
@@ -177,7 +182,7 @@
                   </div>
                 </div>
               </div>
-
+              <!-- /Details -->
             </div>
           </div>
         </template>
@@ -239,7 +244,7 @@
       </div>
 
       <!-- Modal -->
-      <div x-show="lightbox" x-transition x-cloak class="fixed inset-0 z-50 bg-black/70 glass grid place-items-center p-6">
+      <div x-show="lightbox" x-transition class="fixed inset-0 z-50 bg-black/70 glass grid place-items-center p-6">
         <div class="max-w-3xl w-full rounded-2xl overflow-hidden bg-black">
           <div class="flex justify-between items-center p-3 bg-slate-900 text-white text-sm">
             <div x-text="lightbox?.title"></div>
@@ -260,12 +265,12 @@
       <div class="grid md:grid-cols-2 gap-6">
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
           <div class="grid gap-3 text-sm">
-            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">tonyarkaysia@gmail.com</a></div>
+            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">TonyArkaysia@gmail.com</a></div>
             <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
             <div class="flex items-center gap-2 flex-wrap">
-              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 dark:hover:text-gray-200 hover:bg-slate-800">GitHub ↗</a>
-              <a href="https://www.linkedin.com" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
-              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-rose-500">Media Kit ↗</a>
+              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800">GitHub ↗</a>
+              <a href="https://www.linkedin.com" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
+              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-rose-500">Media Kit ↗</a>
             </div>
           </div>
         </div>
@@ -282,7 +287,7 @@
     </section>
   </main>
 
-  <footer class="py-10 text-center text-sm muted">
+  <footer class="py-10 text-center text-sm">
     <div class="mb-6">
       <h3 class="font-semibold mb-1">A_LABS</h3>
       <div>
@@ -298,35 +303,41 @@
   <script>
     function profilePage(){
       return {
-        // Alpine state mirrors pre-paint class
+        // Sync with pre-paint class
         dark: document.documentElement.classList.contains('dark'),
+
         toggleTheme(){
           this.dark = !this.dark;
           document.documentElement.classList.toggle('dark', this.dark);
-          try { localStorage.setItem('cinDark', String(this.dark)); } catch(e){}
+          localStorage.setItem('themeDark', String(this.dark));
         },
+
         year: new Date().getFullYear(),
 
         q: '',
         active: 'All',
         categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
+
         projects: [
-          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed 1k+ COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
+          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed hundreds COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
           {id:'isl', name:'Interactive Sports Labs', tagline:'Real-time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[]},
           {id:'qteam', name:'Q-Team Civic Noise', tagline:'Citizen-grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court-ready workflows.', open:false, links:[]},
           {id:'ark', name:'Arkaysia Forest', tagline:'Interactive anime/game world & toolchain', tags:['Media','3D','Web'], role:'Creator, writer, tech', impact:'Character DB, narrative systems, motion & audio prototypes.', open:false, links:[]},
         ],
+
         filteredProjects(){
           const s = this.q.toLowerCase();
           return this.projects
             .filter(p => this.active==='All' || p.tags.includes(this.active))
             .filter(p => !s || p.name.toLowerCase().includes(s) || p.tagline.toLowerCase().includes(s) || p.tags.join(' ').toLowerCase().includes(s));
         },
+
         experiences: [
           {org:'A_LABS (Arkaysia Labs)', title:'Founder / Builder', when:'2023 — Present', bullets:['Launched multi-track ventures across AI analytics, media, and civic tech.','End-to-end: research, product, code, branding, and ops/finance.']},
           {org:'Noise Evidence & Policy Project', title:'Lead Systems Designer', when:'2021 — Present', bullets:['Built calibrated, time-synced measurement stack (DBC/DBA meters + audio).','Produced legal-grade documentation, timelines, and presentations.']},
           {org:'Columbia Engineering', title:'Data Analytics Certification', when:'2021', bullets:['Data wrangling, viz, dashboards, and light ML workflows.']},
         ],
+
         media: [
           {title:'NeuroTerp Radar Walkthrough', desc:'High-level tour of the effects engine and charts.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
           {title:'Interactive Sports Board', desc:'Realtime scoreboard and research demo.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
@@ -336,9 +347,9 @@
         openMedia(m){ this.lightbox = m; },
 
         init(){
-          // Build radar chart once DOM is ready (optional)
+          // Build radar chart (optional – harmless if Chart.js didn't load)
           const ctx = document.getElementById('skillsChart');
-          if(ctx && window.Chart){
+          if (ctx && window.Chart) {
             new Chart(ctx, {
               type: 'radar',
               data: {
