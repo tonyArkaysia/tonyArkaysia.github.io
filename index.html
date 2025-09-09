@@ -14,38 +14,36 @@
       const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
       if (saved === 'true' || (saved === null && prefers)) {
         document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
       }
     })();
   </script>
 
-  <!-- Tailwind config must be BEFORE the CDN script -->
+  <!-- Tailwind (config BEFORE CDN) -->
   <script>
     tailwind = {};
     tailwind.config = { darkMode: 'class' };
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Alpine core + collapse plugin -->
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Alpine collapse plugin must load BEFORE Alpine core -->
   <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Alpine core (single include) -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-  <!-- Chart.js (for the radar chart) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <!-- (Optional) Chart.js for radar chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4" defer></script>
 
   <!-- Plain CSS fallback so the theme toggle is always visible -->
   <style>
     html { scroll-behavior: smooth; }
     body { transition: background-color .2s, color .2s; }
-    /* Fallback colors (overridden by Tailwind when loaded) */
-    body { background:#f8fafc; color:#0f172a; }   /* light */
-    .dark body { background:#020617; color:#e2e8f0; } /* dark */
+    body { background:#f8fafc; color:#0f172a; }     /* light  */
+    .dark body { background:#090909; color:#e2e8f0; }/* dark   */
     .glass { backdrop-filter: blur(8px); }
   </style>
 </head>
 
-<body x-init="init()" class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
   <!-- Topbar -->
   <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-950/60 glass">
     <div class="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
@@ -54,18 +52,16 @@
         <span>Tony Arkaysia</span>
       </div>
       <div class="flex items-center gap-2">
-        <!-- Dog/Cat contact button -->
-        <a href="#contact"
-          class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">
-          <span x-text="dark ? 'Let\'s Chat' : 'Git @ Me'"></span>
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-600 text-white text-sm shadow">
+          Let’s Chat 🐱
         </a>
         <button
+          type="button"
           @click="toggleTheme()"
           class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-2xl"
           :aria-pressed="dark.toString()"
           aria-label="Toggle dark mode"
-          x-text="dark ? '🐱' : '🐶'">
-        </button>
+        >🐶</button>
       </div>
     </div>
   </header>
@@ -86,33 +82,32 @@
         </h1>
 
         <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl text-center mx-auto">
-          I'm a builder and a designer — always have been. Databases, apps, 3-D models, gadgets. I refine the designs,
-          calibrate the printers, solder the bits, and deliver products aimed at improving daily life.
+          I'm a builder and a designer — databases, apps, 3-D models, gadgets. I refine the designs, calibrate the printers,
+          solder the bits, and ship. Focus: IoT devices & sustainable 3-D printed designs that upgrade daily life.
         </p>
 
         <div class="mt-6 flex flex-wrap items-center gap-3 text-sm">
           <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📍 Queens, NYC • Remote</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🗂️ Database design & data engineering</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🧪 Data-science analytics</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🗂️ Data engineering</span>
           <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📊 Interactive dashboards</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🏗️ 3-D modeling & IoT</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🏗️ 3-D + IoT builds</span>
         </div>
 
         <div class="mt-7 flex flex-wrap gap-3">
           <a href="assets/tony_arkaysia_resume.pdf" download target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
             ⬇️ Download Résumé
           </a>
           <a href="https://github.com/rainmannyc" target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 transition">
+             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 transition">
             GitHub ↗
           </a>
           <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-sky-500 dark:hover:bg-slate-800">
+             class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-sky-500 hover:text-white dark:hover:bg-slate-800">
             LinkedIn ↗
           </a>
           <a href="https://www.printables.com/@RainMan_1957964" target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-orange-500 dark:hover:bg-slate-800">
+             class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-orange-500 hover:text-white dark:hover:bg-slate-800">
             3-D Design Profile ↗
           </a>
         </div>
@@ -129,7 +124,7 @@
       <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between mb-5">
         <div class="flex items-center gap-2 flex-wrap">
           <template x-for="c in categories" :key="c">
-            <button @click="active=c" class="px-3 py-1.5 rounded-2xl border text-sm shadow-sm"
+            <button type="button" @click="active=c" class="px-3 py-1.5 rounded-2xl border text-sm shadow-sm"
               :class="active===c ? 'bg-blue-600 text-white border-blue-700' : 'bg-white/70 dark:bg-white/5 border-slate-200 dark:border-slate-800 hover:border-blue-400'"
               x-text="c"></button>
           </template>
@@ -149,12 +144,16 @@
                   <h3 class="text-lg font-bold" x-text="p.name"></h3>
                   <p class="text-slate-600 dark:text-slate-300 mt-1" x-text="p.tagline"></p>
                 </div>
+
+                <!-- Toggle button -->
                 <button
+                  type="button"
                   @click="p.open = !p.open"
-                  class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
-                  aria-label="Toggle details"
-                  :aria-expanded="p.open ? 'true' : 'false'">
-                  ▾
+                  class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                  :aria-expanded="p.open ? 'true' : 'false'"
+                  :aria-controls="`details-${p.id}`"
+                  aria-label="Toggle details">
+                  <span class="inline-block transition-transform duration-200" :class="p.open ? 'rotate-180' : ''">▾</span>
                 </button>
               </div>
 
@@ -164,8 +163,8 @@
                 </template>
               </div>
 
-              <!-- Details (collapsible) -->
-              <div x-show="p.open" x-collapse.duration.200ms>
+              <!-- Collapsible details -->
+              <div :id="`details-${p.id}`" x-show="p.open" x-collapse.duration.200ms>
                 <div class="mt-4 grid gap-3 text-sm">
                   <div class="flex items-start gap-2">
                     <span class="mt-0.5">🧭</span>
@@ -177,19 +176,19 @@
                   </div>
                   <div class="flex items-center gap-2 flex-wrap" x-show="p.links && p.links.length">
                     <template x-for="l in p.links" :key="l.href">
-                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" :href="l.href" target="_blank">🔗 <span x-text="l.label"></span></a>
+                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" :href="l.href" target="_blank" rel="noopener">🔗 <span x-text="l.label"></span></a>
                     </template>
                   </div>
                 </div>
               </div>
-              <!-- /Details -->
+
             </div>
           </div>
         </template>
       </div>
     </section>
 
-    <!-- SKILLS -->
+    <!-- SKILLS (Chart init is optional; will no-op if Chart.js failed to load) -->
     <section id="skills">
       <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Skills Snapshot</h2>
       <div class="grid md:grid-cols-2 gap-6 items-center">
@@ -234,7 +233,7 @@
       <div class="grid md:grid-cols-3 gap-4">
         <template x-for="m in media" :key="m.title">
           <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
-            <button @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-slate-800/60 grid place-items-center text-slate-500">▶</button>
+            <button type="button" @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-slate-800/60 grid place-items-center text-slate-500">▶</button>
             <div class="p-4">
               <div class="font-semibold" x-text="m.title"></div>
               <p class="text-sm text-slate-600 dark:text-slate-300" x-text="m.desc"></p>
@@ -248,11 +247,13 @@
         <div class="max-w-3xl w-full rounded-2xl overflow-hidden bg-black">
           <div class="flex justify-between items-center p-3 bg-slate-900 text-white text-sm">
             <div x-text="lightbox?.title"></div>
-            <button @click="lightbox=null" class="px-2 py-1 rounded bg-white/10">✕</button>
+            <button type="button" @click="lightbox=null" class="px-2 py-1 rounded bg-white/10">✕</button>
           </div>
           <div class="aspect-video">
             <iframe x-show="lightbox?.embed"
-                    :src="lightbox?.embed" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen
+                    :src="lightbox?.embed"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
                     class="w-full h-full"></iframe>
           </div>
         </div>
@@ -265,12 +266,12 @@
       <div class="grid md:grid-cols-2 gap-6">
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
           <div class="grid gap-3 text-sm">
-            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">TonyArkaysia@gmail.com</a></div>
+            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">tonyarkaysia@gmail.com</a></div>
             <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
             <div class="flex items-center gap-2 flex-wrap">
-              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800">GitHub ↗</a>
-              <a href="https://www.linkedin.com" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
-              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-rose-500">Media Kit ↗</a>
+              <a href="https://github.com/TonyArkaysia" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 dark:hover:text-gray-200 hover:bg-slate-800">GitHub ↗</a>
+              <a href="https://www.linkedin.com" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
+              <a href="#" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-slate-50 hover:bg-rose-500">Media Kit ↗</a>
             </div>
           </div>
         </div>
@@ -287,7 +288,7 @@
     </section>
   </main>
 
-  <footer class="py-10 text-center text-sm">
+  <footer class="py-10 text-center text-sm muted">
     <div class="mb-6">
       <h3 class="font-semibold mb-1">A_LABS</h3>
       <div>
@@ -303,41 +304,34 @@
   <script>
     function profilePage(){
       return {
-        // Sync with pre-paint class
+        // make Alpine match what you set before paint
         dark: document.documentElement.classList.contains('dark'),
-
         toggleTheme(){
           this.dark = !this.dark;
           document.documentElement.classList.toggle('dark', this.dark);
           localStorage.setItem('themeDark', String(this.dark));
         },
-
         year: new Date().getFullYear(),
-
         q: '',
         active: 'All',
         categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
-
         projects: [
-          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed hundreds COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
+          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed 1k+ COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'Repo/Docs', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
           {id:'isl', name:'Interactive Sports Labs', tagline:'Real-time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[]},
           {id:'qteam', name:'Q-Team Civic Noise', tagline:'Citizen-grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court-ready workflows.', open:false, links:[]},
           {id:'ark', name:'Arkaysia Forest', tagline:'Interactive anime/game world & toolchain', tags:['Media','3D','Web'], role:'Creator, writer, tech', impact:'Character DB, narrative systems, motion & audio prototypes.', open:false, links:[]},
         ],
-
         filteredProjects(){
           const s = this.q.toLowerCase();
           return this.projects
             .filter(p => this.active==='All' || p.tags.includes(this.active))
             .filter(p => !s || p.name.toLowerCase().includes(s) || p.tagline.toLowerCase().includes(s) || p.tags.join(' ').toLowerCase().includes(s));
         },
-
         experiences: [
           {org:'A_LABS (Arkaysia Labs)', title:'Founder / Builder', when:'2023 — Present', bullets:['Launched multi-track ventures across AI analytics, media, and civic tech.','End-to-end: research, product, code, branding, and ops/finance.']},
           {org:'Noise Evidence & Policy Project', title:'Lead Systems Designer', when:'2021 — Present', bullets:['Built calibrated, time-synced measurement stack (DBC/DBA meters + audio).','Produced legal-grade documentation, timelines, and presentations.']},
           {org:'Columbia Engineering', title:'Data Analytics Certification', when:'2021', bullets:['Data wrangling, viz, dashboards, and light ML workflows.']},
         ],
-
         media: [
           {title:'NeuroTerp Radar Walkthrough', desc:'High-level tour of the effects engine and charts.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
           {title:'Interactive Sports Board', desc:'Realtime scoreboard and research demo.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
@@ -345,12 +339,11 @@
         ],
         lightbox: null,
         openMedia(m){ this.lightbox = m; },
-
         init(){
-          // Build radar chart (optional – harmless if Chart.js didn't load)
-          const ctx = document.getElementById('skillsChart');
-          if (ctx && window.Chart) {
-            new Chart(ctx, {
+          // Chart init (safe if Chart.js not loaded)
+          const el = document.getElementById('skillsChart');
+          if (el && window.Chart) {
+            new Chart(el, {
               type: 'radar',
               data: {
                 labels: ['Python','JS/TS','Data Viz','AI/ML','3D/Blender','Ops/Finance','Legal Docs'],
@@ -358,9 +351,9 @@
                   label: 'Proficiency',
                   data: [95,88,90,86,70,82,78],
                   fill: true,
-                  backgroundColor: 'rgba(37, 99, 235, 0.2)',
-                  borderColor: 'rgb(37, 99, 235)',
-                  pointBackgroundColor: 'rgb(37, 99, 235)'
+                  backgroundColor: 'rgba(37,99,235,0.2)',
+                  borderColor: 'rgb(37,99,235)',
+                  pointBackgroundColor: 'rgb(37,99,235)'
                 }]
               },
               options: { scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
