@@ -14,6 +14,18 @@
   <!-- Alpine -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+  <script>
+    // Option A (public tunnel / real server with HTTPS):
+    window.CIN_API_BASE = "https://tonyarkaysia.github.io/cin_login.html"; 
+    // e.g. an ngrok/Cloudflare tunnel or a real domain
+
+    // Option B (local-only testing with a local web server, not GH Pages):
+    // window.CIN_API_BASE = "http://127.0.0.1:8000";
+  </script>
+
+
+
+
   <style>
     html{scroll-behavior:smooth}
     .glass{backdrop-filter: blur(12px)}
@@ -156,7 +168,7 @@
     function loginPage(){
       const saved = localStorage.getItem('cinDark');
       return {
-        API: (window.CIN_API_BASE || '') + '/auth',
+        API: (window.CIN_API_BASE || '') + '/auth',  // ✅ removed the stray quote
         dark: saved ? saved==='true' : window.matchMedia('(prefers-color-scheme: dark)').matches,
         mode: 'signin',
         email: '',
@@ -184,7 +196,12 @@
         async submitSignin(){
           this.msg='';
           try{
-            const r = await fetch(this.API + '/login', { method:'POST', credentials:'include', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email:this.email, password:this.password, remember:this.remember })});
+            const r = await fetch(this.API + '/login', {
+              method:'POST',
+              credentials:'include',                    // cookie set/read
+              headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ email:this.email, password:this.password, remember:this.remember })
+            });
             if(!r.ok) throw new Error('Invalid credentials');
             this.ok=true; this.msg='Signed in'; this.session=true;
           }catch(e){ this.ok=false; this.msg=e.message || 'Sign-in failed' }
@@ -192,7 +209,11 @@
         async submitSignup(){
           this.msg='';
           try{
-            const r = await fetch(this.API + '/register', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email:this.email, password:this.password, invite:this.invite })});
+            const r = await fetch(this.API + '/register', {
+              method:'POST',
+              headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ email:this.email, password:this.password, invite:this.invite })
+            });
             if(!r.ok) throw new Error('Sign-up failed');
             this.ok=true; this.msg='Check your email to verify your account'; this.mode='signin';
           }catch(e){ this.ok=false; this.msg=e.message || 'Sign-up failed' }
@@ -200,7 +221,11 @@
         async submitMagic(){
           this.msg='';
           try{
-            const r = await fetch(this.API + '/magic', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email:this.email })});
+            const r = await fetch(this.API + '/magic', {
+              method:'POST',
+              headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ email:this.email })
+            });
             if(!r.ok) throw new Error('Could not send link');
             this.ok=true; this.msg='Magic link sent if the email exists';
           }catch(e){ this.ok=false; this.msg=e.message || 'Magic link failed' }
@@ -208,7 +233,11 @@
         async submitReset(){
           this.msg='';
           try{
-            const r = await fetch(this.API + '/reset', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email:this.email })});
+            const r = await fetch(this.API + '/reset', {
+              method:'POST',
+              headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ email:this.email })
+            });
             if(!r.ok) throw new Error('Reset failed');
             this.ok=true; this.msg='If the email exists, a reset link was sent';
           }catch(e){ this.ok=false; this.msg=e.message || 'Reset failed' }
@@ -216,6 +245,7 @@
         async webauthnRegister(){ this.msg='(UI stub) Start WebAuthn registration'; },
         async webauthnLogin(){ this.msg='(UI stub) Start WebAuthn login'; },
         async totpSetup(){ this.msg='(UI stub) Show QR for TOTP'; },
+
         async init(){ await this.ping(); }
       }
     }
