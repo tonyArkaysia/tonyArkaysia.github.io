@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A_LABS — Used Car Truth Meter (Shōmi)</title>
+  <meta name="description" content="A_LABS Shōmi: transparent longevity odds and maintenance expectations for used cars." />
+  <style>
+    :root{--bg:#0b0d10;--card:#12161b;--ink:#e8eef6;--muted:#a9b6c7;--acc:#5fd4a7;--warn:#ffd25e;--bad:#ff7a7a;--ok:#83b7ff;--rad:14px}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b0d10,#0c1117);font:15px/1.4 system-ui,Segoe UI,Inter,sans-serif;color:var(--ink)}
+    .wrap{max-width:1024px;margin:28px auto;padding:0 16px}
+    header{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+    .logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#2cd, #5fd4a7)}
+    h1{font-size:22px;margin:0}
+    .brand small{display:block;color:#89a2bd}
+    .card{background:var(--card);border:1px solid #1d2430;border-radius:var(--rad);box-shadow:0 8px 28px rgba(0,0,0,.35);overflow:hidden}
+    .row{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:920px){.row{grid-template-columns:1fr 1fr}}
+    form{padding:18px;border-bottom:1px solid #1d2430;display:grid;gap:12px}
+    label{font-weight:600;color:var(--muted)}
+    input,select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a3446;background:#0f141a;color:var(--ink)}
+    .inline{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .btn{background:var(--acc);color:#062016;font-weight:700;border:0;border-radius:12px;padding:12px 14px;cursor:pointer}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .results{padding:16px}
+    .kpis{display:grid;grid-template-columns:1fr;gap:12px;margin:8px 0 6px}
+    @media(min-width:720px){.kpis{grid-template-columns:1fr 1fr 1fr}}
+    .kpi{padding:14px;border-radius:12px;background:#0f141a;border:1px solid #1d2430}
+    .kpi h3{margin:0 0 6px;font-size:13px;color:var(--muted)}
+    .kpi .big{font-size:26px;font-weight:800}
+    .flags{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+    .flag{padding:12px;border-radius:12px;background:#0f141a;border:1px dashed #2a3446}
+    .flag strong{color:#ffd25e}
+    details{margin-top:10px}
+    .why{padding:12px;border-radius:12px;background:#0f141a;border:1px solid #1d2430}
+    small{color:var(--muted)}
+    .chip{display:inline-block;padding:2px 8px;border-radius:999px;background:#0d1924;border:1px solid #1d2430;margin-right:6px;color:#b8c7dc}
+    footer{color:#a9b6c7;text-align:center;margin:20px 0 30px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo"></div>
+      <div class="brand">
+        <h1>A_LABS — Shōmi: Used Car Truth Meter</h1>
+        <small>Enriching Humanity Beyond Innovations • An A_LABS Product</small>
+      </div>
+    </header>
+
+    <div class="card">
+      <form id="form">
+        <div class="inline">
+          <div>
+            <label>Make</label>
+            <select id="make" required>
+              <option value="">Loading makes…</option>
+            </select>
+          </div>
+          <div>
+            <label>Model</label>
+            <select id="model" required disabled>
+              <option value="">Select make first</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline">
+          <div>
+            <label>Year</label>
+            <select id="year" required disabled>
+              <option value="">Select model first</option>
+            </select>
+          </div>
+          <div>
+            <label>Engine / Transmission (closest)</label>
+            <select id="engtrans" disabled>
+              <option value="">Auto-select</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline">
+          <div>
+            <label>Mileage</label>
+            <input required id="miles" type="number" min="0" step="1000" placeholder="e.g., 160000" />
+          </div>
+          <div>
+            <label>Region</label>
+            <select id="region">
+              <option value="dry">Dry / Non-rust (AZ, NV, NM, SoCal)</option>
+              <option value="snow_belt">Snow Belt / Coastal (salt exposure)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline">
+          <div>
+            <label>Owners</label>
+            <select id="owners">
+              <option>1</option><option>2</option><option>3+</option>
+            </select>
+          </div>
+          <div>
+            <label>Accident Severity</label>
+            <select id="accident">
+              <option value="none">None</option>
+              <option value="minor">Minor</option>
+              <option value="structural">Structural</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline">
+          <div>
+            <label>Maintenance Records</label>
+            <select id="maint">
+              <option value="excellent">Excellent (full receipts)</option>
+              <option value="average" selected>Some</option>
+              <option value="poor">Poor / missing</option>
+            </select>
+          </div>
+          <div>
+            <label>Powertrain Codes (OBD-II)</label>
+            <select id="dtc">
+              <option value="no" selected>No active codes</option>
+              <option value="yes">Yes (CEL on / pending)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="inline">
+          <div>
+            <label>Transmission Cooler (CVT/auto)</label>
+            <select id="cooler">
+              <option value="no" selected>No / Unknown</option>
+              <option value="yes">Yes (aux cooler)</option>
+            </select>
+          </div>
+          <div>
+            <label>Timing Chain/Belt Service Done</label>
+            <select id="timing">
+              <option value="no" selected>No / Unknown</option>
+              <option value="yes">Yes (documented)</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn">Calculate</button>
+        <small>Math: 5-yr survival = exp(−annual hazard × 5). Adjustments shown below.</small>
+      </form>
+
+      <div class="results" id="results" hidden>
+        <div class="kpis">
+          <div class="kpi"><h3>Longevity (5-Year Survival)</h3><div class="big" id="longevity">—</div><small id="conf"></small></div>
+          <div class="kpi"><h3>Expected Annual Maintenance</h3><div class="big" id="cost">—</div><small>Range reflects uncertainty (±20%).</small></div>
+          <div class="kpi"><h3>Data Confidence</h3><div class="big" id="confidence">—</div><small>Improves with records & clean OBD-II.</small></div>
+        </div>
+
+        <div class="flags" id="flags"></div>
+
+        <details>
+          <summary>Why these numbers? (show adjustments)</summary>
+          <div class="why" id="why"></div>
+        </details>
+
+        <div style="margin-top:10px">
+          <small>Data source: Shōmi JSON (specs). Future: vPIC/IIHS/NHTSA live enrichment.</small>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      © 2025 A_LABS — Arkaysia Labs • <a href="https://tonyarkaysia.github.io" style="color:#5fd4a7;text-decoration:none">Visit A_LABS</a>
+    </footer>
+  </div>
+
+  <script>
+  // ============ CONFIG ============
+  // Use your GitHub Pages URL or a relative path inside your repo:
+  // e.g. "https://tonyArkaysia.github.io/data/shomi/car_specifications_1945_20.json"
+  const DATA_URL = "https://tonyArkaysia.github.io/data/shomi/car_specifications_1945_20.json";
+
+  // ============ UTIL ============
+  const by = sel => document.querySelector(sel);
+  const opt = (v, t=v) => { const o=document.createElement("option"); o.value=v; o.textContent=t; return o; };
+
+  // try to guess common column names in your dataset
+  function resolveCols(cols){
+    const lc = cols.map(c=>c.toLowerCase());
+    const find = names => {
+      for(const n of names){
+        const i = lc.indexOf(n.toLowerCase());
+        if(i>=0) return cols[i];
+        // try partial contains
+        for(let j=0;j<cols.length;j++){
+          if(lc[j].includes(n.toLowerCase())) return cols[j];
+        }
+      }
+      return null;
+    };
+    return {
+      make: find(["Make","Manufacturer","Brand"]),
+      model: find(["Model","Modle","Car","Model Name"]),
+      year:  find(["Year","Model Year","Year_from","Year_from "]),
+      year_to: find(["Year_to","Year to"]),
+      engine: find(["Engine","Engine Info","Engine Type"]),
+      trans:  find(["Transmission","Gearbox","Trans"]),
+      hp:     find(["Horsepower","HP","Power"]),
+      body:   find(["Body","Body_type","Body Style"]),
+    };
+  }
+
+  // normalize a row into a lean shape we use in UI
+  function normalizeRow(row, C){
+    let make = (row[C.make] ?? "").toString().trim();
+    let model = (row[C.model] ?? "").toString().trim();
+    // pick a usable year: prefer "Year" else Year_from
+    let year = row[C.year];
+    if(year == null || year === ""){
+      year = row[C.year_to];
+    }
+    // coerce to int when possible
+    const y = parseInt(year);
+    const engine = (row[C.engine] ?? "").toString().trim();
+    const trans  = (row[C.trans] ?? "").toString().trim();
+    const hpRaw  = row[C.hp];
+    const hp = isNaN(parseInt(hpRaw)) ? null : parseInt(hpRaw);
+    const body   = (row[C.body] ?? "").toString().trim();
+    return { make, model, year: isNaN(y)? null : y, engine, trans, hp, body, _raw: row };
+  }
+
+  // Build indices: makes -> models -> years -> variants
+  function buildIndex(rows){
+    const byMake = new Map();
+    for(const r of rows){
+      if(!r.make || !r.model || !r.year) continue;
+      const m = r.make.toLowerCase();
+      const mo = r.model.toLowerCase();
+      if(!byMake.has(m)) byMake.set(m, new Map());
+      const byModel = byMake.get(m);
+      if(!byModel.has(mo)) byModel.set(mo, new Map());
+      const byYear = byModel.get(mo);
+      if(!byYear.has(r.year)) byYear.set(r.year, []);
+      byYear.get(r.year).push(r);
+    }
+    return byMake;
+  }
+
+  // ============ SIMPLE RELIABILITY MODEL ============
+  // Platform baseline choose by rough archetype (can improve later)
+  function baselineFromVariant(v){
+    // Defaults
+    let lambda0 = 0.017; // annual hazard ~1.7%
+    let cost0 = 560;
+
+    const make = v.make.toLowerCase();
+    const model = v.model.toLowerCase();
+    const trans = (v.trans||"").toLowerCase();
+    const engine = (v.engine||"").toLowerCase();
+
+    // Gentle brand nudges (very rough MVP)
+    if(["toyota","lexus"].includes(make)) { lambda0 = 0.012; cost0 = 540; }
+    if(["honda","acura"].includes(make)) { lambda0 = 0.013; cost0 = 530; }
+    if(["nissan","infiniti"].includes(make) && trans.includes("cvt")) { lambda0 = 0.022; cost0 = 580; }
+    if(["bmw","mercedes-benz","audi","volkswagen"].includes(make)) { lambda0 = 0.019; cost0 = 680; }
+    if(["subaru"].includes(make)) { lambda0 = 0.018; cost0 = 600; }
+    if(["hyundai","kia"].includes(make)) { lambda0 = 0.017; cost0 = 560; }
+    if(["ford","chevrolet","gmc","ram","dodge"].includes(make)) { lambda0 = 0.018; cost0 = 580; }
+
+    // Transmission archetypes
+    if(trans.includes("cvt")) { lambda0 *= 1.15; }           // heat/shear risk
+    if(trans.includes("dual") || trans.includes("dct")) { lambda0 *= 1.10; cost0 += 60; }
+    if(trans.includes("zF") || trans.includes("8hp")) { /* good */ }
+
+    // Engine archetypes
+    if(engine.includes("turbo")) { lambda0 *= 1.08; }
+    if(engine.includes("hybrid")) { cost0 += 40; } // routine coolant/pumps etc.
+    if(engine.includes("diesel")) { cost0 += 70; }
+
+    return { lambda0, cost0, label: `${v.make} ${v.model} ${v.year}` };
+  }
+
+  function scoreVehicle(platform, v){
+    let lam = platform.lambda0;
+    let cost = platform.cost0;
+    const why = [];
+    const flags = [];
+
+    const mult = (f, note) => { lam *= f; if (note) why.push(`×${f.toFixed(2)} — ${note}`); };
+    const addCost = (c, note) => { cost += c; if (note) why.push(`${c>=0?"+":"-"}$${Math.abs(c)} — ${note}`); };
+
+    // Mileage
+    if (v.miles > 180000){ mult(1.30, "Very high mileage"); }
+    else if (v.miles > 120000){ mult(1.25, "High mileage"); }
+    else if (v.miles > 60000){ mult(1.10, "Moderate mileage"); }
+
+    // Age (approx)
+    const age = (new Date().getFullYear() - v.year);
+    if (!isNaN(age) && age >= 12) mult(1.10, "Older rubber/seals/heat cycles");
+
+    // Region rust
+    if (v.region === "snow_belt"){ mult(1.15, "Rust/salt exposure"); addCost(120,"Rust prevention & fastener time"); flags.push("Snow-belt corrosion: underbody/lines inspection recommended."); }
+
+    // Owners
+    if (v.owners === "3+") mult(1.10, "Multiple owners (variability)");
+
+    // Maintenance history
+    if (v.maint === "excellent"){ mult(0.80, "Strong service records"); addCost(-100,"Well-maintained systems"); }
+    else if (v.maint === "poor"){ mult(1.20, "Poor/missing records"); addCost(150,"Catch-up service likely"); }
+
+    // OBD-II
+    if (v.dtc === "yes"){ mult(1.30, "Active powertrain codes"); flags.push("Fix current CEL before purchase; may hide readiness issues."); }
+
+    // Transmission quirks
+    const trans = (v.trans||"").toLowerCase();
+    if (trans.includes("cvt")){
+      mult(1.20, "CVT thermal/shear risk");
+      if (v.cooler === "yes"){ mult(0.95, "Aux cooler fitted"); flags.push("CVT cooler installed: modest risk reduction."); }
+      else { flags.push("Consider CVT fluid + cooler kit to reduce heat."); }
+    }
+
+    // Timing service
+    if (v.timing === "yes"){ mult(0.92, "Timing system serviced"); }
+
+    // Accident severity
+    if (v.accident === "structural"){ mult(1.25, "Structural accident history"); flags.push("Inspect subframe & alignment readings."); }
+    else if (v.accident === "minor"){ mult(1.05, "Minor accident history"); }
+
+    const longevity = Math.exp(-lam * 5) * 100;
+
+    // crude confidence
+    let conf = 0.85;
+    if (v.maint === "poor") conf -= 0.15;
+    if (v.dtc === "yes") conf -= 0.10;
+    conf = Math.max(0.35, Math.min(0.95, conf));
+
+    return {
+      longevity: Math.max(20, Math.min(98, longevity)),
+      cost: cost,
+      flags: flags.slice(0,3),
+      why
+    };
+  }
+
+  // ============ APP STATE ============
+  let DATA = [];
+  let INDEX = null;
+  let COLS = null;
+
+  async function loadData(){
+    const res = await fetch(DATA_URL, {cache:"no-store"});
+    if(!res.ok){
+      throw new Error(`Failed to load JSON at ${DATA_URL} (${res.status})`);
+    }
+    const raw = await res.json();
+    if(!Array.isArray(raw)) throw new Error("JSON is not an array of records.");
+    // Resolve columns
+    COLS = resolveCols(Object.keys(raw[0]));
+    // Normalize all rows
+    DATA = raw.map(r => normalizeRow(r, COLS)).filter(r => r.make && r.model && r.year);
+    INDEX = buildIndex(DATA);
+
+    // Populate makes
+    const makeSel = by("#make"); makeSel.innerHTML = "";
+    const makes = [...INDEX.keys()].map(m=>m[0].toUpperCase()+m.slice(1)).sort((a,b)=>a.localeCompare(b));
+    makeSel.append(opt("", "Select make"));
+    for(const m of makes) makeSel.append(opt(m, m));
+    makeSel.disabled = false;
+
+    // Clear dependents
+    by("#model").innerHTML = `<option value="">Select make first</option>`; by("#model").disabled = true;
+    by("#year").innerHTML = `<option value="">Select model first</option>`; by("#year").disabled = true;
+    by("#engtrans").innerHTML = `<option value="">Auto-select</option>`; by("#engtrans").disabled = true;
+  }
+
+  // Event: Make change
+  by("#make").addEventListener("change", ()=>{
+    const make = by("#make").value.toLowerCase();
+    const modelSel = by("#model");
+    modelSel.innerHTML = "";
+    if(!make || !INDEX.has(make)){ modelSel.append(opt("", "Select make first")); modelSel.disabled = true; return; }
+    const byModel = INDEX.get(make);
+    const models = [...byModel.keys()].map(m=>m[0].toUpperCase()+m.slice(1)).sort((a,b)=>a.localeCompare(b));
+    modelSel.append(opt("", "Select model"));
+    for(const mo of models) modelSel.append(opt(mo, mo));
+    modelSel.disabled = false;
+
+    // Reset children
+    by("#year").innerHTML = `<option value="">Select model first</option>`; by("#year").disabled = true;
+    by("#engtrans").innerHTML = `<option value="">Auto-select</option>`; by("#engtrans").disabled = true;
+  });
+
+  // Event: Model change
+  by("#model").addEventListener("change", ()=>{
+    const make = by("#make").value.toLowerCase();
+    const model = by("#model").value.toLowerCase();
+    const yearSel = by("#year");
+    yearSel.innerHTML = "";
+    const byModel = INDEX.get(make);
+    if(!byModel || !byModel.has(model)){ yearSel.append(opt("", "Select model first")); yearSel.disabled = true; return; }
+    const byYear = byModel.get(model);
+    const years = [...byYear.keys()].sort((a,b)=>a-b);
+    yearSel.append(opt("", "Select year"));
+    for(const y of years) yearSel.append(opt(String(y), String(y)));
+    yearSel.disabled = true; // enable only when model chosen
+    if(years.length) yearSel.disabled = false;
+
+    by("#engtrans").innerHTML = `<option value="">Auto-select</option>`; by("#engtrans").disabled = true;
+  });
+
+  // Event: Year change (populate variants)
+  by("#year").addEventListener("change", ()=>{
+    const make = by("#make").value.toLowerCase();
+    const model = by("#model").value.toLowerCase();
+    const year  = parseInt(by("#year").value);
+    const byModel = INDEX.get(make);
+    const variants = byModel.get(model).get(year) || [];
+    const engSel = by("#engtrans");
+    engSel.innerHTML = "";
+    engSel.append(opt("", "Auto-select"));
+    const seen = new Set();
+    for(const v of variants){
+      const label = `${v.engine || "Engine N/A"} — ${v.trans || "Trans N/A"}`;
+      const key = label.toLowerCase();
+      if(seen.has(key)) continue;
+      seen.add(key);
+      engSel.append(opt(JSON.stringify({engine:v.engine||"",trans:v.trans||""}), label));
+    }
+    engSel.disabled = false;
+  });
+
+  // Form submit
+  by("#form").addEventListener("submit", (e)=>{
+    e.preventDefault();
+
+    // Selected variant (if any)
+    let engine="", trans="";
+    const engVal = by("#engtrans").value;
+    if(engVal){
+      try { const obj = JSON.parse(engVal); engine = obj.engine; trans = obj.trans; } catch {}
+    } else {
+      // pick first variant for the chosen make/model/year
+      const byModel = INDEX.get(by("#make").value.toLowerCase());
+      const list = byModel?.get(by("#model").value.toLowerCase())?.get(parseInt(by("#year").value)) || [];
+      if(list.length){ engine = list[0].engine || ""; trans = list[0].trans || ""; }
+    }
+
+    const variant = {
+      make: by("#make").value,
+      model: by("#model").value,
+      year: parseInt(by("#year").value),
+      engine, trans
+    };
+
+    const base = baselineFromVariant(variant);
+
+    const v = {
+      year: variant.year,
+      miles: Number(by("#miles").value),
+      region: by("#region").value,
+      owners: by("#owners").value,
+      accident: by("#accident").value,
+      maint: by("#maint").value,
+      dtc: by("#dtc").value,
+      cooler: by("#cooler").value,
+      timing: by("#timing").value,
+      trans: variant.trans
+    };
+
+    const out = scoreVehicle(base, v);
+
+    by("#results").hidden = false;
+    by("#longevity").textContent = out.longevity.toFixed(1) + "%";
+    by("#cost").textContent = `$${Math.round(out.cost/10)*10} ± 20%`;
+    const confPct = Math.round((0.85) * (v.maint==="excellent"?1: v.maint==="poor"?0.7:0.85) * (v.dtc==="yes"?0.8:1) * 100);
+    by("#confidence").textContent = confPct + "%";
+    by("#conf").textContent = base.label + (variant.engine||variant.trans?` — ${variant.engine||""} ${variant.trans?(" / "+variant.trans):""}`:"");
+
+    // flags
+    const flags = by("#flags"); flags.innerHTML = "";
+    (out.flags.length?out.flags:["No standout risks detected in basic inputs. Always pre-purchase inspect."]).forEach(f=>{
+      const el = document.createElement("div"); el.className="flag"; el.innerHTML = `<strong>Risk/Tip:</strong> ${f}`; flags.appendChild(el);
+    });
+
+    // why
+    const why = by("#why"); why.innerHTML = "";
+    if (out.why.length){
+      out.why.forEach(w=>{ const span = document.createElement("div"); span.className="chip"; span.textContent = w; why.appendChild(span); });
+    } else {
+      why.innerHTML = "<small>No major multipliers applied beyond baseline.</small>";
+    }
+
+    window.scrollTo({top: document.querySelector(".results").offsetTop - 10, behavior:"smooth"});
+  });
+
+  // Kickoff
+  loadData().catch(err=>{
+    alert("Failed to load Shōmi JSON: " + err.message + "\nUpdate DATA_URL or check path.");
+  });
+  </script>
+</body>
+</html>
