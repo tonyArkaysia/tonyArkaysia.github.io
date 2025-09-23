@@ -5,229 +5,174 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>A_LABS — Shōmi: Used Car Truth Meter</title>
   <meta name="description" content="A_LABS Shōmi: transparent longevity odds and maintenance expectations for used cars." />
-  <!-- Tailwind (CDN) -->
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Tailwind dark mode via class
-    // Initialize from saved pref before paint
+    // Init theme before paint
     (() => {
       const saved = localStorage.getItem('theme');
       const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (saved ? saved === 'dark' : prefers) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      const dark = saved ? saved === 'dark' : prefers;
+      document.documentElement.classList.toggle('dark', dark);
     })();
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            brand: { DEFAULT: '#5fd4a7' }
-          }
+          colors: { brand: { DEFAULT: '#5fd4a7' } }
         }
-      },
-      darkMode: 'class'
+      }
     }
   </script>
 </head>
-<body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 selection:bg-brand/30">
-  <div class="mx-auto max-w-5xl p-4 sm:p-6">
+<body class="min-h-full bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 selection:bg-brand/30">
+  <div class="mx-auto max-w-5xl p-4 sm:p-6 space-y-6">
     <!-- Header -->
-    <header class="flex items-center gap-3 mb-4">
+    <header class="flex items-center gap-3">
       <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-cyan-400 to-brand shadow"></div>
       <div class="flex-1">
-        <h1 class="text-xl font-bold">A_LABS — Shōmi: Used Car Truth Meter</h1>
+        <h1 class="text-xl font-bold">A_LABS — Shōmi</h1>
         <p class="text-sm text-slate-600 dark:text-slate-400">Enriching Humanity Beyond Innovations • An A_LABS Product</p>
       </div>
-      <button id="themeToggle" class="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800">
-        🌙 Dark
-      </button>
+      <button id="themeToggle" class="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-800">🌙</button>
     </header>
 
-    <!-- Card -->
-    <div class="rounded-2xl border border-slate-200 bg-white dark:bg-slate-950 dark:border-slate-800 shadow">
-      <!-- Form -->
-      <form id="form" class="p-4 sm:p-6 space-y-4 border-b border-slate-200 dark:border-slate-800">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Make</span>
-            <select id="make" required class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="">Loading makes…</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Model</span>
-            <select id="model" required disabled class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="">Select make first</option>
-            </select>
-          </label>
+    <!-- Hero / CTA -->
+    <section class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 sm:p-8 shadow">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="flex-1">
+          <h2 class="text-2xl sm:text-3xl font-extrabold">Find your best used-car match</h2>
+          <p class="text-slate-600 dark:text-slate-400 mt-1">Answer a few quick questions. We’ll suggest great fits. Then we show specs, risks, and expected costs — transparently.</p>
         </div>
+        <button id="start" class="rounded-xl bg-brand px-4 py-3 font-semibold text-slate-900 shadow hover:opacity-90">Find my best deal</button>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Year</span>
-            <select id="year" required disabled class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="">Select model first</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Engine / Transmission</span>
-            <select id="engtrans" disabled class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="">Auto-select</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Mileage</span>
-            <input id="miles" required type="number" min="0" step="1000" placeholder="e.g., 160000"
-              class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2" />
-          </label>
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Region</span>
-            <select id="region" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="dry">Dry / Non-rust (AZ, NV, NM, SoCal)</option>
-              <option value="snow_belt">Snow Belt / Coastal (salt exposure)</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Owners</span>
-            <select id="owners" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option>1</option><option>2</option><option>3+</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Accident Severity</span>
-            <select id="accident" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="none">None</option>
-              <option value="minor">Minor</option>
-              <option value="structural">Structural</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Maintenance Records</span>
-            <select id="maint" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="excellent">Excellent (full receipts)</option>
-              <option value="average" selected>Some</option>
-              <option value="poor">Poor / missing</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Powertrain Codes (OBD-II)</span>
-            <select id="dtc" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="no" selected>No active codes</option>
-              <option value="yes">Yes (CEL on / pending)</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Transmission Cooler (CVT/auto)</span>
-            <select id="cooler" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="no" selected>No / Unknown</option>
-              <option value="yes">Yes (aux cooler)</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="text-sm font-semibold text-slate-600 dark:text-slate-400">Timing Chain/Belt Service Done</span>
-            <select id="timing" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
-              <option value="no" selected>No / Unknown</option>
-              <option value="yes">Yes (documented)</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <button class="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2 font-semibold text-slate-900 shadow hover:opacity-90">
-            <span>Calculate</span>
-          </button>
-          <span class="text-sm text-slate-500 dark:text-slate-400">Math: 5-yr survival = exp(−annual hazard × 5). Adjustments shown below.</span>
-        </div>
-      </form>
-
-      <!-- Results -->
-      <div id="results" class="p-4 sm:p-6 hidden">
-        <!-- KPI cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
-            <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Longevity (5-Year Survival)</h3>
-            <div id="longevity" class="text-3xl font-extrabold mt-1">—</div>
-            <div id="conf" class="text-xs text-slate-500 dark:text-slate-400 mt-1">—</div>
+      <!-- Guided Q&A -->
+      <div id="qa" class="mt-6 hidden">
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-4">
+          <div class="flex items-center justify-between">
+            <div id="qText" class="font-semibold"></div>
+            <div id="qStep" class="text-xs text-slate-500"></div>
           </div>
-          <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
-            <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Expected Annual Maintenance</h3>
-            <div id="cost" class="text-3xl font-extrabold mt-1">—</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Range reflects uncertainty (±20%).</div>
-          </div>
-          <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
-            <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Data Confidence</h3>
-            <div id="confidence" class="text-3xl font-extrabold mt-1">—</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Improves with records & clean OBD-II.</div>
+          <div id="qOptions" class="mt-3 flex flex-wrap gap-2"></div>
+          <div class="mt-3 flex gap-2">
+            <button id="qBack" class="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm disabled:opacity-50">Back</button>
+            <button id="qSkip" class="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm">Skip</button>
           </div>
         </div>
 
-        <!-- Specs & Flags -->
-        <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <!-- Car Specs Panel -->
-          <div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
-            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Car Specs</h3>
-            <dl id="specs" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
-              <!-- filled in JS -->
-            </dl>
-          </div>
-
-          <!-- Risk Flags -->
-          <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
-            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Top Risk Flags</h3>
-            <div id="flags" class="mt-3 space-y-2">
-              <!-- filled in JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Why -->
-        <details class="mt-6">
-          <summary class="cursor-pointer text-sm text-slate-600 dark:text-slate-400">Why these numbers? (show adjustments)</summary>
-          <div id="why" class="mt-3 flex flex-wrap gap-2">
-            <!-- chips inserted -->
-          </div>
-        </details>
-
-        <div class="mt-6 text-xs text-slate-500 dark:text-slate-400">
-          Data source: Shōmi JSON (specs). Future: vPIC/IIHS/NHTSA live enrichment.
+        <!-- Suggestions -->
+        <div id="picksWrap" class="mt-4 hidden">
+          <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Top picks for you</h3>
+          <div id="picks" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <footer class="text-center text-sm text-slate-500 dark:text-slate-400 mt-6">
-      © 2025 A_LABS — Arkaysia Labs • <a href="https://tonyarkaysia.github.io" class="text-brand underline-offset-2 hover:underline">Visit A_LABS</a>
+    <!-- Results card -->
+    <section id="resultsCard" class="hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 sm:p-8 shadow">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h3 class="text-xl font-bold" id="selTitle">Selected vehicle</h3>
+          <p id="selSub" class="text-slate-600 dark:text-slate-400 text-sm"></p>
+        </div>
+        <button id="change" class="rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-1.5 text-sm">Change</button>
+      </div>
+
+      <!-- Quick inputs -->
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-3">
+        <label class="text-sm">
+          <span class="block text-slate-600 dark:text-slate-400">Mileage</span>
+          <input id="miles" type="number" min="0" step="1000" value="100000" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
+        </label>
+        <label class="text-sm">
+          <span class="block text-slate-600 dark:text-slate-400">Region</span>
+          <select id="region" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
+            <option value="dry">Dry / Non-rust</option>
+            <option value="snow_belt">Snow belt / Coastal</option>
+          </select>
+        </label>
+        <label class="text-sm">
+          <span class="block text-slate-600 dark:text-slate-400">Records</span>
+          <select id="maint" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
+            <option value="excellent">Excellent</option>
+            <option value="average" selected>Some</option>
+            <option value="poor">Poor</option>
+          </select>
+        </label>
+        <label class="text-sm">
+          <span class="block text-slate-600 dark:text-slate-400">CEL / Codes</span>
+          <select id="dtc" class="mt-1 w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
+            <option value="no" selected>No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </label>
+      </div>
+
+      <!-- KPIs -->
+      <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
+          <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">5-Year Survival</div>
+          <div id="longevity" class="text-3xl font-extrabold mt-1">—</div>
+          <div id="conf" class="text-xs text-slate-500 dark:text-slate-400 mt-1">—</div>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
+          <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Annual Maintenance</div>
+          <div id="cost" class="text-3xl font-extrabold mt-1">—</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">±20% uncertainty.</div>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
+          <div class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Confidence</div>
+          <div id="confidence" class="text-3xl font-extrabold mt-1">—</div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Better with full service history.</div>
+        </div>
+      </div>
+
+      <!-- Specs + Flags -->
+      <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="lg:col-span-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
+          <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Car Specs</h4>
+          <dl id="specs" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm"></dl>
+        </div>
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4">
+          <h4 class="text-sm font-semibold text-slate-700 dark:text-slate-300">Risk Flags</h4>
+          <div id="flags" class="mt-3 space-y-2"></div>
+        </div>
+      </div>
+
+      <details class="mt-6">
+        <summary class="cursor-pointer text-sm text-slate-600 dark:text-slate-400">Why these numbers? (show adjustments)</summary>
+        <div id="why" class="mt-3 flex flex-wrap gap-2"></div>
+      </details>
+
+      <div class="mt-6 text-xs text-slate-500 dark:text-slate-400">
+        Data source: Shōmi JSON (specifications). Future: vPIC/IIHS/NHTSA enrichment.
+      </div>
+    </section>
+
+    <footer class="text-center text-sm text-slate-500 dark:text-slate-400">
+      © 2025 A_LABS — Arkaysia Labs • <a class="text-brand underline-offset-2 hover:underline" href="https://tonyarkaysia.github.io">Visit A_LABS</a>
     </footer>
   </div>
 
   <script>
-    // ===== Config =====
+    // ===== CONFIG =====
+    // point this at your trimmed dataset in the repo
     const DATA_URL = "data/shomi/car_specs_1980_2020_major_makes.json";
 
-    // ===== Helpers =====
-    const by = (s) => document.querySelector(s);
+    // ===== UTIL =====
+    const by = s => document.querySelector(s);
+    const el = (tag, cls, html) => { const x=document.createElement(tag); if(cls) x.className=cls; if(html!=null) x.innerHTML=html; return x; };
     const opt = (v, t=v) => { const o=document.createElement("option"); o.value=v; o.textContent=t; return o; };
-    const fmt$ = (n) => "$" + (Math.round(n/10)*10).toLocaleString();
+    const fmt$ = n => "$" + (Math.round(n/10)*10).toLocaleString();
 
     function resolveCols(cols){
       const lc = cols.map(c=>c.toLowerCase());
-      const find = names => {
+      const find = (names) => {
         for(const n of names){
-          const i = lc.indexOf(n.toLowerCase());
-          if(i>=0) return cols[i];
+          const ix = lc.indexOf(n.toLowerCase());
+          if(ix>=0) return cols[ix];
           for(let j=0;j<cols.length;j++){
             if(lc[j].includes(n.toLowerCase())) return cols[j];
           }
@@ -243,7 +188,6 @@
         trans:  find(["Transmission","Gearbox","Trans"]),
         hp:     find(["Horsepower","HP","Power"]),
         body:   find(["Body","Body_type","Body Style"]),
-        torque: find(["Torque","Nm","Torque (Nm)"]),
         fuel:   find(["Fuel Type","Fuel","FuelType"]),
         drive:  find(["Drivetrain","Drive","Drive Type"]),
         cylinders: find(["Cylinders","Cylinder"]),
@@ -257,19 +201,15 @@
     function normalizeRow(row, C){
       const make = (row[C.make] ?? "").toString().trim();
       const model = (row[C.model] ?? "").toString().trim();
-      let year = row[C.year];
-      if (year == null || year === "") year = row[C.year_to];
+      let year = row[C.year]; if (year == null || year === "") year = row[C.year_to];
       const y = parseInt(year);
-      const num = (x) => {
-        const v = Number(x);
-        return Number.isFinite(v) ? v : null;
-      };
+      const num = x => { const v=Number(x); return Number.isFinite(v)?v:null; }
       return {
         make, model, year: Number.isFinite(y)? y : null,
         engine: (row[C.engine] ?? "").toString().trim(),
         trans:  (row[C.trans] ?? "").toString().trim(),
         hp: num(row[C.hp]),
-        torque: num(row[C.torque]),
+        body: (row[C.body] ?? "").toString().trim(),
         fuel: (row[C.fuel] ?? "").toString().trim(),
         drive: (row[C.drive] ?? "").toString().trim(),
         cylinders: num(row[C.cylinders]),
@@ -277,7 +217,6 @@
         mpgCity: num(row[C.mpgC]),
         mpgHwy: num(row[C.mpgH]),
         msrp: num(row[C.msrp]),
-        body: (row[C.body] ?? "").toString().trim(),
         _raw: row
       };
     }
@@ -298,6 +237,7 @@
       return byMake;
     }
 
+    // ===== MINI RISK MODEL =====
     function baselineFromVariant(v){
       let lambda0 = 0.017, cost0 = 560;
       const make = v.make.toLowerCase();
@@ -319,8 +259,7 @@
     }
 
     function scoreVehicle(platform, v){
-      let lam = platform.lambda0;
-      let cost = platform.cost0;
+      let lam = platform.lambda0, cost = platform.cost0;
       const why = [], flags = [];
       const mult = (f, note) => { lam *= f; if (note) why.push(`×${f.toFixed(2)} — ${note}`); };
       const addCost = (c, note) => { cost += c; if (note) why.push(`${c>=0?"+":"-"}$${Math.abs(c)} — ${note}`); };
@@ -330,16 +269,16 @@
       else if (v.miles > 60000) mult(1.10, "Moderate mileage");
 
       const age = (new Date().getFullYear() - v.year);
-      if (!isNaN(age) && age >= 12) mult(1.10, "Older rubber/seals/heat cycles");
+      if (!isNaN(age) && age >= 12) mult(1.10, "Aging rubber/seals");
 
-      if (v.region === "snow_belt"){ mult(1.15, "Rust/salt exposure"); addCost(120,"Rust prevention & fastener time"); flags.push("Snow-belt corrosion: underbody/lines inspection recommended."); }
+      if (v.region === "snow_belt"){ mult(1.15, "Rust/salt exposure"); addCost(120,"Rust prevention & fastener time"); flags.push("Snow-belt corrosion: inspect underbody & brake lines."); }
 
       if (v.owners === "3+") mult(1.10, "Multiple owners (variability)");
 
       if (v.maint === "excellent"){ mult(0.80, "Strong service records"); addCost(-100,"Well-maintained systems"); }
       else if (v.maint === "poor"){ mult(1.20, "Poor/missing records"); addCost(150,"Catch-up service likely"); }
 
-      if (v.dtc === "yes"){ mult(1.30, "Active powertrain codes"); flags.push("Fix current CEL before purchase; may hide readiness issues."); }
+      if (v.dtc === "yes"){ mult(1.30, "Active powertrain codes"); flags.push("Resolve CEL before purchase; verify readiness monitors."); }
 
       const trans = (v.trans||"").toLowerCase();
       if (trans.includes("cvt")){
@@ -350,17 +289,17 @@
 
       if (v.timing === "yes"){ mult(0.92, "Timing system serviced"); }
 
-      if (v.accident === "structural"){ mult(1.25, "Structural accident history"); flags.push("Inspect subframe & alignment readings."); }
+      if (v.accident === "structural"){ mult(1.25, "Structural accident history"); flags.push("Check alignment printout & subframe points."); }
       else if (v.accident === "minor"){ mult(1.05, "Minor accident history"); }
 
-      const longevity = Math.max(20, Math.min(98, Math.exp(-lam * 5) * 100));
+      const longevity = Math.max(20, Math.min(98, Math.exp(-lam*5)*100));
       let conf = 0.85; if (v.maint === "poor") conf -= 0.15; if (v.dtc === "yes") conf -= 0.10;
       conf = Math.max(0.35, Math.min(0.95, conf));
 
       return { longevity, cost, flags: flags.slice(0,3), why, conf };
     }
 
-    // ===== State & Load =====
+    // ===== DATA =====
     let DATA = [], INDEX = null, COLS = null;
 
     async function loadData(){
@@ -371,177 +310,237 @@
       COLS = resolveCols(Object.keys(raw[0]));
       DATA = raw.map(r => normalizeRow(r, COLS)).filter(r => r.make && r.model && r.year);
       INDEX = buildIndex(DATA);
-
-      // Populate makes
-      const makeSel = by("#make"); makeSel.innerHTML = "";
-      const makes = [...INDEX.keys()].map(m=>m[0].toUpperCase()+m.slice(1)).sort((a,b)=>a.localeCompare(b));
-      makeSel.append(opt("", "Select make"));
-      for(const m of makes) makeSel.append(opt(m, m));
-      makeSel.disabled = false;
-
-      // Reset dependents
-      by("#model").innerHTML = `<option value="">Select make first</option>`; by("#model").disabled = true;
-      by("#year").innerHTML = `<option value="">Select model first</option>`; by("#year").disabled = true;
-      by("#engtrans").innerHTML = `<option value="">Auto-select</option>`; by("#engtrans").disabled = true;
     }
 
-    // ===== UI Events =====
-    by("#make").addEventListener("change", ()=>{
-      const make = by("#make").value.toLowerCase();
-      const modelSel = by("#model"); modelSel.innerHTML = "";
-      if(!make || !INDEX.has(make)){ modelSel.append(opt("", "Select make first")); modelSel.disabled = true; return; }
-      const byModel = INDEX.get(make);
-      const models = [...byModel.keys()].map(m=>m[0].toUpperCase()+m.slice(1)).sort((a,b)=>a.localeCompare(b));
-      modelSel.append(opt("", "Select model"));
-      for(const mo of models) modelSel.append(opt(mo, mo));
-      modelSel.disabled = false;
+    // ===== GUIDED FLOW =====
+    const QUESTIONS = [
+      { key:"goal", text:"What’s the main goal?", options:[
+        {v:"reliable", label:"Ultra-reliable"},
+        {v:"budget",   label:"Best value"},
+        {v:"fun",      label:"Fun to drive"},
+        {v:"family",   label:"Family / roomy"}
+      ]},
+      { key:"size", text:"What size are you thinking?", options:[
+        {v:"compact", label:"Compact"},
+        {v:"midsize", label:"Midsize"},
+        {v:"suv",     label:"SUV/Crossover"},
+        {v:"truck",   label:"Truck"},
+        {v:"any",     label:"Surprise me"}
+      ]},
+      { key:"traction", text:"Need AWD/4×4?", options:[
+        {v:"required", label:"Must have"},
+        {v:"nice",     label:"Nice to have"},
+        {v:"no",       label:"No preference"}
+      ]},
+      { key:"fuel", text:"Fuel preference?", options:[
+        {v:"gas",    label:"Gas"},
+        {v:"hybrid", label:"Hybrid"},
+        {v:"diesel", label:"Diesel"},
+        {v:"any",    label:"Any"}
+      ]},
+      { key:"trans", text:"Transmission?", options:[
+        {v:"auto",   label:"Automatic"},
+        {v:"manual", label:"Manual"},
+        {v:"any",    label:"Any"}
+      ]},
+      { key:"years", text:"Model year range?", options:[
+        {v:"newer",  label:"2015–2020"},
+        {v:"middle", label:"2010–2014"},
+        {v:"older",  label:"2005–2009"},
+        {v:"any",    label:"1980–2020"}
+      ]}
+    ];
 
-      by("#year").innerHTML = `<option value="">Select model first</option>`; by("#year").disabled = true;
-      by("#engtrans").innerHTML = `<option value="">Auto-select</option>`; by("#engtrans").disabled = true;
-    });
+    let qi = 0, answers = {};
 
-    by("#model").addEventListener("change", ()=>{
-      const make = by("#make").value.toLowerCase();
-      const model = by("#model").value.toLowerCase();
-      const yearSel = by("#year"); yearSel.innerHTML = "";
-      const byModel = INDEX.get(make);
-      if(!byModel || !byModel.has(model)){ yearSel.append(opt("", "Select model first")); yearSel.disabled = true; return; }
-      const byYear = byModel.get(model);
-      const years = [...byYear.keys()].sort((a,b)=>a-b);
-      yearSel.append(opt("", "Select year"));
-      for(const y of years) yearSel.append(opt(String(y), String(y)));
-      yearSel.disabled = years.length === 0;
+    function renderQ(){
+      const q = QUESTIONS[qi];
+      by("#qText").textContent = q.text;
+      by("#qStep").textContent = `Step ${qi+1} of ${QUESTIONS.length}`;
+      const box = by("#qOptions"); box.innerHTML = "";
+      q.options.forEach(o=>{
+        const b = el("button","rounded-lg border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm hover:bg-slate-100 dark:hover:bg-slate-800", o.label);
+        b.onclick = () => { answers[q.key]=o.v; nextQ(); };
+        box.appendChild(b);
+      });
+      by("#qBack").disabled = qi===0;
+    }
 
-      by("#engtrans").innerHTML = `<option value="">Auto-select</option>`; by("#engtrans").disabled = true;
-    });
+    function nextQ(){
+      if (qi < QUESTIONS.length-1){ qi++; renderQ(); return; }
+      // done -> show picks
+      by("#picksWrap").classList.remove("hidden");
+      showPicks();
+    }
 
-    by("#year").addEventListener("change", ()=>{
-      const make = by("#make").value.toLowerCase();
-      const model = by("#model").value.toLowerCase();
-      const year  = parseInt(by("#year").value);
-      const byModel = INDEX.get(make);
-      const variants = byModel.get(model).get(year) || [];
-      const engSel = by("#engtrans"); engSel.innerHTML = ""; engSel.append(opt("", "Auto-select"));
-      const seen = new Set();
-      for(const v of variants){
-        const label = `${v.engine || "Engine N/A"} — ${v.trans || "Trans N/A"}`;
-        const key = label.toLowerCase();
-        if(seen.has(key)) continue; seen.add(key);
-        engSel.append(opt(JSON.stringify({engine:v.engine||"",trans:v.trans||""}), label));
+    function pickCandidates(){
+      const a = answers;
+      const inYear = (y)=>{
+        if(!y) return false;
+        if(a.years==="newer")  return y>=2015 && y<=2020;
+        if(a.years==="middle") return y>=2010 && y<=2014;
+        if(a.years==="older")  return y>=2005 && y<=2009;
+        return y>=1980 && y<=2020;
+      };
+      let rows = DATA.filter(r=>inYear(r.year));
+
+      if(a.size && a.size!=="any"){
+        const want = {
+          compact:["hatch","compact","subcompact","small","sedan","coupe"],
+          midsize:["midsize","mid-size","sedan","wagon","crossover"],
+          suv:["suv","crossover","wagon"],
+          truck:["truck","pickup"]
+        }[a.size];
+        rows = rows.filter(r=> (r.body||"").toLowerCase().split(/[\s\/-]+/).some(w=> want?.some(s=> w.includes(s))));
       }
-      engSel.disabled = false;
-    });
 
-    by("#form").addEventListener("submit", (e)=>{
-      e.preventDefault();
-      // Variant selection
-      let engine="", trans="";
-      const engVal = by("#engtrans").value;
-      if(engVal){ try { const obj = JSON.parse(engVal); engine = obj.engine; trans = obj.trans; } catch {} }
-      else {
-        const byModel = INDEX.get(by("#make").value.toLowerCase());
-        const list = byModel?.get(by("#model").value.toLowerCase())?.get(parseInt(by("#year").value)) || [];
-        if(list.length){ engine = list[0].engine || ""; trans = list[0].trans || ""; }
+      if(a.traction==="required"){
+        rows = rows.filter(r=> (r.drive||"").toLowerCase().includes("awd") || (r.drive||"").toLowerCase().includes("4"));
       }
 
-      const variant = { make: by("#make").value, model: by("#model").value, year: parseInt(by("#year").value), engine, trans };
-      const base = baselineFromVariant(variant);
+      if(a.fuel==="hybrid") rows = rows.filter(r=> (r.fuel||"").toLowerCase().includes("hybrid"));
+      else if(a.fuel==="diesel") rows = rows.filter(r=> (r.fuel||"").toLowerCase().includes("diesel"));
+      else if(a.fuel==="gas") rows = rows.filter(r=> !((r.fuel||"").toLowerCase().includes("diesel") || (r.fuel||"").toLowerCase().includes("electric")));
+
+      if(a.trans==="manual") rows = rows.filter(r=> (r.trans||"").toLowerCase().includes("manual"));
+      else if(a.trans==="auto") rows = rows.filter(r=> (r.trans||"").toLowerCase().includes("auto"));
+
+      function goalScore(r){
+        const base = baselineFromVariant(r);
+        let s = 0;
+        if(a.goal==="reliable") s += (1 - base.lambda0)*100;
+        if(a.goal==="budget")   s += 60 - base.cost0/20;
+        if(a.goal==="fun")      s += (r.hp||0)/10;
+        if(a.goal==="family")   s += ((r.body||"").toLowerCase().includes("suv")?20:0) + ((r.body||"").toLowerCase().includes("wagon")?15:0);
+        return s;
+      }
+
+      const uniq = new Map();
+      for(const r of rows){
+        const k = `${r.make}|${r.model}|${r.year}`;
+        if(!uniq.has(k)) uniq.set(k, r);
+      }
+      const list = [...uniq.values()];
+      list.sort((a,b)=> (goalScore(b)-goalScore(a)) || (b.year - a.year));
+      return list.slice(0,5);
+    }
+
+    function showPicks(){
+      const container = by("#picks"); container.innerHTML = "";
+      const picks = pickCandidates();
+      if(!picks.length){
+        container.appendChild(el("div","rounded-lg border border-slate-200 dark:border-slate-800 p-3 text-sm text-slate-500","No matches. Try skipping a step."));
+        return;
+      }
+      picks.forEach(r=>{
+        const card = el("div","rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-4");
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div class="font-extrabold">${r.year} ${r.make} ${r.model}</div>
+              <div class="text-slate-500 dark:text-slate-400 text-sm">${r.engine || "Engine —"} • ${r.trans || "Trans —"} • ${r.body || "Body —"}</div>
+            </div>
+            <button class="selectPick rounded-lg bg-brand px-3 py-1.5 font-semibold text-slate-900">Select</button>
+          </div>`;
+        card.querySelector(".selectPick").onclick = ()=> selectVehicle(r);
+        container.appendChild(card);
+      });
+    }
+
+    // ===== RESULTS =====
+    let current = null; // normalized row for selection
+
+    function selectVehicle(r){
+      current = r;
+      by("#qa").classList.add("hidden");
+      by("#resultsCard").classList.remove("hidden");
+      by("#selTitle").textContent = `${r.year} ${r.make} ${r.model}`;
+      by("#selSub").textContent = `${r.engine || "Engine —"} • ${r.trans || "Trans —"} • ${r.body || "Body —"}`;
+      computeAndRender();
+      window.scrollTo({top: by("#resultsCard").offsetTop - 8, behavior:"smooth"});
+    }
+
+    function computeAndRender(){
+      if(!current) return;
+      const base = baselineFromVariant(current);
       const v = {
-        year: variant.year,
+        year: current.year,
         miles: Number(by("#miles").value),
         region: by("#region").value,
-        owners: by("#owners").value,
-        accident: by("#accident").value,
+        owners: "2", // unknown here; could add later
+        accident: "none",
         maint: by("#maint").value,
         dtc: by("#dtc").value,
-        cooler: by("#cooler").value,
-        timing: by("#timing").value,
-        trans: variant.trans
+        cooler: "no",
+        timing: "no",
+        trans: current.trans
       };
       const out = scoreVehicle(base, v);
-
-      // KPIs
-      by("#results").classList.remove("hidden");
       by("#longevity").textContent = out.longevity.toFixed(1) + "%";
       by("#cost").textContent = `${fmt$(out.cost)} ± 20%`;
-      const confPct = Math.round((0.85) * (v.maint==="excellent"?1: v.maint==="poor"?0.7:0.85) * (v.dtc==="yes"?0.8:1) * 100);
-      by("#confidence").textContent = confPct + "%";
-      by("#conf").textContent = base.label + (variant.engine||variant.trans?` — ${variant.engine||""}${variant.trans?(" / "+variant.trans):""}`:"");
+      by("#confidence").textContent = Math.round(out.conf*100) + "%";
+      by("#conf").textContent = base.label;
 
-      // Flags
       const flags = by("#flags"); flags.innerHTML = "";
-      (out.flags.length?out.flags:["No standout risks detected in basic inputs. Always pre-purchase inspect."]).forEach(f=>{
-        const el = document.createElement("div");
-        el.className = "rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm";
-        el.innerHTML = `<span class="font-semibold text-amber-500">Risk/Tip:</span> ${f}`;
-        flags.appendChild(el);
+      (out.flags.length ? out.flags : ["No standout risks flagged from these basics. Get a pre-purchase inspection."]).forEach(f=>{
+        const elDiv = el("div","rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-3 py-2 text-sm",`<span class="font-semibold text-amber-500">Risk/Tip:</span> ${f}`);
+        flags.appendChild(elDiv);
       });
 
-      // Why chips
       const why = by("#why"); why.innerHTML = "";
       if (out.why.length){
-        out.why.forEach(w=>{
-          const chip = document.createElement("span");
-          chip.className = "inline-block rounded-full border border-slate-300 dark:border-slate-700 px-2.5 py-1 text-xs";
-          chip.textContent = w;
-          why.appendChild(chip);
-        });
+        out.why.forEach(w=> why.appendChild(el("span","inline-block rounded-full border border-slate-300 dark:border-slate-700 px-2.5 py-1 text-xs",w)));
       } else {
-        const small = document.createElement("div");
-        small.className = "text-xs text-slate-500 dark:text-slate-400";
-        small.textContent = "No major multipliers applied beyond baseline.";
-        why.appendChild(small);
+        why.appendChild(el("div","text-xs text-slate-500 dark:text-slate-400","No major multipliers applied beyond baseline."));
       }
 
-      // Specs panel (populate from a representative row)
-      const byModel = INDEX.get(by("#make").value.toLowerCase());
-      const list = byModel?.get(by("#model").value.toLowerCase())?.get(parseInt(by("#year").value)) || [];
-      const r = list.find(x => (x.engine||"") === engine && (x.trans||"") === trans) || list[0];
       const S = [
-        ["Make", variant.make],
-        ["Model", variant.model],
-        ["Year", String(variant.year || "")],
-        ["Body", r?.body || "—"],
-        ["Engine", r?.engine || "—"],
-        ["Transmission", r?.trans || "—"],
-        ["Horsepower", r?.hp != null ? `${r.hp} hp` : "—"],
-        ["Torque", r?.torque != null ? `${r.torque} Nm` : "—"],
-        ["Displacement", r?.disp != null ? `${r.disp} L` : "—"],
-        ["Cylinders", r?.cylinders != null ? String(r.cylinders) : "—"],
-        ["Fuel", r?.fuel || "—"],
-        ["Drivetrain", r?.drive || "—"],
-        ["MPG (City/Highway)", (r?.mpgCity!=null || r?.mpgHwy!=null) ? `${r?.mpgCity ?? "—"} / ${r?.mpgHwy ?? "—"}` : "—"],
-        ["MSRP (original)", r?.msrp != null ? fmt$(r.msrp) : "—"]
+        ["Make", current.make],["Model", current.model],["Year", String(current.year)],
+        ["Body", current.body || "—"],["Engine", current.engine || "—"],["Transmission", current.trans || "—"],
+        ["Horsepower", current.hp!=null ? `${current.hp} hp` : "—"],
+        ["Fuel", current.fuel || "—"],["Drivetrain", current.drive || "—"],
+        ["Displacement", current.disp!=null ? `${current.disp} L` : "—"],
+        ["Cylinders", current.cylinders!=null ? String(current.cylinders) : "—"],
+        ["MPG (City/Highway)", (current.mpgCity!=null || current.mpgHwy!=null) ? `${current.mpgCity ?? "—"} / ${current.mpgHwy ?? "—"}` : "—"],
+        ["MSRP (original)", current.msrp!=null ? fmt$(current.msrp) : "—"]
       ];
       const specs = by("#specs"); specs.innerHTML = "";
       for(const [k,vv] of S){
-        const dt = document.createElement("div");
-        dt.className = "font-medium text-slate-600 dark:text-slate-300";
-        dt.textContent = k;
-        const dd = document.createElement("div");
-        dd.className = "text-slate-900 dark:text-slate-100";
-        dd.textContent = vv;
+        const dt = el("div","font-medium text-slate-600 dark:text-slate-300",k);
+        const dd = el("div","",vv);
         specs.appendChild(dt); specs.appendChild(dd);
       }
+    }
 
-      window.scrollTo({top: document.querySelector("#results").offsetTop - 8, behavior:"smooth"});
+    // Quick inputs recompute
+    ["#miles","#region","#maint","#dtc"].forEach(sel=>{
+      by(sel).addEventListener("change", computeAndRender);
+      by(sel).addEventListener("input", computeAndRender);
     });
 
-    // Theme toggle
-    const themeBtn = by("#themeToggle");
-    const updateThemeBtn = () => {
-      const dark = document.documentElement.classList.contains('dark');
-      themeBtn.textContent = dark ? "☀️" : "🌙";
+    // Buttons
+    by("#start").onclick = () => {
+      by("#qa").classList.remove("hidden");
+      by("#picksWrap").classList.add("hidden");
+      qi = 0; answers = {}; renderQ();
+      window.scrollTo({top: by("#qa").offsetTop - 8, behavior:"smooth"});
     };
-    themeBtn.addEventListener("click", ()=>{
-      document.documentElement.classList.toggle('dark');
-      const dark = document.documentElement.classList.contains('dark');
+    by("#qBack").onclick = () => { if(qi>0){ qi--; renderQ(); } };
+    by("#qSkip").onclick = () => { answers[QUESTIONS[qi].key] = "any"; nextQ(); };
+    by("#change").onclick = () => { by("#resultsCard").classList.add("hidden"); by("#qa").classList.remove("hidden"); };
+
+    // Theme toggle
+    const tBtn = by("#themeToggle");
+    const updateThemeBtn = () => tBtn.textContent = document.documentElement.classList.contains('dark') ? "☀️" : "🌙";
+    tBtn.addEventListener("click", ()=>{
+      const dark = !document.documentElement.classList.contains('dark');
+      document.documentElement.classList.toggle('dark', dark);
       localStorage.setItem('theme', dark ? 'dark' : 'light');
       updateThemeBtn();
     });
     updateThemeBtn();
 
-    // Start
+    // Boot
     loadData().catch(err => alert("Failed to load Shōmi JSON: " + err.message + "\nUpdate DATA_URL or check path."));
   </script>
 </body>
