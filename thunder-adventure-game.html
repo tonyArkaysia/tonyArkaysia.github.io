@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Thunder Files: Mystery at Paycom Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #090909 0%, #1a1a2e, #090909 100%);
+            color: #00ff41;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff41;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff6b35;
+            text-shadow: 0 0 10px #ff6b35;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #00d4ff;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 100, 200, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #00d4ff;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #00d4ff;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            color: #00ff41;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .story-text {
+            background: rgba(0, 50, 100, 0.3);
+            padding: 20px;
+            border-left: 4px solid #ff6b35;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            min-height: 200px;
+            border-radius: 5px;
+        }
+
+        .inventory {
+            background: rgba(100, 50, 0, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ffa500;
+        }
+
+        .inventory-title {
+            color: #ffa500;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .inventory-items {
+            color: #ffcc00;
+        }
+
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #0066cc 0%, #004499 100%);
+            color: #fff;
+            border: 2px solid #00d4ff;
+            padding: 15px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .choice-btn:hover {
+            background: linear-gradient(135deg, #0080ff 0%, #0066cc 100%);
+            border-color: #00ff41;
+            transform: translateX(10px);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .choice-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .location {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            white-space: pre-wrap;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🏀 THE THUNDER FILES 🏀</h1>
+        <div class="subtitle">A Text Adventure Mystery</div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-label">SUSPICION</div>
+                <div class="stat-value" id="suspicion">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">CLUES</div>
+                <div class="stat-value" id="clues">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-label">REPUTATION</div>
+                <div class="stat-value" id="reputation">50</div>
+            </div>
+        </div>
+
+        <div class="inventory">
+            <div class="inventory-title">📦 INVENTORY:</div>
+            <div class="inventory-items" id="inventory">Press badge, Notepad, Pen</div>
+        </div>
+
+        <div class="location" id="location">LOCATION: Outside Paycom Center</div>
+
+        <div class="story-text" id="story"></div>
+
+        <div class="choices" id="choices"></div>
+    </div>
+
+    <script>
+        // Game State
+        const gameState = {
+            suspicion: 0,
+            clues: 0,
+            reputation: 50,
+            inventory: ['Press badge', 'Notepad', 'Pen'],
+            flags: {
+                hasKeyCard: false,
+                talkedToGuard: false,
+                foundPlaybook: false,
+                metShai: false,
+                solvedLocker: false,
+                knowsAboutAliens: false
+            },
+            location: 'Outside Paycom Center'
+        };
+
+        // Story Nodes
+        const story = {
+            start: {
+                location: 'Outside Paycom Center',
+                text: `You're Alex Quinn, investigative reporter for the "Oklahoma Oddities" tabloid. Your editor just called with a hot tip: strange lights have been spotted above the Thunder arena, and several players have been acting... weird.
+
+"Quinn!" your editor barked. "Get down to Paycom Center! I want a story by midnight. And make it GOOD. Our last headline 'Bigfoot Spotted at Braum's' didn't exactly break the internet."
+
+You stand outside the arena. Security is tight tonight. A bored-looking guard stands by the main entrance, scrolling on his phone. There's also a service entrance around the side, and you can hear the sounds of a game being played inside.
+
+What do you do?`,
+                choices: [
+                    { text: '1. Approach the guard and show your press badge', next: 'guardTalk' },
+                    { text: '2. Sneak around to the service entrance', next: 'serviceEntrance' },
+                    { text: '3. Try to buy a ticket at the box office', next: 'boxOffice' },
+                    { text: '4. Call your buddy who works in the arena', next: 'callBuddy' }
+                ]
+            },
+
+            guardTalk: {
+                location: 'Main Entrance',
+                text: `You flash your press badge at the guard. He looks up from his phone, unimpressed.
+
+"Press? Yeah, no. Game's sold out, and media credentials closed hours ago. Besides..." he leans in, whispering, "you work for Oklahoma Oddities. You wrote that story about the haunted Sonic Drive-In."
+
+His eyes dart around nervously. "Look, between you and me, something WEIRD is going on tonight. Coach keeps canceling timeouts to stare at the ceiling. And Shai..." he trails off.
+
+"What about Shai?" you press.
+
+"Nothing. Forget I said anything. Now scram before I call security. Real security, not me."
+
+But as you turn to leave, he slips you something...
+
+[You obtained: ARENA FLOOR MAP]`,
+                effects: () => {
+                    gameState.inventory.push('Arena floor map');
+                    gameState.flags.talkedToGuard = true;
+                    gameState.clues++;
+                },
+                choices: [
+                    { text: '1. "Wait! Tell me about Shai!" (Press him for info)', next: 'pressGuard' },
+                    { text: '2. Thank him and head to the service entrance', next: 'serviceEntrance' },
+                    { text: '3. Examine the arena floor map', next: 'examineMap' }
+                ]
+            },
+
+            pressGuard: {
+                location: 'Main Entrance',
+                text: `"Look, I've said too much already," the guard hisses. "But if you MUST know... Shai's been different since last Tuesday. Real different. He scored 50 points but doesn't remember the game. And his eyes... they glow sometimes. Bluish."
+
+Your reporter instincts tingle. This is bigger than you thought.
+
+"Now GET OUTTA HERE before someone sees us talking!"
+
+[CLUE DISCOVERED: Shai's strange behavior started Tuesday]`,
+                effects: () => {
+                    gameState.clues++;
+                    gameState.suspicion += 5;
+                },
+                choices: [
+                    { text: '1. Head to the service entrance', next: 'serviceEntrance' },
+                    { text: '2. Examine the arena floor map', next: 'examineMap' }
+                ]
+            },
+
+            serviceEntrance: {
+                location: 'Service Entrance (Side of Building)',
+                text: `You slip around to the side of the building. The service entrance is propped open with a mop bucket – classic arena security. Inside, you can hear someone whistling and the squeak of sneakers on hardwood.
+
+A delivery guy wheels past with boxes of Gatorade, not even glancing your way.
+
+You're in.
+
+The hallway splits three ways:
+- Left: Signs point to "LOCKER ROOMS"
+- Straight: "COURT / ARENA FLOOR"  
+- Right: "OFFICES / STAFF ONLY"
+
+Where do you go?`,
+                effects: () => {
+                    gameState.reputation += 5;
+                    gameState.suspicion += 10;
+                },
+                choices: [
+                    { text: '1. Left - Investigate the locker rooms', next: 'lockerRooms' },
+                    { text: '2. Straight - Sneak onto the court', next: 'court' },
+                    { text: '3. Right - Check out the offices', next: 'offices' },
+                    { text: '4. Hide behind the Gatorade boxes', next: 'hideGatorade' }
+                ]
+            },
+
+            lockerRooms: {
+                location: 'Player Locker Rooms',
+                text: `You creep down the hallway. The sounds of the game echo from above. Most players are on the court, so the locker room should be empty...
+
+You push open the door. The room smells like sweat, cologne, and... something else. Ozone? Like after a lightning strike.
+
+Lockers line the walls, each with a player's name. You spot:
+- Shai Gilgeous-Alexander's locker (slightly ajar)
+- Josh Giddey's locker (closed, but there's a weird humming sound)
+- A medical kit on the bench
+- A mysterious playbook left open on a table`,
+                choices: [
+                    { text: '1. Search Shai\'s locker', next: 'shaiLocker', condition: () => !gameState.flags.solvedLocker },
+                    { text: '2. Investigate the humming from Giddey\'s locker', next: 'giddeyLocker' },
+                    { text: '3. Check out the mysterious playbook', next: 'playbook' },
+                    { text: '4. Leave before you get caught', next: 'serviceEntrance' }
+                ]
+            },
+
+            shaiLocker: {
+                location: 'Player Locker Rooms',
+                text: `You carefully open Shai's locker. Inside:
+- His jersey (smells like ozone)
+- A pair of glowing blue headphones
+- A strange metallic disc about the size of a hockey puck
+- A note in handwriting you don't recognize: "PHASE 2 COMPLETE. AWAIT SIGNAL."
+
+This is getting WEIRD.
+
+Do you take the disc?`,
+                effects: () => {
+                    gameState.clues += 2;
+                    gameState.flags.solvedLocker = true;
+                },
+                choices: [
+                    { text: '1. Take the disc (evidence!)', next: 'takeDisc' },
+                    { text: '2. Take a photo with your phone and leave it', next: 'photoDisc' },
+                    { text: '3. Put everything back and investigate elsewhere', next: 'lockerRooms' }
+                ]
+            },
+
+            takeDisc: {
+                location: 'Player Locker Rooms',
+                text: `You pocket the metallic disc. It's warm to the touch and vibrates slightly.
+
+Suddenly, the lights flicker. A voice crackles over the arena PA system:
+
+"UNAUTHORIZED ACCESS DETECTED IN SECTOR 7."
+
+That's... not normal. The PA shouldn't be able to detect anything!
+
+You hear footsteps approaching. Fast.
+
+[You obtained: ALIEN DISC]`,
+                effects: () => {
+                    gameState.inventory.push('Alien disc');
+                    gameState.suspicion += 20;
+                    gameState.clues++;
+                    gameState.flags.knowsAboutAliens = true;
+                },
+                choices: [
+                    { text: '1. RUN! Hide somewhere!', next: 'hiddenDiscovery' },
+                    { text: '2. Stand your ground and pretend you belong here', next: 'bluff' },
+                    { text: '3. Quickly put the disc back', next: 'returnDisc' }
+                ]
+            },
+
+            hiddenDiscovery: {
+                location: 'Hidden in Equipment Closet',
+                text: `You dive into a nearby equipment closet, squeezing between basketballs and training cones.
+
+Through a crack in the door, you see... THEM.
+
+Two figures in Thunder staff uniforms walk into the locker room. But their movements are too synchronized. Too perfect. And when they turn their heads, their eyes glow the same blue you saw in the photographs of Shai.
+
+"The reporter has the transponder," one says in a voice that sounds like it's being run through a computer.
+
+"Project Thunder God must not be compromised. Initiate retrieval protocol."
+
+Your blood runs cold. Project Thunder God? These aren't staff. They're not even HUMAN.
+
+You need to get out of here. NOW.
+
+But you also need to get this story out. This is bigger than basketball. This is...
+
+This is a Pulitzer.`,
+                effects: () => {
+                    gameState.clues += 3;
+                    gameState.reputation += 20;
+                },
+                choices: [
+                    { text: '1. Make a run for the exit while they search', next: 'escape' },
+                    { text: '2. Stay hidden and listen for more information', next: 'eavesdrop' },
+                    { text: '3. Use your phone to record them', next: 'recordAliens' }
+                ]
+            },
+
+            escape: {
+                location: 'Running Through Arena Corridors',
+                text: `You burst out of the closet and sprint down the hallway. Behind you, you hear them giving chase, their footsteps perfectly synchronized like a marching band from hell.
+
+"HALT, REPORTER QUINN."
+
+They know your name. Of course they do.
+
+You round a corner and—WHAM—run straight into someone. You both go down in a tangle of limbs.
+
+"Whoa! Watch it!"
+
+You look up. It's Shai Gilgeous-Alexander. In person. And his eyes... they're normal brown. Not glowing at all.
+
+"Shai?" you gasp.
+
+He helps you up, looking confused. "Do I know you? Wait—are you running from them?"
+
+"Them?"
+
+"The... I don't know what they are. But they're not human. And they're using us. The team. Something about our athletic abilities, our coordination. They've been replacing us one by one."
+
+"But you seem... normal?"
+
+"I am. For now. But I don't know how long I have. Listen, you need to get to the control room on the third floor. There's a computer terminal. Password is 'THUNDER2024'. You can shut down their operation from there. But you have to hurry."
+
+Footsteps echo closer.
+
+"GO!" Shai shoves you toward a stairwell.`,
+                effects: () => {
+                    gameState.flags.metShai = true;
+                    gameState.clues += 2;
+                },
+                choices: [
+                    { text: '1. Head to the third-floor control room', next: 'controlRoom' },
+                    { text: '2. "Come with me, Shai! You can help!"', next: 'shaiJoins' }
+                ]
+            },
+
+            controlRoom: {
+                location: 'Third Floor - Control Room',
+                text: `You burst into the control room, slamming the door behind you. Banks of monitors show every angle of the arena. On screen, you see:
+- The game continuing as normal (Thunder up by 15)
+- The alien staff searching for you on floor 2
+- Shai fighting off two other aliens in the hallway
+- A massive spaceship hovering above the arena, cloaked from view
+
+You locate the terminal. The password Shai gave you works.
+
+The screen displays: "PROJECT THUNDER GOD - PHASE 2 ACTIVE"
+
+Below are several options:
+> SHUT DOWN PROJECT
+> ALERT AUTHORITIES  
+> ACTIVATE EMERGENCY BROADCAST
+> DOWNLOAD ALL DATA
+
+You only have time for one action before they break through the door (you can hear them coming up the stairs).
+
+What do you do?`,
+                choices: [
+                    { text: '1. SHUT DOWN PROJECT - Stop this madness now!', next: 'shutDown' },
+                    { text: '2. ALERT AUTHORITIES - Get help here fast', next: 'alertAuthorities' },
+                    { text: '3. ACTIVATE EMERGENCY BROADCAST - Warn everyone!', next: 'broadcast' },
+                    { text: '4. DOWNLOAD ALL DATA - Get proof for your story', next: 'downloadData' }
+                ]
+            },
+
+            shutDown: {
+                location: 'Control Room',
+                text: `You hammer the SHUT DOWN button.
+
+The screen flashes red: "PROJECT TERMINATION INITIATED. ALL SUBJECTS BEING RELEASED."
+
+The lights throughout the arena flicker and die. Emergency lighting kicks in. On the monitors, you see the alien staff collapse like puppets with their strings cut. The spaceship above becomes visible as its cloaking fails, and it begins to retreat into the night sky.
+
+The door bursts open. Shai staggers in, looking exhausted but human.
+
+"You did it," he breathes. "I can feel it. Whatever they had in our heads... it's gone."
+
+Outside, you hear sirens. Someone called the police.
+
+"You have to go," Shai says. "If they find you here, you'll spend years being debriefed. But I'll back up your story. We all will."
+
+"All?"
+
+"Everyone they tried to convert. We remember everything now. The Thunder are going to have one hell of a press conference tomorrow."
+
+He grins. "And you, Quinn? You just saved professional basketball from an alien invasion. That's one hell of a story."
+
+THE END - HERO ENDING
+
+You published "ALIENS INVADE OKC THUNDER" and won a Pulitzer Prize.
+Final Stats: Suspicion: ${gameState.suspicion}, Clues: ${gameState.clues}, Reputation: ${gameState.reputation + 50}`,
+                effects: () => {
+                    gameState.reputation += 50;
+                },
+                choices: [
+                    { text: '🎮 Play Again?', next: 'start' }
+                ]
+            },
+
+            broadcast: {
+                location: 'Control Room',
+                text: `You click ACTIVATE EMERGENCY BROADCAST.
+
+Every screen in the arena—jumbotron, concession stand monitors, player tablets—cuts to the security feed. Twenty thousand fans suddenly see exactly what you're seeing: alien staff, glowing eyes, and the massive spaceship hovering overhead.
+
+The arena erupts in chaos. But it's the good kind of chaos. The kind where truth wins.
+
+Someone in the crowd livestreams it. Within minutes, it's trending worldwide. The aliens have no choice but to retreat—their cover is blown.
+
+You escape in the confusion. Your editor calls:
+
+"QUINN! What the hell did you DO?! The internet is going INSANE! We have ten million hits! The New York Times is calling! CNN wants an interview!"
+
+You saved the day, became an overnight sensation, and proved that sometimes the craziest stories are the true ones.
+
+THE END - MEDIA SENSATION ENDING  
+
+You became the most famous reporter in the world.
+Final Stats: Suspicion: ${gameState.suspicion}, Clues: ${gameState.clues}, Reputation: ${gameState.reputation + 100}`,
+                effects: () => {
+                    gameState.reputation += 100;
+                },
+                choices: [
+                    { text: '🎮 Play Again?', next: 'start' }
+                ]
+            },
+
+            // Shorter alternate paths
+            boxOffice: {
+                location: 'Box Office',
+                text: `The box office attendant looks at you skeptically.
+
+"Sold out, buddy. Been sold out for weeks."
+
+Dead end. You'll need to find another way in.`,
+                choices: [
+                    { text: '1. Go back and try something else', next: 'start' }
+                ]
+            },
+
+            callBuddy: {
+                location: 'Outside Arena',
+                text: `You call your old friend Marcus who works in arena operations.
+
+"Quinn? Yeah, I can get you in... but it'll cost you. Remember that story you promised to kill about my cousin?"
+
+"Done. I need in. Tonight."
+
+"Alright. Service entrance, side of the building. It'll be propped open at 8:15. You got ten minutes."
+
+[REPUTATION +10]`,
+                effects: () => {
+                    gameState.reputation += 10;
+                },
+                choices: [
+                    { text: '1. Head to the service entrance', next: 'serviceEntrance' }
+                ]
+            },
+
+            playbook: {
+                location: 'Player Locker Rooms',
+                text: `You examine the playbook. But these aren't basketball plays...
+
+They're schematics. Diagrams of human neural pathways. Notes about "optimal athletic conversion rates."
+
+This isn't a playbook. It's a manual for alien body-snatching.
+
+[MAJOR CLUE DISCOVERED]`,
+                effects: () => {
+                    gameState.clues += 3;
+                    gameState.flags.foundPlaybook = true;
+                },
+                choices: [
+                    { text: '1. Keep investigating the locker room', next: 'lockerRooms' }
+                ]
+            }
+        };
+
+        // Game Engine
+        function updateDisplay() {
+            document.getElementById('suspicion').textContent = gameState.suspicion;
+            document.getElementById('clues').textContent = gameState.clues;
+            document.getElementById('reputation').textContent = gameState.reputation;
+            document.getElementById('inventory').textContent = gameState.inventory.join(', ') || 'Empty';
+            document.getElementById('location').textContent = `LOCATION: ${gameState.location}`;
+        }
+
+        function displayNode(nodeKey) {
+            const node = story[nodeKey];
+            if (!node) {
+                console.error('Node not found:', nodeKey);
+                return;
+            }
+
+            // Apply effects if any
+            if (node.effects) {
+                node.effects();
+            }
+
+            // Update location
+            if (node.location) {
+                gameState.location = node.location;
+            }
+
+            // Display story text with typing effect
+            const storyDiv = document.getElementById('story');
+            storyDiv.textContent = '';
+            typeText(node.text, storyDiv, () => {
+                // Display choices after text is done
+                displayChoices(node.choices);
+            });
+
+            updateDisplay();
+        }
+
+        function typeText(text, element, callback) {
+            let index = 0;
+            const speed = 10; // milliseconds per character
+
+            function type() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, speed);
+                } else {
+                    if (callback) callback();
+                }
+            }
+
+            type();
+        }
+
+        function displayChoices(choices) {
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+
+            choices.forEach(choice => {
+                // Check if choice has a condition
+                if (choice.condition && !choice.condition()) {
+                    return; // Skip this choice
+                }
+
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.textContent = choice.text;
+                button.onclick = () => {
+                    // Disable all buttons while transitioning
+                    document.querySelectorAll('.choice-btn').forEach(btn => btn.disabled = true);
+                    setTimeout(() => {
+                        displayNode(choice.next);
+                    }, 300);
+                };
+                choicesDiv.appendChild(button);
+            });
+        }
+
+        // Start the game
+        displayNode('start');
+    </script>
+</body>
+</html>
+
+

@@ -2,10 +2,16 @@
 <html lang="en" x-data="profilePage()" :class="dark ? 'dark' : ''">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes" />
+  <meta name="format-detection" content="telephone=no" />
   <title>Tony Arkaysia — Profile</title>
   <meta name="description" content="Systems builder blending data, AI, hardware, and storytelling. Interactive portfolio with live charts and expandable projects." />
-  <link rel="icon" href="favicon.png" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <!-- Pre-paint theme (no flash) -->
   <script>
@@ -23,7 +29,23 @@
   <!-- Tailwind config must be BEFORE the CDN script -->
   <script>
     tailwind = {};
-    tailwind.config = { darkMode: 'class' };
+    tailwind.config = { 
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'sans': ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            'dark-bg': '#090909',
+            'dark-card': '#1a1a2e',
+            'dark-border': '#2d3748',
+            'dark-text': '#e2e8f0',
+            'dark-text-muted': '#a0aec0',
+          }
+        }
+      }
+    };
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -34,20 +56,50 @@
   <!-- Chart.js (for the radar chart) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 
-  <!-- Plain CSS fallback so the theme toggle is always visible -->
+  <!-- Enhanced CSS for better tablet compatibility and font consistency -->
   <style>
-    html { scroll-behavior: smooth; }
-    body { transition: background-color .2s, color .2s; }
+    html { 
+      scroll-behavior: smooth; 
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    body { 
+      transition: background-color .2s, color .2s; 
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     /* Fallback colors (overridden by Tailwind when loaded) */
     body { background:#f8fafc; color:#0f172a; }   /* light */
-    .dark body { background:#020617; color:#e2e8f0; } /* dark */
+    .dark body { 
+      background: linear-gradient(135deg, #090909 0%, #1a1a2e 50%, #090909 100%);
+      color:#e2e8f0; 
+    } /* dark */
     .glass { backdrop-filter: blur(8px); }
+    
+    /* Tablet-specific improvements */
+    @media (max-width: 1024px) and (min-width: 768px) {
+      .max-w-6xl { max-width: 90%; }
+      .px-4 { padding-left: 1rem; padding-right: 1rem; }
+      .md\\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+    
+    /* Ensure consistent font rendering across themes */
+    * {
+      font-family: inherit;
+    }
+    
+    /* Fix for touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .hover\\:bg-slate-100:hover { background-color: transparent; }
+      .hover\\:bg-slate-800:hover { background-color: transparent; }
+      .hover\\:bg-slate-50:hover { background-color: transparent; }
+    }
   </style>
 </head>
 
-<body x-init="init()" class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+<body x-init="init()" class="bg-slate-50 text-slate-900 dark:bg-dark-bg dark:text-dark-text">
   <!-- Topbar -->
-  <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/75 dark:bg-slate-950/60 glass">
+  <header class="sticky top-0 z-40 border-b border-slate-200/60 dark:border-white/20 bg-transparent glass">
     <div class="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3 font-extrabold tracking-tight">
         <span class="inline-block w-2.5 h-2.5 rounded-full bg-blue-600"></span>
@@ -85,34 +137,34 @@
           <span class="text-slate-700 dark:text-slate-300">tools</span>.
         </h1>
 
-        <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl text-center mx-auto">
+        <p class="mt-4 text-lg md:text-xl text-slate-600 dark:text-dark-text-muted max-w-3xl text-center mx-auto">
           I'm a builder and a designer — always have been. Databases, apps, 3-D models, gadgets. I refine the designs,
           calibrate the printers, solder the bits, and deliver products aimed at improving daily life.
         </p>
 
         <div class="mt-6 flex flex-wrap items-center gap-3 text-sm">
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📍 Queens, NYC • Remote</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🗂️ Database design & data engineering</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🧪 Data-science analytics</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">📊 Interactive dashboards</span>
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">🏗️ 3-D modeling & IoT</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-700 dark:text-dark-text">📍 Queens, NYC • Remote</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-700 dark:text-dark-text">🗂️ Database design & data engineering</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-700 dark:text-dark-text">🧪 Data-science analytics</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-700 dark:text-dark-text">📊 Interactive dashboards</span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-dark-card border border-slate-200 dark:border-dark-border text-slate-700 dark:text-dark-text">🏗️ 3-D modeling & IoT</span>
         </div>
 
         <div class="mt-7 flex flex-wrap gap-3">
           <a href="assets/tony_arkaysia_resume.pdf" download target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-dark-border hover:bg-slate-100 dark:hover:bg-dark-card dark:text-dark-text transition-colors">
             ⬇️ Download Résumé
           </a>
-          <a href="https://github.com/rainmannyc" target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 transition">
+          <a href="https://github.com/TonyArkaysia" target="_blank" rel="noopener"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-300 dark:border-dark-border hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 dark:text-dark-text transition-colors">
             GitHub ↗
           </a>
           <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-sky-500 dark:hover:bg-slate-800">
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-dark-border hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 dark:text-dark-text transition-colors">
             LinkedIn ↗
           </a>
           <a href="https://www.printables.com/@RainMan_1957964" target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 hover:text-white hover:bg-orange-500 dark:hover:bg-slate-800">
+            class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 dark:border-dark-border hover:text-white hover:bg-orange-500 dark:hover:bg-orange-500 dark:text-dark-text transition-colors">
             3-D Design Profile ↗
           </a>
         </div>
@@ -130,28 +182,28 @@
         <div class="flex items-center gap-2 flex-wrap">
           <template x-for="c in categories" :key="c">
             <button @click="active=c" class="px-3 py-1.5 rounded-2xl border text-sm shadow-sm"
-              :class="active===c ? 'bg-blue-600 text-white border-blue-700' : 'bg-white/70 dark:bg-white/5 border-slate-200 dark:border-slate-800 hover:border-blue-400'"
+              :class="active===c ? 'bg-blue-600 text-white border-blue-700' : 'bg-transparent border-slate-200 dark:border-white/20 hover:border-blue-400'"
               x-text="c"></button>
           </template>
         </div>
         <div class="flex items-center gap-2">
           <input x-model="q" placeholder="Search projects, tags…"
-                 class="w-full md:w-72 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/70 dark:bg-slate-900/50 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                 class="w-full md:w-72 px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
       </div>
 
       <div class="grid md:grid-cols-2 gap-5">
         <template x-for="p in filteredProjects()" :key="p.id">
-          <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60 backdrop-blur shadow-sm hover:shadow-lg transition">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent backdrop-blur shadow-sm hover:shadow-lg transition">
             <div class="p-5">
               <div class="flex items-start justify-between gap-4">
                 <div>
                   <h3 class="text-lg font-bold" x-text="p.name"></h3>
-                  <p class="text-slate-600 dark:text-slate-300 mt-1" x-text="p.tagline"></p>
+                  <p class="text-slate-600 dark:text-dark-text-muted mt-1" x-text="p.tagline"></p>
                 </div>
                 <button
                   @click="p.open = !p.open"
-                  class="p-2 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  class="p-2 rounded-xl border border-slate-200 dark:border-white/20 hover:bg-slate-50 dark:hover:bg-white/10"
                   aria-label="Toggle details"
                   :aria-expanded="p.open ? 'true' : 'false'">
                   ▾
@@ -177,7 +229,7 @@
                   </div>
                   <div class="flex items-center gap-2 flex-wrap" x-show="p.links && p.links.length">
                     <template x-for="l in p.links" :key="l.href">
-                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800" :href="l.href" target="_blank">🔗 <span x-text="l.label"></span></a>
+                      <a class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-white/20 hover:bg-slate-50 dark:hover:bg-white/10 dark:text-dark-text" :href="l.href" target="_blank">🔗 <span x-text="l.label"></span></a>
                     </template>
                   </div>
                 </div>
@@ -212,14 +264,14 @@
       <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Experience & Milestones</h2>
       <div class="grid gap-4">
         <template x-for="exp in experiences" :key="exp.org">
-          <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
+          <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
             <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
               <div>
                 <div class="text-sm text-blue-600 font-semibold" x-text="exp.when"></div>
                 <div class="text-lg font-bold" x-text="exp.title"></div>
-                <div class="text-slate-600 dark:text-slate-300" x-text="exp.org"></div>
+                <div class="text-slate-600 dark:text-dark-text-muted" x-text="exp.org"></div>
               </div>
-              <ul class="text-sm grid gap-2 list-disc list-inside max-w-2xl">
+              <ul class="text-sm grid gap-2 list-disc list-inside max-w-2xl text-slate-700 dark:text-dark-text-muted">
                 <template x-for="b in exp.bullets" :key="b"><li x-text="b"></li></template>
               </ul>
             </div>
@@ -233,11 +285,11 @@
       <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Demos & Media</h2>
       <div class="grid md:grid-cols-3 gap-4">
         <template x-for="m in media" :key="m.title">
-          <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
-            <button @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-slate-800/60 grid place-items-center text-slate-500">▶</button>
+          <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/20 bg-transparent">
+            <button @click="openMedia(m)" class="w-full aspect-video bg-slate-200/60 dark:bg-transparent border border-slate-200 dark:border-white/20 grid place-items-center text-slate-500 dark:text-dark-text-muted">▶</button>
             <div class="p-4">
               <div class="font-semibold" x-text="m.title"></div>
-              <p class="text-sm text-slate-600 dark:text-slate-300" x-text="m.desc"></p>
+              <p class="text-sm text-slate-600 dark:text-dark-text-muted" x-text="m.desc"></p>
             </div>
           </div>
         </template>
@@ -263,24 +315,24 @@
     <section id="contact">
       <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Contact & Availability</h2>
       <div class="grid md:grid-cols-2 gap-6">
-        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
+        <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
           <div class="grid gap-3 text-sm">
             <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">TonyArkaysia@gmail.com</a></div>
             <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
             <div class="flex items-center gap-2 flex-wrap">
-              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800">GitHub ↗</a>
-              <a href="https://www.linkedin.com" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-sky-500 dark:hover:bg-slate-800">LinkedIn ↗</a>
-              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:text-white hover:bg-rose-500">Media Kit ↗</a>
+              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 dark:text-dark-text">GitHub ↗</a>
+              <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 dark:text-dark-text">LinkedIn ↗</a>
+              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-rose-500 dark:hover:bg-rose-500 dark:text-dark-text">Media Kit ↗</a>
             </div>
           </div>
         </div>
 
-        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/60">
-          <form class="grid gap-3 text-sm" onsubmit="alert('Thanks! I\'ll reply shortly.'); return false;">
-            <input required placeholder="Your name" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60" />
-            <input required placeholder="Email" type="email" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60" />
-            <textarea required placeholder="What would you like to build together?" rows="4" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white/80 dark:bg-slate-900/60"></textarea>
-            <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">Send Message</button>
+        <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
+          <form class="grid gap-3 text-sm" onsubmit="handleContactForm(event); return false;">
+            <input required placeholder="Your name" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <input required placeholder="Email" type="email" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <textarea required placeholder="What would you like to build together?" rows="4" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+            <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors">Send Message</button>
           </form>
         </div>
       </div>
@@ -321,8 +373,8 @@
         projects: [
           {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed hundreds COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'CIN Website', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
           {id:'isl', name:'Interactive Sports Labs', tagline:'Real-time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[{label:'ISL Website', href:'https://www.interactivesportslabs.com/'}]},
+          {id:'aforest', name:'A Forest', tagline:'Interactive story game with character selection and RPG elements', tags:['Web','3D','Media'], role:'Full-stack developer & game designer', impact:'Built immersive interactive story with character stats, inventory system, and dynamic narrative.', open:false, links:[{label:'Play Game', href:'https://aforest-production.up.railway.app/'}]},
           {id:'qteam', name:'Q-Team Civic Noise', tagline:'Citizen-grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court-ready workflows.', open:false, links:[]},
-          {id:'shomi', name:'Shomi', tagline:'Used-car buyer toolkit (VIN decode, comps, deal scoring)', tags:['Data','Web','AI','Realtime'], role:'Product design & full-stack dev', impact:'Indexed 50k+ listings; instant comps & alerts improve negotiation confidence.', open:false, links:[{label:'Demo', href:'shomi.html'}]},
         ],
 
         filteredProjects(){
@@ -339,14 +391,20 @@
         ],
 
         media: [
-          {title:'NeuroTerp Radar Walkthrough', desc:'High-level tour of the effects engine and charts.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-          {title:'Interactive Sports Board', desc:'Realtime scoreboard and research demo.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
-          {title:'Noise Evidence Stack', desc:'How the collection, sync, and documentation works.', embed:'https://www.youtube.com/embed/dQw4w9WgXcQ'},
+          {title:'NeuroTerp Radar Walkthrough', desc:'High-level tour of the effects engine and charts.', embed:'https://www.youtube.com/embed/placeholder'},
+          {title:'Interactive Sports Board', desc:'Realtime scoreboard and research demo.', embed:'https://www.youtube.com/embed/placeholder'},
+          {title:'Noise Evidence Stack', desc:'How the collection, sync, and documentation works.', embed:'https://www.youtube.com/embed/placeholder'},
         ],
         lightbox: null,
         openMedia(m){ this.lightbox = m; },
 
         init(){
+          // Ensure proper font loading
+          document.fonts.ready.then(() => {
+            // Force font rendering consistency
+            document.body.style.fontFamily = 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+          });
+          
           // Build radar chart (optional – harmless if Chart.js didn't load)
           const ctx = document.getElementById('skillsChart');
           if (ctx && window.Chart) {
@@ -363,11 +421,45 @@
                   pointBackgroundColor: 'rgb(37, 99, 235)'
                 }]
               },
-              options: { scales: { r: { suggestedMin: 0, suggestedMax: 100 } } }
+              options: { 
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { r: { suggestedMin: 0, suggestedMax: 100 } },
+                plugins: {
+                  legend: {
+                    labels: {
+                      font: {
+                        family: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                      }
+                    }
+                  }
+                }
+              }
             });
           }
         }
       }
+    }
+
+    // Contact form handler
+    function handleContactForm(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      const name = formData.get('name') || form.querySelector('input[placeholder="Your name"]').value;
+      const email = formData.get('email') || form.querySelector('input[type="email"]').value;
+      const message = formData.get('message') || form.querySelector('textarea').value;
+      
+      // Create mailto link
+      const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+      const mailtoLink = `mailto:tonyarkaysia@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Show success message
+      alert('Thanks! Your email client should open with a pre-filled message. I\'ll reply shortly.');
     }
   </script>
 </body>
