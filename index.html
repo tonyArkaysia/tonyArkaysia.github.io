@@ -70,10 +70,18 @@
     }
     /* Fallback colors (overridden by Tailwind when loaded) */
     body { background:#f8fafc; color:#0f172a; }   /* light */
-    .dark body { 
-      background: linear-gradient(135deg, #090909 0%, #1a1a2e 50%, #090909 100%);
-      color:#e2e8f0; 
-    } /* dark */
+        .dark body {
+          background: linear-gradient(135deg, #090909 0%, #1a1a2e 50%, #090909 100%);
+          color:#e2e8f0;
+        } /* dark */
+        
+        .glow-text {
+          text-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.2);
+        }
+        
+        .dark .glow-text {
+          text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(59, 130, 246, 0.4);
+        }
     .glass { backdrop-filter: blur(8px); }
     
     /* Tablet-specific improvements */
@@ -281,7 +289,7 @@
     </section>
 
     <!-- MEDIA -->
-    <section id="media">
+    <!-- <section id="media">
       <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Demos & Media</h2>
       <div class="grid md:grid-cols-3 gap-4">
         <template x-for="m in media" :key="m.title">
@@ -295,7 +303,6 @@
         </template>
       </div>
 
-      <!-- Modal -->
       <div x-show="lightbox" x-transition class="fixed inset-0 z-50 bg-black/70 glass grid place-items-center p-6">
         <div class="max-w-3xl w-full rounded-2xl overflow-hidden bg-black">
           <div class="flex justify-between items-center p-3 bg-slate-900 text-white text-sm">
@@ -309,13 +316,13 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- SERVICES -->
     <section id="services">
-      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">A_Labs Studios Services</h2>
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4"><span class="text-blue-400" style="text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;">A_LABS STUDIOS</span> Services</h2>
       <p class="text-lg text-slate-600 dark:text-dark-text-muted mb-8 max-w-3xl">
-        Boutique-grade systems engineering by <strong>A_Labs Studios</strong> — founded by Tony Arkaysia. 
+        Boutique-grade systems engineering by <strong><span class="text-blue-400" style="text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;">A_LABS STUDIOS</span></strong> — founded by Tony Arkaysia. 
         Enterprise precision with a personal touch.
       </p>
 
@@ -323,14 +330,14 @@
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
           <h3 class="text-lg font-bold text-blue-600 mb-3">Precision Built by Experience</h3>
           <p class="text-sm text-slate-600 dark:text-dark-text-muted">
-            With over three decades in business operations, management, and development, A_Labs Studios designs systems that actually think like the people who use them. Each build reflects years of firsthand industry insight — not just code.
+            With over three decades in business operations, management, and development, A_LABS STUDIOS designs systems that actually think like the people who use them. Each build reflects years of firsthand industry insight — not just code.
           </p>
         </div>
         
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
           <h3 class="text-lg font-bold text-blue-600 mb-3">Boutique Craftsmanship</h3>
           <p class="text-sm text-slate-600 dark:text-dark-text-muted">
-            Every line, workflow, and UI element is designed and refined with precision. A_Labs Studios blends AI tooling and real-world experience to produce elegant, functional, and scalable systems for modern businesses.
+            Every line, workflow, and UI element is designed and refined with precision. A_LABS STUDIOS blends AI tooling and real-world experience to produce elegant, functional, and scalable systems for modern businesses.
           </p>
         </div>
         
@@ -343,14 +350,14 @@
       </div>
 
       <div class="p-6 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
-        <h3 class="text-xl font-bold mb-4">Why Choose A_LABS Studios Over Corporate Software Vendors?</h3>
+        <h3 class="text-xl font-bold mb-4">Why Choose <span class="text-blue-400" style="text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;">A_LABS STUDIOS</span> Over Corporate Software Vendors?</h3>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b border-slate-200 dark:border-white/20">
                 <th class="text-left py-3 px-4 font-semibold text-blue-600">Factor</th>
                 <th class="text-left py-3 px-4 font-semibold text-blue-600">Enterprise / Corporate Vendor</th>
-                <th class="text-left py-3 px-4 font-semibold text-blue-600">A_LABS Studios</th>
+                <th class="text-left py-3 px-4 font-semibold text-blue-600"><span class="text-blue-400" style="text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;">A_LABS STUDIOS</span></th>
               </tr>
             </thead>
             <tbody class="text-slate-600 dark:text-dark-text-muted">
@@ -390,29 +397,41 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Contact & Availability</h2>
+    <!-- BOOKING & CONTACT -->
+    <section id="booking">
+      <h2 class="text-2xl md:text-3xl font-extrabold mb-4">Schedule a Meeting</h2>
       <div class="grid md:grid-cols-2 gap-6">
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
-          <div class="grid gap-3 text-sm">
-            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline">TonyArkaysia@gmail.com</a></div>
-            <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
-            <div class="flex items-center gap-2 flex-wrap">
-              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 dark:text-dark-text">GitHub ↗</a>
-              <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 dark:text-dark-text">LinkedIn ↗</a>
-              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-rose-500 dark:hover:bg-rose-500 dark:text-dark-text">Media Kit ↗</a>
+          <h3 class="text-lg font-bold mb-3">Book an Appointment</h3>
+          <p class="text-sm text-slate-600 dark:text-dark-text-muted mb-4">
+            Ready to discuss your project? Book a consultation at my office in Long Island City, Queens.
+          </p>
+          <div class="bg-slate-100 dark:bg-slate-800 rounded-xl p-4 text-center">
+            <div class="text-sm text-slate-600 dark:text-dark-text-muted mb-2">📅 Calendar Booking</div>
+            <div class="text-xs text-slate-500 dark:text-dark-text-muted">
+              Click to open booking calendar
+            </div>
+            <!-- Placeholder for calendar embed -->
+            <div class="mt-3">
+              <a href="mailto:tonyarkaysia@gmail.com?subject=Meeting Request&body=Hi Tony, I'd like to schedule a meeting to discuss my project." 
+                 class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition-colors">
+                📅 Request Meeting
+              </a>
             </div>
           </div>
         </div>
 
         <div class="p-5 rounded-2xl border border-slate-200 dark:border-white/20 bg-transparent">
-          <form class="grid gap-3 text-sm" onsubmit="handleContactForm(event); return false;">
-            <input required placeholder="Your name" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            <input required placeholder="Email" type="email" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400" />
-            <textarea required placeholder="What would you like to build together?" rows="4" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-white/20 bg-transparent text-slate-900 dark:text-dark-text placeholder-slate-500 dark:placeholder-dark-text-muted focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-            <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors">Start a Project</button>
-          </form>
+          <h3 class="text-lg font-bold mb-3">Contact & Connect</h3>
+          <div class="grid gap-3 text-sm">
+            <div class="flex items-center gap-2">✉️ <a href="mailto:tonyarkaysia@gmail.com" class="underline text-blue-600 hover:text-blue-700">TonyArkaysia@gmail.com</a></div>
+            <div class="flex items-center gap-2">📍 <span>Long Island City • Queens, NYC</span></div>
+            <div class="flex items-center gap-2 flex-wrap mt-2">
+              <a href="https://github.com/TonyArkaysia" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-slate-800 dark:hover:bg-slate-800 dark:text-dark-text">GitHub ↗</a>
+              <a href="https://www.linkedin.com/in/tonyarkaysia/" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-sky-500 dark:hover:bg-sky-500 dark:text-dark-text">LinkedIn ↗</a>
+              <a href="#" target="_blank" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/20 hover:text-white hover:bg-rose-500 dark:hover:bg-rose-500 dark:text-dark-text">Media Kit ↗</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -420,7 +439,7 @@
 
   <footer class="py-10 text-center text-sm">
     <div class="mb-6">
-      <h3 class="font-semibold mb-1">A_LABS</h3>
+      <h3 class="font-semibold mb-1"><span class="text-blue-400" style="text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;">A_LABS STUDIOS</span></h3>
       <div>
         Tony Arkaysia<br />
         31-00 47th Avenue<br />
@@ -428,7 +447,7 @@
         Long Island City, NY 11101
       </div>
     </div>
-    <div>© <span x-text="year"></span> Tony Arkaysia • A_LABS</div>
+    <div>© <span x-text="year"></span> Tony Arkaysia • <span class="text-blue-400" style="text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;">A_LABS STUDIOS</span></div>
   </footer>
 
   <script>
@@ -450,7 +469,7 @@
         categories: ['All','AI','Data','Media','Civic','IoT','3D','Healthcare','Realtime','Web','Legal'],
 
         projects: [
-          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed hundreds COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'CIN Website', href:'https://tonyarkaysia.github.io/cannabis_intel_nexus'}]},
+          {id:'ntm', name:'NeuroTerp Matrix', tagline:'AI-driven cannabis effects engine & COA analytics', tags:['AI','Data','Healthcare'], role:'Architect & Full-stack dev', impact:'Parsed hundreds COAs; built tiering, radar charts, JSON schema; roadmap to nationwide DB.', open:false, links:[{label:'CIN Website', href:'https://cannabisintelnexus-production.up.railway.app/'}]},
           {id:'isl', name:'Interactive Sports Labs', tagline:'Real-time sports research & interactive scoreboards', tags:['Media','Data','Realtime'], role:'Founder, product & data', impact:'Built interactive dashboards, editorial pipelines, and predictive tooling.', open:false, links:[{label:'ISL Website', href:'https://www.interactivesportslabs.com/'}]},
           {id:'aforest', name:'A Forest', tagline:'Interactive story game with character selection and RPG elements', tags:['Web','3D','Media'], role:'Full-stack developer & game designer', impact:'Built immersive interactive story with character stats, inventory system, and dynamic narrative.', open:false, links:[{label:'Play Game', href:'https://aforest-production.up.railway.app/'}]},
           {id:'qteam', name:'Q-Team Civic Noise', tagline:'Citizen-grade noise validation & policy tooling', tags:['Civic','IoT','Legal'], role:'Systems design, hardware + policy', impact:'Measurement protocol, evidence db, court-ready workflows.', open:false, links:[]},
@@ -464,9 +483,9 @@
         },
 
         experiences: [
-          {org:'A_LABS (Arkaysia Labs)', title:'Founder / Builder', when:'2023 — Present', bullets:['Launched multi-track ventures across AI analytics, media, and civic tech.','End-to-end: research, product, code, branding, and ops/finance.']},
-          {org:'Noise Evidence & Policy Project', title:'Lead Systems Designer', when:'2021 — Present', bullets:['Built calibrated, time-synced measurement stack (DBC/DBA meters + audio).','Produced legal-grade documentation, timelines, and presentations.']},
-          {org:'Columbia Engineering', title:'Data Analytics Certification', when:'2021', bullets:['Data wrangling, viz, dashboards, and light ML workflows.']},
+          {org:'A_LABS STUDIOS (Arkaysia Labs)', title:'Founder / Builder', when:'2024 — Present', bullets:['Launched multi-track ventures across AI analytics, media, and civic tech.','End-to-end: research, product, code, branding, and ops/finance.']},
+          {org:'Multi-Industry Operations Management', title:'General Manager / Operations Lead', when:'2011 — 2021', bullets:['Directed daily operations, scheduling, and logistics across restaurant, retail, online, and construction businesses in NYC.','Worked directly under ownership managing contracts, vendor relations, and project coordination.','Led teams of 10–30 employees, optimizing workflow, inventory control, and cost efficiency.','Implemented structured systems for purchasing, documentation, and staff training focused on accountability, service, and operational excellence.']},
+          {org:'Columbia Engineering', title:'Data Analytics', when:'2021', bullets:['Python, SQL, R, Tableau, and Big Data workflows.','Developed end-to-end ETL pipelines, dashboards, and predictive models using Pandas, TensorFlow, and PostgreSQL.','Applied data wrangling, visualization, and light ML techniques to real-world case studies.','Collaborated with peers to deliver production-ready data projects integrating cloud and API data sources.']}, 
         ],
 
         media: [
@@ -520,26 +539,6 @@
       }
     }
 
-    // Contact form handler
-    function handleContactForm(event) {
-      event.preventDefault();
-      const form = event.target;
-      const formData = new FormData(form);
-      const name = formData.get('name') || form.querySelector('input[placeholder="Your name"]').value;
-      const email = formData.get('email') || form.querySelector('input[type="email"]').value;
-      const message = formData.get('message') || form.querySelector('textarea').value;
-      
-      // Create mailto link
-      const subject = encodeURIComponent(`Portfolio Contact from ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      const mailtoLink = `mailto:tonyarkaysia@gmail.com?subject=${subject}&body=${body}`;
-      
-      // Open email client
-      window.location.href = mailtoLink;
-      
-      // Show success message
-      alert('Thanks! Your email client should open with a pre-filled message. I\'ll reply shortly.');
-    }
   </script>
 </body>
 </html>
