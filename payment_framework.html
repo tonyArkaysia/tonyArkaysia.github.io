@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Project Agreement Summary – ConciergeOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg: #f5f5f7;
+      --card-bg: #ffffff;
+      --text-main: #222222;
+      --text-muted: #666666;
+      --accent: #2563eb;
+      --border-soft: #e2e2e7;
+      --radius: 14px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #e5e7eb, var(--bg));
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 32px 16px;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--arkaysia-blue), #111827);
+      color: #f9fafb;
+      border-radius: 24px;
+      padding: 24px 24px 26px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -100px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.25), transparent);
+      opacity: 0.9;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 560px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 20px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .card h2 {
+      font-size: 1.0rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card h2 span.icon {
+      font-size: 1.1rem;
+    }
+
+    .card .tagline {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.94rem;
+      margin-bottom: 8px;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .card ul li {
+      font-size: 0.9rem;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 5px;
+      color: var(--text-muted);
+    }
+
+    .card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 6px;
+      top: 0;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      font-size: 0.82rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+      white-space: nowrap;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .phase-list {
+      margin-top: 4px;
+    }
+
+    .phase-list li {
+      margin-bottom: 4px;
+    }
+
+    .phase-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .footer-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    @media (min-width: 720px) {
+      .card {
+        padding: 22px 22px;
+      }
+      .title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">ConciergeOS · Project Guide</div>
+        <h1 class="title">How Your Project & Payments Work</h1>
+        <p class="subtitle">
+          This page explains in plain language how we structure payments, revisions,
+          changes, and ownership so everything stays fair and transparent for both of us.
+        </p>
+      </div>
+    </header>
+
+    <!-- Section: Overall Flow -->
+    <section class="card">
+      <h2><span class="icon">🧭</span> Project Flow at a Glance</h2>
+      <p class="tagline">
+        We build in clear phases so you always know what you’re getting and what you’re paying for.
+      </p>
+      <ul class="phase-list">
+        <li>
+          <span class="phase-title">Phase 1 – Kickoff & Setup</span><br />
+          We agree on the features, layout, and goals. We set up your base system and start building
+          the core screens.
+        </li>
+        <li>
+          <span class="phase-title">Phase 2 – Core Features</span><br />
+          The main tools you’ll use every day (for example, bookings, simple dashboard, or inventory)
+          are implemented and clickable.
+        </li>
+        <li>
+          <span class="phase-title">Phase 3 – Polish & Adjustments</span><br />
+          We refine the layout, fix issues, and adjust details based on your feedback.
+        </li>
+        <li>
+          <span class="phase-title">Phase 4 – Launch & Handoff</span><br />
+          We prepare the system to go live, walk you through it, and deliver final access.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section: Payments -->
+    <section class="card">
+      <h2><span class="icon">💳</span> Payments & Milestones</h2>
+      <p class="tagline">
+        You pay in steps, not all at once — each payment matches a clear milestone.
+      </p>
+      <p>
+        Instead of paying everything upfront or at the very end, we split your project into a few
+        simple payment stages:
+      </p>
+      <ul>
+        <li>
+          <span class="highlight">Kickoff Payment (around 30%)</span> – paid when we start.
+          This covers planning, setup, and reserving development time.
+        </li>
+        <li>
+          <span class="highlight">Midpoint Payment (around 25%)</span> – paid when the core
+          features are working and you can click through them.
+        </li>
+        <li>
+          <span class="highlight">Pre-Delivery Payment (around 25%)</span> – paid when everything
+          is built and we’re in the finishing stages.
+        </li>
+        <li>
+          <span class="highlight">Final Payment (around 10–20%)</span> – paid right before launch
+          and handoff.
+        </li>
+      </ul>
+      <p>
+        This way, you only pay as real progress is delivered, and we both have clear checkpoints.
+      </p>
+      <div class="pill-row">
+        <div class="pill">No surprise bills</div>
+        <div class="pill">Progress-based payments</div>
+        <div class="pill">Clear milestones</div>
+      </div>
+    </section>
+
+    <!-- Section: Revisions & Time Control -->
+    <section class="card">
+      <h2><span class="icon">✏️</span> Revisions & Time Limits</h2>
+      <p class="tagline">
+        You absolutely get revisions — we just keep them organized so the project doesn’t drag forever.
+      </p>
+      <p>For each phase of the project:</p>
+      <ul>
+        <li>
+          You get up to <span class="highlight">2 rounds of revisions</span> included in the price
+          for that phase.
+        </li>
+        <li>
+          Revisions should be requested within
+          <span class="highlight">7 days of receiving that phase</span> (for example, the first
+          working version of your booking page or dashboard).
+        </li>
+        <li>
+          Revisions mean adjustments to what we already agreed on: wording, colors, layout tweaks,
+          moving elements, small feature changes.
+        </li>
+      </ul>
+      <p>
+        To avoid last-minute chaos right before launch, any new revision requests made
+        <span class="highlight">less than 5 days before the agreed go-live date</span> may be:
+      </p>
+      <ul>
+        <li>
+          Moved into a <span class="highlight">post-launch update</span>, or
+        </li>
+        <li>
+          Priced as extra work if they significantly change what’s already built.
+        </li>
+      </ul>
+      <p>
+        This keeps the project moving smoothly and makes sure launch dates stay realistic.
+      </p>
+    </section>
+
+    <!-- Section: Big Changes / Scope -->
+    <section class="card">
+      <h2><span class="icon">🧱</span> Big Changes vs Normal Tweaks</h2>
+      <p class="tagline">
+        Small tweaks are included. Major direction changes are treated as new work.
+      </p>
+      <p>
+        Normal revisions are things like:
+      </p>
+      <ul>
+        <li>“Can we move this section higher on the page?”</li>
+        <li>“Please change this color or label.”</li>
+        <li>“Can we adjust this field or add a note here?”</li>
+      </ul>
+      <p>
+        A <span class="highlight">major change</span> is something like:
+      </p>
+      <ul>
+        <li>“We want a completely different layout now.”</li>
+        <li>“We’ve changed our mind, and want a different set of features.”</li>
+        <li>“We want this to work like a different type of system altogether.”</li>
+      </ul>
+      <p>
+        When that happens, we’ll pause, talk it through, and if needed, treat it as a
+        <span class="highlight">new mini-phase with its own price and timeline</span>. We won’t
+        move forward on extra work until we both agree in writing.
+      </p>
+    </section>
+
+    <!-- Section: Cancelling / Pausing -->
+    <section class="card">
+      <h2><span class="icon">⏸️</span> If You Pause or Cancel the Project</h2>
+      <p class="tagline">
+        You’re free to stop at any time — we just make sure completed work is covered fairly.
+      </p>
+      <ul>
+        <li>
+          You can pause or cancel the project at any time with written notice (email is fine).
+        </li>
+        <li>
+          The <span class="highlight">kickoff payment is non-refundable</span> once we start, as
+          it covers initial planning and setup.
+        </li>
+        <li>
+          Any phases that are already completed or in progress still need to be paid for. Future
+          phases that haven’t started yet are not charged.
+        </li>
+        <li>
+          You’ll receive all work that has been fully paid for up to that point.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section: Ownership -->
+    <section class="card">
+      <h2><span class="icon">📜</span> Ownership of the Work</h2>
+      <p class="tagline">
+        You own what you pay for. We keep ownership of anything that isn’t fully paid yet.
+      </p>
+      <ul>
+        <li>
+          Once a phase is fully paid, you have the right to use that part of the system for your
+          business.
+        </li>
+        <li>
+          Until a phase is paid, the underlying code, design, and materials remain our property.
+        </li>
+        <li>
+          This protects both sides: you’re not paying for things you don’t receive, and we’re not
+          giving away unpaid work.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section: Communication -->
+    <section class="card">
+      <h2><span class="icon">📞</span> Communication & Response Times</h2>
+      <p class="tagline">
+        Good communication keeps the project on track and avoids rushed changes.
+      </p>
+      <ul>
+        <li>
+          We’ll agree on a main contact person on your side (owner or manager) and on our side.
+        </li>
+        <li>
+          Most updates and approvals will be done by email so we have a clear record.
+        </li>
+        <li>
+          When we send a phase for review, a response within
+          <span class="highlight">5–7 days</span> helps keep the schedule on track.
+        </li>
+      </ul>
+      <p>
+        If you ever feel unsure about where we’re at, ask — we’ll happily walk you through the
+        current status and next steps.
+      </p>
+    </section>
+
+    <div class="footer-note">
+      This page is a simplified summary. Final terms will be in the written service agreement.
+    </div>
+  </div>
+</body>
+</html>
