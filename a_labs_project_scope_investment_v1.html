@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>How We Work With You – A_LABS STUDIOS / ConciergeOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --border-soft: #e5e7eb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #0ea5e9;
+      --accent-soft: #e0f2fe;
+      --radius: 16px;
+      --shadow-soft: 0 18px 40px rgba(15,23,42,0.06);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #e5e7eb, var(--bg));
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 32px 16px 48px;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--arkaysia-blue), #111827);
+      color: #f9fafb;
+      border-radius: 24px;
+      padding: 24px 24px 26px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(56,189,248,0.25), transparent);
+      opacity: 0.9;
+    }
+
+    .header-inner { position: relative; z-index: 1; }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 640px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 880px) {
+      .grid-2 { grid-template-columns: 1.2fr 0.8fr; }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 18px 18px 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 span.icon { font-size: 1.1rem; }
+
+    .card .tagline {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .card ul li {
+      font-size: 0.88rem;
+      padding-left: 1.1rem;
+      position: relative;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0.3rem;
+      top: 0;
+      color: var(--accent);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 4px;
+    }
+
+    .pill {
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      color: #1d4ed8;
+      white-space: nowrap;
+    }
+
+    .highlight { color: var(--accent); font-weight: 600; }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 0.86rem;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .table th {
+      background: #f3f4f6;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #0f172a;
+      margin-left: 4px;
+    }
+
+    .cta {
+      margin-top: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 12px 25px rgba(56,189,248,0.35);
+    }
+
+    .btn-secondary {
+      background: #0f172a;
+      color: #e5e7eb;
+      box-shadow: none;
+      border: 1px solid #1e293b;
+    }
+
+    .muted {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">A_LABS STUDIOS · ConciergeOS</div>
+        <h1 class="title">How We Work With Your Business</h1>
+        <p class="subtitle">
+          Boutique-grade systems engineering for shops, salons, restaurants, markets, and more.
+          This page explains how projects are set up, what you can expect, and the kind of investment involved.
+        </p>
+      </div>
+    </header>
+
+    <!-- Core Philosophy -->
+    <section class="card">
+      <h2><span class="icon">⭐</span> Core Approach</h2>
+      <p class="tagline">
+        We design your system around the way you already work — then automate the parts that slow you down.
+      </p>
+      <div class="pill-row">
+        <span class="pill">Transparent</span>
+        <span class="pill">Fair</span>
+        <span class="pill">Custom-Fit</span>
+        <span class="pill">No Long-Term Lock-in</span>
+        <span class="pill">Founder-Led</span>
+      </div>
+      <ul>
+        <li><span class="highlight">Transparent:</span> Your project is broken into clear stages, with what you get at each step.</li>
+        <li><span class="highlight">Fair:</span> You pay more only if we add more capability or complexity to your system.</li>
+        <li><span class="highlight">Custom-Fit:</span> A small barbershop doesn’t pay supermarket prices.</li>
+        <li><span class="highlight">Ownership:</span> Once your project is paid, the system is yours to use for your business.</li>
+        <li><span class="highlight">Boutique Craftsmanship:</span> You work directly with the builder, not a support queue.</li>
+      </ul>
+    </section>
+
+    <!-- How We Size a Project -->
+    <section class="card">
+      <h2><span class="icon">🧮</span> How We Size Your Project</h2>
+      <p class="tagline">
+        The cost depends on what we’re building for you — not just what kind of business you run.
+      </p>
+      <p>
+        When we look at your setup, we focus on three things:
+      </p>
+      <ul>
+        <li><span class="highlight">Everyday tools:</span> booking, inventory, job cards, dashboards — the stuff you use all day.</li>
+        <li><span class="highlight">Connections:</span> whether we hook into your POS, payments, online ordering, or other apps.</li>
+        <li><span class="highlight">Automation & AI:</span> things like demand forecasts, busy-hour predictions, or smart reminders.</li>
+      </ul>
+      <p>
+        After a short conversation, we turn this into a written project plan with stages, timelines, and a clear investment number.
+      </p>
+    </section>
+
+    <!-- Typical Project Sizes -->
+    <section class="card">
+      <h2><span class="icon">📊</span> Typical Project Sizes & Investment</h2>
+      <p class="tagline">
+        Every build is custom, but most projects fall into these ballparks.
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Project Size</th>
+            <th>Best For</th>
+            <th>What You Get</th>
+            <th>Approx. Build</th>
+            <th>Approx. Monthly</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Essentials</td>
+            <td>Solo barber, stylist, very small shop</td>
+            <td>Core booking or tracking tools + simple dashboard</td>
+            <td>$1,200 – $2,500</td>
+            <td>$100 – $250</td>
+          </tr>
+          <tr>
+            <td>Core System</td>
+            <td>Barbershops, bodegas, salons, auto shops</td>
+            <td>Full daily-use system with dashboards & light automation</td>
+            <td>$2,500 – $6,000</td>
+            <td>$200 – $400</td>
+          </tr>
+          <tr>
+            <td>Full Platform</td>
+            <td>Restaurants, gyms, markets</td>
+            <td>Multiple modules, richer analytics, more integrations</td>
+            <td>$6,000 – $12,000</td>
+            <td>$350 – $800</td>
+          </tr>
+          <tr>
+            <td>Custom Network</td>
+            <td>Multi-location & advanced setups</td>
+            <td>Chain-wide dashboards, automation, and custom flows</td>
+            <td>$12,000+</td>
+            <td>Custom</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        These are guide ranges so you know what to expect. Your quote depends on your exact workflow and feature list.
+      </p>
+    </section>
+
+    <!-- Project Stages -->
+    <section class="card">
+      <h2><span class="icon">📆</span> Project Stages & Payments</h2>
+      <p class="tagline">
+        You don’t pay for everything at once — each stage has its own deliverables and payment.
+      </p>
+      <ul>
+        <li><span class="highlight">Stage 1 – Kickoff (around 30%)</span><br>
+          We map your workflow, lock in the plan, and set up the base system. This gets the build started and reserves development time.</li>
+        <li><span class="highlight">Stage 2 – Core Build (around 25%)</span><br>
+          The main tools are working — for example, booking, inventory, or job tracking. You can click around and see it in action.</li>
+        <li><span class="highlight">Stage 3 – Refinement (around 25%)</span><br>
+          We polish layouts, improve flow, and add remaining details based on your feedback.</li>
+        <li><span class="highlight">Stage 4 – Launch & Handoff (around 10–20%)</span><br>
+          We prepare for go-live, train you, and do final adjustments so you’re ready to run.</li>
+      </ul>
+      <p>
+        Each stage comes with a walkthrough so you always know where things stand before the next payment.
+      </p>
+    </section>
+
+    <!-- Revisions & Time Windows -->
+    <section class="card">
+      <h2><span class="icon">✏️</span> Feedback & Changes</h2>
+      <p class="tagline">
+        You get structured chances to tweak things without the project dragging on forever.
+      </p>
+      <ul>
+        <li>You get up to <span class="highlight">two rounds of feedback</span> per stage included in the project.</li>
+        <li>We ask that you share your feedback on a stage within <span class="highlight">7 days</span> of seeing it.</li>
+        <li>Feedback covers things like layout adjustments, labels, colors, and small changes to how screens work.</li>
+      </ul>
+      <p>
+        If you want to make a <span class="highlight">big shift</span> — for example, a totally new layout or a different tool set —
+        we’ll treat that as new work. We’ll pause, talk it through, and only move forward once we’ve agreed on the updated plan and cost.
+      </p>
+      <p class="muted">
+        Requests that arrive right before launch may be moved into a post-launch update so your go-live date doesn’t keep sliding.
+      </p>
+    </section>
+
+    <!-- Pausing, Cancelling, Ownership -->
+    <section class="card">
+      <h2><span class="icon">⏸️</span> If You Need to Pause or Stop</h2>
+      <p class="tagline">
+        Things change. We keep clear rules so it’s fair for both sides.
+      </p>
+      <ul>
+        <li>You can pause or cancel at any time by email.</li>
+        <li>The initial kickoff payment is <span class="highlight">non-refundable</span> once we start, since it covers planning and setup.</li>
+        <li>Any stages that are finished or in progress still need to be paid; future stages that haven’t started yet are not charged.</li>
+        <li>You keep the work for all stages you’ve fully paid for and can use it in your business.</li>
+      </ul>
+      <p class="muted">
+        This makes sure you’re never paying for work you don’t receive, and we’re not giving away work that hasn’t been covered.
+      </p>
+    </section>
+
+    <!-- AI & Support -->
+    <section class="card">
+      <h2><span class="icon">🤖</span> Smart Features & Ongoing Support</h2>
+      <p class="tagline">
+        Your system runs fine without AI — but if you want smarter automation, we can add it thoughtfully.
+      </p>
+      <p>
+        Examples of “smart” features include: predicting busy hours, highlighting products likely to sell out, or auto-suggesting reorders.
+        Because these use extra computing power, they usually sit in add-on plans:
+      </p>
+      <ul>
+        <li><span class="highlight">Light AI:</span> from around $30/month – for simple suggestions and helpers.</li>
+        <li><span class="highlight">Standard AI:</span> from around $70/month – for more frequent use and basic forecasting.</li>
+        <li><span class="highlight">Advanced AI:</span> from around $150/month – for heavy use, deeper analytics, and automation.</li>
+      </ul>
+      <p>
+        Ongoing support plans (hosting, backups, bug fixes, and small updates) usually range from
+        <span class="highlight">$100 to $400/month</span>, depending on how complex your system is.
+      </p>
+    </section>
+
+    <!-- Example Scenarios -->
+    <section class="card">
+      <h2><span class="icon">💡</span> A Few Example Setups</h2>
+      <p class="tagline">
+        These examples are just to give you a feel for what a real project might look like.
+      </p>
+      <ul>
+        <li><span class="highlight">Barbershop:</span> Booking system, client history, staff list, basic reminders, simple daily/weekly stats.<br>
+          Rough idea: <span class="highlight">$3,000–$4,000 build</span> + <span class="highlight">$200–$300/month</span> support.</li>
+        <li><span class="highlight">Neighborhood Bodega:</span> Product list, simple stock tracking, low-stock alerts, overview dashboard.<br>
+          Rough idea: <span class="highlight">$2,500–$4,000 build</span> + <span class="highlight">$200–$300/month</span> support.</li>
+        <li><span class="highlight">Restaurant or Café:</span> Orders/tables, basic scheduling, menu management, simple reporting.<br>
+          Rough idea: <span class="highlight">$3,500–$7,000 build</span> + <span class="highlight">$250–$450/month</span> support.</li>
+      </ul>
+      <p class="muted">
+        Your business might be simpler or more complex than these — that’s what the first call is for.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2><span class="icon">📅</span> Want to See What This Looks Like for You?</h2>
+      <p class="tagline">
+        The next step is a quick conversation about how your business runs today and what you’d love to stop doing manually.
+      </p>
+      <p>
+        From there, we’ll map your flow, outline a system that fits you, and send a clear proposal with stages, timelines, and a concrete number.
+      </p>
+      <div class="cta">
+        <a href="#booking" class="btn">Schedule a Conversation</a>
+        <a href="#contact" class="btn btn-secondary">Request a Rough Estimate</a>
+      </div>
+      <p class="muted" style="margin-top:8px;">
+        No pressure call — just an honest look at where software can actually help and where it won’t.
+      </p>
+    </section>
+  </div>
+</body>
+</html>
