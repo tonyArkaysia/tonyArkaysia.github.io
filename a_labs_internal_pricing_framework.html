@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>A_LABS STUDIOS · Internal Pricing Framework</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg: #0b1120;
+      --bg-soft: #020617;
+      --card-bg: #020617;
+      --border-soft: #1e293b;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --radius: 16px;
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827, #020617);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 32px 16px 40px;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: radial-gradient(circle at top left, #1f2937, var(--arkaysia-blue));
+      border-radius: 28px;
+      padding: 24px 24px 26px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #1e293b;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: auto -120px -160px auto;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent);
+      opacity: 0.8;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: 1.1fr 1.1fr;
+    }
+
+    @media (max-width: 860px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.98));
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 18px 18px 18px;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    .card h2 {
+      font-size: 1.02rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card h2 span.icon {
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    .pill {
+      font-size: 0.78rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid #1f2937;
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .pill.accent {
+      background: var(--accent-soft);
+      border-color: rgba(56, 189, 248, 0.6);
+      color: #f9fafb;
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    ul li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    ul li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      top: 0;
+      color: var(--accent);
+      font-size: 0.86rem;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+      margin-top: 6px;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid #111827;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .table th {
+      background: #020617;
+      color: #e5e7eb;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .table td {
+      color: var(--text-muted);
+    }
+
+    .table tr:nth-child(even) td {
+      background: rgba(15,23,42,0.92);
+    }
+
+    .badge {
+      font-size: 0.76rem;
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+    }
+
+    .badge.high {
+      border-color: rgba(248, 250, 252, 0.7);
+      color: #f9fafb;
+    }
+
+    .section-title {
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-size: 1.02rem;
+      font-weight: 600;
+    }
+
+    .small {
+      font-size: 0.82rem;
+    }
+
+    .code {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: #020617;
+      border-radius: 6px;
+      padding: 2px 5px;
+      font-size: 0.8rem;
+    }
+
+    .note {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .footer-note {
+      font-size: 0.78rem;
+      color: #4b5563;
+      text-align: right;
+      margin-top: 22px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="label">A_LABS STUDIOS · Internal Only</div>
+        <h1>A_LABS Unified Pricing & Complexity Framework</h1>
+        <p class="subtitle">
+          Boutique-grade systems engineering by A_LABS STUDIOS — founded by Tony Arkaysia.
+          This document is our internal guide for pricing, scoping, milestones, and protections
+          across ConciergeOS and all custom builds.
+        </p>
+        <div class="pill-row">
+          <div class="pill accent">Enterprise precision with a personal touch</div>
+          <div class="pill">Complexity-based pricing</div>
+          <div class="pill">Milestone payments</div>
+          <div class="pill">AI usage tiers</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Core Philosophy -->
+    <section class="card">
+      <h2><span class="icon">🧭</span> Core Pricing Philosophy</h2>
+      <p>
+        All A_LABS projects follow four core principles:
+      </p>
+      <ul>
+        <li><span class="highlight">Transparency:</span> Clients know what they’re paying for, when, and why. No surprise add-ons.</li>
+        <li><span class="highlight">Fairness:</span> Payments are tied to delivered milestones, not vague promises.</li>
+        <li><span class="highlight">Custom Fit:</span> We price based on required functionality and complexity, not generic SaaS tiers.</li>
+        <li><span class="highlight">Ownership:</span> After payment, clients own their system. No vendor lock-in.</li>
+      </ul>
+      <p class="small">
+        Brand alignment: “Boutique-grade systems engineering,” “fully customizable builds,” “direct founder-led collaboration,”
+        “flexible pricing and lifetime ownership options.”
+      </p>
+    </section>
+
+    <!-- Complexity Points -->
+    <section class="card">
+      <h2><span class="icon">📏</span> Complexity Points (CP) Model</h2>
+      <p>
+        Internally, we use <span class="highlight">Complexity Points (CP)</span> to measure scope. 
+        Clients never see CP — they see milestones and modules.
+      </p>
+      <p class="small">
+        Guideline: <span class="code">1 CP ≈ a simple module or workflow</span>,
+        <span class="code">2–3 CP ≈ moderate module/workflow</span>,
+        <span class="code">4–5 CP ≈ complex feature/integration</span>.
+      </p>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Typical CP Range</th>
+            <th>Weight</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Integrations</td>
+            <td>POS, accounting, delivery platforms, CRM, external APIs.</td>
+            <td>1–8 CP</td>
+            <td><span class="badge high">High</span></td>
+          </tr>
+          <tr>
+            <td>Database & Data Model</td>
+            <td>Number of tables, relations, CRUD, imports/exports, migrations.</td>
+            <td>1–6 CP</td>
+            <td><span class="badge">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Workflow Automation</td>
+            <td>Scheduling, triggers, background jobs, notifications.</td>
+            <td>2–6 CP</td>
+            <td><span class="badge high">High</span></td>
+          </tr>
+          <tr>
+            <td>UI/UX Customization</td>
+            <td>Custom layouts, dashboards, multi-theme, responsive logic.</td>
+            <td>1–4 CP</td>
+            <td><span class="badge">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Roles & Permissions</td>
+            <td>Multi-role access, fine-grained permission sets.</td>
+            <td>1–4 CP</td>
+            <td><span class="badge">Medium</span></td>
+          </tr>
+          <tr>
+            <td>Reporting & Analytics</td>
+            <td>Aggregations, charts, exportable reports, trend views.</td>
+            <td>2–8 CP</td>
+            <td><span class="badge high">High</span></td>
+          </tr>
+          <tr>
+            <td>AI / ML Features (AI_CP)</td>
+            <td>Predictions, AI assistants, recommendation systems, NLP.</td>
+            <td>3–20 AI_CP</td>
+            <td><span class="badge high">High</span></td>
+          </tr>
+          <tr>
+            <td>Multi-Tenant / Multi-location</td>
+            <td>Branches, shared dashboards, centralized control.</td>
+            <td>3–8 CP</td>
+            <td><span class="badge high">High</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note">
+        Internal formula: <span class="code">Total Setup = Base Platform Fee (BPF) + (CP × CP rate) + AI Add-ons + Extras</span>.
+      </p>
+    </section>
+
+    <!-- Pricing Tiers -->
+    <section class="card">
+      <h2><span class="icon">💰</span> Setup Pricing Tiers (By CP)</h2>
+      <p>
+        We translate internal CP totals into client-facing “build levels.”
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>CP Range</th>
+            <th>Example Projects</th>
+            <th>Typical Setup Range</th>
+            <th>Monthly Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Starter Build</td>
+            <td>1–5 CP</td>
+            <td>Solo barber, stylist, tiny bodega MVP.</td>
+            <td>$1,200 – $2,500</td>
+            <td>$100 – $250</td>
+          </tr>
+          <tr>
+            <td>Standard Build</td>
+            <td>6–12 CP</td>
+            <td>Single barbershop, bodega with dashboard, basic restaurant.</td>
+            <td>$2,500 – $6,000</td>
+            <td>$200 – $400</td>
+          </tr>
+          <tr>
+            <td>Advanced Build</td>
+            <td>13–20 CP</td>
+            <td>Grocery, busy restaurant, mechanic shop, Muay Thai gym.</td>
+            <td>$6,000 – $12,000</td>
+            <td>$300 – $800</td>
+          </tr>
+          <tr>
+            <td>Enterprise Custom</td>
+            <td>20+ CP</td>
+            <td>Chains, multi-site dashboards, heavy AI and integrations.</td>
+            <td>$12,000+</td>
+            <td>$800 – $2,000+</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Milestone Payments -->
+    <section class="card">
+      <h2><span class="icon">📆</span> Milestone Payment Structure</h2>
+      <p>
+        All projects use milestone-based billing. This protects cash flow and provides clear checkpoints.
+      </p>
+      <ul>
+        <li><span class="highlight">30% – Kickoff</span> · Non-refundable once work starts. Covers architecture, environment setup, base skeleton.</li>
+        <li><span class="highlight">25% – Midpoint</span> · Core modules functional and clickable (e.g., booking, inventory, dashboards).</li>
+        <li><span class="highlight">25% – Pre-Delivery</span> · All major features done, ready for polish, minor fixes, QA.</li>
+        <li><span class="highlight">20% – Final</span> · Final payment before launch, training, and handoff.</li>
+      </ul>
+      <p class="small">
+        Internally: align CP to milestones (e.g., first 30–40% of CP in Phase 1–2, next 40–50% in Phase 3, polish + deployment in Phase 4).
+      </p>
+    </section>
+
+    <!-- Revisions & Time Control -->
+    <section class="card">
+      <h2><span class="icon">✏️</span> Revisions, Time Limits & Scope Changes</h2>
+      <p>
+        We include revisions while protecting against endless last-minute changes.
+      </p>
+      <ul>
+        <li>Each phase includes <span class="highlight">up to 2 rounds of revisions</span> in the price.</li>
+        <li>Revisions must be requested within <span class="highlight">7 days</span> of phase delivery.</li>
+        <li>Revisions = tweaks, content changes, layout adjustments inside agreed scope.</li>
+        <li>New layouts, new flows, or new feature sets are treated as <span class="highlight">scope changes</span>.</li>
+        <li>Scope changes → add CP (typically +1–3 CP) and require a written mini-SOW and updated milestone.</li>
+        <li>Requests <span class="highlight">within 5 days of go-live</span> may be moved to post-launch or billed as extra.</li>
+      </ul>
+      <p class="note">
+        Default extra scope rate: $150–$600 depending on complexity, or convert directly into CP at current CP rate.
+      </p>
+    </section>
+
+    <!-- Cancellation & Ownership -->
+    <section class="grid grid-2">
+      <article class="card">
+        <h2><span class="icon">⏸️</span> Cancellation & Pause Rules</h2>
+        <p>
+          Protects your time while remaining fair to clients.
+        </p>
+        <ul>
+          <li>Client may cancel or pause in writing at any time.</li>
+          <li><span class="highlight">Kickoff payment is non-refundable</span> once work starts.</li>
+          <li>All completed phases must be paid in full.</li>
+          <li>Future phases not started are not charged.</li>
+          <li>On pause, optionally charge a small retainer to hold schedule.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h2><span class="icon">📜</span> Ownership & IP</h2>
+        <p>
+          Simple rule: client owns what they fully paid for.
+        </p>
+        <ul>
+          <li>All deliverables for a fully paid phase are the client’s to use.</li>
+          <li>Unpaid phases remain A_LABS property.</li>
+          <li>Core frameworks, internal libraries, and generic components stay A_LABS IP.</li>
+          <li>We may reuse anonymized patterns or components in future projects.</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- AI Pricing -->
+    <section class="card">
+      <h2><span class="icon">🤖</span> AI Feature & Usage Pricing</h2>
+      <p>
+        AI features are optional add-ons. Internally they use AI_CP; clients see simple AI plans.
+      </p>
+
+      <h3 class="section-title">AI Complexity (AI_CP)</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>AI Level</th>
+            <th>Description</th>
+            <th>AI_CP Range</th>
+            <th>Typical Add-on Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Basic</td>
+            <td>Prompted assistant, canned suggestions, simple helpers.</td>
+            <td>2–4 AI_CP</td>
+            <td>$300 – $800</td>
+          </tr>
+          <tr>
+            <td>Intermediate</td>
+            <td>Data-aware logic (e.g., read analytics, suggest actions).</td>
+            <td>5–8 AI_CP</td>
+            <td>$800 – $2,000</td>
+          </tr>
+          <tr>
+            <td>Advanced</td>
+            <td>Forecasting, personalized recommendations, multi-step automations.</td>
+            <td>9–14 AI_CP</td>
+            <td>$2,000 – $4,000</td>
+          </tr>
+          <tr>
+            <td>Custom / Model Training</td>
+            <td>Domain-tuned models, large-scale analytics, multi-tenant AI.</td>
+            <td>15–20 AI_CP+</td>
+            <td>$4,000 – $8,000+</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-title">AI Monthly Usage Tiers (Client-Facing)</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Monthly Fee</th>
+            <th>Included</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI Basic</td>
+            <td>$30/mo</td>
+            <td>Up to ~300 AI queries (text-based help, small automations).</td>
+          </tr>
+          <tr>
+            <td>AI Standard</td>
+            <td>$70/mo</td>
+            <td>Up to ~1,000 queries + basic analytics-powered suggestions.</td>
+          </tr>
+          <tr>
+            <td>AI Pro</td>
+            <td>$150/mo</td>
+            <td>Up to ~3,000 queries, advanced dashboards, more automations.</td>
+          </tr>
+          <tr>
+            <td>AI Custom</td>
+            <td>Custom</td>
+            <td>Chains or heavy usage; priced per expected load and value.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="small">
+        Client explanation: “Think of AI usage like phone minutes. The more the system talks or thinks for you, the more you’re billed. 
+        We guide clients to use smart presets and workflows to reduce random queries.”
+      </p>
+    </section>
+
+    <!-- Example Scenarios -->
+    <section class="card">
+      <h2><span class="icon">📊</span> Example Projects & Sanity Checks</h2>
+      <p>
+        Use these as baselines when quoting.
+      </p>
+      <ul>
+        <li><span class="highlight">Barbershop MVP (10 CP)</span> – Booking, client CRM, walk-in log, basic reminders, simple dashboard.<br>
+          Setup ≈ $3,000–$3,500 · Monthly ≈ $200–$300.</li>
+        <li><span class="highlight">Bodega MVP (9–10 CP)</span> – Inventory, sales log, restock view, mini dashboard, supplier list.<br>
+          Setup ≈ $3,000–$3,500 · Monthly ≈ $200–$350.</li>
+        <li><span class="highlight">Restaurant Light (10–14 CP)</span> – Menu manager, basic KDS, staff scheduling, COGS-lite.<br>
+          Setup ≈ $4,000–$7,000 · Monthly ≈ $300–$500.</li>
+        <li><span class="highlight">Mechanic Shop (8–12 CP)</span> – Repair orders, parts inventory, customer/vehicle history, schedule.<br>
+          Setup ≈ $3,000–$6,000 · Monthly ≈ $250–$450.</li>
+        <li><span class="highlight">Supermarket (15–22 CP)</span> – Inventory, multi-category analytics, vendor management, AI forecasting.<br>
+          Setup ≈ $7,000–$12,000+ · Monthly ≈ $400–$900.</li>
+      </ul>
+    </section>
+
+    <div class="footer-note">
+      Internal use only. Clients see simplified tiers, not CP or internal cost models.
+    </div>
+  </div>
+</body>
+</html>
