@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nuthin' Left Deli · Smart Ordering & Specials System Proposal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --border-soft: #e5e7eb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent: #0ea5e9;
+      --accent-soft: #e0f2fe;
+      --radius: 18px;
+      --shadow-soft: 0 20px 45px rgba(15,23,42,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #e5e7eb, var(--bg));
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 32px 16px 48px;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--arkaysia-blue), #111827);
+      color: #f9fafb;
+      border-radius: 24px;
+      padding: 24px 24px 26px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -120px auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(56,189,248,0.25), transparent);
+      opacity: 0.9;
+    }
+
+    .header-inner { position: relative; z-index: 1; }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      max-width: 640px;
+    }
+
+    .tagline-chip {
+      display: inline-flex;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.7);
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 18px 18px 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 span.icon { font-size: 1.1rem; }
+
+    .card .tagline {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .card ul li {
+      font-size: 0.88rem;
+      padding-left: 1.1rem;
+      position: relative;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0.3rem;
+      top: 0;
+      color: var(--accent);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 4px;
+    }
+
+    .pill {
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      color: #1d4ed8;
+      white-space: nowrap;
+    }
+
+    .highlight { color: var(--accent); font-weight: 600; }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 0.86rem;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--border-soft);
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .table th {
+      background: #f3f4f6;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 12px 25px rgba(56,189,248,0.35);
+    }
+
+    .btn-secondary {
+      background: #0f172a;
+      color: #e5e7eb;
+      box-shadow: none;
+      border: 1px solid #1e293b;
+    }
+
+    .muted {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">A_LABS STUDIOS · ConciergeOS</div>
+        <h1 class="title">Smart Ordering & Specials System for Nuthin' Left Deli</h1>
+        <p class="subtitle">
+          A custom ordering, specials, and delivery system designed specifically for
+          Nuthin' Left Deli in Elmhurst — built around students, hot food, and your
+          grocery business.
+        </p>
+        <div class="tagline-chip">
+          Boutique-grade system design · Built for your block, not for generic chains
+        </div>
+      </div>
+    </header>
+
+    <!-- Overview -->
+    <section class="card">
+      <h2><span class="icon">🍱</span> Overview</h2>
+      <p class="tagline">
+        Nuthin' Left Deli sits in the perfect spot: surrounded by schools, homes, and busy commercial streets.
+        This project turns that location into a daily flow of repeat customers and easier operations.
+      </p>
+      <p>
+        The goal is to build a simple, mobile-friendly system where:
+      </p>
+      <ul>
+        <li>Students can quickly see <span class="highlight">today’s hot specials</span> and order from their phones.</li>
+        <li>Orders come in organized by time, pickup, and delivery — so your staff can move faster.</li>
+        <li>You can send targeted deals to students and neighbors when it matters most (before school, lunch, after school).</li>
+        <li>Payments are handled through your existing <span class="highlight">Square</span> account, but with a smarter workflow around it.</li>
+      </ul>
+    </section>
+
+    <!-- What We're Building -->
+    <section class="card">
+      <h2><span class="icon">🛠️</span> What We’re Proposing to Build</h2>
+      <p class="tagline">
+        A custom “Nuthin’ Left Deli Hub” — one system for orders, specials, students, and delivery.
+      </p>
+
+      <div class="section-label">For You & Your Staff</div>
+      <ul>
+        <li><span class="highlight">Menu & Product Hub:</span> one place to manage grocery items, hot food, and daily specials (including rotating South American dishes).</li>
+        <li><span class="highlight">Daily Specials Board:</span> set today’s plates, prices, and limited quantities with just a few clicks.</li>
+        <li><span class="highlight">Order Screen (Pickup & Delivery):</span> see new orders in real time, mark them “in progress” and “ready,” keep the line moving.</li>
+        <li><span class="highlight">Delivery Controls:</span> paid-first delivery options, minimum order amount, and basic protections against repeat fake orders.</li>
+        <li><span class="highlight">Simple Analytics:</span> which items students buy most, what sells during school hours vs evenings, and which specials actually work.</li>
+      </ul>
+
+      <div class="section-label" style="margin-top:10px;">For Students & Customers</div>
+      <ul>
+        <li><span class="highlight">“Today at Nuthin’ Left Deli” Page:</span> mobile-first page with today’s specials, combos, and quick snacks.</li>
+        <li><span class="highlight">Student-Friendly Ordering:</span> big buttons, simple categories (Before School, Lunch, After School Snacks), quick checkout.</li>
+        <li><span class="highlight">Fast Pickup Flow:</span> choose items, choose pickup time, pay through Square, just show up and grab.</li>
+        <li><span class="highlight">Optional Delivery:</span> local delivery with rules that protect you from unpaid or repeated cancelled orders.</li>
+      </ul>
+
+      <div class="section-label" style="margin-top:10px;">Marketing Engine (School-Focused)</div>
+      <ul>
+        <li><span class="highlight">Student Signups via QR:</span> QR codes at the deli and near the counter let students quickly join your deals list.</li>
+        <li><span class="highlight">Targeted Specials:</span> send “Beat the Bell” breakfast deals, lunch hour plates, and after-school snack promos.</li>
+        <li><span class="highlight">Limited-Time Offers:</span> create short-time or limited-quantity deals that show a countdown and move food fast.</li>
+      </ul>
+    </section>
+
+    <!-- Why Not Just Square -->
+    <section class="card">
+      <h2><span class="icon">📌</span> Why This Is More Than Just Using Square</h2>
+      <p class="tagline">
+        You keep using Square for payments — this system sits on top and makes it work your way.
+      </p>
+      <ul>
+        <li><span class="highlight">Built Around Your Schools:</span> specials and deals aimed directly at middle and high school traffic, not just generic menus.</li>
+        <li><span class="highlight">Student Experience First:</span> kids see what matters to them today — hot plates, combos, and quick snacks they can afford.</li>
+        <li><span class="highlight">Smarter Delivery:</span> focus on prepaid or verified customers to reduce no-shows and wasted food.</li>
+        <li><span class="highlight">You Own the Relationship:</span> your customer list, your specials, and your data stay in your system, under your name.</li>
+      </ul>
+    </section>
+
+    <!-- Investment & Stages -->
+    <section class="card">
+      <h2><span class="icon">💳</span> Project Stages & Investment</h2>
+      <p class="tagline">
+        The project is split into stages so you see real progress at each step. No big surprise bill at the end.
+      </p>
+      <p>
+        Based on the features described above, a project like this is typically in the range of:
+        <span class="highlight">$4,800 – $5,500</span> for the full build, plus ongoing support for hosting, maintenance, and minor updates.
+      </p>
+      <p>
+        We break the build into three stages:
+      </p>
+      <ul>
+        <li><span class="highlight">Stage 1 – Kickoff & Core Setup (33%)</span><br>
+          We map your workflow, connect to your existing Square account, set up the base system, and build the menu/specials screens and basic order flow.</li>
+        <li><span class="highlight">Stage 2 – Ordering & Student App (33%)</span><br>
+          We complete the student-facing ordering page, full pickup/delivery flow, and internal order screen for your staff.</li>
+        <li><span class="highlight">Stage 3 – Marketing, Analytics & Launch (34%)</span><br>
+          We add the marketing tools, basic analytics, polish the design, test everything, and walk your team through using it.</li>
+      </ul>
+      <p>
+        The initial deposit to begin work is <span class="highlight">33% of the agreed total</span>. Each next payment only happens after you’ve seen and tested the stage it covers.
+      </p>
+      <p class="muted">
+        Exact numbers can be finalized after a short in-person or video session where we confirm your priorities and any add-ons you want to include or leave out.
+      </p>
+    </section>
+
+    <!-- Ongoing Support -->
+    <section class="card">
+      <h2><span class="icon">🛡️</span> Ongoing Support & Updates</h2>
+      <p class="tagline">
+        Once the system is live, we don’t disappear.
+      </p>
+      <ul>
+        <li>Hosting and technical maintenance so things stay online and running smoothly.</li>
+        <li>Small updates and bug fixes as you use the system day to day.</li>
+        <li>Option to refine specials, student flows, and marketing messages once we see real data.</li>
+      </ul>
+      <p>
+        Most setups like this end up with a monthly support plan in the
+        <span class="highlight">$250 – $350/month</span> range, depending on how much ongoing change and marketing support you’d like.
+      </p>
+    </section>
+
+    <!-- Next Steps -->
+    <section class="card">
+      <h2><span class="icon">📅</span> Next Steps</h2>
+      <p class="tagline">
+        If this feels like the right direction, the next step is a short working session.
+      </p>
+      <ul>
+        <li>Walk through your current lunch rush and after-school flow.</li>
+        <li>Decide which features should be in version 1, and what can wait for later.</li>
+        <li>Lock in the final project total and the first 33% deposit.</li>
+      </ul>
+      <div class="cta-row">
+        <a href="#contact" class="btn">Schedule a Working Session</a>
+        <a href="mailto:TonyArkaysia@gmail.com" class="btn btn-secondary">Email Tony at A_LABS</a>
+      </div>
+      <p class="muted" style="margin-top:8px;">
+        Everything here is custom to Nuthin' Left Deli. The goal is simple: make your life easier,
+        move more plates and products, and become the obvious spot for students in Elmhurst.
+      </p>
+    </section>
+  </div>
+</body>
+</html>

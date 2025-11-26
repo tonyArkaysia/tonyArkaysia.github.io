@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nuthin' Left Deli Hub | Scope, Investment, and Square Comparison</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #5b6476;
+      --card: #ffffff;
+      --paper: #f6f8fb;
+      --accent: #2563eb;
+      --accent-soft: #e0ecff;
+      --border: #e5e7eb;
+      --glow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --glow-strong: 0 20px 60px rgba(37, 99, 235, 0.18);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Space Grotesk", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 20%, #eef2ff, #f8fafc 38%, #f6f8fb 55%);
+      color: var(--ink);
+      line-height: 1.6;
+      padding: 28px 18px 60px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    .page { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #f8fafc;
+      border-radius: 24px;
+      padding: 26px 26px 30px;
+      box-shadow: var(--glow-strong);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -160px auto;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.32), transparent 55%);
+    }
+    .hero-inner { position: relative; z-index: 1; display: grid; gap: 14px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      font-size: 13px;
+    }
+    .title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .subtitle {
+      max-width: 760px;
+      opacity: 0.92;
+      font-size: 16px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .tag {
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .stat {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      padding: 12px 12px 10px;
+    }
+    .stat .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; opacity: 0.7; }
+    .stat .value { font-size: 18px; font-weight: 700; margin-top: 4px; }
+    nav {
+      position: sticky;
+      top: 12px;
+      margin: 14px 0 18px;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e2e8f0;
+      padding: 10px 14px;
+      border-radius: 14px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: var(--glow);
+      z-index: 10;
+    }
+    nav a {
+      color: #e2e8f0;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    nav a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-1px); }
+    section { margin: 34px 0 0; }
+    h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .icon { font-size: 18px; }
+    .lead {
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+    .card-grid {
+      display: grid;
+      gap: 14px;
+    }
+    @media (min-width: 900px) {
+      .card-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .card-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--glow);
+    }
+    .card h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .card .hint { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    ul { padding-left: 18px; color: var(--muted); }
+    ul.tight li { margin-bottom: 6px; }
+    .callout {
+      background: var(--accent-soft);
+      border: 1px solid #c3d5ff;
+      border-radius: var(--radius);
+      padding: 14px;
+      color: #1d3a7a;
+      box-shadow: var(--glow);
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .table th, .table td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .table th { background: #eef2ff; font-weight: 700; }
+    .steps {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    @media (min-width: 720px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--glow);
+    }
+    .step .stage { font-weight: 700; font-size: 15px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0b4f84;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .compare {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (min-width: 860px) { .compare { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .compare .column {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--glow);
+    }
+    .footer-note {
+      margin-top: 28px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="hero-inner">
+        <span class="pill">ConciergeOS Proposal for Nuthin' Left Deli</span>
+        <div class="title">Nuthin' Left Deli Hub - one system for orders, specials, students, and delivery.</div>
+        <p class="subtitle">
+          Bodega + hot food line + rotating South American lunch specials in a school-heavy, high-foot-traffic zone in Elmhurst.
+          Already on Square, but needs smarter ops, student-friendly ordering, and marketing built for the block.
+        </p>
+        <div class="tags">
+          <div class="tag">Bodega + hot food</div>
+          <div class="tag">Student-first ordering</div>
+          <div class="tag">Pickup + delivery</div>
+          <div class="tag">Square payments</div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="label">Project scope</div>
+            <div class="value">Full vision (19 CP)</div>
+          </div>
+          <div class="stat">
+            <div class="label">Est. range</div>
+            <div class="value">$4,800-$5,500</div>
+          </div>
+          <div class="stat">
+            <div class="label">Deposit</div>
+            <div class="value">33% ~ $1,750</div>
+          </div>
+          <div class="stat">
+            <div class="label">Monthly care</div>
+            <div class="value">$250-$350</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <nav aria-label="Jump links">
+      <a href="#overview">Overview</a>
+      <a href="#scope">1. Scope</a>
+      <a href="#pricing">2. Pricing</a>
+      <a href="#square">3. Vs. Square</a>
+      <a href="#students">Student App</a>
+      <a href="#marketing">Marketing</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#phasing">Phasing</a>
+    </nav>
+
+    <section id="overview" style="margin-top: 0;">
+      <div class="card" style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px solid var(--accent);">
+        <h2 style="margin-bottom: 12px; color: var(--accent);">📋 Proposal Overview</h2>
+        <p style="font-size: 16px; margin-bottom: 14px; color: var(--ink);">
+          This proposal breaks down into <strong>three main parts</strong>:
+        </p>
+        <div class="card-grid three" style="margin-top: 12px;">
+          <div class="card" style="background: white;">
+            <h3 style="color: var(--accent);">1. Project Scope</h3>
+            <p style="font-size: 14px; margin: 0;">Complete feature breakdown for Nuthin' Left Deli Hub — back-of-house ops, student-facing app, marketing engine, and analytics.</p>
+          </div>
+          <div class="card" style="background: white;">
+            <h3 style="color: var(--accent);">2. Investment & Pricing</h3>
+            <p style="font-size: 14px; margin: 0;">Complexity points breakdown, total build cost ($4,800–$5,500), 33% deposit structure across 3 stages, and monthly support.</p>
+          </div>
+          <div class="card" style="background: white;">
+            <h3 style="color: var(--accent);">3. Why This Beats Square</h3>
+            <p style="font-size: 14px; margin: 0;">Talking points showing how this system goes beyond Square's basic payment processing to build a neighborhood growth engine.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scope">
+      <h2><span class="icon">A</span> Owner and Staff - Back of House</h2>
+      <p class="lead">Operational control for a grocery + hot food hybrid. Built to keep specials fresh, guard against fake orders, and keep the kitchen moving.</p>
+      <div class="callout" style="margin-bottom: 18px;">
+        <strong>Context:</strong> Bodega + hot food line + rotating South American lunch specials in a school-heavy, high-foot-traffic residential + commercial zone in Elmhurst. Already uses Square, but needs smarter ops + marketing + student-friendly ordering.
+      </div>
+      <div class="card-grid two">
+        <div class="card">
+          <h3>Product and Menu Catalog</h3>
+          <div class="hint">Grocery + prepared foods</div>
+          <ul class="tight">
+            <li>Master list with name, category, tags (school snack, lunch special), price, cost, available-today flag.</li>
+            <li>Everyday menu plus daily specials by weekday.</li>
+            <li>Tags power student-facing filters.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Daily Specials and Schedule</h3>
+          <div class="hint">Images, limits, templates</div>
+          <ul class="tight">
+            <li>Set today's specials with photos and blurbs; toggle limited quantity (e.g., 25 plates).</li>
+            <li>Weekly templates (Mon-Fri school schedule, Sat/Sun alternate).</li>
+            <li>Pushes to student app and marketing blasts automatically.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Order Board (Pickup + Delivery)</h3>
+          <div class="hint">Status-aware workflow</div>
+          <ul class="tight">
+            <li>New -> In Kitchen -> Ready -> Picked Up / Out for Delivery -> Completed.</li>
+            <li>Pickup for students/neighbors; delivery for local area.</li>
+            <li>Square link/QR for payment; unpaid orders cannot enter the kitchen.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Delivery Rules and Guardrails</h3>
+          <div class="hint">Reduce abuse and no-shows</div>
+          <ul class="tight">
+            <li>Prepaid-only delivery option; minimum order and optional delivery fee.</li>
+            <li>Track phone/email; flag repeat cancellers for prepaid-only.</li>
+            <li>Limit orders from risky profiles unless prepaid.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Inventory Lite</h3>
+          <div class="hint">Signals, not heavy ERP</div>
+          <ul class="tight">
+            <li>Track key grocery SKUs and hot food portions.</li>
+            <li>Low-stock indicators and fast counts on what kids actually buy.</li>
+            <li>Ties to specials (e.g., chicken plate x 25).</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Owner Dashboard</h3>
+          <div class="hint">What matters today</div>
+          <ul class="tight">
+            <li>Orders by pickup vs. delivery.</li>
+            <li>Hot specials sold and top school-time items (11am-4pm).</li>
+            <li>Repeat customers from nearby schools.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="students">
+      <h2><span class="icon">B</span> Student and Customer - Front of House</h2>
+      <p class="lead">Mobile-first, no heavy accounts. Kids see what is hot right now, pay fast via Square, and pick a pickup time for the lunch rush.</p>
+      <div class="card-grid two">
+        <div class="card">
+          <h3>"Today at Nuthin' Left Deli" Home</h3>
+          <ul class="tight">
+            <li>Today's Hot Specials with big photos and simple labels.</li>
+            <li>Quick Bites (chips, snacks, drinks) and Student Combos (meal + drink bundles).</li>
+            <li>School-friendly categories: Before School, Lunch Period, After School Snacks.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Simple Flow</h3>
+          <ul class="tight">
+            <li>Pick items -> choose pickup/delivery -> add name + school (optional) + phone.</li>
+            <li>Square checkout (card/Apple Pay/Google Pay); pre-schedule pickup windows like 12:30, 1:00, 3:00.</li>
+            <li>Time-window-only tags: "Beat the Bell Deals" for 20-30 minute blocks.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="marketing">
+      <h2><span class="icon">C</span> Marketing Engine for a Bodega Next to Schools</h2>
+      <p class="lead">Own the student list, send hyper-local deals, and make every special visible in-app and over SMS/email.</p>
+      <div class="card-grid two">
+        <div class="card">
+          <h3>Student Signup Flows</h3>
+          <ul class="tight">
+            <li>QR codes on windows, counter, and near bus stops.</li>
+            <li>Landing: "Join the Nuthin' Left Deals list" -> name + phone/email.</li>
+            <li>Instantly see today's specials; prompt to save to home screen as a pseudo-app.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Segmented Broadcasts</h3>
+          <ul class="tight">
+            <li>Blasts like "Lomo Saltado $8.99 until 2:30pm" or "Empanada + drink $5, 3-5pm."</li>
+            <li>Segments: Students (school-time) and Neighborhood (evening/weekend).</li>
+            <li>Channels: SMS (with limits), email, optional WhatsApp/link broadcast.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Limited-Time and Quantity Deals</h3>
+          <ul class="tight">
+            <li>Create a deal with items, time window, optional quantity limit.</li>
+            <li>Displays on student app, pushes to chosen segments, shows countdown.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Admin and Roles</h3>
+          <ul class="tight">
+            <li>Owner: full access. Staff: order screen + ready/done only.</li>
+            <li>Protects pricing and marketing tools from the rush counter.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="analytics">
+      <h2><span class="icon">D</span> Analytics That Answer Real Questions</h2>
+      <p class="lead">Show what actually moves between 11am and 4pm, which specials land, and where to tighten offers.</p>
+      <div class="card-grid three">
+        <div class="card">
+          <h3>Student Heat</h3>
+          <ul class="tight">
+            <li>Top 10 student items by time window.</li>
+            <li>Pickup vs. delivery ratio.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Specials Performance</h3>
+          <ul class="tight">
+            <li>Sales per special by day.</li>
+            <li>Which deals get ignored so you can replace them.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Customer Cohorts</h3>
+          <ul class="tight">
+            <li>New vs. returning students.</li>
+            <li>Repeat customers by school.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2><span class="icon">$</span> Complexity Points and Investment</h2>
+      <p class="lead">Full vision is 19 CP. Base platform fee covers ConciergeOS skeleton, auth, base theming, and integrations.</p>
+      <div class="card">
+        <table class="table" aria-label="Complexity point breakdown">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>CP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Product and Menu Catalog</td><td>2</td></tr>
+            <tr><td>Daily Specials and Schedule</td><td>2</td></tr>
+            <tr><td>Order Management (pickup + delivery)</td><td>3</td></tr>
+            <tr><td>Square Payment Integration</td><td>2</td></tr>
+            <tr><td>Student Web App</td><td>4</td></tr>
+            <tr><td>Marketing Engine</td><td>3</td></tr>
+            <tr><td>Owner Dashboard and Analytics</td><td>2</td></tr>
+            <tr><td>Roles and Permissions</td><td>1</td></tr>
+            <tr><th>Total</th><th>19 CP</th></tr>
+          </tbody>
+        </table>
+        <div class="callout" style="margin-top:12px;">
+          Base Platform Fee: $1,500. CP rate (flagship, local case): $200/CP. CP cost = 19 x $200 = $3,800. Total build ~ $5,300 (present as $4,800-$5,500 depending on final phasing).
+        </div>
+      </div>
+
+      <div class="steps" style="margin-top:18px;">
+        <div class="step">
+          <div class="badge">Stage 1 - 33%</div>
+          <div class="stage">Kickoff and Core Setup</div>
+          <p class="lead">~ $1,750 on the estimate.</p>
+          <ul class="tight">
+            <li>Lock scope and set up backend, DB, base UI.</li>
+            <li>Menu/catalog skeleton.</li>
+            <li>Start daily specials and basic order flow.</li>
+          </ul>
+        </div>
+        <div class="step">
+          <div class="badge">Stage 2 - 33%</div>
+          <div class="stage">Ordering + Student App + Delivery</div>
+          <p class="lead">~ $1,750.</p>
+          <ul class="tight">
+            <li>Student web app (browse, order, pay).</li>
+            <li>Full order pipeline for pickup and delivery.</li>
+            <li>Square payment flow + internal order board.</li>
+          </ul>
+        </div>
+        <div class="step">
+          <div class="badge">Stage 3 - 34%</div>
+          <div class="stage">Marketing, Analytics, Launch</div>
+          <p class="lead">~ $1,800.</p>
+          <ul class="tight">
+            <li>Marketing engine and segmented blasts.</li>
+            <li>Analytics dashboard.</li>
+            <li>Polish, testing, training, and go-live.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:14px;">
+        Monthly support (hosting, bug fixes, small tweaks, SMS/email upkeep, AI/automation monitoring): $250-$350/month.
+      </div>
+    </section>
+
+    <section id="square">
+      <h2><span class="icon">VS</span> How This Beats "Just Using Square"</h2>
+      <p class="lead">Square is great at being a cash register. You're building a neighborhood growth engine.</p>
+      <div class="compare">
+        <div class="column">
+          <h3>What Square does</h3>
+          <ul class="tight">
+            <li>Take payments</li>
+            <li>Basic reports</li>
+            <li>Simple online ordering (in generic form)</li>
+          </ul>
+        </div>
+        <div class="column">
+          <h3>What Nuthin' Left Deli Hub does on top</h3>
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--accent);">Built Around the Schools</strong>
+            <ul class="tight">
+              <li>Daily specials targeted at school-time windows</li>
+              <li>Deals tuned specifically for students before school, during lunch, and after school</li>
+              <li>Student-friendly ordering flow optimized for phone-in-hand, quick decisions</li>
+            </ul>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--accent);">Custom Student Experience</strong>
+            <ul class="tight">
+              <li>Kids see "Today's Specials", not a generic POS menu</li>
+              <li>Combos & deals built specifically for their budget & time window</li>
+              <li>They don't have to scroll through everything like a generic app</li>
+            </ul>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--accent);">Marketing Tailored to Their Block</strong>
+            <ul class="tight">
+              <li>QR signups at the deli → direct list of students & locals (that they control)</li>
+              <li>Send targeted "Beat the Bell" or "After-School" deals</li>
+              <li>Limited-time offers that show both in-app and via SMS/email</li>
+            </ul>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--accent);">Control Over Fake Orders / No-Shows</strong>
+            <ul class="tight">
+              <li>Your system can force prepayment through Square before an order is accepted</li>
+              <li>Track repeat cancellers and adjust rules (e.g., prepaid-only for them)</li>
+              <li>Orders are not "real" until paid → less food wasted</li>
+            </ul>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <strong style="color: var(--accent);">Food + Grocery Hybrid</strong>
+            <ul class="tight">
+              <li>The system understands they're both a deli and a grocery store</li>
+              <li>Track which snacks and items students actually buy</li>
+              <li>Tie in specials with grocery grab-and-go items (e.g., "Lunch plate + drink + chips combo")</li>
+            </ul>
+          </div>
+          <div>
+            <strong style="color: var(--accent);">They Own the Relationship, Not Square</strong>
+            <ul class="tight">
+              <li>Customer list, order history, and segments are built into their own system, with their branding and URL</li>
+              <li>Easier to pivot later, add AI, or expand without waiting for a big corporation to add features</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="phasing">
+      <h2><span class="icon">Plan</span> Phasing Options if He Needs to Start Smaller</h2>
+      <div class="card-grid two">
+        <div class="card">
+          <h3>Phase A</h3>
+          <div class="hint">Core ordering</div>
+          <ul class="tight">
+            <li>Menu + student ordering.</li>
+            <li>Basic order board and delivery rules.</li>
+            <li>Square payments.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Phase B</h3>
+          <div class="hint">Growth layer</div>
+          <ul class="tight">
+            <li>Marketing engine and segmented blasts.</li>
+            <li>Deeper analytics and cohort tracking.</li>
+            <li>Iterate combos and specials from data.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      Ready to share as a live link or PDF. Adjust numbers to the final scope; keep Square in the loop for payments, but own the student relationship.
+    </div>
+  </div>
+</body>
+</html>
