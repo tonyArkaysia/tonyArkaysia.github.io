@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>A_LABS STUDIOS · Internal Pricing Framework</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg: #020617;
+      --card-bg: #020617;
+      --border-soft: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.08);
+      --danger: #f97373;
+      --radius: 14px;
+      --shadow-soft: 0 22px 50px rgba(15,23,42,0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0b1120, #020617);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 28px 16px 48px;
+    }
+
+    .page {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: radial-gradient(circle at top left, #0369a1, #020617 52%);
+      border-radius: 20px;
+      padding: 22px 22px 24px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #1f2937;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: auto -120px -160px auto;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(56,189,248,0.35), transparent 60%);
+      opacity: 0.7;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    .tagline-chip {
+      display: inline-flex;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(148,163,184,0.6);
+      color: #e5e7eb;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 900px) {
+      .grid-2 { grid-template-columns: minmax(0,1.1fr) minmax(0,0.9fr); }
+      .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 16px 16px 14px;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.65);
+    }
+
+    .card h2 {
+      font-size: 0.98rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 span.icon { font-size: 1.1rem; }
+
+    .card .tagline {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .card p {
+      font-size: 0.86rem;
+      margin-bottom: 6px;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .card ul li {
+      font-size: 0.84rem;
+      padding-left: 1.1rem;
+      position: relative;
+      margin-bottom: 3px;
+      color: var(--text-muted);
+    }
+
+    .card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0.3rem;
+      top: 0;
+      color: var(--accent);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 4px;
+    }
+
+    .pill {
+      font-size: 0.76rem;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid #1f2937;
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .pill-accent {
+      border-color: #22d3ee;
+      color: #a5f3fc;
+      background: rgba(8,47,73,0.7);
+    }
+
+    .highlight { color: #7dd3fc; font-weight: 600; }
+
+    .muted {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 0.8rem;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid #111827;
+      padding: 5px 7px;
+      text-align: left;
+    }
+
+    .table th {
+      background: #020617;
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #e0f2fe;
+      border: 1px solid rgba(56,189,248,0.5);
+      margin-left: 4px;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.78rem;
+      background: #020617;
+      padding: 2px 4px;
+      border-radius: 4px;
+      border: 1px solid #111827;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">A_LABS STUDIOS · INTERNAL</div>
+        <h1 class="title">ConciergeOS Pricing Framework</h1>
+        <p class="subtitle">
+          Internal guide for scoping, complexity scoring, and pricing small-business systems
+          built under A_LABS STUDIOS. Not client-facing. Used to keep our quotes consistent,
+          profitable, and fair to local businesses.
+        </p>
+        <div class="tagline-chip">
+          Boutique-grade systems · AI-accelerated · Community-conscious pricing
+        </div>
+      </div>
+    </header>
+
+    <!-- Core Philosophy -->
+    <section class="card">
+      <h2><span class="icon">🧭</span> Core Pricing Philosophy</h2>
+      <p class="tagline">
+        We do <span class="highlight">not</span> race to the bottom. We undercut traditional agencies by using AI and deep
+        business experience, not by devaluing the work.
+      </p>
+      <div class="pill-row">
+        <span class="pill pill-accent">Transparent</span>
+        <span class="pill">Complexity-based</span>
+        <span class="pill">AI-accelerated</span>
+        <span class="pill">Local-friendly</span>
+        <span class="pill">Agency-respectful</span>
+      </div>
+      <p>
+        Traditional boutiques charge roughly <span class="highlight">$15k–$35k</span> for the kind of custom web apps we build
+        for small food and retail operators. Our lane is to price at roughly
+        <span class="highlight">40–60% below that</span> while staying sustainable and premium.
+      </p>
+      <p class="muted">
+        This doc is the source of truth for how we turn <em>complexity points</em> (CP) into dollars.
+        We never show CP to clients directly — we translate it to “project size” and “feature scope.”
+      </p>
+    </section>
+
+    <!-- Complexity Points System -->
+    <section class="card">
+      <h2><span class="icon">📐</span> Complexity Points (CP) System</h2>
+      <p class="tagline">
+        CP is our internal way to measure how “big” a build really is. It prevents random pricing
+        and keeps barbers, bodegas, and restaurants all quoted consistently.
+      </p>
+
+      <div class="section-label">Rough CP Scale</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>CP Band</th>
+            <th>Label</th>
+            <th>Typical Scope</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1–5 CP</td>
+            <td>Micro / Add-on</td>
+            <td>Single module, feature add, or small MVP (e.g., barebones booking only).</td>
+          </tr>
+          <tr>
+            <td>6–12 CP</td>
+            <td>Standard Build</td>
+            <td>Full MVP for a single role: e.g. barbershop or solo operator with basic dashboard.</td>
+          </tr>
+          <tr>
+            <td>13–20 CP</td>
+            <td>Advanced Build</td>
+            <td>Multiple roles, integrations, analytics, or marketing engine.</td>
+          </tr>
+          <tr>
+            <td>21+ CP</td>
+            <td>Platform Build</td>
+            <td>Multi-module system with several flows (e.g., Nuthin’ Left Deli Hub).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="muted">
+        CP is assigned per module: CRUD complexity, number of roles, rules/automation, analytics,
+        external integrations, and custom UX flows.
+      </p>
+    </section>
+
+    <!-- CP → Pricing Bands -->
+    <section class="card">
+      <h2><span class="icon">💰</span> CP → Pricing Bands (Internal)</h2>
+      <p class="tagline">
+        We never bill hourly to clients, but our CP model roughly corresponds to hours and
+        market rates. This is how we stay grounded and profitable.
+      </p>
+
+      <div class="section-label">Base Formula</div>
+      <p>
+        <code>Total Price ≈ Base Platform Fee + (CP × CP Rate)</code>
+      </p>
+      <ul>
+        <li><span class="highlight">Base Platform Fee (BPF):</span> <strong>$1,500</strong>  
+          Covers the core ConciergeOS skeleton: auth, layout, theming, deployment setup, monitoring, and basic framework glue.</li>
+        <li><span class="highlight">CP Rate:</span> varies by client category and feature value.</li>
+      </ul>
+
+      <div class="section-label" style="margin-top:8px;">Recommended CP Rates by Category</div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Client Type</th>
+            <th>Examples</th>
+            <th>CP Rate (internal)</th>
+            <th>Typical Total Range</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Solo Operator</td>
+            <td>Barber, stylist, tiny office</td>
+            <td>$150–$200 / CP</td>
+            <td>$2,000–$6,000</td>
+          </tr>
+          <tr>
+            <td>Micro Business</td>
+            <td>Bodega, small takeout, auto shop</td>
+            <td>$180–$250 / CP</td>
+            <td>$4,000–$9,000</td>
+          </tr>
+          <tr>
+            <td>Service / Restaurant</td>
+            <td>Full restaurant, gym, local supermarket</td>
+            <td>$220–$300 / CP</td>
+            <td>$6,000–$15,000</td>
+          </tr>
+          <tr>
+            <td>Multi-location / Chain</td>
+            <td>Franchises, multi-site groups</td>
+            <td>$300–$450 / CP</td>
+            <td>$15,000–$40,000+</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="muted">
+        For now, Nuthin’ Left Deli is treated as a <strong>Micro Business / Service Hybrid</strong>. We keep it in
+        the micro band for community reasons, not because the system is “small.”
+      </p>
+    </section>
+
+    <!-- Nuthin Left Deli Example -->
+    <section class="card">
+      <h2><span class="icon">🍱</span> Example: Nuthin’ Left Deli (Internal View)</h2>
+      <p class="tagline">
+        This is our live reference for a school-adjacent bodega + hot food + marketing hub. It
+        sets the pattern for future builds in this niche.
+      </p>
+
+      <div class="section-label">Module CP Breakdown</div>
+      <ul>
+        <li><span class="highlight">Product & Menu Catalog:</span> CRUD + categories + tags → <strong>2 CP</strong></li>
+        <li><span class="highlight">Daily Specials & Schedule:</span> day-based templates + availability logic → <strong>3 CP</strong></li>
+        <li><span class="highlight">Order Management (Pickup/Delivery):</span> statuses, flows, basic rules → <strong>3 CP</strong></li>
+        <li><span class="highlight">Square Payment Integration:</span> payment links + paid-only gating → <strong>2 CP</strong></li>
+        <li><span class="highlight">Student Web App:</span> mobile UX, flows, filters → <strong>5 CP</strong></li>
+        <li><span class="highlight">Marketing Engine:</span> QR capture, segments, blasts, time windows → <strong>4 CP</strong></li>
+        <li><span class="highlight">Analytics Dashboard:</span> top items, time windows, basic charts → <strong>2 CP</strong></li>
+        <li><span class="highlight">Roles & Permissions:</span> owner vs staff → <strong>1 CP</strong></li>
+      </ul>
+
+      <p><strong>Total: 22 CP</strong></p>
+
+      <div class="section-label" style="margin-top:6px;">Internal Value</div>
+      <p>
+        Using <strong>BPF = $1,500</strong> and a micro-service CP rate of around
+        <strong>$220–$250 / CP</strong>:
+      </p>
+      <ul>
+        <li>22 × $220 = $4,840 → $4,840 + $1,500 ≈ <strong>$6,340</strong></li>
+        <li>22 × $250 = $5,500 → $5,500 + $1,500 ≈ <strong>$7,000</strong></li>
+      </ul>
+      <p>
+        So the internal baseline for Nuthin’ Left Deli is roughly
+        <span class="highlight">$6,000–$7,000</span>.
+      </p>
+
+      <div class="section-label" style="margin-top:6px;">Public Band</div>
+      <p>
+        For simplicity and market positioning, we publicly describe this type of build as:
+        <strong>“$6,000–$8,500 depending on scope.”</strong>
+      </p>
+      <p class="muted">
+        For early local clients, we are allowed to land on the lower half of that range if
+        budget is tight and the system creates reusable components for future work. This is
+        a <em>budget alignment</em> decision, not a permanent “discount tier.”
+      </p>
+    </section>
+
+    <!-- Payments & Support -->
+    <section class="card">
+      <h2><span class="icon">📆</span> Project Stages & Payment Structure</h2>
+      <p class="tagline">
+        This structure is both industry-standard and easy to explain. We keep it the same
+        across projects unless there’s a strong reason to deviate.
+      </p>
+      <ul>
+        <li><span class="highlight">Stage 1 – Kickoff & Core Setup (33%)</span><br />
+          Scope locking, workflow mapping, base project setup, DB schema, initial screens.</li>
+        <li><span class="highlight">Stage 2 – Core Build (33%)</span><br />
+          Primary flows live in staging (ordering, dashboard, core UX, integrations wired).</li>
+        <li><span class="highlight">Stage 3 – Refinement & Launch (34%)</span><br />
+          Polish, marketing hooks, analytics, training, and go-live support.</li>
+      </ul>
+      <p class="muted">
+        For all stages: payment is due when we deliver the agreed milestone to staging. If a
+        client cancels, we stop at the last paid stage; work completed remains ours until paid.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="icon">🛡️</span> Ongoing Support & Budget Alignment</h2>
+      <p class="tagline">
+        Support should be profitable but not predatory. We’re building recurring trust, not just recurring revenue.
+      </p>
+      <ul>
+        <li><span class="highlight">Support Bands:</span> most small builds land between <strong>$250–$350/month</strong>.</li>
+        <li>Includes hosting, security patches, small UX tweaks, and bug fixes.</li>
+        <li>Larger feature requests are treated as mini-projects with fresh CP scoring.</li>
+      </ul>
+      <p class="muted">
+        <strong>Budget Alignment Clause (internal):</strong> For early-clients and hyperlocal
+        partners, we may bend down toward the bottom of the range if:
+        <em>(a)</em> the build produces reusable components, <em>(b)</em> we get strong case-study
+        rights, or <em>(c)</em> it opens doors in a strategic niche (e.g., bodegas near schools).
+      </p>
+    </section>
+  </div>
+</body>
+</html>

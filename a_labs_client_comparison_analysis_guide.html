@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Why Choose A_LABS · Honest Comparison for Local Business Owners</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg: #020617;
+      --card-bg: #020617;
+      --border-soft: #1f2937;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.18);
+      --accent-strong: #0ea5e9;
+      --radius: 18px;
+      --shadow-soft: 0 22px 50px rgba(15,23,42,0.6);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #000 55%, #020617 100%);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 32px 16px 52px;
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #000 100%);
+      border-radius: 24px;
+      padding: 24px 24px 26px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid #1f2937;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .header::after {
+      content: "";
+      position: absolute;
+      inset: -120px auto auto 45%;
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(56,189,248,0.3), transparent 60%);
+      opacity: 0.8;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+      margin-bottom: 6px;
+      color: var(--accent-strong);
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 660px;
+    }
+
+    .tagline-chip {
+      display: inline-flex;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.6);
+      color: #e5e7eb;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, #020617 0, #020617 60%, #000 100%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-soft);
+      padding: 18px 18px 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 18px 40px rgba(15,23,42,0.7);
+    }
+
+    .card h2 {
+      font-size: 1.02rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 span.icon { font-size: 1.15rem; }
+
+    .card .tagline {
+      font-size: 0.89rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 4px;
+    }
+
+    .card ul li {
+      font-size: 0.86rem;
+      padding-left: 1.1rem;
+      position: relative;
+      margin-bottom: 4px;
+      color: var(--text-muted);
+    }
+
+    .card ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0.3rem;
+      top: 0;
+      color: var(--accent-strong);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 0.84rem;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid #111827;
+      padding: 6px 8px;
+      text-align: left;
+    }
+
+    .table th {
+      background: #020617;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+    }
+
+    .table tr:nth-child(even) td {
+      background: rgba(15,23,42,0.82);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 4px;
+    }
+
+    .pill {
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.92);
+      border: 1px solid #1f2937;
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .pill-accent {
+      border-color: #22d3ee;
+      color: #a5f3fc;
+      background: rgba(8,47,73,0.9);
+    }
+
+    .highlight { color: #7dd3fc; font-weight: 600; }
+
+    .muted {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent-strong);
+      color: white;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 16px 30px rgba(8,145,178,0.45);
+    }
+
+    .btn-secondary {
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #1f2937;
+      box-shadow: none;
+    }
+
+    .callout {
+      border-left: 3px solid var(--accent-strong);
+      padding-left: 10px;
+      margin-top: 6px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 640px) {
+      .cta-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">A_LABS STUDIOS · ConciergeOS</div>
+        <h1 class="title">Why Choose A_LABS For Your Business Systems?</h1>
+        <p class="subtitle">
+          A practical look at your options: a big NYC agency, a developer on a gig site, or a
+          founder-led studio here in Queens that actually understands how your shop runs day to day.
+        </p>
+        <div class="tagline-chip">
+          Built in Queens · For Queens · With boutique-grade tools
+        </div>
+      </div>
+    </header>
+
+    <!-- Intro -->
+    <section class="card">
+      <h2><span class="icon">👀</span> The Real Choice You’re Making</h2>
+      <p class="tagline">
+        When you decide who builds your system, you’re not just choosing software. You’re choosing
+        who gets to “think for” your business digitally.
+      </p>
+      <p>
+        Most local businesses end up picking between:
+      </p>
+      <ul>
+        <li><span class="highlight">A big NYC agency</span> – professional, but expensive and built for bigger clients.</li>
+        <li><span class="highlight">A cheap freelancer on a gig site</span> – fast and inexpensive, but usually using prebuilt templates and scripts.</li>
+        <li><span class="highlight">Doing nothing</span> – staying with pen & paper, or tools that don’t really fit.</li>
+      </ul>
+      <p>
+        A_LABS exists to give you a fourth option: <span class="highlight">a custom system designed around your exact
+        business, at a price that makes sense for a bodega, barbershop, salon, restaurant, or gym in this city.</span>
+      </p>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="card">
+      <h2><span class="icon">📊</span> Side-by-Side Comparison</h2>
+      <p class="tagline">
+        This isn’t about saying one option is “bad.” It’s about being honest about what you actually get.
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>A_LABS STUDIOS<br><span class="muted">Founder-led in Queens</span></th>
+            <th>NYC Boutique Agency</th>
+            <th>Gig Developer / Fiverr</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Typical Project Cost</td>
+            <td>$6,000–$8,500<br><span class="muted">for a custom small-business system</span></td>
+            <td>$15,000–$35,000+<br><span class="muted">aimed at funded startups / corporate</span></td>
+            <td>$700–$3,000<br><span class="muted">template or prebuilt script</span></td>
+          </tr>
+          <tr>
+            <td>How It’s Built</td>
+            <td>Custom around your shop, your block, your customers, and your rush hours.</td>
+            <td>Custom, but shaped for larger, more complex organizations.</td>
+            <td>Pre-existing product, lightly customized with your logo and colors.</td>
+          </tr>
+          <tr>
+            <td>Who You Work With</td>
+            <td>Directly with <span class="highlight">Tony Arkaysia</span>, the founder.</td>
+            <td>Account manager, then project manager, then developers.</td>
+            <td>Individual developer or small remote team you may never meet.</td>
+          </tr>
+          <tr>
+            <td>Local Understanding</td>
+            <td>Deep understanding of NYC small business, school schedules, and neighborhood flow.</td>
+            <td>Broad understanding of product and design; less street-level context.</td>
+            <td>Limited; usually not local, doesn’t see your operation in person.</td>
+          </tr>
+          <tr>
+            <td>Level of Customization</td>
+            <td>High. Designed around your exact workflow, menu, services, and staff roles.</td>
+            <td>High, but often tied to larger project scopes and budgets.</td>
+            <td>Low–Medium. You usually fit into the template’s structure.</td>
+          </tr>
+          <tr>
+            <td>Ongoing Support</td>
+            <td>Long-term relationship, training, and support from the same person who designed it.</td>
+            <td>Formal support channels, tickets, and escalations.</td>
+            <td>Depends on the gig. Often ends once the project is “delivered.”</td>
+          </tr>
+          <tr>
+            <td>What It Feels Like</td>
+            <td>Like working with a tech co-founder who cares if your shop actually runs smoother.</td>
+            <td>Professional, but more corporate and process-heavy.</td>
+            <td>Transactional. The goal is to finish the gig and move on.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- About Tony -->
+    <section class="card">
+      <h2><span class="icon">🧠</span> Who’s Actually Designing Your System?</h2>
+      <p class="tagline">
+        Not just “a programmer.” Someone who has actually run the kinds of businesses you’re running.
+      </p>
+      <p>
+        A_LABS is led by <span class="highlight">Prachya “Tony” Arkaysia</span>, a founder with:
+      </p>
+      <ul>
+        <li>Years in <span class="highlight">business operations and management</span> at high levels.</li>
+        <li>Hands-on experience in <span class="highlight">restaurants, retail, grocery, hardware, and construction</span>.</li>
+        <li>A background in <span class="highlight">data analytics, systems thinking, and AI-assisted development</span>.</li>
+        <li>Real history being in the shoes of the <span class="highlight">owner, manager, cook, cashier, and contractor</span>.</li>
+      </ul>
+      <p class="callout">
+        That means your system isn’t just “coded.” It’s <span class="highlight">designed</span> with someone
+        who understands margins, rush hours, staff issues, vendors, and how real-world businesses actually work.
+      </p>
+    </section>
+
+    <!-- A_LABS vs Gig Devs -->
+    <section class="card">
+      <h2><span class="icon">🧩</span> What About the Cheaper Developers Online?</h2>
+      <p class="tagline">
+        You’ve probably seen offers online promising complete systems for $700–$3,000. Here’s what those usually are.
+      </p>
+      <p>
+        Many of those offers are based on <span class="highlight">prebuilt scripts</span> that were built once, then
+        installed and re-sold many times. That’s why they can offer “hotel + restaurant + HRM + reports” so cheaply:
+        the core system is already written.
+      </p>
+      <p>
+        There’s nothing wrong with that if all you need is “something basic that kind of fits.” But usually:
+      </p>
+      <ul>
+        <li>The system is designed for a generic business, not your specific deli, salon, or shop.</li>
+        <li>Changing how it works can be difficult or impossible without rewriting big parts of it.</li>
+        <li>Support can disappear once the gig is marked complete.</li>
+        <li>You don’t always know how your data is stored, or how secure it is.</li>
+      </ul>
+      <p class="callout">
+        If that’s all you need, those options may be fine.  
+        A_LABS is for owners who want something <span class="highlight">built around their business</span>, not the other way around.
+      </p>
+    </section>
+
+    <!-- A_LABS vs Agencies -->
+    <section class="card">
+      <h2><span class="icon">🏢</span> What About Hiring a Big Agency?</h2>
+      <p class="tagline">
+        Agencies are great when you’re a funded startup or a larger company. For a small business, they’re often overkill.
+      </p>
+      <ul>
+        <li>Agencies bring in full teams — which is great, but you pay for every layer.</li>
+        <li>Project minimums in NYC often start around $15k and climb quickly.</li>
+        <li>Their process is optimized for bigger clients, not a single neighborhood shop.</li>
+        <li>You may end up paying for features and polish that you don’t actually need yet.</li>
+      </ul>
+      <p>
+        A_LABS gives you the same level of systems thinking, but focused on:
+      </p>
+      <ul>
+        <li>What gets your line moving faster.</li>
+        <li>What gets more students or walk-ins to come back.</li>
+        <li>What reduces mistakes and lost tickets.</li>
+        <li>What helps you understand what’s actually selling and when.</li>
+      </ul>
+    </section>
+
+    <!-- Pricing Philosophy -->
+    <section class="card">
+      <h2><span class="icon">💳</span> How A_LABS Prices Projects</h2>
+      <p class="tagline">
+        No tricks, no mystery “enterprise tiers.” Just a clear range and a build that matches it.
+      </p>
+      <p>
+        Most full systems for small food and retail businesses land in the
+        <span class="highlight">$6,000–$8,500</span> range for the build, plus a monthly support plan.
+      </p>
+      <p>
+        That usually covers:
+      </p>
+      <ul>
+        <li>A custom system designed around your workflow.</li>
+        <li>Online ordering or booking flows.</li>
+        <li>Menu or service management tools.</li>
+        <li>Basic analytics (what’s selling, when).</li>
+        <li>Connections to tools you already use (like payment processors).</li>
+        <li>Training for you and your staff.</li>
+      </ul>
+      <p>
+        From there, we agree on a monthly support plan that fits what you actually need, often in the
+        <span class="highlight">$250–$350/month</span> range.
+      </p>
+      <p class="muted">
+        The exact number is decided with you, based on your priorities and your budget — not just what a spreadsheet says you “should” pay.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="card">
+      <h2><span class="icon">📅</span> What Happens If We Work Together</h2>
+      <p class="tagline">
+        The first step is simple: a working session, not a sales pitch.
+      </p>
+      <ul>
+        <li>We walk through how your day actually runs — rushes, slow times, staff, customers.</li>
+        <li>We map where tech can help: less chaos, more sales, fewer mistakes.</li>
+        <li>We decide together what belongs in version 1, and what can wait for later.</li>
+        <li>You get a clear project number and timeline. No surprises at the end.</li>
+      </ul>
+      <div class="cta-row">
+        <a href="mailto:TonyArkaysia@gmail.com" class="btn">Email Tony to Schedule a Session</a>
+        <a href="#contact" class="btn btn-secondary">Add This Page to Your Notes</a>
+      </div>
+      <p class="muted" style="margin-top:8px;">
+        Whether you end up working with A_LABS, an agency, or another developer,
+        you’ll walk away with a clearer picture of what your business actually needs from its systems.
+      </p>
+    </section>
+  </div>
+</body>
+</html>
