@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DeliOS + Stripe – Technical Architecture Breakdown</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --arkaysia-blue: #090909;
+      --bg-dark: #020617;
+      --card-bg: #0b1120;
+      --card-border: #1f2937;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.1);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-soft: #6b7280;
+      --danger: #f97373;
+      --success: #22c55e;
+      --warning: #fbbf24;
+      --code-bg: #020617;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111827 0, var(--arkaysia-blue) 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .page {
+      max-width: 1150px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 26px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .badge span.icon {
+      font-size: 14px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 720px;
+    }
+
+    .card {
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(160deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.9));
+      padding: 18px 20px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65);
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-soft);
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+
+    ul {
+      font-size: 14px;
+      color: var(--text-soft);
+      padding-left: 14px;
+      margin-bottom: 4px;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    code, pre {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: #e5e7eb;
+      border-radius: 10px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 10px 12px;
+      overflow-x: auto;
+      margin-top: 6px;
+      margin-bottom: 8px;
+      white-space: pre;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      margin-bottom: 6px;
+    }
+
+    .pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .pill.primary {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: var(--accent);
+      color: #bfdbfe;
+    }
+
+    .env-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .env-item {
+      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      color: var(--text-muted);
+    }
+
+    .env-key {
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .env-desc {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .label {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-right: 4px;
+      background: rgba(55, 65, 81, 0.9);
+      color: var(--text-muted);
+    }
+
+    .label.critical {
+      background: rgba(220, 38, 38, 0.14);
+      color: #fecaca;
+      border: 1px solid rgba(248, 113, 113, 0.7);
+    }
+
+    .label.future {
+      background: rgba(59, 130, 246, 0.08);
+      color: #bfdbfe;
+      border: 1px solid rgba(59, 130, 246, 0.6);
+    }
+
+    .callout {
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 55%);
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .sequence-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 6px;
+      margin-bottom: 3px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="badge">
+        <span class="icon">🛠️</span> DeliOS + Stripe – Technical Breakdown
+      </div>
+      <h1>DeliOS Technical Architecture</h1>
+      <p class="subtitle">
+        Detailed breakdown of the DeliOS multi-tenant SaaS architecture using Stripe
+        (Payments, Terminal, Connect), Railway (API + Postgres), Angular PWA front-end, and
+        future AI/BI integrations.
+      </p>
+    </header>
+
+    <!-- Core Architecture -->
+    <section class="card">
+      <h2>1. Core Components & Responsibilities</h2>
+      <div class="grid-2">
+        <div>
+          <h3>1.1 Frontend – Angular PWA (DeliOS)</h3>
+          <div class="pill-row">
+            <span class="pill primary">Angular PWA</span>
+            <span class="pill">Mobile-first POS</span>
+            <span class="pill">Owner dashboard</span>
+          </div>
+          <ul>
+            <li><strong>Modules</strong>:
+              <ul>
+                <li>Auth & Session (login, PIN, role-based access)</li>
+                <li>POS (cart, scan/search, discounts, checkout)</li>
+                <li>Owner / Manager Dashboard (sales, items, staff)</li>
+                <li>Settings (store profile, hours, staff accounts)</li>
+              </ul>
+            </li>
+            <li><strong>Tech Notes</strong>:
+              <ul>
+                <li>Use Angular routing + lazy-loaded modules.</li>
+                <li>Installable as PWA on Android (Add to Home Screen).</li>
+                <li>Service worker caching for app shell + critical assets.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h3>1.2 Backend – API on Railway</h3>
+          <div class="pill-row">
+            <span class="pill primary">Node/NestJS or FastAPI</span>
+            <span class="pill">REST/JSON</span>
+            <span class="pill">Multi-tenant aware</span>
+          </div>
+          <ul>
+            <li><strong>Responsibilities</strong>:
+              <ul>
+                <li>Authentication (JWT/opaque tokens) and session management.</li>
+                <li>Merchant, location, and user management (multi-tenant).</li>
+                <li>Catalog & inventory (items, prices, modifiers).</li>
+                <li>Order lifecycle: cart → placed → paid → fulfilled.</li>
+                <li>Stripe integration: Payments, Terminal, webhooks, Connect.</li>
+                <li>Reporting endpoints for BI dashboards.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>1.3 Database – Postgres (Railway)</h3>
+          <div class="pill-row">
+            <span class="pill primary">Postgres</span>
+            <span class="pill">Multi-tenant tables</span>
+            <span class="pill">AI/BI-ready schema</span>
+          </div>
+          <ul>
+            <li><strong>Core tables</strong> (simplified):
+              <ul>
+                <li><code>merchants</code> – one row per business (e.g., Nuthin' Left Deli).</li>
+                <li><code>locations</code> – physical store locations per merchant.</li>
+                <li><code>users</code> – owner, manager, cashier accounts.</li>
+                <li><code>items</code> – products (sandwiches, chips, drinks).</li>
+                <li><code>item_prices</code> – price per location, size, etc.</li>
+                <li><code>orders</code> – top-level order records.</li>
+                <li><code>order_items</code> – line items tying orders ↔ items.</li>
+                <li><code>payments</code> – link to Stripe payment_intent/charges.</li>
+                <li><code>stripe_accounts</code> – merchant ↔ Stripe account mapping.</li>
+                <li><code>audit_logs</code> – security and tracking.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <h3>1.4 Stripe – Payments, Terminal, Connect</h3>
+          <div class="pill-row">
+            <span class="pill primary">Stripe Payments</span>
+            <span class="pill primary">Stripe Terminal</span>
+            <span class="pill future">Stripe Connect (future)</span>
+          </div>
+          <ul>
+            <li><strong>Used features</strong>:
+              <ul>
+                <li><strong>Stripe Payments</strong>: online payments, card vault.</li>
+                <li><strong>Stripe Terminal</strong>: card-present transactions in store.</li>
+                <li><strong>Webhook events</strong>: order/payment state sync.</li>
+                <li><strong>Stripe Connect (future)</strong>: multi-merchant onboarding and payout routing.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Model -->
+    <section class="card">
+      <h2>2. Data Model – Core Tables (Simplified)</h2>
+      <p>This is a conceptual schema to guide implementation. Names and details can be adjusted, but relationships and tenant scoping should stay similar.</p>
+
+      <h3>2.1 Merchants & Locations</h3>
+      <pre>
+merchants (
+  id                  uuid PK,
+  name                text,
+  legal_name          text,
+  contact_email       text,
+  contact_phone       text,
+  stripe_account_id   text,    -- Stripe Connect account (future)
+  created_at          timestamptz,
+  updated_at          timestamptz
+);
+
+locations (
+  id                  uuid PK,
+  merchant_id         uuid FK &lt;- merchants.id,
+  name                text,
+  address_line1       text,
+  address_line2       text,
+  city                text,
+  state               text,
+  postal_code         text,
+  timezone            text,
+  is_active           boolean,
+  created_at          timestamptz,
+  updated_at          timestamptz
+);
+      </pre>
+
+      <h3>2.2 Users & Roles</h3>
+      <pre>
+users (
+  id                  uuid PK,
+  merchant_id         uuid FK &lt;- merchants.id,
+  location_id         uuid FK NULL,  -- owner may not be tied to one location
+  email               text,
+  password_hash       text,          -- or auth provider id
+  name                text,
+  role                text,          -- 'owner' | 'manager' | 'cashier' | 'admin'
+  is_active           boolean,
+  created_at          timestamptz,
+  updated_at          timestamptz
+);
+      </pre>
+
+      <h3>2.3 Items, Prices, Inventory</h3>
+      <pre>
+items (
+  id                  uuid PK,
+  merchant_id         uuid FK &lt;- merchants.id,
+  sku                 text,
+  name                text,
+  category            text,
+  description         text,
+  image_url           text,
+  is_active           boolean,
+  created_at          timestamptz,
+  updated_at          timestamptz
+);
+
+item_prices (
+  id                  uuid PK,
+  item_id             uuid FK &lt;- items.id,
+  location_id         uuid FK &lt;- locations.id,
+  price_cents         integer,
+  currency            text,   -- 'usd'
+  tax_rate            numeric,
+  is_default          boolean,
+  created_at          timestamptz
+);
+
+inventory_snapshots (
+  id                  uuid PK,
+  item_id             uuid,
+  location_id         uuid,
+  qty_on_hand         numeric,
+  taken_at            timestamptz
+);
+      </pre>
+
+      <h3>2.4 Orders & Payments</h3>
+      <pre>
+orders (
+  id                  uuid PK,
+  merchant_id         uuid,
+  location_id         uuid,
+  user_id             uuid,            -- who created the order (cashier/owner)
+  order_number        text,            -- human-friendly
+  status              text,            -- 'draft' | 'submitted' | 'paid' | 'refunded' | 'canceled'
+  subtotal_cents      integer,
+  tax_cents           integer,
+  discount_cents      integer,
+  total_cents         integer,
+  currency            text,
+  stripe_payment_intent_id text NULL,
+  stripe_charge_id    text NULL,
+  created_at          timestamptz,
+  updated_at          timestamptz
+);
+
+order_items (
+  id                  uuid PK,
+  order_id            uuid FK &lt;- orders.id,
+  item_id             uuid FK &lt;- items.id,
+  name_snapshot       text,            -- item name at time of sale
+  price_cents         integer,
+  quantity            numeric,
+  total_cents         integer
+);
+
+payments (
+  id                  uuid PK,
+  merchant_id         uuid,
+  order_id            uuid FK &lt;- orders.id,
+  provider            text,            -- 'stripe'
+  provider_payment_id text,            -- payment_intent / charge id
+  amount_cents        integer,
+  currency            text,
+  payment_method      text,            -- 'card_present' | 'card_online' | 'cash' | 'other'
+  status              text,            -- 'pending' | 'succeeded' | 'failed' | 'refunded'
+  created_at          timestamptz,
+  updated_at          timestamptz
+);
+      </pre>
+    </section>
+
+    <!-- API Layer -->
+    <section class="card">
+      <h2>3. API Design – Key Endpoints & Services</h2>
+      <p>DeliOS should expose a REST (or GraphQL) API that clearly separates responsibilities and keeps Stripe logic in a dedicated service layer.</p>
+
+      <h3>3.1 Authentication & Identity</h3>
+      <ul>
+        <li><code>POST /auth/login</code> – email/password → JWT/opaque token.</li>
+        <li><code>POST /auth/logout</code> – invalidate token.</li>
+        <li><code>GET /auth/me</code> – returns current user and roles.</li>
+      </ul>
+
+      <h3>3.2 Merchant & Location Management</h3>
+      <ul>
+        <li><code>GET /merchants/me</code> – returns merchant profile for current owner.</li>
+        <li><code>GET /locations</code> – list locations for current merchant.</li>
+        <li><code>POST /locations</code> – create new location (future multi-store).</li>
+      </ul>
+
+      <h3>3.3 Catalog & Inventory</h3>
+      <ul>
+        <li><code>GET /items</code> – list items for merchant/location (supports search).</li>
+        <li><code>POST /items</code> – create item.</li>
+        <li><code>PATCH /items/:id</code> – update item details.</li>
+        <li><code>GET /items/:id/prices</code> – get pricing per location.</li>
+        <li><code>POST /items/:id/prices</code> – set/update price.</li>
+      </ul>
+
+      <h3>3.4 Orders & Checkout</h3>
+      <ul>
+        <li><code>POST /orders</code> – create draft order (cart start).</li>
+        <li><code>PATCH /orders/:id</code> – add/remove items, update quantities.</li>
+        <li><code>POST /orders/:id/submit</code> – mark as ready for payment.</li>
+        <li><code>POST /orders/:id/payments/stripe-terminal</code> – start Stripe Terminal flow.</li>
+        <li><code>POST /orders/:id/refund</code> – trigger refunds (if supported).</li>
+      </ul>
+
+      <h3>3.5 Stripe Webhooks</h3>
+      <ul>
+        <li><code>POST /webhooks/stripe</code> – central handler for Stripe events:
+          <ul>
+            <li><code>payment_intent.succeeded</code></li>
+            <li><code>payment_intent.payment_failed</code></li>
+            <li><code>charge.refunded</code></li>
+            <li><code>terminal.reader.action_succeeded</code> / similar</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>3.6 Stripe Integration Service (Server-side)</h3>
+      <p>Create a dedicated service class/module, e.g. <code>StripeService</code>:</p>
+      <pre>
+class StripeService {
+  constructor(apiKey, webhookSecret, ...){}
+
+  async createPaymentIntent(order) {...}
+
+  async attachPaymentToTerminal(intentId, location, reader) {...}
+
+  async handleWebhookEvent(event) {...}
+
+  // Future: onboarding connected accounts, payouts, saving cards, etc.
+}
+      </pre>
+
+      <div class="callout">
+        Keep Stripe-specific logic inside a service layer. The rest of the app should talk
+        in generic terms: “create payment for order” rather than “create Stripe payment
+        intent”.
+      </div>
+    </section>
+
+    <!-- Stripe Terminal Flow -->
+    <section class="card">
+      <h2>4. Stripe Terminal Flow – In-Store Checkout</h2>
+
+      <div class="sequence-title">4.1 Sequence – Card-Present Payment</div>
+      <pre>
+1) Cashier uses DeliOS (Angular PWA) POS:
+   - Adds items to cart
+   - Clicks "Checkout"
+
+2) Frontend → Backend:
+   POST /orders
+   PATCH /orders/:id (add items)
+   POST /orders/:id/submit
+
+3) Backend:
+   - Calculates totals, tax, etc.
+   - Calls StripeService.createPaymentIntent(order)
+   - Stores payment_intent.id in `orders.stripe_payment_intent_id`
+
+4) Backend → Stripe:
+   - Create PaymentIntent with:
+     amount = order.total_cents
+     currency = 'usd'
+     capture_method = 'automatic'
+     payment_method_types = ['card_present']
+
+5) Backend:
+   - Uses Stripe Terminal APIs to push payment to a specific reader
+     (e.g., reader near the deli counter)
+
+6) Stripe Terminal (physical device):
+   - Displays amount (e.g., $12.75)
+   - Customer taps/inserts/swipes card
+
+7) Stripe:
+   - Authorizes and captures payment
+   - Emits webhooks:
+     - payment_intent.succeeded
+     - terminal.reader.action_succeeded (details)
+
+8) Backend webhook handler (/webhooks/stripe):
+   - Verifies event using STRIPE_WEBHOOK_SECRET
+   - Matches PaymentIntent to `orders` row via payment_intent.id
+   - Updates:
+     orders.status   = 'paid'
+     payments.status = 'succeeded'
+
+9) Frontend:
+   - Polls /orders/:id or listens via WebSocket/long-poll
+   - Shows "Payment successful"
+   - Prints or displays receipt
+      </pre>
+
+      <p>The goal is that the checkout screen never freezes: frontend and backend treat Stripe as an asynchronous event source, not a blocking call to wait on.</p>
+    </section>
+
+    <!-- Env & Config -->
+    <section class="card">
+      <h2>5. Environment & Configuration</h2>
+      <p>Core environment variables for DeliOS in Railway (per environment: dev, staging, prod).</p>
+      <div class="env-list">
+        <div class="env-item">
+          <div class="env-key">DATABASE_URL</div>
+          <div class="env-desc">Postgres connection string for multi-tenant DB.</div>
+        </div>
+        <div class="env-item">
+          <div class="env-key">STRIPE_API_KEY</div>
+          <div class="env-desc">Secret key for Stripe (use separate keys for test/prod).</div>
+        </div>
+        <div class="env-item">
+          <div class="env-key">STRIPE_WEBHOOK_SECRET</div>
+          <div class="env-desc">For verifying Stripe webhooks at /webhooks/stripe.</div>
+        </div>
+        <div class="env-item">
+          <div class="env-key">STRIPE_TERMINAL_LOCATION_ID</div>
+          <div class="env-desc">Default Stripe location for the deli (or per-merchant mapping).</div>
+        </div>
+        <div class="env-item">
+          <div class="env-key">JWT_SECRET</div>
+          <div class="env-desc">Token signing secret for API auth.</div>
+        </div>
+        <div class="env-item">
+          <div class="env-key">APP_BASE_URL</div>
+          <div class="env-desc">Base URL for DeliOS front-end (for redirects, links).</div>
+        </div>
+        <div class="env-item">
+          <div class="env-key">GCP_BUCKET_NAME</div>
+          <div class="env-desc">Optional: for product images and exports.</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="label critical">Critical</span>
+        Separate test and production Stripe credentials and webhooks. Never share test
+        keys in production. Protect Stripe secrets in Railway’s env var manager.
+      </div>
+    </section>
+
+    <!-- Security & Multi-tenant -->
+    <section class="card">
+      <h2>6. Security, Multi-Tenancy & Future Scaling</h2>
+
+      <h3>6.1 Multi-Tenant Boundaries</h3>
+      <ul>
+        <li>Every request is associated with a <code>merchant_id</code> derived from the authenticated user.</li>
+        <li>All queries are filtered by <code>merchant_id</code> at the repository/service layer.</li>
+        <li>No cross-merchant data leakage (enforced by code and optional Row-Level Security later).</li>
+      </ul>
+
+      <h3>6.2 Security Practices</h3>
+      <ul>
+        <li>Never store raw card data; let Stripe handle all card entry (Terminal or Web SDK).</li>
+        <li>Use HTTPS everywhere (Railway + custom domain with TLS).</li>
+        <li>Sign and verify JWTs, keep sessions short for cashier accounts.</li>
+        <li>Log all sensitive operations to <code>audit_logs</code> (refunds, discounts, voids).</li>
+      </ul>
+
+      <h3>6.3 Scaling Roadmap</h3>
+      <ul>
+        <li><strong>Phase 1:</strong> Single deli, single API instance, single Postgres.</li>
+        <li><strong>Phase 2:</strong> Multiple delis:
+          <ul>
+            <li>Each deli is a row in <code>merchants</code>, each with its own Stripe account (Connect).</li>
+            <li>Horizontally scale the API on Railway.</li>
+          </ul>
+        </li>
+        <li><strong>Phase 3:</strong> AI & BI:
+          <ul>
+            <li>Mirror Postgres/Stripe events into a warehouse (e.g., BigQuery).</li>
+            <li>Train models for forecasting, recommendations, staffing insights.</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>7. Summary</h2>
+      <p>
+        This technical architecture positions DeliOS as a Stripe-first, multi-tenant SaaS
+        platform. Nuthin' Left Deli is the initial merchant, but the patterns used—
+        modular Stripe integration, multi-tenant Postgres schema, Angular PWA front-end,
+        and a clean API layer—mean onboarding store #2, #3, and #50 is a matter of
+        configuration, not a rebuild.
+      </p>
+      <p>
+        From here, implementation can proceed in slices: auth, catalog, orders, Stripe
+        payments, Terminal integration, then analytics and AI layers.
+      </p>
+    </section>
+  </div>
+</body>
+</html>
