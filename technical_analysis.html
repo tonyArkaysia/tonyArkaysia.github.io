@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Breakdown: Structural Vibration & Acoustic Trauma</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf9f7;
+            color: #2c2c2c;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Professional Navigation Bar (Hover to Expand) */
+        .professional-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 1001;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            max-height: 4px;
+            padding: 0;
+        }
+
+        .professional-nav:hover {
+            max-height: 100px;
+            padding: 12px 0;
+        }
+
+        /* Small visible trigger area at top */
+        .professional-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #8b4513;
+            cursor: pointer;
+        }
+
+        .professional-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .professional-nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .professional-nav-links a {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #f5f5f5;
+            color: #2c2c2c;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .professional-nav-links a:hover {
+            background: #1a1a1a;
+            color: #ffffff;
+            border-color: #1a1a1a;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 10px 0;
+            border-bottom: 3px solid #8b4513;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            min-height: 70px;
+            transition: top 0.3s ease;
+        }
+
+        .professional-nav:hover ~ .top-bar {
+            top: 50px;
+        }
+
+        .top-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: #ffffff;
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+            margin-top: 100px;
+            margin-bottom: 0;
+            transition: margin-top 0.3s ease;
+        }
+
+        .professional-nav:hover ~ .container {
+            margin-top: 130px;
+        }
+
+        /* Document Header */
+        .document-header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+
+        .document-header h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.4rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .document-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #5a5a5a;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.9rem;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b4513;
+        }
+
+        h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        h4 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f0f8ff;
+            border-left: 4px solid #4682B4;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .info-box.warning {
+            background: #fff5e6;
+            border-left-color: #ff8c00;
+        }
+
+        .info-box.critical {
+            background: #ffe6e6;
+            border-left-color: #dc143c;
+        }
+
+        .info-box.critical-hvac {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6e6 100%);
+            border: 3px solid #ff4444;
+            border-left-width: 6px;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 8px;
+            box-shadow: 
+                0 0 20px rgba(255, 68, 68, 0.4),
+                0 0 40px rgba(255, 200, 0, 0.3),
+                0 0 60px rgba(255, 68, 68, 0.2),
+                inset 0 0 20px rgba(255, 200, 0, 0.1);
+            animation: criticalGlow 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes criticalGlow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 20px rgba(255, 68, 68, 0.4),
+                    0 0 40px rgba(255, 200, 0, 0.3),
+                    0 0 60px rgba(255, 68, 68, 0.2),
+                    inset 0 0 20px rgba(255, 200, 0, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 30px rgba(255, 68, 68, 0.6),
+                    0 0 50px rgba(255, 200, 0, 0.5),
+                    0 0 70px rgba(255, 68, 68, 0.4),
+                    inset 0 0 25px rgba(255, 200, 0, 0.15);
+            }
+        }
+
+        .info-box.critical-hvac::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #ff4444, #ffc800, #ff4444, #ffc800);
+            background-size: 400% 400%;
+            border-radius: 8px;
+            z-index: -1;
+            animation: borderSweep 4s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes borderSweep {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .info-box h4 {
+            margin-top: 0;
+            color: #4682B4;
+        }
+
+        .info-box.warning h4 {
+            color: #ff8c00;
+        }
+
+        .info-box.critical h4 {
+            color: #dc143c;
+        }
+
+        .info-box.critical-hvac h4 {
+            color: #cc0000;
+            font-size: 1.3rem;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .info-box.critical-hvac p {
+            color: #2c2c2c;
+            font-weight: 500;
+            font-size: 1.1rem;
+            line-height: 1.9;
+        }
+
+        /* Citation Box */
+        .citation {
+            background: #faf9f7;
+            border-left: 4px solid #8b4513;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: #555;
+            font-style: italic;
+        }
+
+        .citation-source {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: 600;
+            color: #8b4513;
+            font-size: 0.85rem;
+        }
+
+        .citation a {
+            color: #8b4513;
+            text-decoration: none;
+            border-bottom: 1px solid #8b4513;
+        }
+
+        .citation a:hover {
+            color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+        }
+
+        /* Image Container */
+        .image-container {
+            margin: 30px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+            cursor: pointer;
+        }
+
+        .image-caption {
+            padding: 15px;
+            background: #faf9f7;
+            font-size: 0.9rem;
+            color: #5a5a5a;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* List Styling */
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* References Section */
+        .references {
+            background: #f5f5f5;
+            padding: 30px;
+            border-radius: 6px;
+            margin-top: 40px;
+        }
+
+        .references h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .reference-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .reference-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #8b4513;
+            font-weight: bold;
+        }
+
+        .reference-item a {
+            color: #4682B4;
+            text-decoration: none;
+        }
+
+        .reference-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal for full-size image */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            cursor: pointer;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 2%;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: #8b4513;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Dark Mode Styles */
+        html.dark body {
+            background: #000000;
+            color: #faf9f7;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        html.dark .container {
+            background: #0f0f0f;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(139, 69, 19, 0.15), 0 0 30px rgba(139, 69, 19, 0.1);
+        }
+
+        html.dark .document-header {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .document-header h1 {
+            color: #faf9f7;
+        }
+
+        html.dark .meta-label {
+            color: #faf9f7;
+        }
+
+        html.dark .document-meta {
+            color: #d0d0d0;
+        }
+
+        html.dark section {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark h2, html.dark h3, html.dark h4 {
+            color: #faf9f7;
+        }
+
+        html.dark p {
+            color: #e0e0e0;
+        }
+
+        html.dark .info-box {
+            background: #1a2a3a;
+            border-left-color: #4682B4;
+        }
+
+        html.dark .info-box.warning {
+            background: #2a2010;
+            border-left-color: #ff8c00;
+        }
+
+        html.dark .info-box.critical {
+            background: #2a1010;
+            border-left-color: #dc143c;
+        }
+
+        html.dark .info-box.critical-hvac {
+            background: linear-gradient(135deg, #3a2a1a 0%, #3a1a1a 100%);
+            border-color: #ff4444;
+            box-shadow: 
+                0 0 25px rgba(255, 68, 68, 0.5),
+                0 0 45px rgba(255, 200, 0, 0.4),
+                0 0 65px rgba(255, 68, 68, 0.3),
+                inset 0 0 20px rgba(255, 200, 0, 0.15);
+        }
+
+        html.dark .info-box.critical-hvac h4 {
+            color: #ff6b6b;
+        }
+
+        html.dark .info-box.critical-hvac p {
+            color: #e0e0e0;
+        }
+
+        html.dark .citation {
+            background: #0a0a0a;
+            border-left-color: rgba(139, 69, 19, 0.8);
+            color: #d0d0d0;
+        }
+
+        html.dark .image-container {
+            border-color: #2a2a2a;
+        }
+
+        html.dark .image-caption {
+            background: #0a0a0a;
+            border-top-color: #2a2a2a;
+            color: #d0d0d0;
+        }
+
+        html.dark .references {
+            background: #0a0a0a;
+        }
+
+        html.dark .professional-nav {
+            background: #0f0f0f;
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .professional-nav-links a {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .professional-nav-links a:hover {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 20px;
+                margin-top: 100px;
+            }
+
+            .top-bar {
+                min-height: auto;
+            }
+
+            .top-bar-content {
+                padding: 10px 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .document-header h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Navigation Bar (Hover to Expand) -->
+    <div class="professional-nav">
+        <div class="professional-nav-content">
+            <div class="professional-nav-links">
+                <a href="engineer_analysis_platform.html">Engineers</a>
+                <a href="medical_professionals_platform.html">Medical Professionals</a>
+                <a href="housing_acoustic_trauma_eviction_habitability.html">Housing Attorney</a>
+                <a href="medical_diagnoses.html">Personal Injury Attorney</a>
+                <a href="housing_acoustic_trauma_eviction_habitability.html">Nuisance & Negligence Attorney</a>
+                <a href="#">Court & Judiciary</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#structure">Structure</a>
+                <a href="#mechanism">Vibration</a>
+                <a href="#soundproofing">Soundproofing</a>
+                <a href="#health-impacts">Health</a>
+                <a href="#zoning">Codes</a>
+                <a href="#references">References</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="document-header">
+            <h1>Technical Breakdown: Structural Vibration & Acoustic Trauma</h1>
+            <div class="document-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Property:</span>
+                    <span>47-08 92nd Street, Elmhurst, NY</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Document Type:</span>
+                    <span>Engineering & Medical Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                This page documents my experience living at 47-08 92nd Street and my current understanding of the mechanical and structural issues that I believe are causing the ongoing vibrations in my home and contributing to my acoustic trauma. It brings together what I feel and observe day to day, along with photos, sound measurements, and publicly available engineering and medical information, to explain what I believe is happening in the shared structure and why my living conditions have become so difficult.
+            </p>
+              
+            <div class="info-box critical">
+                <h4>⚠️ Critical Health Impact</h4>
+                <p>The conditions documented on this page have resulted in permanent hearing damage, including diagnosed Hyperacusis, Tinnitus, Misophonia, and Phonophobia, as well as secondary health conditions including sleep apnea, respiratory issues, and neurological symptoms. These conditions are medically documented and appear in the medical record along the same timeline as the environmental exposure described here.</p>
+            </div>
+
+            <p>Based on our documentation and observations, we believe the technical issues stem from three primary factors:</p>
+            <ul>
+                <li><strong>HVAC Vibration Transmission:</strong> Two rooftop HVAC units set on the same pair of steel I‑beams spanning the building width, appearing to be hard‑coupled (pending verification), which can transmit significant low‑frequency energy into the shared wall assembly</li>
+                <li><strong>Faulty Soundproofing Installation:</strong> Unpermitted construction that seems to create a "triple-leaf effect" amplifying low-frequency sound</li>
+                <li><strong>Structural Imbalance:</strong> Treated vs. untreated walls that concentrate low-frequency energy on the residential side</li>
+            </ul>
+        </section>
+
+        <section id="structure">
+            <h2>Structure & HVAC Installation</h2>
+            
+            <h3>Building Extension & Equipment Placement</h3>
+            <p>The neighboring church (originally a residential structure converted to commercial/religious use) extended their first floor several years ago, adding a building extension approximately 20-30 feet in length. On the roof of this extension, they installed <strong>two</strong> large mechanical units sitting side by side (roughly 4-5 feet apart) that appear to lack proper vibration isolation or any structural analysis of the shared wall system.</p>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/20250422_112326.jpg" alt="Overview of church extension and rooftop HVAC units locations" onclick="event && event.stopPropagation ? event.stopPropagation() : null; openModal(this)">
+                <div class="image-caption">Overview of building extension with both rooftop HVAC units visible. They sit directly above (or extremely close) to the shared structure and share the same two steel I‑beams that span the building width.</div>
+            </div>
+
+            <h3>Structural Configuration</h3>
+            <p>Each rooftop unit appears to rest on condenser/vibration pads that sit directly on two large steel I-beams running across the extension from wall to wall. The smaller unit uses a single solid pad, while the larger unit uses several pads positioned at the corners and near the middle with visible gaps between them. There are no springs or other true isolation devices—only these pads bearing on the beam frame. From every angle we can see, the steel beams (and the pad system atop them) appear to be seated directly onto the shared structural masonry walls that run the length of both properties. If that observation is accurate, the configuration still creates a highly efficient vibration pathway, because the pads are mechanically coupled to the beams and the beams are coupled to the wall.</p>
+
+            <p>Immediately adjacent to the two units is a turbine-style roof exhaust (mounted directly to the roof deck rather than the beams) that ties into ductwork entering the building. Although it is not sitting on the beams, its proximity to the shared wall and the rooftop equipment may contribute additional structure-borne vibration and airborne noise into the same zone.</p>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/20240524_162158.jpg" alt="Steel beam layout supporting the two rooftop HVAC units" onclick="openModal(this)">
+                <div class="image-caption">Steel I‑beam configuration spanning the full building width and supporting the two rooftop HVAC units, with apparent direct contact to the shared masonry wall. The only visible isolation elements are the concrete pads beneath each unit—no springs, rubber isolators, or other dampening devices observed.</div>
+            </div>
+
+            <div class="info-box warning">
+                <h4>Potential Vibration Control Deficiency & ASHRAE Guidance</h4>
+                    <p>
+                    Industry guidance, including ASHRAE (American Society of Heating, Refrigerating and Air-Conditioning Engineers) publications, generally recommends that HVAC equipment installed on or near occupied or shared structures be mounted on properly designed vibration isolation systems. In my case, the outdoor units appear to be sitting on a single layer of condenser/vibration pads that rest directly across two parallel steel I-beams spanning the width of the building.
+                    </p>
+                    <p>
+                    While this may provide some basic cushioning, it also appears to create a relatively direct structural path for low-frequency vibration to travel into the building frame. From a layperson’s perspective, this looks less like a fully isolated system and more like a “mechanical short circuit” that allows vibration energy to spread into the shared structure and, ultimately, into my living space.
+                    </p>
+            </div>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/beam_contact_points_icons.png" alt="Diagram showing vibration transmission points" onclick="openModal(this)">
+                <div class="image-caption">Conceptual diagram illustrating the suspected vibration transmission pathway from the paired rooftop units through concrete slabs, steel beams, and into the shared masonry wall structure.</div>
+            </div>
+        </section>
+
+        <section id="mechanism">
+            <h2>Suspected Vibration Transmission Mechanism</h2>
+            <h4>How Structural Vibration May Be Traveling Through the Building</h4>
+
+            <p>
+            When the HVAC system operates (especially during cooling cycles in warm weather), I feel and hear a steady low-frequency vibration inside my home. Based on basic mechanical and acoustic principles, there are several likely sources of those vibrations within a typical outdoor condenser unit:
+            </p>
+
+            <ul>
+            <li><strong>Compressor operation:</strong> The compressor’s internal moving parts can generate vibration components around the electrical supply frequency (60 Hz) and its harmonics (extending into the 60–120 Hz range and beyond).</li>
+            <li><strong>Fan/blower motors:</strong> Rotating components with even small imbalances can produce low-frequency vibrations, often in roughly the 20–100 Hz range, depending on speed and load.</li>
+            <li><strong>Airflow turbulence:</strong> Moving air through coils, fins, and duct openings can create broadband low-frequency noise and vibration, particularly below 200 Hz.</li>
+            </ul>
+
+            <p>
+            Given how the units appear to be mounted (on a single layer of pads resting directly across two parallel steel I-beams that span the building), my working hypothesis is that the main vibration path looks something like this:
+            </p>
+
+            <ol>
+            <li>HVAC units generate mechanical vibration during normal operation.</li>
+            <li>Vibration passes through the unit feet and the condenser/vibration pads into the steel I-beams with only limited damping, especially at low frequencies.</li>
+            <li>The steel I-beams, which are stiff and have relatively low internal damping, conduct vibration efficiently along their length.</li>
+            <li>Where the beams bear on or connect to masonry walls and other structural elements, vibration is transferred into those contact points.</li>
+            <li>The masonry and connected structural components then propagate that vibration through the building as elastic waves.</li>
+            <li>Some portion of this vibration energy reaches my living space as low-frequency humming, pressure-like sensations, and subtle rattling, especially during quiet periods.</li>
+            </ol>
+
+            <p>
+            This description is not a formal engineering conclusion, but rather my best attempt to explain, in technical terms, a plausible vibration transmission path based on the visible equipment configuration and the vibration effects I experience and documented inside the home.
+            </p>
+
+            <div class="citation">
+                "Low-frequency vibration (below 200 Hz) is particularly problematic in building structures because it travels efficiently through solid materials and is difficult to block or absorb. Masonry and steel structures act as waveguides, channeling this energy over long distances with minimal attenuation."
+                <span class="citation-source">— Building Acoustics: Noise Control in Buildings, Acoustic Engineering Principles</span>
+            </div>
+
+            <h3>Why Low-Frequency Vibration is Particularly Harmful</h3>
+            <p>Low-frequency sounds and vibrations (20-200 Hz) pose unique challenges for both blocking and health impacts:</p>
+
+            <ul>
+                <li><strong>Longer Wavelengths:</strong> Low frequencies have wavelengths of 5-50 feet, allowing them to diffract around obstacles and penetrate through structures that would block higher frequencies</li>
+                <li><strong>Whole-Body Exposure:</strong> Low frequencies can be felt as well as heard, creating physiological stress beyond auditory impact</li>
+                <li><strong>Difficult to Attenuate:</strong> Standard soundproofing materials work poorly at low frequencies; effective blocking requires massive barriers or specialized isolation systems</li>
+                <li><strong>Cumulative Health Effects:</strong> Chronic exposure to low-frequency noise causes sleep disturbance, stress response activation, and cardiovascular impacts even at levels below hearing damage thresholds</li>
+            </ul>
+
+            <div class="citation">
+                "Exposure to low-frequency noise and infrasound has been associated with various health complaints including sleep disturbance, fatigue, headache, and difficulty concentrating. The effects appear to be dose-dependent and can occur at sound pressure levels that may not be perceived as particularly loud."
+                <span class="citation-source">— World Health Organization, Environmental Noise Guidelines for the European Region (2018)</span>
+            </div>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/shared_wall_roof_unit.jpg" alt="Top view showing shared wall with HVAC positioning" onclick="openModal(this)">
+                <div class="image-caption">Top-down view showing the shared wall configuration. Blue indicates untreated residential side, red indicates soundproofed church side, yellow circle shows HVAC unit position on roof.</div>
+            </div>
+        </section>
+
+        <section id="soundproofing">
+            <h2>Faulty Soundproofing Installation</h2>
+            
+            <h3>May 6, 2024 Installation Without Permits</h3>
+            <p>On May 6, 2024, after receiving multiple DEP noise violations and being ordered to implement a noise mitigation plan, the church installed soundproofing along the shared structural wall. This installation was done:</p>
+            
+            <ul>
+                <li>Without any building permits or DOB oversight</li>
+                <li>Without consultation with acoustic engineers or soundproofing professionals</li>
+                <li>Without any assessment or treatment of the residential side of the wall</li>
+                <li>Without vibration isolation or proper decoupling techniques</li>
+                <li>Without any environmental sound study on the neighboring property</li>
+            </ul>
+
+            <div class="info-box critical">
+                <h4>Critical Incident: Acoustic Trauma Event</h4>
+                <p>Immediately following this soundproofing installation in May 2024, severe health symptoms began. What was intended to reduce noise actually created worse conditions by amplifying low-frequency vibrations and trapping acoustic energy within the wall assembly. This incident marks the onset of permanent hearing damage and the acoustic trauma that has been medically documented by multiple specialists.</p>
+            </div>
+
+            <h3>The "Triple-Leaf Effect" Problem</h3>
+            <p>The faulty installation created what I believe acoustic engineers call a "triple-leaf effect"—a well-documented phenomenon where adding layers to a wall system without proper decoupling actually <em>worsens</em> performance at low frequencies rather than improving it.</p>
+
+            <h4>How Triple-Leaf Effect Occurs:</h4>
+            <ol>
+                <li><strong>Original Structure:</strong> Masonry shared wall (first "leaf")</li>
+                <li><strong>Church Addition:</strong> Multiple layers of soundproofing materials attached directly to their side (second "leaf")</li>
+                <li><strong>Residential Side:</strong> Standard drywall construction with air cavity (third "leaf")</li>
+            </ol>
+
+            <p>Each layer with its air cavity creates a mass-spring-mass resonance system. When multiple such systems are stacked without proper isolation, they create resonance frequencies in the low-frequency range (typically 40-150 Hz) where sound transmission is actually <em>amplified</em> rather than blocked.</p>
+
+            <h4>Initially Observed Assembly Details (Multi‑Leaf)</h4>
+            <p>Based on what we saw on both sides of the shared wall, the combined assembly likely behaved as a <strong>multi‑leaf system (4+ leaves)</strong> rather than a simple double‑leaf:</p>
+            <ul>
+                <li><strong>Church Side (source):</strong> Existing interior drywall ("regular wall"), then a layer of porous "fuzzy" insulation placed over it, and then a new high‑mass panel (e.g., QuietRock) installed on top. That stack alone creates at least a <em>triple‑leaf</em> condition on the source side.</li>
+                <li><strong>Party/Shared Wall:</strong> Heavy masonry party wall contributes an additional rigid leaf in the middle of the system.</li>
+                <li><strong>Residential Side (receiver):</strong> Standard stud wall with drywall and air gaps typical of residential construction adds at least one more rigid leaf and cavity.</li>
+            </ul>
+            <p><strong>Result:</strong> Depending on exact framing/attachment, the total assembly is effectively <strong>3+ leaves</strong> with multiple separate cavities. Each added leaf introduces another mass‑spring‑mass resonance and additional low‑frequency "dips" in transmission loss.</p>
+
+            <h4>Why Multi‑Leaf (3+ leaves) Performs Worse</h4>
+            <ul>
+                <li><strong>Multiple resonances:</strong> Every extra rigid layer and air gap adds another resonance, creating several low‑frequency weak points.</li>
+                <li><strong>Shallow cavities:</strong> Smaller/stacked cavities raise resonance frequencies into a more audible and problematic range.</li>
+                <li><strong>Measured impact:</strong> Engineering literature reports <strong>10–15 dB (or more)</strong> reductions at low‑frequency bands for triple‑leaf versus well‑designed double‑leaf systems (see references below).</li>
+            </ul>
+
+            <h4>What Typically Fixes It</h4>
+            <ul>
+                <li>Revert to a <strong>true double‑leaf</strong> with one deep, continuous cavity (properly insulated with mineral wool), rather than stacking additional rigid layers.</li>
+                <li><strong>Decouple</strong> one side using clips/channels or staggered/independent studs to break mechanical coupling.</li>
+                <li>Maximize <strong>airtightness</strong> and treat flanking paths; add mass to leaves if needed, but avoid creating additional separate cavities.</li>
+            </ul>
+
+            <div class="info-box critical-hvac">
+                <h4>⚠️ Critical: Interaction with Rooftop HVAC</h4>
+                <p><strong>Interaction with Rooftop HVAC:</strong> Even before the May 2024 soundproofing, the paired rooftop HVAC units were already hard-coupled into the shared structure via the steel beams. By converting the shared wall into a four- or five-leaf system, the church's retrofit effectively created a resonance chamber that amplifies the very low-frequency vibration produced by those units. In other words, the improper wall assembly didn't just fail to block the existing HVAC vibration—it magnified it and forced more of that energy toward the untreated residential side, driving the severe physiological reactions documented throughout this report.</p>
+            </div>
+
+            <div class="citation">
+                "Adding an additional layer of drywall in the wrong way can turn a well-designed double leaf system into a triple leaf system, which actually performs worse in the low-frequency range. Each cavity acts like a drum, and the additional middle barrier doesn't help—it actually worsens the transmission of bass and vibration. This is one of the most common and problematic mistakes in soundproofing installations."
+                <span class="citation-source">— Acoustical Society of America, Building Acoustics Technical Committee Guidelines</span>
+            </div>
+
+            <div class="citation">
+                "The triple-leaf effect occurs when there are three or more leaves (rigid panels) in a partition with air gaps between them. This creates multiple resonances that can significantly reduce the sound insulation at low frequencies, sometimes by 10-15 dB or more compared to a properly designed two-leaf system."
+                <span class="citation-source">— Sound Insulation in Buildings, Hopkins & Turner (Engineering Reference)</span>
+            </div>
+
+            <h3>Air Gaps & Unequal Treatment</h3>
+            <p>A critical flaw in the installation is that only one side of the shared wall was treated. The church side received multiple layers of soundproofing materials, while the residential side remained untreated standard construction with multiple air gaps inherent to typical residential framing.</p>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/drywall-framing.webp" alt="Standard residential construction showing air gaps" onclick="openModal(this)">
+                <div class="image-caption">Standard residential drywall framing showing typical air gaps around electrical boxes, between studs, and at boundaries. These gaps exist throughout the untreated residential side of the shared wall.</div>
+            </div>
+
+            <p>This imbalance creates several problems:</p>
+            <ul>
+                <li><strong>Acoustic Impedance Mismatch:</strong> Sound energy reflects off the heavy treated side and concentrates on the lighter untreated side</li>
+                <li><strong>Flanking Pathways:</strong> Air gaps provide paths for both airborne sound and vibration energy to penetrate without resistance</li>
+                <li><strong>Pressure Buildup:</strong> The sealed church side prevents energy dissipation, forcing more energy through the weaker residential side</li>
+                <li><strong>Resonance Amplification:</strong> The cavity between treated and untreated sides acts as a resonating chamber for low frequencies</li>
+            </ul>
+
+            <h3>Lack of Professional Assessment</h3>
+            <p>At no point before, during, or after the multiple soundproofing installations and adjustments did the church:</p>
+            <ul>
+                <li>Conduct professional environmental sound measurements on the neighboring property</li>
+                <li>Perform vibration impact analysis</li>
+                <li>Engage licensed acoustic engineers or soundproofing consultants</li>
+                <li>Obtain building permits or undergo inspection</li>
+                <li>Assess the structural coupling between HVAC equipment and shared walls</li>
+            </ul>
+
+            <div class="info-box warning">
+                <h4>Professional Standards Ignored</h4>
+                <p>Standard practice in acoustic engineering requires baseline measurements on <em>both</em> sides of a shared wall before any soundproofing work begins, followed by verification testing after installation. The absence of any professional assessment led to avoidable defects that have created permanent health impacts.</p>
+            </div>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/top_view_bp.png" alt="Top view blueprint showing room configuration" onclick="openModal(this)">
+                <div class="image-caption">Blueprint-style top view showing the relationship between the church space (with soundproofing), the shared wall system, and the residential bedrooms (untreated). My bedroom is positioned at the front corner where vibration energy accumulates.</div>
+            </div>
+
+            <h3>Ongoing Construction Attempts</h3>
+            <p>Following complaints about worsening conditions after the May 2024 installation, the church made multiple additional attempts to modify the soundproofing, all done without permits, professional consultation, or assessment of impacts on and from the residential side:</p>
+            <ul>
+                <li><strong>October 2024:</strong> Complete reconstruction of soundproof wall, removing initial installation and installing different configuration (documented). Done without permits or professional consultation.</li>
+                <li><strong>January 16, 2025:</strong> Additional drilling and modifications to shared wall at approximately 11:00 PM (documented). After this incident, vibrations and sounds changed with less intensity but remained constant and present. DOB inspection requested but not properly conducted until months later, with inspector not mentioning the soundproofing wall and checking for other past alterations instead.</li>
+                <li><strong>April 18, 2025:</strong> Further drilling and adjustments to shared wall (documented). Made after multiple DOB complaints regarding illegal alterations. Again adjusted the way sounds were being heard in the residence. Pattern of attempted fixes without professional consultation continued.</li>
+                <li><strong>Early-Mid October 2025:</strong> Additional construction/soundproofing work (no permit). Conditions throughout the house improved noticeably immediately afterward, but unsafe conditions still persist. Fundamental structural problems remain unresolved.</li>
+            </ul>
+
+            <p>Each modification was done without permits, professional consultation, or assessment of impacts on and from the residential side. While some modifications slightly reduced the intensity of effects, the fundamental structural problems remain unresolved. The pattern demonstrates ongoing unpermitted construction activity and continued failure to address the root causes of the acoustic transmission issues.</p>
+        </section>
+
+        <section id="health-impacts">
+            <h2>Health Impacts & Medical Documentation</h2>
+            
+            <h3>Acoustic Trauma: Medical Definition & Causes</h3>
+            <p>Acoustic trauma refers to injury to the inner ear caused by exposure to high-decibel noise or prolonged exposure to harmful sound levels. In this case, the trauma resulted from chronic exposure to low-frequency noise and structural vibration over an extended period, followed by an acute worsening event in May 2024.</p>
+        
+            <div class="citation">
+                "Acoustic trauma can result from either a single exposure to an extremely loud sound or from prolonged exposure to loud sounds over time. The damage occurs when the hair cells in the cochlea (inner ear) are damaged beyond their ability to repair. Once damaged, these hair cells do not regenerate, resulting in permanent hearing loss and associated conditions."
+                <span class="citation-source">— National Institute on Deafness and Other Communication Disorders (NIDCD), NIH</span>
+            </div>
+        
+            <div class="citation">
+                "Noise-induced hearing loss is entirely preventable. Once acquired, however, it is permanent and irreversible. In addition to hearing loss, exposure to loud sounds can cause tinnitus (ringing in the ears) and can lead to hypersensitivity to sound (hyperacusis)."
+                <span class="citation-source">— Centers for Disease Control and Prevention (CDC), NIOSH</span>
+            </div>
+        
+            <h3>Diagnosed Conditions</h3>
+            <p>Following the May 2024 acoustic trauma incident and months of diagnostic evaluation, the following conditions have been officially diagnosed by multiple specialist physicians:</p>
+        
+            <h4>Primary Auditory Conditions:</h4>
+            <ul>
+                <li><strong>Hyperacusis:</strong> Heightened sensitivity to everyday sounds; normal environmental sounds perceived as painfully loud</li>
+                <li><strong>Tinnitus:</strong> Persistent ringing, buzzing, or other phantom sounds in the ears</li>
+                <li><strong>Misophonia:</strong> Extreme emotional and physical response to specific trigger sounds</li>
+                <li><strong>Phonophobia:</strong> Fear and anxiety response to sounds, particularly low-frequency sounds associated with the trauma</li>
+            </ul>
+        
+            <div class="citation">
+                "Hyperacusis is characterized by an abnormal sensitivity to everyday environmental sounds. Patients often report that sounds most people tolerate easily cause them physical discomfort or pain. The condition frequently co-occurs with tinnitus and can severely impact quality of life, making it difficult to function in normal environments."
+                <span class="citation-source">— American Academy of Audiology, Clinical Practice Guidelines on Hyperacusis</span>
+            </div>
+        
+            <h4>Secondary Health Conditions:</h4>
+            <ul>
+                <li><strong>Sleep Apnea:</strong> Medium-level sleep apnea diagnosed, linked to chronic sleep disruption from noise exposure</li>
+                <li><strong>Respiratory Issues:</strong> Shortness of breath requiring prescribed asthma inhaler</li>
+                <li><strong>Gastrointestinal Symptoms:</strong> Constant burping and digestive issues directly linked to vibration and sound sensitivity</li>
+                <li><strong>Neurological Symptoms:</strong> Persistent headaches, cognitive cloudiness (brain fog), dizziness, and balance issues</li>
+                <li><strong>Cardiovascular Stress:</strong> Induced heart rate and short breathing patterns when exposed to trigger sounds</li>
+            </ul>
+        
+            <div class="citation">
+                "Chronic exposure to environmental noise has been associated with numerous non-auditory health effects including sleep disturbance, cardiovascular disease, metabolic disorders, and cognitive impairment in children. Low-frequency noise exposure in particular has been linked to increased stress hormone production and autonomic nervous system activation."
+                <span class="citation-source">— World Health Organization, Burden of Disease from Environmental Noise (2011)</span>
+            </div>
+        
+            <h3>Differential Impact on Family Members</h3>
+            <p>While the faulty soundproofing and structural vibration affect the entire household, the severity of health impacts varies significantly by location within the home:</p>
+        
+            <ul>
+                <li><strong>Parents' Bedroom (Rear of House):</strong> Noticeable effects; intensity varies. My father suffered a severe respiratory crisis (hospitalized with simultaneous lung/breathing issues and possible COVID overlap) and required an in-home breathing system for months after returning from the hospital to heal, plus a prescribed inhaler. My mother—despite zero family history of asthma—has also been issued an asthma inhaler due to recent symptoms.</li>
+                <li><strong>Kitchen & Living Areas (Middle):</strong> Moderate vibration transmission; noticeable but not as overwhelming.</li>
+                <li><strong>Bathroom (along shared wall):</strong> Clearly affected; low-frequency character is distinct and more pronounced in this room.</li>
+                <li><strong>My Bedroom (Front Corner):</strong> Severely felt effects after initial installation; seems to behave like a resonant zone for low-frequency energy. Currently, issue still persists, but has improved significantly throughout multiple adjustments over the past year.</li>
+            </ul>
+        
+            <div class="info-box critical">
+                <h4>Structural Factors in Severity</h4>
+                <p>My bedroom appears to have been added as a later conversion (possibly from a garage or office space) and is constructed differently from the original house structure. It sits lower than the rest of the home and may have a different attachment method to the foundation and shared wall. We believe these differences could increase susceptibility to vibration transmission and resonance; this requires professional verification. There is also an additional contributing factor not detailed here that we will aim to provide later.</p>
+            </div>
+        
+            <h3>Medical Treatment & Prognosis</h3>
+            <p>After diagnosis by multiple specialist physicians including Dr. Allan Levin, Dr. Stephen Warman, Dr. Sean McMenomey, Dr. Susan E. Adams, and Dr. Natan Bauman, the medical opinions and guidance have evolved as follows:</p>
+        
+            <ul>
+                <li><strong>Early medical opinions (pre–Oct 2024):</strong> Several doctors indicated the condition might be permanent and did not offer any concrete treatment options at that time.</li>
+                <li><strong>Current treating providers:</strong> Dr. Susan E. Adams and Dr. Natan Bauman offered targeted treatment paths. Dr. Bauman believes he may be able to restore near-normal hearing tolerance over time (no guarantees); he committed to do his best.</li>
+                <li><strong>Guidance shift:</strong> Initial advice emphasized strict "avoid noise." Dr. Adams recommended <em>sound enrichment</em> (e.g., low-level TV/white noise I find tolerable), which improved symptom management. Dr. Bauman continues controlled desensitization using custom-programmed devices.</li>
+                <li><strong>Treatment approach now:</strong> Structured sound therapy/desensitization, custom hearing devices, and supportive counseling/CBT; goal is functional recovery and reduced reactivity rather than a guaranteed "cure."</li>
+                <li><strong>Out-of-pocket expenses (largely not covered):</strong> Hearing aids and custom devices; diagnostic testing; travel to Hamden, CT; hotel stays during multi-day testing to make long-distance appointments; travel during acute coping periods to escape noise; meals while away from home; extended driving and fuel; other incidentals.</li>
+            </ul>
+        
+            <div class="citation">
+                "The primary management strategy for patients with severe hyperacusis and phonophobia is environmental modification — removing or reducing exposure to triggering sounds. When the environment cannot be modified, sound therapy using specialized devices can help retrain the auditory system to tolerate sounds more effectively. However, recovery is gradual, often taking 12-18 months of consistent therapy, and complete recovery is not guaranteed."
+                <span class="citation-source">— Hyperacusis Research, Patient Treatment Guidelines</span>
+            </div>
+        
+            <h3>Direct Environmental Link</h3>
+            <p>A clear and immediate correlation has been documented between environmental exposure and symptom severity:</p>
+        
+            <ul>
+                <li><strong>At Home:</strong> Severe symptoms including burping, headaches, shortness of breath, heart palpitations, cognitive cloudiness, tinnitus attacks</li>
+                <li><strong>Away from Home:</strong> Dramatic improvement within a few hours to a few days; symptoms largely subside</li>
+                <li><strong>Return Home:</strong> Symptoms start to return immediately upon re-exposure to the environment</li>
+            </ul>
+        
+            <div class="info-box warning">
+                <h4>Observed Environmental Pattern</h4>
+                <p>Every extended period away from the residence—especially in quieter locations with fewer low-frequency sources—still results in measurable relief: breathing normalizes, tinnitus flares subside, and the neurological symptoms ease. When I return home, the same symptoms re-emerge even with the benefit of the custom hearing aids obtained during the Dec 31, 2024–Jan 1, 2025 Connecticut visit. In other words, the hearing aids provide partial support, but prolonged exposure to the home’s vibration environment continues to trigger the full symptom set.</p>
+            </div>
+        </section>
+        
+
+            <div class="image-container">
+                <img src="resources/case_imgs/church_concert_stage.png" alt="Interior of church showing concert stage setup" onclick="openModal(this)">
+                <div class="image-caption">Interior of church event space showing converted apartment with concert stage and full instrumental setup (drums, guitar, piano, microphones, speakers). The wall visible on the right side of this image is the shared wall, with my mother's bedroom directly on the other side and my bedroom further along the same wall toward the front of the house. Capacity: 75-100 people.</div>
+            </div>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/church_home_attached.png" alt="Front view of attached buildings" onclick="openModal(this)">
+                <div class="image-caption">Front view showing the attached three-family residential buildings. The family's residential side is highlighted in blue. The church/commercial side is highlighted in red, with double white doors showing the main entrance to the church event space and the side door leading to upper-floor apartments.</div>
+            </div>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/frontview_roomside.png" alt="Front view showing bedroom windows" onclick="openModal(this)">
+                <div class="image-caption">Blue rectangle indicates the windows to my bedroom at the front corner of the house. This room sits at the end of the vibration pathway, where low-frequency energy from the HVAC system, church activities, and bar noise accumulates and resonates.</div>
+            </div>
+        </section>
+
+        <section id="noise-code">
+            <h2>NYC DEP Noise Code & Residential Noise Control Standards</h2>
+            
+            <p>The NYC Department of Environmental Protection (DEP) provides comprehensive guidance on residential noise control, explicitly addressing both <strong>airborne noise</strong> and <strong>structure-borne noise</strong> transmission. This case involves both types of noise from multiple overlapping sources.</p>
+
+            <div class="info-box critical">
+                <h4>DEP Classification: Airborne vs. Structure-Borne Noise</h4>
+                <p style="margin-bottom: 15px;">According to the <a href="https://www.nyc.gov/assets/dep/downloads/pdf/air/noise/residential-noise-control-guidance-sheet.pdf" target="_blank" style="color: #4682B4;">NYC DEP Residential Noise Control Guidance Sheet</a>:</p>
+                <p style="margin-bottom: 10px;"><strong>Airborne Noise:</strong> "Physical transfer of energy through the air in the form of fluctuating air pressure waves."</p>
+                <ul style="margin-bottom: 15px;">
+                    <li>Church live band music (drums, bass, amplified vocals)</li>
+                    <li>Bar music and low-frequency bass penetration</li>
+                    <li>Sound that travels through air and enters through windows, doors, walls</li>
+                </ul>
+                <p style="margin-bottom: 10px;"><strong>Structure-Borne Noise:</strong> Vibration and sound transmitted through building materials and structural elements.</p>
+                <ul style="margin-bottom: 0;">
+                    <li>HVAC equipment "rotating machinery and air moving devices which generate noise and vibration that can <strong>propagate through the air and the structure</strong> to nearby spaces"</li>
+                    <li>Industrial sewing machine vibration transmitted through floor joists and ceiling</li>
+                    <li>Improper soundproofing creating structural coupling and resonance in shared wall</li>
+                </ul>
+            </div>
+
+            <h3>NYC Noise Code: 42 dBA Standard</h3>
+            
+            <div class="citation">
+                "HVAC Systems: Noise from heating, ventilation, and air conditioning units should not exceed <strong>42 dBA when measured inside a nearby residence</strong> with windows open, three feet from the window."
+                <span class="citation-source">— NYC Noise Code, HVAC Equipment Standards</span>
+            </div>
+
+            <div class="citation">
+                "Commercial Music: Establishments like bars and restaurants must ensure that music levels do not exceed <strong>42 dBA as measured inside any nearby residential unit</strong>."
+                <span class="citation-source">— NYC Noise Code, Commercial Music Standards</span>
+            </div>
+
+            <div class="citation">
+                "General Noise Prohibition: The code prohibits any unreasonable noise that disturbs the peace or endangers health. Between 10:00 p.m. and 7:00 a.m., sound levels cannot exceed <strong>7 dB(A) above ambient levels</strong> when measured within a receiving property or 15 feet from the source."
+                <span class="citation-source">— NYC Administrative Code §24-203, Unreasonable Noise Prohibited</span>
+            </div>
+
+            <h4>Application to This Case:</h4>
+            <ul>
+                <li><strong>DEP Violation (March 2024):</strong> Church music measured at <strong>20 dB over the violation limit</strong> by DEP Inspector Reynoso</li>
+                <li><strong>HVAC Rooftop Unit:</strong> Positioned directly on church building structure with suspected inadequate vibration isolation, generating low-frequency vibration (29Hz, 59Hz) transmitted through shared building frame</li>
+                <li><strong>Bar Music:</strong> Operating from 7 p.m. to 4 a.m., well past the 10 p.m. nighttime noise restriction threshold</li>
+                <li><strong>Multiple Source Exposure:</strong> Continuous exposure from church (daytime), sewing machine (day/evening), and bar (nighttime) creates 24-hour noise environment</li>
+            </ul>
+
+            <h3>DEP Recommended Construction Standards</h3>
+
+            <div class="info-box">
+                <h4>Sound Transmission Class (STC) Requirements</h4>
+                <p>The STC rating indicates a wall's ability to block airborne sound:</p>
+                <ul style="margin-bottom: 15px;">a
+                    <li><strong>Interior Residential Walls: STC 50 minimum</strong></li>
+                    <li><strong>Exterior Residential Walls: STC 60 minimum</strong></li>
+                    <li><strong>Residential Windows & Doors: STC 50 minimum</strong></li>
+                </ul>
+                <p style="margin-bottom: 15px;"><strong>Critical DEP Requirement:</strong> "To be effective, residential walls should be made of heavy (massive) building materials, such as gypsum board, with an air gap of several inches between wall surfaces that's filled with sound absorbing material such as fiberglass thermal insulation. <strong>If possible, the two sides of the wall should be fastened to different studs so that there's no direct physical connection through the wall.</strong>"</p>
+                <p style="margin-bottom: 0;"><strong>Failure in This Case:</strong> Church's initial soundproofing attached directly to their side of existing masonry wall, creating physical coupling and multiple air cavities (triple-leaf effect) instead of proper decoupling. No treatment applied to receiver side.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Impact Insulation Class (IIC) Requirements</h4>
+                <p>The IIC rating indicates a floor's ability to block impact noise and vibration:</p>
+                <ul style="margin-bottom: 15px;">
+                    <li><strong>Residential Living Areas: IIC 50 minimum</strong></li>
+                    <li><strong>Residential Bedroom Areas: IIC 60 minimum</strong></li>
+                </ul>
+                <p style="margin-bottom: 15px;"><strong>DEP Method:</strong> "Resilient underlayment and dampening compounds can <strong>decouple [or insulate] the noise pathway</strong>, while choosing materials that increase floor mass can further block noise from transferring through it."</p>
+                <p style="margin-bottom: 0;"><strong>Failure in This Case:</strong> No floor/ceiling treatment between landlady's sewing machine operation and bedroom below, allowing 59Hz and 120Hz vibration to transmit directly through floor joists.</p>
+            </div>
+
+            <h3>⚠️ DEP Warning: Improper Soundproofing Can Worsen Problems</h3>
+
+            <div class="citation" style="background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444;">
+                "Specific noise control options and solutions should be carefully considered and implemented, <strong>otherwise it is very easy to fail in achieving the desired noise reduction.</strong> For these reasons, it is highly recommended that residents discuss their situation with a <strong>qualified acoustical consultant</strong> beforehand to ensure that only effective solutions will be considered before money is spent."
+                <span class="citation-source">— NYC DEP Residential Noise Control Guidance Sheet, page 1</span>
+            </div>
+
+            <div class="citation" style="background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444;">
+                "HVAC Equipment: HVAC [heating, ventilation and air conditioning] equipment involves rotating machinery and air moving devices which generate noise and vibration that can propagate through the air and the structure to nearby spaces. <strong>HVAC noise can be difficult to control unless the true cause of the noise can be identified.</strong>"
+                <span class="citation-source">— NYC DEP Residential Noise Control Guidance Sheet, HVAC Equipment Section</span>
+            </div>
+
+            <div class="citation" style="background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444;">
+                "Vibration Isolators: Special springs and mats used to absorb vibration and isolate equipment from their surroundings. <strong>Care must be practiced to select the correct isolators for a given job or else they can actually make the problem worse due to resonance frequencies.</strong>"
+                <span class="citation-source">— NYC DEP Residential Noise Control Guidance Sheet, Vibration Isolators Section</span>
+            </div>
+
+            <h4>DEP Recommended HVAC Noise Mitigation:</h4>
+            <ol>
+                <li>Making sure the equipment is dynamically balanced and operating properly</li>
+                <li>Installing silencers in the duct line</li>
+                <li>Ensuring the duct line has no sharp turns or obstructions</li>
+                <li>Wrapping the ducts with acoustical lagging material for noise absorption</li>
+                <li>Selecting low-noise diffusers and grills</li>
+                <li><strong>"Decoupling vibrating machinery from the structure with vibration isolator springs"</strong></li>
+            </ol>
+
+            <div class="info-box critical">
+                <h4>Direct Relevance to May 2024 Soundproofing Failure</h4>
+                <p>The church's soundproofing installation violated every DEP recommendation:</p>
+                <ul style="margin-bottom: 0;">
+                    <li>❌ <strong>No qualified acoustical consultant</strong> involved in design or implementation</li>
+                    <li>❌ <strong>No environmental testing</strong> conducted on receiver side before or after installation</li>
+                    <li>❌ <strong>No treatment of receiver side</strong> of shared wall - all work done on source side only</li>
+                    <li>❌ <strong>Created improper wall assembly</strong> with multiple air cavities (triple-leaf effect) that amplifies low frequencies</li>
+                    <li>❌ <strong>HVAC unit remains coupled to structure</strong> with no vibration isolation, allowing 29Hz and 59Hz transmission through building frame</li>
+                    <li>✅ <strong>Result matches DEP warning:</strong> Installation "failed to achieve desired noise reduction" and instead made low-frequency problems significantly worse, creating acute health crisis in May 2024</li>
+                </ul>
+            </div>
+
+            <h3>NYC DEP Acoustical Consultant Resources</h3>
+            <div class="reference-item">
+                NYC Department of Environmental Protection - <a href="https://www.nyc.gov/site/dep/environment/noise-code.page" target="_blank">Noise Code Official Page</a>
+            </div>
+            <div class="reference-item">
+                NYC DEP - <a href="https://www.nyc.gov/assets/dep/downloads/pdf/air/noise/residential-noise-control-guidance-sheet.pdf" target="_blank">Residential Noise Control Guidance Sheet (PDF)</a>
+            </div>
+            <div class="reference-item">
+                NYC DEP - <a href="https://www.nyc.gov/html/dep/pdf/noise_consultants_list.pdf" target="_blank">List of Acoustical Consultants</a>
+            </div>
+            <div class="reference-item">
+                Acoustical Society of America - <a href="http://acousticalsociety.org" target="_blank">Professional Standards & Guidelines</a>
+            </div>
+            <div class="reference-item">
+                Institute of Noise Control Engineering - <a href="http://inceusa.org" target="_blank">INCE-USA Technical Resources</a>
+            </div>
+            <div class="reference-item">
+                National Council of Acoustical Consultants - <a href="http://ncac.com" target="_blank">NCAC Member Directory</a>
+            </div>
+        </section>
+
+        <section id="zoning">
+            <h2>NYC Building Code & Zoning Violations</h2>
+            
+            <p>The church's conversion of residential space to high-intensity event use, the unpermitted building extension, and the faulty soundproofing installation raise multiple violations of NYC Building Code and Zoning Resolution requirements:</p>
+
+            <div class="image-container">
+                <img src="resources/case_imgs/zola_zoning.png" alt="ZOLA zoning map showing property boundaries" onclick="openModal(this)">
+                <div class="image-caption">NYC ZOLA Zoning Map showing property lot divisions and zoning districts. The church property (Lot #14) sits entirely within an R6-B Residential zone. The family's residential property (Lot #13) straddles the boundary between R6-B Residential and C1-3 Commercial zoning.</div>
+            </div>
+
+            <h3>1. Zoning & Use Group Violations</h3>
+            
+            <h4>Property Zoning Status:</h4>
+            <ul>
+                <li><strong>Church Property (Lot #14):</strong> Located entirely in R6-B Residential zoning district</li>
+                <li><strong>Family Residential Property (Lot #13):</strong> Straddles boundary between R6-B Residential and C1-3 Commercial zoning; family occupies the R6-B portion</li>
+                <li><strong>Shared Wall:</strong> Runs entirely through R6-B Residential zoned area on both sides</li>
+            </ul>
+
+            <div class="info-box warning">
+                <h4>Community Facility Requirements</h4>
+                <p>While places of worship (classified as Use Group 4 Community Facilities) are generally permitted in residential districts under the NYC Zoning Resolution, they must comply with specific requirements regarding:</p>
+                <ul style="margin-bottom: 0;">
+                    <li>Certificate of Occupancy reflecting the Assembly/Community Facility use</li>
+                    <li>Compliance with assembly occupancy fire safety and egress requirements</li>
+                    <li>Adequate parking and loading provisions</li>
+                    <li>Noise control measures to protect residential neighbors</li>
+                    <li>Building extensions must comply with setback, height, and light/air requirements</li>
+                </ul>
+            </div>
+
+            <h4>Event Space Capacity Concerns:</h4>
+            <p>The church operates as a high-capacity event space (75-100 people) with:</p>
+            <ul>
+                <li>Full concert stage with drums, guitar, piano, microphones, and amplification system</li>
+                <li>Multiple sessions per week, lasting 4-6 hours each</li>
+                <li>Sessions extending into evening and weekend hours</li>
+                <li>High-intensity bass and percussion creating structural vibration</li>
+            </ul>
+
+            <div class="citation">
+                "Converting a residential building to accommodate commercial or assembly activities without proper approvals is considered an illegal conversion. Such modifications can pose safety risks and violate NYC Building and Fire Codes. An Alteration Type-1 permit and amended Certificate of Occupancy are required for any change in building use or occupancy classification."
+                <span class="citation-source">— NYC Department of Buildings, Alteration & Conversion Requirements</span>
+            </div>
+
+            <h3>2. Building Extension & Light/Air Violations</h3>
+            
+            <p>The church's first-floor extension into the rear yard area creates multiple compliance issues:</p>
+
+            <h4>Extension Impact:</h4>
+            <ul>
+                <li><strong>Sunlight Obstruction:</strong> HVAC Units & Extension blocks sunlight to adjacent residential property, particularly affecting rear-facing rooms</li>
+                <li><strong>Reduced Ventilation:</strong> Limits air circulation and natural light access to neighboring dwelling</li>
+                <li><strong>HVAC Placement:</strong> Large mechanical equipment mounted on extension roof creates vibration and noise directly adjacent to shared residential wall</li>
+                <li><strong>Setback Concerns:</strong> Extension may violate rear yard setback requirements designed to preserve light, air, and privacy for adjacent residences</li>
+            </ul>
+
+            <div class="citation">
+                "NYC's Zoning Resolution includes regulations on building height, setbacks, and sky exposure planes to ensure adequate light and air for surrounding properties. Building extensions that obstruct sunlight to neighboring properties can lead to disputes and potential violations. These rules are designed to prevent new constructions or extensions from negatively impacting neighboring properties' access to sunlight and ventilation."
+                <span class="citation-source">— NYC Zoning Resolution, Article III - Light and Air Protections</span>
+            </div>
+
+            <div class="info-box warning">
+                <h4>R6-B Rear Yard Requirements</h4>
+                <p>In R6 residential districts, the NYC Zoning Resolution mandates specific rear yard setbacks to protect light and air access for adjacent properties. Extensions that reduce rear yard depth below required minimums or create excessive bulk near property lines may constitute zoning violations. Additionally, any mechanical equipment must be properly screened and cannot create unreasonable noise or vibration impacts on residential neighbors.</p>
+            </div>
+
+            <h3>3. Unpermitted Construction & Alteration Violations</h3>
+            
+            <p>Multiple construction activities have been conducted without proper permits or DOB oversight:</p>
+
+            <h4>Building Extension (Multiple Years Ago):</h4>
+            <ul>
+                <li>20-30 foot building extension added to first floor</li>
+                <li>Steel I-beam structural system installed</li>
+                <li>Large HVAC unit mounted on extension roof</li>
+                <li><strong>Question:</strong> Were proper building permits obtained? Was structural engineering review conducted?</li>
+            </ul>
+
+            <h4>Soundproofing Installations & Modifications (2024-2025):</h4>
+            <ul>
+                <li><strong>May 6, 2024:</strong> Initial soundproofing installation on shared wall (no permit) - <strong>CRITICAL EVENT:</strong> Improper installation created triple-leaf effect, amplifying low-frequency vibration and causing acoustic trauma. Installation done without acoustic engineering consultation, building permits, or assessment of residential side impacts.</li>
+                <li><strong>October 2024:</strong> Complete reconstruction of soundproofing (no permit) - Church removed initial installation and installed different configuration. Done without permits, professional consultation, or assessment of impacts on residential side.</li>
+                <li><strong>January 16, 2025:</strong> Late-night drilling and wall modifications at approximately 11:00 PM (no permit) - Additional drilling, hammering, and modifications to shared wall. Documented incident. After this modification, vibrations and sounds changed with less intensity but remained constant and present. DOB inspection requested but not properly conducted until months later.</li>
+                <li><strong>April 18, 2025:</strong> Additional drilling and adjustments to shared wall (no permit) - Further attempts to modify soundproofing after multiple DOB complaints regarding illegal alterations. Again adjusted the way sounds were being heard in the residence. Pattern of attempted fixes without professional consultation continued.</li>
+                <li><strong>Early-Mid October 2025:</strong> Additional construction/soundproofing work (no permit) - Church possibly performed additional construction/modifications. Conditions throughout the house improved noticeably immediately afterward, but unsafe conditions still persist. Fundamental structural problems remain unresolved.</li>
+            </ul>
+
+            <div class="info-box critical">
+                <h4>NYC Building Code Requirements</h4>
+                <p><strong>Any alteration to a shared structural wall requires:</strong></p>
+                <ul style="margin-bottom: 0;">
+                    <li>Building permit (Alteration Type-1 or Type-2) from NYC Department of Buildings</li>
+                    <li>Plans prepared by licensed architect or professional engineer</li>
+                    <li>Structural analysis ensuring wall integrity is not compromised</li>
+                    <li>Fire safety review for any materials affecting fire-rated assemblies</li>
+                    <li>Inspection and sign-off upon completion</li>
+                    <li>Notification to adjacent property owners when work affects shared structural elements</li>
+                </ul>
+                <p style="margin-top: 15px; margin-bottom: 0;"><strong>None of these requirements appear to have been met for any of the soundproofing installations.</strong></p>
+            </div>
+
+            <div class="citation">
+                "Altering a building's structure or use without obtaining proper permits is a violation of the NYC Building Code and can result in Stop Work Orders, fines, and requirement to remove unpermitted work. Unauthorized alterations can pose serious safety risks and violate fire codes, especially when they affect shared structural walls between dwelling units."
+                <span class="citation-source">— NYC Department of Buildings, Illegal Alterations Enforcement</span>
+            </div>
+
+            <h3>4. Certificate of Occupancy (CO) Violations</h3>
+            
+            <p>The Certificate of Occupancy is a legal document certifying that a building complies with all applicable laws and is approved for a specific use. Changes in building use require an amended or new CO.</p>
+
+            <h4>Potential CO Violations:</h4>
+            <ul>
+                <li><strong>Use Group Classification:</strong> Original residential building (Use Group 2) converted to assembly/community facility use (Use Group 4) likely requires amended CO</li>
+                <li><strong>Occupancy Load:</strong> Event space capacity of 75-100 people requires assembly occupancy classification with enhanced fire safety systems, exit capacity, and accessibility features</li>
+                <li><strong>Building Alterations:</strong> Extension, HVAC installation, and concert stage construction all constitute alterations requiring CO amendment</li>
+                <li><strong>Question:</strong> Does current CO reflect assembly use, or does building still operate under original residential CO?</li>
+            </ul>
+
+            <div class="citation">
+                "A new or amended Certificate of Occupancy is necessary when changing a building's use. The CO certifies that the building complies with applicable laws and codes for its intended use. Operating a building in a manner inconsistent with its Certificate of Occupancy is a violation of the NYC Building Code and can result in violations, fines, and potential vacate orders."
+                <span class="citation-source">— NYC Department of Buildings, Certificate of Occupancy Requirements</span>
+            </div>
+
+            <h3>5. Assembly Occupancy Code Requirements</h3>
+            
+            <p>If the church operates as an assembly space with 75-100 person capacity, it must meet specific NYC Building Code requirements:</p>
+
+            <h4>Use Group A (Assembly) Requirements:</h4>
+            <ul>
+                <li><strong>Fire Protection:</strong> Enhanced fire alarm systems, emergency lighting, exit signs</li>
+                <li><strong>Means of Egress:</strong> Adequate exit capacity calculated based on occupant load</li>
+                <li><strong>Accessibility:</strong> ADA-compliant accessible routes, restrooms, and seating areas</li>
+                <li><strong>Structural Capacity:</strong> Floor loading calculations for assembly use (typically 100 psf vs. 40 psf for residential)</li>
+                <li><strong>Ventilation:</strong> Enhanced HVAC capacity for high-occupancy use</li>
+                <li><strong>Soundproofing:</strong> If required by DEP violations, must be installed according to professional standards with permits</li>
+            </ul>
+
+            <div class="info-box warning">
+                <h4>Fire Safety & Life Safety Code</h4>
+                <p>Assembly spaces are subject to strict fire and life safety requirements due to the risk to large numbers of occupants. Operating an unpermitted assembly space in a building not designed or approved for such use creates serious safety hazards and potential liability in the event of an emergency. The conversion from residential to assembly use requires comprehensive code compliance review and inspection by the Fire Department and DOB.</p>
+            </div>
+
+            <h3>6. Noise Code Violations & DEP Orders</h3>
+            
+            <p>In addition to building code and zoning issues, the church has received documented noise violations:</p>
+
+            <h4>NYC Noise Code Standards (Residential Areas):</h4>
+            <ul>
+                <li><strong>Daytime (7 AM - 10 PM):</strong> 42 dBA maximum from exterior sources into residential spaces</li>
+                <li><strong>Nighttime (10 PM - 7 AM):</strong> More restrictive limits apply</li>
+                <li><strong>Enforcement:</strong> DEP has authority to measure, cite violations, and order noise mitigation</li>
+            </ul>
+
+            <h4>Documented Violations:</h4>
+            <ul>
+                <li><strong>April 2023:</strong> First DEP inspection found sound levels in violation</li>
+                <li><strong>March 2024:</strong> Second DEP inspection found sound levels 20 decibels over violation limit</li>
+                <li><strong>DEP Order:</strong> Church fined and ordered to implement noise mitigation plan</li>
+                <li><strong>May 2024:</strong> Church attempts soundproofing (without professional consultation or permits) which worsens low-frequency exposure</li>
+            </ul>
+
+            <div class="citation">
+                "The NYC Noise Code prohibits unreasonable noise that disturbs the peace and quiet of residential areas. Sound levels from commercial or community facility operations must not exceed 42 dBA when measured inside adjacent residential dwelling units during the day, with lower limits at night. Violations can result in fines up to $1,000 for first offense, with higher amounts for repeat violations."
+                <span class="citation-source">— NYC Department of Environmental Protection, Noise Code Enforcement</span>
+            </div>
+
+            <h3>Summary of Potential Violations</h3>
+            
+            <div class="info-box critical">
+                <h4>Cumulative Code & Zoning Issues</h4>
+                <p><strong>The following violations may be present:</strong></p>
+                <ol style="margin-bottom: 0;">
+                    <li><strong>Illegal Conversion:</strong> Residential to assembly use without proper permits and CO amendment</li>
+                    <li><strong>Unpermitted Building Extension:</strong> Rear yard extension potentially violating setback and light/air requirements</li>
+                    <li><strong>Unpermitted Alterations:</strong> Multiple soundproofing installations on shared structural wall without permits</li>
+                    <li><strong>HVAC Vibration:</strong> Mechanical equipment creating unreasonable vibration transmission to adjacent residence</li>
+                    <li><strong>Noise Code Violations:</strong> Documented DEP violations and insufficient/faulty noise mitigation</li>
+                    <li><strong>Fire Safety Non-Compliance:</strong> Assembly use without proper fire protection systems and egress capacity</li>
+                    <li><strong>Life Safety Hazard:</strong> Faulty soundproofing created hazardous conditions resulting in permanent injury</li>
+                </ol>
+            </div>
+
+            <p style="margin-top: 30px;">These violations, taken together, demonstrate a pattern of unpermitted construction, inadequate professional oversight, and failure to protect the health and safety of adjacent residential occupants. The resulting acoustic trauma and permanent hearing damage represent the direct consequence of these code violations and demonstrate why building code requirements exist.</p>
+        </section>
+
+        <div class="references">
+            <h2 id="references">Research References & Sources</h2>
+            
+            <h3>Medical & Health Sources:</h3>
+            <div class="reference-item">
+                National Institute on Deafness and Other Communication Disorders (NIDCD), NIH - <a href="https://www.nidcd.nih.gov/" target="_blank">Acoustic Trauma Research</a>
+            </div>
+            <div class="reference-item">
+                Centers for Disease Control and Prevention (CDC), NIOSH - <a href="https://www.cdc.gov/niosh/topics/noise/" target="_blank">Noise-Induced Hearing Loss Prevention</a>
+            </div>
+            <div class="reference-item">
+                Healthline - <a href="https://www.healthline.com/health/acoustic-trauma" target="_blank">Acoustic Trauma: Types, Symptoms, and Diagnosis</a>
+            </div>
+            <div class="reference-item">
+                Mount Sinai Health System - <a href="https://www.mountsinai.org/health-library/diseases-conditions/acoustic-trauma" target="_blank">Acoustic Trauma Information</a>
+            </div>
+            <div class="reference-item">
+                World Health Organization (WHO) - Environmental Noise Guidelines for the European Region (2018)
+            </div>
+            <div class="reference-item">
+                American Academy of Audiology - Clinical Practice Guidelines on Hyperacusis
+            </div>
+            <div class="reference-item">
+                JAMA Otolaryngology - <a href="https://jamanetwork.com/journals/jamaotolaryngology/fullarticle/614651" target="_blank">Local vs Systemic Effects of Acoustic Trauma on Cochlear Structure</a>
+            </div>
+            
+            <h3>Engineering & Acoustic Sources:</h3>
+            <div class="reference-item">
+                American Society of Heating, Refrigerating and Air-Conditioning Engineers (ASHRAE) - HVAC Vibration Control Standards
+            </div>
+            <div class="reference-item">
+                Acoustical Society of America (ASA) - Building Acoustics Technical Committee Guidelines
+            </div>
+            <div class="reference-item">
+                Hopkins & Turner - "Sound Insulation in Buildings" Engineering Reference on Triple-Leaf Effect
+            </div>
+            <div class="reference-item">
+                Green Glue Company - <a href="https://www.greengluecompany.com/sites/hps-mac3-greenglue/files/2022-10/Green-Glue-Understanding-the-Triple-Leaf-Effect.pdf" target="_blank">Understanding the Triple‑Leaf Effect (Technical Note, PDF)</a>
+            </div>
+            <div class="reference-item">
+                Building Acoustics: Noise Control in Buildings - Low-Frequency Sound Transmission Principles
+            </div>
+            
+            <h3>Safety & Regulatory Sources:</h3>
+            <div class="reference-item">
+                Occupational Safety and Health Administration (OSHA) - <a href="https://www.osha.gov/noise/construction" target="_blank">Construction Noise Standards</a>
+            </div>
+            <div class="reference-item">
+                SafeWork NSW - <a href="https://www.safework.nsw.gov.au/" target="_blank">Acoustic Trauma Workplace Safety Guidelines</a>
+            </div>
+            
+            <h3>NYC Building Code & Zoning Sources:</h3>
+            <div class="reference-item">
+                NYC Department of Buildings - <a href="https://www.nyc.gov/site/buildings/index.page" target="_blank">Building Code & Permit Requirements</a>
+            </div>
+            <div class="reference-item">
+                NYC Department of Buildings - <a href="https://www.nyc.gov/site/buildings/industry/project-requirements-design-professional-alt-cmu.page" target="_blank">Alteration & Change of Use Requirements</a>
+            </div>
+            <div class="reference-item">
+                NYC Department of Buildings - <a href="https://www.nyc.gov/site/buildings/tenant/illegal-conversion.page" target="_blank">Illegal Conversions & Alterations</a>
+            </div>
+            <div class="reference-item">
+                NYC Zoning Resolution - <a href="https://zoningresolution.planning.nyc.gov/" target="_blank">Official NYC Zoning Text & Maps</a>
+            </div>
+            <div class="reference-item">
+                NYC Department of City Planning - <a href="https://zr.planning.nyc.gov/" target="_blank">Zoning Resolution Articles (Light, Air, Setbacks)</a>
+            </div>
+            <div class="reference-item">
+                NYC Department of Environmental Protection - <a href="https://www.nyc.gov/site/dep/environment/noise-code.page" target="_blank">NYC Noise Code & Enforcement</a>
+            </div>
+            <div class="reference-item">
+                NYC DEP - <a href="https://www.nyc.gov/assets/dep/downloads/pdf/environment/education/nyc-noise-code-fact-sheet.pdf" target="_blank">Noise Code Fact Sheet (PDF)</a>
+            </div>
+            <div class="reference-item">
+                NYC ZOLA (Zoning & Land Use Map) - <a href="https://zola.planning.nyc.gov/" target="_blank">Interactive Zoning Map Tool</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for full-size image viewing -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        });
+
+        // Modal functionality
+        function openModal(img) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+
