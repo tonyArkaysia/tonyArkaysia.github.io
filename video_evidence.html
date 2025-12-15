@@ -215,6 +215,45 @@
             text-decoration: underline;
         }
 
+        /* Document/File Link Container */
+        .document-link-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #faf9f7;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .document-link-container h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .document-link-container p {
+            margin-bottom: 15px;
+            color: #3a3a3a;
+        }
+
+        .document-link-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #4682B4;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .document-link-button:hover {
+            background: #357abd;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
         /* Timeline Notes Table */
         .notes-section {
             margin-top: 30px;
@@ -373,6 +412,15 @@
             color: #e0e0e0;
         }
 
+        html.dark .document-link-container {
+            background: #0a0a0a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .document-link-container p {
+            color: #e0e0e0;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
@@ -454,7 +502,7 @@
                         <span><strong>Date:</strong> December 14, 2025</span>
                         <span><strong>Time:</strong> 11:30 A.M.</span>
                         <span><strong>Location:</strong> Parents' Room</span>
-                        <a href="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/view?usp=drive_link" target="_blank" class="video-link">Open in Google Drive ↗</a>
+                        <a href="https://drive.google.com/drive/folders/1Xes3xT6OAODsYKFtVV2EGWXeQoG8HzJI?usp=sharing" target="_blank" class="video-link">Open in Google Drive ↗</a>
                     </div>
                 </div>
             </div>
@@ -475,6 +523,34 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <section id="audio-recordings">
+            <h2>Audio Recordings</h2>
+            <p>High-quality audio recordings captured at the property documenting noise and vibration conditions.</p>
+            
+            <div class="document-link-container">
+                <h3>Audio Files</h3>
+                <p>Raw audio recordings (WAV format) captured using professional sound recording equipment. Files include recordings from different times of day and locations within the property.</p>
+                <a href="https://drive.google.com/drive/folders/1pjMGOI-tSjBlho9P764wBiyi4qfO6BIH?usp=sharing" target="_blank" class="document-link-button">View Audio Files in Google Drive ↗</a>
+            </div>
+        </section>
+
+        <section id="sound-analysis">
+            <h2>Sound Analysis & Measurements</h2>
+            <p>Technical sound analysis data including spectrograms and sound level meter readings.</p>
+            
+            <div class="document-link-container">
+                <h3>Spectroid Screen Recording</h3>
+                <p>Screen recording of the Spectroid app showing real-time frequency analysis and spectrogram visualization of sound conditions at the property. This provides visual representation of the frequency content and intensity of noise exposure.</p>
+                <a href="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/view?usp=sharing" target="_blank" class="document-link-button">View Spectroid Recording ↗</a>
+            </div>
+
+            <div class="document-link-container">
+                <h3>Sound Level Meter Data Log</h3>
+                <p>Excel spreadsheet containing detailed sound level meter readings and measurements taken at various times and locations. Includes decibel levels, frequency data, and timestamp information.</p>
+                <a href="https://docs.google.com/spreadsheets/d/1gyuaCHxcx9-VKbD5z1MMdHxINM1I1EhY/edit?usp=sharing&ouid=118221274996717489135&rtpof=true&sd=true" target="_blank" class="document-link-button">View Sound Data Log ↗</a>
             </div>
         </section>
     </div>
