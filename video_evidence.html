@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Evidence Documentation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf9f7;
+            color: #2c2c2c;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 10px 0;
+            border-bottom: 3px solid #8b4513;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            min-height: 70px;
+        }
+
+        .top-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: #ffffff;
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+            margin-top: 100px;
+            margin-bottom: 0;
+        }
+
+        /* Document Header */
+        .document-header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+
+        .document-header h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.4rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .document-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #5a5a5a;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.9rem;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b4513;
+        }
+
+        h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        /* Video Container */
+        .video-container {
+            margin: 30px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #000000;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 20px;
+            background: #faf9f7;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .video-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.3rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #5a5a5a;
+            flex-wrap: wrap;
+        }
+
+        .video-link {
+            color: #4682B4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .video-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Timeline Notes Table */
+        .notes-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #faf9f7;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .notes-section h4 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .notes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .notes-table th {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .notes-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .notes-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .time-stamp {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #8b4513;
+            white-space: nowrap;
+            min-width: 100px;
+        }
+
+        .note-content {
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        .note-placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Dark Mode Styles */
+        html.dark body {
+            background: #000000;
+            color: #faf9f7;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        html.dark .container {
+            background: #0f0f0f;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(139, 69, 19, 0.15), 0 0 30px rgba(139, 69, 19, 0.1);
+        }
+
+        html.dark .document-header {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .document-header h1 {
+            color: #faf9f7;
+        }
+
+        html.dark .meta-label {
+            color: #faf9f7;
+        }
+
+        html.dark .document-meta {
+            color: #d0d0d0;
+        }
+
+        html.dark section {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark h2, html.dark h3 {
+            color: #faf9f7;
+        }
+
+        html.dark p {
+            color: #e0e0e0;
+        }
+
+        html.dark .video-container {
+            border-color: #2a2a2a;
+        }
+
+        html.dark .video-info {
+            background: #0a0a0a;
+            border-top-color: #2a2a2a;
+        }
+
+        html.dark .video-title {
+            color: #faf9f7;
+        }
+
+        html.dark .video-meta {
+            color: #d0d0d0;
+        }
+
+        html.dark .notes-section {
+            background: #0a0a0a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .notes-section h4 {
+            color: #faf9f7;
+        }
+
+        html.dark .notes-table td {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .notes-table tr:hover {
+            background: #1a1a1a;
+        }
+
+        html.dark .note-content {
+            color: #e0e0e0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 20px;
+                margin-top: 100px;
+            }
+
+            .top-bar-content {
+                padding: 10px 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .document-header h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .notes-table {
+                font-size: 0.9rem;
+            }
+
+            .notes-table th,
+            .notes-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="nav-links">
+                <a href="technical_analysis.html">Technical Analysis</a>
+                <a href="#videos">Videos</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="document-header">
+            <h1>Video Evidence Documentation</h1>
+            <div class="document-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Property:</span>
+                    <span>47-08 92nd Street, Elmhurst, NY</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Document Type:</span>
+                    <span>Audio/Video Evidence</span>
+                </div>
+            </div>
+        </div>
+
+        <section id="videos">
+            <h2>Video Recordings</h2>
+            <p>This page contains video documentation of noise and vibration conditions recorded at the property. Each video includes a timeline table below for detailed notes and observations.</p>
+
+            <!-- Video 1 -->
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe src="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/preview" allow="autoplay" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Sunday Church Session - Parents' Room</div>
+                    <div class="video-meta">
+                        <span><strong>Date:</strong> December 14, 2025</span>
+                        <span><strong>Time:</strong> 11:30 A.M.</span>
+                        <span><strong>Location:</strong> Parents' Room</span>
+                        <a href="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/view?usp=drive_link" target="_blank" class="video-link">Open in Google Drive ↗</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>Timeline Notes</h4>
+                <table class="notes-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Observation / Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-stamp">00:00</td>
+                            <td class="note-content note-placeholder">Notes will be added here...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        });
+    </script>
+</body>
+</html>
+
