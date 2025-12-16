@@ -840,7 +840,7 @@
 
             <div class="sync-tool-container">
                 <h3>Multi-Device Audio/Video Sync Tool</h3>
-                <p>Load up to 6 files (audio/video). For each file either enter the device clock timestamp of the file start (wall clock) or set a marker during playback to align a common event (clap). Then pick a reference device and press <em>Compute Offsets</em>.</p>
+                <p>Load up to 6 files (audio/video). For each file, set a marker during playback to align a common event (like a beep or clap). Then pick a reference device and press <em>Compute Offsets</em>.</p>
 
                 <div>
                     <input id="syncFileInput" type="file" multiple accept="audio/*,video/*" />
@@ -914,8 +914,7 @@
         }
 
         const syncState = {
-            devices: [],
-            masterStartEpoch: null
+            devices: []
         };
 
         const syncDevicesEl = document.getElementById('syncDevices');
@@ -948,7 +947,7 @@
                     renderSyncDevices();
                 }
             });
-            const dev = {id, file, url, kind, duration: NaN, element: el, deviceTimestamp: null, markers: [], offsetSeconds: 0};
+            const dev = {id, file, url, kind, duration: NaN, element: el, markers: [], offsetSeconds: 0};
             syncState.devices.push(dev);
             updateSyncRefSelect();
         }
@@ -976,16 +975,6 @@
                 playerWrap.appendChild(dev.element);
                 box.appendChild(playerWrap);
 
-                const trow = document.createElement('div'); trow.className='sync-tool-row';
-                const tlabel = document.createElement('label'); tlabel.textContent = 'Device clock for START (optional): ';
-                const tinput = document.createElement('input'); tinput.type='datetime-local'; tinput.value = dev.deviceTimestamp ? (new Date(dev.deviceTimestamp*1000)).toISOString().slice(0,16) : '';
-                tinput.addEventListener('change', ()=> {
-                    const epoch = parseLocalDatetimeToEpoch(tinput.value);
-                    dev.deviceTimestamp = epoch;
-                });
-                trow.appendChild(tlabel); trow.appendChild(tinput);
-                box.appendChild(trow);
-
                 const mrow = document.createElement('div'); mrow.className='sync-tool-row';
                 const markBtn = document.createElement('button'); markBtn.textContent = 'Set Marker (current playback)';
                 markBtn.addEventListener('click', ()=> {
@@ -1012,14 +1001,7 @@
                 box.appendChild(orow);
 
                 const refRow = document.createElement('div'); refRow.className='sync-tool-row';
-                const setRefFromStart = document.createElement('button'); setRefFromStart.textContent = 'Use this file START as reference (wall-clock)';
-                setRefFromStart.addEventListener('click', ()=> {
-                    if (!dev.deviceTimestamp) return alert('Set device clock timestamp first.');
-                    syncState.masterStartEpoch = dev.deviceTimestamp;
-                    alert('Master reference set to this device start time (wall clock).');
-                });
                 const setRefFromMarker = document.createElement('button'); setRefFromMarker.textContent='Use marker as reference';
-                setRefFromMarker.style.marginLeft='6px';
                 setRefFromMarker.addEventListener('click', ()=> {
                     if (!dev.markers.length) return alert('No markers set.');
                     const choices = dev.markers.map((m,i)=>`${i}: ${m.label} @ ${fmtS(m.time)}`).join('\n');
@@ -1031,7 +1013,6 @@
                 });
 
                 box.appendChild(refRow);
-                refRow.appendChild(setRefFromStart);
                 refRow.appendChild(setRefFromMarker);
 
                 syncDevicesEl.appendChild(box);
@@ -1050,19 +1031,6 @@
         }
 
         document.getElementById('syncComputeOffsets').addEventListener('click', ()=> {
-            if (syncState.masterStartEpoch) {
-                syncState.devices.forEach(d=>{
-                    if (d.deviceTimestamp) {
-                        d.offsetSeconds = d.deviceTimestamp - syncState.masterStartEpoch;
-                    } else {
-                        d.offsetSeconds = NaN;
-                    }
-                });
-                alert('Offsets computed from wall-clock device timestamps. Reference is masterStartEpoch.');
-                renderSyncDevices();
-                return;
-            }
-
             let refDev = null, refMarkerTime = null;
             for (const d of syncState.devices) {
                 if (typeof d._useMarkerIndex !== 'undefined') {
@@ -1072,7 +1040,7 @@
                 }
             }
             if (!refDev) {
-                alert('No wall-clock reference set and no reference marker chosen on any device. Please: (1) set a device start timestamp and press "Use this file START as reference" or (2) set marker on one device and click "Use marker as reference".');
+                alert('No reference marker chosen on any device. Please set a marker on one device and click "Use marker as reference".');
                 return;
             }
             syncState.devices.forEach(d=>{
@@ -1110,35 +1078,48 @@
         });
 
         function setSyncMediaTimeFromMaster(d, masterSeconds) {
-            if (syncState.masterStartEpoch && d.deviceTimestamp) {
-                const desired = (syncState.masterStartEpoch + masterSeconds) - d.deviceTimestamp;
-                d.element.currentTime = clamp(desired,0,d.duration||d.element.duration||0);
-                return;
-            }
             if (typeof d.offsetSeconds === 'number' && isFinite(d.offsetSeconds)) {
                 const desired = masterSeconds - d.offsetSeconds;
-                d.element.currentTime = clamp(desired,0,d.duration||d.element.duration||0);
+                const current = d.element.currentTime;
+                // Only seek if there's significant drift (more than 0.2 seconds) to avoid interrupting playback
+                if (Math.abs(current - desired) > 0.2) {
+                    d.element.currentTime = clamp(desired, 0, d.duration||d.element.duration||0);
+                }
                 return;
             }
             if (isFinite(d.duration)) {
-                d.element.currentTime = clamp(masterSeconds, 0, d.duration);
+                const desired = clamp(masterSeconds, 0, d.duration);
+                const current = d.element.currentTime;
+                // Only seek if there's significant drift
+                if (Math.abs(current - desired) > 0.2) {
+                    d.element.currentTime = desired;
+                }
             }
         }
 
         function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
 
         let syncMasterClockInterval = null;
+        let lastSyncTime = 0;
         function startSyncMasterClock() {
             stopSyncMasterClock();
             const start = performance.now();
             const startVal = parseFloat(syncMasterSlider.value);
+            lastSyncTime = startVal;
             syncMasterClockInterval = setInterval(()=>{
                 const elapsed = (performance.now() - start)/1000;
                 const newMaster = startVal + elapsed;
                 syncMasterSlider.value = newMaster;
                 syncMasterTimeLabel.textContent = fmtS(newMaster);
-                syncState.devices.forEach(d => setSyncMediaTimeFromMaster(d, newMaster));
-            }, 40);
+                // Only sync if there's significant drift (more than 0.1 seconds)
+                if (Math.abs(newMaster - lastSyncTime) > 0.1) {
+                    syncState.devices.forEach(d => {
+                        if (d.element.paused) return; // Don't sync paused videos
+                        setSyncMediaTimeFromMaster(d, newMaster);
+                    });
+                    lastSyncTime = newMaster;
+                }
+            }, 100); // Reduced frequency from 40ms to 100ms
         }
         function stopSyncMasterClock(){ if (syncMasterClockInterval) { clearInterval(syncMasterClockInterval); syncMasterClockInterval=null; } }
 
@@ -1149,10 +1130,9 @@
         });
 
         document.getElementById('syncExportJSON').addEventListener('click', ()=> {
-            const out = { masterStartEpoch: syncState.masterStartEpoch, devices: syncState.devices.map(d=>({
+            const out = { devices: syncState.devices.map(d=>({
                 name: d.file.name,
                 offsetSeconds: d.offsetSeconds,
-                deviceTimestamp: d.deviceTimestamp,
                 markers: d.markers
             }))};
             const blob = new Blob([JSON.stringify(out, null, 2)], {type:'application/json'});
@@ -1166,13 +1146,11 @@
             reader.onload = ()=> {
                 try {
                     const j = JSON.parse(reader.result);
-                    if (j.masterStartEpoch) syncState.masterStartEpoch = j.masterStartEpoch;
                     if (Array.isArray(j.devices)) {
                         j.devices.forEach(sd=>{
                             const dev = syncState.devices.find(d=>d.file.name === sd.name);
                             if (dev) {
                                 dev.offsetSeconds = sd.offsetSeconds;
-                                dev.deviceTimestamp = sd.deviceTimestamp;
                                 if (sd.markers) dev.markers = sd.markers;
                             }
                         });
