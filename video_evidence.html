@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Evidence Documentation</title>
+    <title>Technical Documentation</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -507,6 +507,114 @@
             color: #e0e0e0;
         }
 
+        /* Media Sync Tool Styles */
+        .sync-tool-container {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .sync-tool-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin: 8px 0;
+            flex-wrap: wrap;
+        }
+
+        .sync-tool-device {
+            border: 1px solid #dde6f2;
+            padding: 10px;
+            border-radius: 8px;
+            background: #fff;
+            margin-bottom: 12px;
+        }
+
+        .sync-tool-master {
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid #dde6f2;
+        }
+
+        .sync-tool-devices-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .sync-tool-container button {
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #1f6feb;
+            background: #1f6feb;
+            color: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .sync-tool-container button:hover {
+            background: #357abd;
+        }
+
+        .sync-tool-container input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #c8d7ef;
+        }
+
+        .sync-tool-container input, .sync-tool-container select {
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid #c8d7ef;
+        }
+
+        .sync-tool-timestamp {
+            font-family: 'Courier New', monospace;
+        }
+
+        .sync-tool-note {
+            background: #fff5e6;
+            border-left: 4px solid #ff8c00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .sync-tool-note strong {
+            color: #ff8c00;
+        }
+
+        html.dark .sync-tool-container {
+            background: #0a0a0a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .sync-tool-device {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .sync-tool-master {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .sync-tool-note {
+            background: #2a2010;
+            border-left-color: #ff8c00;
+        }
+
+        html.dark .sync-tool-note {
+            color: #e0e0e0;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
@@ -560,7 +668,7 @@
 
     <div class="container">
         <div class="document-header">
-            <h1>Video Evidence Documentation</h1>
+            <h1>Technical Documentation</h1>
             <div class="document-meta">
                 <div class="meta-item">
                     <span class="meta-label">Property:</span>
@@ -661,21 +769,42 @@
 
         <section id="sync-tool">
             <h2>Media Synchronization Tool</h2>
-            <p>For advanced synchronization of multiple audio/video files, you can download and use this standalone tool.</p>
+            <p>This tool allows you to load up to 6 audio/video files and synchronize them using device timestamps or event markers (like a clap or beep). You can set a reference device, compute offsets, and play all files in sync with a master timeline control.</p>
             
-            <div class="document-link-container">
+            <div class="sync-tool-note">
+                <strong>⚠️ Important:</strong> Due to cloud drive security measures, files must be locally sourced from your computer. Please download the audio/video files from Google Drive to your local drive first, then use the file picker below to load them into this tool.
+            </div>
+
+            <div class="sync-tool-container">
                 <h3>Multi-Device Audio/Video Sync Tool</h3>
-                <p>This tool allows you to load up to 6 audio/video files and synchronize them using device timestamps or event markers (like a clap or beep). You can set a reference device, compute offsets, and play all files in sync with a master timeline control.</p>
-                <p><strong>Features:</strong></p>
-                <ul style="margin-left: 20px; margin-bottom: 15px;">
-                    <li>Load multiple audio/video files (up to 6)</li>
-                    <li>Synchronize using device clock timestamps or event markers</li>
-                    <li>Master timeline control for synchronized playback</li>
-                    <li>Export/import sync session data (JSON)</li>
-                    <li>Works entirely in your browser - no server required</li>
-                </ul>
-                <a href="resources/media_sync_ui.html" target="_blank" class="document-link-button">Open Media Sync Tool ↗</a>
-                <a href="resources/media_sync_ui.html" download="media_sync_ui.html" class="document-link-button" style="margin-left: 10px; background: #8b4513;">Download Tool</a>
+                <p>Load up to 6 files (audio/video). For each file either enter the device clock timestamp of the file start (wall clock) or set a marker during playback to align a common event (clap). Then pick a reference device and press <em>Compute Offsets</em>.</p>
+
+                <div>
+                    <input id="syncFileInput" type="file" multiple accept="audio/*,video/*" />
+                </div>
+
+                <div class="sync-tool-devices-list" id="syncDevices"></div>
+
+                <div class="sync-tool-master">
+                    <div class="sync-tool-row">
+                        <button id="syncPlayAll">Play All</button>
+                        <button id="syncPauseAll">Pause All</button>
+                        <button id="syncComputeOffsets">Compute Offsets</button>
+                        <select id="syncRefSelect"></select>
+                        <button id="syncExportJSON" class="export">Export JSON</button>
+                        <button id="syncImportJSON">Import JSON</button>
+                        <input type="file" id="syncImportFile" style="display:none" accept="application/json"/>
+                    </div>
+
+                    <div style="margin-top:12px">
+                        <input id="syncMasterSlider" type="range" min="0" max="1" step="0.0001" value="0" style="width:70%"/>
+                        <span id="syncMasterTimeLabel" class="sync-tool-timestamp">00:00:00.000</span>
+                    </div>
+
+                    <div class="controls">
+                        <small>Reference timeline = wall-clock time or reference marker. Master timeline advances in seconds from reference start.</small>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -701,6 +830,294 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
             themeIcon.textContent = isDark ? '☀️' : '🌙';
             themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        });
+
+        // Media Sync Tool JavaScript
+        function fmtS(secs) {
+            if (!isFinite(secs)) return "--:--:--.---";
+            const sign = secs < 0 ? "-" : "";
+            secs = Math.abs(secs);
+            const h = Math.floor(secs/3600);
+            const m = Math.floor(secs%3600/60);
+            const s = Math.floor(secs%60);
+            const ms = Math.floor((secs - Math.floor(secs)) * 1000);
+            return sign + [h,m,s].map(n=>String(n).padStart(2,"0")).join(":") + "." + String(ms).padStart(3,"0");
+        }
+        function parseLocalDatetimeToEpoch(s) {
+            if (!s) return null;
+            const d = new Date(s);
+            if (isNaN(d)) return null;
+            return d.getTime()/1000;
+        }
+
+        const syncState = {
+            devices: [],
+            masterStartEpoch: null
+        };
+
+        const syncDevicesEl = document.getElementById('syncDevices');
+        const syncFileInput = document.getElementById('syncFileInput');
+        const syncRefSelect = document.getElementById('syncRefSelect');
+        const syncMasterSlider = document.getElementById('syncMasterSlider');
+        const syncMasterTimeLabel = document.getElementById('syncMasterTimeLabel');
+
+        syncFileInput.addEventListener('change', handleSyncFiles, false);
+
+        function handleSyncFiles(ev) {
+            const files = Array.from(ev.target.files);
+            for (const f of files) addSyncDevice(f);
+            renderSyncDevices();
+        }
+
+        function addSyncDevice(file) {
+            const id = 'd' + Math.random().toString(36).slice(2,9);
+            const url = URL.createObjectURL(file);
+            const kind = file.type.startsWith('video') ? 'video' : 'audio';
+            const el = document.createElement(kind === 'video' ? 'video' : 'audio');
+            el.controls = true;
+            el.src = url;
+            el.preload = "metadata";
+            el.addEventListener('loadedmetadata', ()=> {
+                const dev = syncState.devices.find(d=>d.id===id);
+                if (dev) {
+                    dev.duration = el.duration;
+                    updateSyncMasterSliderRange();
+                    renderSyncDevices();
+                }
+            });
+            const dev = {id, file, url, kind, duration: NaN, element: el, deviceTimestamp: null, markers: [], offsetSeconds: 0};
+            syncState.devices.push(dev);
+            updateSyncRefSelect();
+        }
+
+        function updateSyncRefSelect() {
+            syncRefSelect.innerHTML = '';
+            const optDefault = document.createElement('option'); optDefault.value='__none'; optDefault.text='Choose reference (none)'; syncRefSelect.appendChild(optDefault);
+            syncState.devices.forEach(d=>{
+                const o = document.createElement('option'); o.value=d.id; o.text = d.file.name; syncRefSelect.appendChild(o);
+            });
+        }
+
+        function renderSyncDevices() {
+            syncDevicesEl.innerHTML = '';
+            syncState.devices.forEach(dev => {
+                const box = document.createElement('div'); box.className='sync-tool-device';
+                const titleRow = document.createElement('div'); titleRow.className='sync-tool-row';
+                const name = document.createElement('div'); name.innerHTML = `<strong>${dev.file.name}</strong><br/><small>${dev.kind.toUpperCase()} · ${Math.round(dev.file.size/1024)} KB</small>`;
+                titleRow.appendChild(name);
+                box.appendChild(titleRow);
+
+                const playerWrap = document.createElement('div'); playerWrap.appendChild(dev.element);
+                box.appendChild(playerWrap);
+
+                const trow = document.createElement('div'); trow.className='sync-tool-row';
+                const tlabel = document.createElement('label'); tlabel.textContent = 'Device clock for START (optional): ';
+                const tinput = document.createElement('input'); tinput.type='datetime-local'; tinput.value = dev.deviceTimestamp ? (new Date(dev.deviceTimestamp*1000)).toISOString().slice(0,16) : '';
+                tinput.addEventListener('change', ()=> {
+                    const epoch = parseLocalDatetimeToEpoch(tinput.value);
+                    dev.deviceTimestamp = epoch;
+                });
+                trow.appendChild(tlabel); trow.appendChild(tinput);
+                box.appendChild(trow);
+
+                const mrow = document.createElement('div'); mrow.className='sync-tool-row';
+                const markBtn = document.createElement('button'); markBtn.textContent = 'Set Marker (current playback)';
+                markBtn.addEventListener('click', ()=> {
+                    const ct = dev.element.currentTime;
+                    const label = prompt('Label for marker (e.g., clap):','marker') || 'marker';
+                    dev.markers.push({label, time: ct});
+                    renderSyncDevices();
+                });
+                const clearMarks = document.createElement('button'); clearMarks.textContent='Clear markers';
+                clearMarks.style.marginLeft='6px';
+                clearMarks.addEventListener('click', ()=> { dev.markers = []; renderSyncDevices(); });
+                mrow.appendChild(markBtn); mrow.appendChild(clearMarks);
+                box.appendChild(mrow);
+
+                if (dev.markers.length) {
+                    const mlist = document.createElement('div');
+                    mlist.innerHTML = '<small>Markers:</small><br/>' + dev.markers.map(m=>`${m.label}: ${fmtS(m.time)}`).join('<br/>');
+                    box.appendChild(mlist);
+                }
+
+                const orow = document.createElement('div'); orow.className='sync-tool-row';
+                const offsetLabel = document.createElement('div'); offsetLabel.innerHTML = `<small>Offset (s):</small> <span class="sync-tool-timestamp">${(dev.offsetSeconds||0).toFixed(3)}</span>`;
+                orow.appendChild(offsetLabel);
+                box.appendChild(orow);
+
+                const refRow = document.createElement('div'); refRow.className='sync-tool-row';
+                const setRefFromStart = document.createElement('button'); setRefFromStart.textContent = 'Use this file START as reference (wall-clock)';
+                setRefFromStart.addEventListener('click', ()=> {
+                    if (!dev.deviceTimestamp) return alert('Set device clock timestamp first.');
+                    syncState.masterStartEpoch = dev.deviceTimestamp;
+                    alert('Master reference set to this device start time (wall clock).');
+                });
+                const setRefFromMarker = document.createElement('button'); setRefFromMarker.textContent='Use marker as reference';
+                setRefFromMarker.style.marginLeft='6px';
+                setRefFromMarker.addEventListener('click', ()=> {
+                    if (!dev.markers.length) return alert('No markers set.');
+                    const choices = dev.markers.map((m,i)=>`${i}: ${m.label} @ ${fmtS(m.time)}`).join('\n');
+                    const idx = prompt('Pick marker index to use as reference:\n' + choices, '0');
+                    const mi = parseInt(idx);
+                    if (isNaN(mi) || !dev.markers[mi]) return;
+                    dev._useMarkerIndex = mi;
+                    alert('This device marker will be used as reference marker when you compute offsets.');
+                });
+
+                box.appendChild(refRow);
+                refRow.appendChild(setRefFromStart);
+                refRow.appendChild(setRefFromMarker);
+
+                syncDevicesEl.appendChild(box);
+            });
+
+            updateSyncRefSelect();
+            updateSyncMasterSliderRange();
+        }
+
+        function updateSyncMasterSliderRange() {
+            let maxDur = 0;
+            syncState.devices.forEach(d=>{ if (d.duration && isFinite(d.duration)) maxDur = Math.max(maxDur, d.duration) });
+            syncMasterSlider.min = 0;
+            syncMasterSlider.max = Math.max(1, maxDur);
+            syncMasterSlider.step = 0.001;
+        }
+
+        document.getElementById('syncComputeOffsets').addEventListener('click', ()=> {
+            if (syncState.masterStartEpoch) {
+                syncState.devices.forEach(d=>{
+                    if (d.deviceTimestamp) {
+                        d.offsetSeconds = d.deviceTimestamp - syncState.masterStartEpoch;
+                    } else {
+                        d.offsetSeconds = NaN;
+                    }
+                });
+                alert('Offsets computed from wall-clock device timestamps. Reference is masterStartEpoch.');
+                renderSyncDevices();
+                return;
+            }
+
+            let refDev = null, refMarkerTime = null;
+            for (const d of syncState.devices) {
+                if (typeof d._useMarkerIndex !== 'undefined') {
+                    refDev = d;
+                    refMarkerTime = d.markers[d._useMarkerIndex].time;
+                    break;
+                }
+            }
+            if (!refDev) {
+                alert('No wall-clock reference set and no reference marker chosen on any device. Please: (1) set a device start timestamp and press "Use this file START as reference" or (2) set marker on one device and click "Use marker as reference".');
+                return;
+            }
+            syncState.devices.forEach(d=>{
+                if (d === refDev) {
+                    d.offsetSeconds = 0;
+                } else {
+                    let chosen = null;
+                    if (d.markers.length === 1) chosen = d.markers[0];
+                    else if (d.markers.length > 1) {
+                        const refLabel = refDev.markers[refDev._useMarkerIndex].label;
+                        chosen = d.markers.find(m=>m.label === refLabel) || d.markers[0];
+                    }
+                    if (chosen) {
+                        d.offsetSeconds = refMarkerTime - chosen.time;
+                    } else {
+                        d.offsetSeconds = NaN;
+                    }
+                }
+            });
+            alert('Offsets computed from reference marker. Master timeline zero = reference marker.');
+            renderSyncDevices();
+        });
+
+        document.getElementById('syncPlayAll').addEventListener('click', ()=> {
+            const t_master = parseFloat(syncMasterSlider.value);
+            syncState.devices.forEach(d=> {
+                setSyncMediaTimeFromMaster(d, t_master);
+                try { d.element.play(); } catch(e){}
+            });
+            startSyncMasterClock();
+        });
+        document.getElementById('syncPauseAll').addEventListener('click', ()=> {
+            syncState.devices.forEach(d=> { try{d.element.pause();}catch(e){} });
+            stopSyncMasterClock();
+        });
+
+        function setSyncMediaTimeFromMaster(d, masterSeconds) {
+            if (syncState.masterStartEpoch && d.deviceTimestamp) {
+                const desired = (syncState.masterStartEpoch + masterSeconds) - d.deviceTimestamp;
+                d.element.currentTime = clamp(desired,0,d.duration||d.element.duration||0);
+                return;
+            }
+            if (typeof d.offsetSeconds === 'number' && isFinite(d.offsetSeconds)) {
+                const desired = masterSeconds - d.offsetSeconds;
+                d.element.currentTime = clamp(desired,0,d.duration||d.element.duration||0);
+                return;
+            }
+            if (isFinite(d.duration)) {
+                d.element.currentTime = clamp(masterSeconds, 0, d.duration);
+            }
+        }
+
+        function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+        let syncMasterClockInterval = null;
+        function startSyncMasterClock() {
+            stopSyncMasterClock();
+            const start = performance.now();
+            const startVal = parseFloat(syncMasterSlider.value);
+            syncMasterClockInterval = setInterval(()=>{
+                const elapsed = (performance.now() - start)/1000;
+                const newMaster = startVal + elapsed;
+                syncMasterSlider.value = newMaster;
+                syncMasterTimeLabel.textContent = fmtS(newMaster);
+                syncState.devices.forEach(d => setSyncMediaTimeFromMaster(d, newMaster));
+            }, 40);
+        }
+        function stopSyncMasterClock(){ if (syncMasterClockInterval) { clearInterval(syncMasterClockInterval); syncMasterClockInterval=null; } }
+
+        syncMasterSlider.addEventListener('input', ()=>{
+            const t = parseFloat(syncMasterSlider.value);
+            syncMasterTimeLabel.textContent = fmtS(t);
+            syncState.devices.forEach(d => setSyncMediaTimeFromMaster(d, t));
+        });
+
+        document.getElementById('syncExportJSON').addEventListener('click', ()=> {
+            const out = { masterStartEpoch: syncState.masterStartEpoch, devices: syncState.devices.map(d=>({
+                name: d.file.name,
+                offsetSeconds: d.offsetSeconds,
+                deviceTimestamp: d.deviceTimestamp,
+                markers: d.markers
+            }))};
+            const blob = new Blob([JSON.stringify(out, null, 2)], {type:'application/json'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'sync_session.json'; a.click();
+        });
+
+        document.getElementById('syncImportJSON').addEventListener('click', ()=> document.getElementById('syncImportFile').click());
+        document.getElementById('syncImportFile').addEventListener('change', ev=>{
+            const f = ev.target.files[0];
+            const reader = new FileReader();
+            reader.onload = ()=> {
+                try {
+                    const j = JSON.parse(reader.result);
+                    if (j.masterStartEpoch) syncState.masterStartEpoch = j.masterStartEpoch;
+                    if (Array.isArray(j.devices)) {
+                        j.devices.forEach(sd=>{
+                            const dev = syncState.devices.find(d=>d.file.name === sd.name);
+                            if (dev) {
+                                dev.offsetSeconds = sd.offsetSeconds;
+                                dev.deviceTimestamp = sd.deviceTimestamp;
+                                if (sd.markers) dev.markers = sd.markers;
+                            }
+                        });
+                    }
+                    renderSyncDevices();
+                    alert('Imported JSON. Make sure files loaded match session files.');
+                } catch(e) {
+                    alert('Invalid JSON');
+                }
+            };
+            reader.readAsText(f);
         });
 
     </script>
