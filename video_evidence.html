@@ -215,6 +215,79 @@
             text-decoration: underline;
         }
 
+        /* Synchronized Video Container */
+        .sync-video-container {
+            margin: 30px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #000000;
+        }
+
+        .sync-videos-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            background: #000000;
+        }
+
+        .sync-video-item {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        .sync-video-item iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .sync-controls {
+            padding: 15px 20px;
+            background: #faf9f7;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sync-controls button {
+            padding: 8px 16px;
+            background: #4682B4;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .sync-controls button:hover {
+            background: #357abd;
+        }
+
+        .sync-controls .sync-info {
+            color: #5a5a5a;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .sync-videos-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Document/File Link Container */
         .document-link-container {
             margin: 30px 0;
@@ -391,6 +464,19 @@
             color: #d0d0d0;
         }
 
+        html.dark .sync-video-container {
+            border-color: #2a2a2a;
+        }
+
+        html.dark .sync-controls {
+            background: #0a0a0a;
+            border-top-color: #2a2a2a;
+        }
+
+        html.dark .sync-controls .sync-info {
+            color: #d0d0d0;
+        }
+
         html.dark .notes-section {
             background: #0a0a0a;
             border-color: #2a2a2a;
@@ -487,6 +573,17 @@
             </div>
         </div>
 
+        <section id="audio-recordings">
+            <h2>Audio Recordings</h2>
+            <p>High-quality audio recordings captured at the property documenting noise and vibration conditions.</p>
+            
+            <div class="document-link-container">
+                <h3>Audio Files</h3>
+                <p>Raw audio recordings (WAV format) captured using professional sound recording equipment. Files include recordings from different times of day and locations within the property.</p>
+                <a href="https://drive.google.com/drive/folders/1pjMGOI-tSjBlho9P764wBiyi4qfO6BIH?usp=sharing" target="_blank" class="document-link-button">View Audio Files in Google Drive ↗</a>
+            </div>
+        </section>
+
         <section id="videos">
             <h2>Video Recordings</h2>
             <p>This page contains video documentation of noise and vibration conditions recorded at the property. Each video includes a timeline table below for detailed notes and observations.</p>
@@ -494,7 +591,7 @@
             <!-- Video 1 -->
             <div class="video-container">
                 <div class="video-wrapper">
-                    <iframe src="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/preview" allow="autoplay" allowfullscreen></iframe>
+                    <iframe id="mainVideo" src="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/preview" allow="autoplay" allowfullscreen></iframe>
                 </div>
                 <div class="video-info">
                     <div class="video-title">Sunday Church Session - Parents' Room</div>
@@ -526,25 +623,36 @@
             </div>
         </section>
 
-        <section id="audio-recordings">
-            <h2>Audio Recordings</h2>
-            <p>High-quality audio recordings captured at the property documenting noise and vibration conditions.</p>
-            
-            <div class="document-link-container">
-                <h3>Audio Files</h3>
-                <p>Raw audio recordings (WAV format) captured using professional sound recording equipment. Files include recordings from different times of day and locations within the property.</p>
-                <a href="https://drive.google.com/drive/folders/1pjMGOI-tSjBlho9P764wBiyi4qfO6BIH?usp=sharing" target="_blank" class="document-link-button">View Audio Files in Google Drive ↗</a>
-            </div>
-        </section>
-
         <section id="sound-analysis">
             <h2>Sound Analysis & Measurements</h2>
             <p>Technical sound analysis data including spectrograms and sound level meter readings.</p>
             
-            <div class="document-link-container">
-                <h3>Spectroid Screen Recording</h3>
-                <p>Screen recording of the Spectroid app showing real-time frequency analysis and spectrogram visualization of sound conditions at the property. This provides visual representation of the frequency content and intensity of noise exposure.</p>
-                <a href="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/view?usp=sharing" target="_blank" class="document-link-button">View Spectroid Recording ↗</a>
+            <!-- Synchronized Spectroid Video -->
+            <div class="sync-video-container">
+                <div class="sync-videos-wrapper">
+                    <div class="sync-video-item">
+                        <iframe id="spectroidVideo" src="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/preview?t=82" allow="autoplay" allowfullscreen></iframe>
+                    </div>
+                    <div class="sync-video-item">
+                        <iframe id="mainVideoSync" src="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/preview" allow="autoplay" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="sync-controls">
+                    <button onclick="syncVideos()">Sync Videos</button>
+                    <button onclick="playBoth()">Play Both</button>
+                    <button onclick="pauseBoth()">Pause Both</button>
+                    <div class="sync-info">
+                        <strong>Note:</strong> The Spectroid app recording (left) begins at 1:22 in the main video (right), marked by a beep. Use the sync controls to align playback. The Spectroid video is pre-offset to start at 1:22.
+                    </div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">Spectroid Frequency Analysis - Synchronized View</div>
+                    <div class="video-meta">
+                        <span><strong>Left:</strong> Spectroid App Screen Recording</span>
+                        <span><strong>Right:</strong> Main Video (Sunday Church Session)</span>
+                        <a href="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/view?usp=sharing" target="_blank" class="video-link">Open Spectroid Video in Google Drive ↗</a>
+                    </div>
+                </div>
             </div>
 
             <div class="document-link-container">
@@ -577,6 +685,56 @@
             themeIcon.textContent = isDark ? '☀️' : '🌙';
             themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
         });
+
+        // Video Synchronization Functions
+        // Note: Google Drive iframes have limited API access, so manual sync may be needed
+        function syncVideos() {
+            // The Spectroid video is pre-offset to start at 1:22 (82 seconds)
+            // This function provides instructions for manual synchronization
+            alert('Video Sync Instructions:\n\n' +
+                  '1. Play the main video (right side) and wait for the beep at 1:22\n' +
+                  '2. When you hear the beep, start the Spectroid video (left side)\n' +
+                  '3. The Spectroid video is pre-offset to start at 1:22\n' +
+                  '4. Use the play/pause controls on each video to keep them synchronized\n\n' +
+                  'Note: Due to Google Drive iframe limitations, automatic sync is not available. Manual synchronization is recommended.');
+        }
+
+        function playBoth() {
+            // Attempt to play both videos (may require user interaction)
+            const mainVideo = document.getElementById('mainVideoSync');
+            const spectroidVideo = document.getElementById('spectroidVideo');
+            
+            // Try to send play commands (may not work due to iframe restrictions)
+            try {
+                if (mainVideo && mainVideo.contentWindow) {
+                    mainVideo.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+                if (spectroidVideo && spectroidVideo.contentWindow) {
+                    spectroidVideo.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                }
+            } catch (e) {
+                console.log('Auto-play may require user interaction');
+            }
+            
+            alert('Click play on both videos to start synchronized playback. The Spectroid video (left) should start when the main video (right) reaches 1:22.');
+        }
+
+        function pauseBoth() {
+            // Attempt to pause both videos
+            const mainVideo = document.getElementById('mainVideoSync');
+            const spectroidVideo = document.getElementById('spectroidVideo');
+            
+            try {
+                if (mainVideo && mainVideo.contentWindow) {
+                    mainVideo.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
+                if (spectroidVideo && spectroidVideo.contentWindow) {
+                    spectroidVideo.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                }
+            } catch (e) {
+                console.log('Pause command may not work due to iframe restrictions');
+            }
+        }
     </script>
 </body>
 </html>
