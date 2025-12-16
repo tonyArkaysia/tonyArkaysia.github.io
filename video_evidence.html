@@ -887,7 +887,7 @@
 
             <div class="sync-tool-container">
                 <h3>Multi-Device Audio/Video Sync Tool</h3>
-                <p>Load up to 6 files (audio/video). Default sync points are automatically set: first video at 0:00, audio at 0:28, and second video (Spectroid) at 1:22. You can add additional markers or adjust these as needed, then press <em>Compute Offsets</em> to synchronize playback.</p>
+                <p>Load up to 6 files (audio/video). Default sync points are automatically set: first video (left) at 1:22, audio at 0:28, and second video (Spectroid, right) at 0:00. You can add additional markers or adjust these as needed, then press <em>Compute Offsets</em> to synchronize playback.</p>
 
                 <div>
                     <input id="syncFileInput" type="file" multiple accept="audio/*,video/*" />
@@ -995,12 +995,12 @@
             
             if (kind === 'video') {
                 if (videoCount === 0) {
-                    // First video: marker at 0:00 (start) - set as default reference
-                    dev.markers.push({label: 'video_start', time: 0});
+                    // First video (left side): marker at 1:22 (82 seconds) - set as default reference
+                    dev.markers.push({label: 'video_start', time: 82});
                     dev._useMarkerIndex = 0; // Auto-set as reference
                 } else if (videoCount === 1) {
-                    // Second video (Spectroid): marker at 1:22 (82 seconds)
-                    dev.markers.push({label: 'spectroid_start', time: 82});
+                    // Second video (Spectroid, right side): marker at 0:00 (start)
+                    dev.markers.push({label: 'spectroid_start', time: 0});
                 }
             } else if (kind === 'audio') {
                 // Audio: marker at 0:28 (28 seconds) - when audio starts relative to main video
@@ -1242,11 +1242,14 @@
         });
 
         function setSyncMediaTimeFromMaster(d, masterSeconds) {
+            // Don't sync if video is paused or not ready
+            if (d.element.paused || d.element.readyState < 2) return;
+            
             if (typeof d.offsetSeconds === 'number' && isFinite(d.offsetSeconds)) {
                 const desired = masterSeconds - d.offsetSeconds;
                 const current = d.element.currentTime;
-                // Only seek if there's significant drift (more than 0.2 seconds) to avoid interrupting playback
-                if (Math.abs(current - desired) > 0.2) {
+                // Only seek if there's significant drift (more than 0.5 seconds) to avoid interrupting playback
+                if (Math.abs(current - desired) > 0.5) {
                     d.element.currentTime = clamp(desired, 0, d.duration||d.element.duration||0);
                 }
                 return;
@@ -1254,8 +1257,8 @@
             if (isFinite(d.duration)) {
                 const desired = clamp(masterSeconds, 0, d.duration);
                 const current = d.element.currentTime;
-                // Only seek if there's significant drift
-                if (Math.abs(current - desired) > 0.2) {
+                // Only seek if there's significant drift (more than 0.5 seconds)
+                if (Math.abs(current - desired) > 0.5) {
                     d.element.currentTime = desired;
                 }
             }
@@ -1265,25 +1268,28 @@
 
         let syncMasterClockInterval = null;
         let lastSyncTime = 0;
+        let lastSyncCheck = 0;
         function startSyncMasterClock() {
             stopSyncMasterClock();
             const start = performance.now();
             const startVal = parseFloat(syncMasterSlider.value);
             lastSyncTime = startVal;
+            lastSyncCheck = start;
             syncMasterClockInterval = setInterval(()=>{
                 const elapsed = (performance.now() - start)/1000;
                 const newMaster = startVal + elapsed;
                 syncMasterSlider.value = newMaster;
                 syncMasterTimeLabel.textContent = fmtS(newMaster);
-                // Only sync if there's significant drift (more than 0.1 seconds)
-                if (Math.abs(newMaster - lastSyncTime) > 0.1) {
+                // Only sync every 500ms to avoid constant seeking
+                const now = performance.now();
+                if (now - lastSyncCheck > 500) {
                     syncState.devices.forEach(d => {
-                        if (d.element.paused) return; // Don't sync paused videos
+                        if (d.element.paused || d.element.ended) return;
                         setSyncMediaTimeFromMaster(d, newMaster);
                     });
-                    lastSyncTime = newMaster;
+                    lastSyncCheck = now;
                 }
-            }, 100); // Reduced frequency from 40ms to 100ms
+            }, 200); // Update UI every 200ms, but sync less frequently
         }
         function stopSyncMasterClock(){ if (syncMasterClockInterval) { clearInterval(syncMasterClockInterval); syncMasterClockInterval=null; } }
 
