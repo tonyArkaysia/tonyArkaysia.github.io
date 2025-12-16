@@ -578,12 +578,59 @@
         }
 
         .sync-tool-devices-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
             width: 100%;
             box-sizing: border-box;
+        }
+
+        .sync-tool-audio-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sync-tool-audio-section h4 {
+            margin: 0 0 15px 0;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+        }
+
+        .sync-tool-audio-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sync-tool-video-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sync-tool-video-section h4 {
+            margin: 0 0 15px 0;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+        }
+
+        .sync-tool-video-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 15px;
+        }
+
+        html.dark .sync-tool-audio-section,
+        html.dark .sync-tool-video-section {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .sync-tool-audio-section h4,
+        html.dark .sync-tool-video-section h4 {
+            color: #faf9f7;
         }
 
         .sync-tool-device > div {
@@ -840,7 +887,7 @@
 
             <div class="sync-tool-container">
                 <h3>Multi-Device Audio/Video Sync Tool</h3>
-                <p>Load up to 6 files (audio/video). For each file, set a marker during playback to align a common event (like a beep or clap). Then pick a reference device and press <em>Compute Offsets</em>.</p>
+                <p>Load up to 6 files (audio/video). Default sync points are automatically set: first video at 0:00, audio at 0:28, and second video (Spectroid) at 1:22. You can add additional markers or adjust these as needed, then press <em>Compute Offsets</em> to synchronize playback.</p>
 
                 <div>
                     <input id="syncFileInput" type="file" multiple accept="audio/*,video/*" />
@@ -939,15 +986,38 @@
             el.controls = true;
             el.src = url;
             el.preload = "metadata";
+            
+            const dev = {id, file, url, kind, duration: NaN, element: el, markers: [], offsetSeconds: 0};
+            
+            // Add default markers based on file order and type
+            const videoCount = syncState.devices.filter(d => d.kind === 'video').length;
+            const audioCount = syncState.devices.filter(d => d.kind === 'audio').length;
+            
+            if (kind === 'video') {
+                if (videoCount === 0) {
+                    // First video: marker at 0:00 (start) - set as default reference
+                    dev.markers.push({label: 'video_start', time: 0});
+                    dev._useMarkerIndex = 0; // Auto-set as reference
+                } else if (videoCount === 1) {
+                    // Second video (Spectroid): marker at 1:22 (82 seconds)
+                    dev.markers.push({label: 'spectroid_start', time: 82});
+                }
+            } else if (kind === 'audio') {
+                // Audio: marker at 0:28 (28 seconds) - when audio starts relative to main video
+                dev.markers.push({label: 'audio_start', time: 28});
+            }
+            
             el.addEventListener('loadedmetadata', ()=> {
                 const dev = syncState.devices.find(d=>d.id===id);
                 if (dev) {
                     dev.duration = el.duration;
                     updateSyncMasterSliderRange();
                     renderSyncDevices();
+                    // Auto-compute offsets if we have default markers set up
+                    autoComputeOffsetsIfReady();
                 }
             });
-            const dev = {id, file, url, kind, duration: NaN, element: el, markers: [], offsetSeconds: 0};
+            
             syncState.devices.push(dev);
             updateSyncRefSelect();
         }
@@ -960,63 +1030,118 @@
             });
         }
 
+        function createDeviceBox(dev) {
+            const box = document.createElement('div'); box.className='sync-tool-device';
+            const titleRow = document.createElement('div'); titleRow.className='sync-tool-row';
+            const name = document.createElement('div'); name.innerHTML = `<strong>${dev.file.name}</strong><br/><small>${dev.kind.toUpperCase()} · ${Math.round(dev.file.size/1024)} KB</small>`;
+            titleRow.appendChild(name);
+            box.appendChild(titleRow);
+
+            const playerWrap = document.createElement('div');
+            playerWrap.style.width = '100%';
+            playerWrap.style.margin = '10px 0';
+            playerWrap.appendChild(dev.element);
+            box.appendChild(playerWrap);
+
+            const mrow = document.createElement('div'); mrow.className='sync-tool-row';
+            const markBtn = document.createElement('button'); markBtn.textContent = 'Set Marker (current playback)';
+            markBtn.addEventListener('click', ()=> {
+                const ct = dev.element.currentTime;
+                const label = prompt('Label for marker (e.g., clap):','marker') || 'marker';
+                dev.markers.push({label, time: ct});
+                renderSyncDevices();
+            });
+            const clearMarks = document.createElement('button'); clearMarks.textContent='Clear markers';
+            clearMarks.style.marginLeft='6px';
+            clearMarks.addEventListener('click', ()=> { dev.markers = []; renderSyncDevices(); });
+            mrow.appendChild(markBtn); mrow.appendChild(clearMarks);
+            box.appendChild(mrow);
+
+            if (dev.markers.length) {
+                const mlist = document.createElement('div');
+                mlist.innerHTML = '<small>Markers:</small><br/>' + dev.markers.map(m=>`${m.label}: ${fmtS(m.time)}`).join('<br/>');
+                box.appendChild(mlist);
+            }
+
+            const orow = document.createElement('div'); orow.className='sync-tool-row';
+            const offsetLabel = document.createElement('div'); offsetLabel.innerHTML = `<small>Offset (s):</small> <span class="sync-tool-timestamp">${(dev.offsetSeconds||0).toFixed(3)}</span>`;
+            orow.appendChild(offsetLabel);
+            box.appendChild(orow);
+
+            const refRow = document.createElement('div'); refRow.className='sync-tool-row';
+            const setRefFromMarker = document.createElement('button'); setRefFromMarker.textContent='Use marker as reference';
+            setRefFromMarker.addEventListener('click', ()=> {
+                if (!dev.markers.length) return alert('No markers set.');
+                const choices = dev.markers.map((m,i)=>`${i}: ${m.label} @ ${fmtS(m.time)}`).join('\n');
+                const idx = prompt('Pick marker index to use as reference:\n' + choices, '0');
+                const mi = parseInt(idx);
+                if (isNaN(mi) || !dev.markers[mi]) return;
+                dev._useMarkerIndex = mi;
+                alert('This device marker will be used as reference marker when you compute offsets.');
+            });
+
+            box.appendChild(refRow);
+            refRow.appendChild(setRefFromMarker);
+            
+            return box;
+        }
+
         function renderSyncDevices() {
             syncDevicesEl.innerHTML = '';
-            syncState.devices.forEach(dev => {
-                const box = document.createElement('div'); box.className='sync-tool-device';
-                const titleRow = document.createElement('div'); titleRow.className='sync-tool-row';
-                const name = document.createElement('div'); name.innerHTML = `<strong>${dev.file.name}</strong><br/><small>${dev.kind.toUpperCase()} · ${Math.round(dev.file.size/1024)} KB</small>`;
-                titleRow.appendChild(name);
-                box.appendChild(titleRow);
-
-                const playerWrap = document.createElement('div');
-                playerWrap.style.width = '100%';
-                playerWrap.style.margin = '10px 0';
-                playerWrap.appendChild(dev.element);
-                box.appendChild(playerWrap);
-
-                const mrow = document.createElement('div'); mrow.className='sync-tool-row';
-                const markBtn = document.createElement('button'); markBtn.textContent = 'Set Marker (current playback)';
-                markBtn.addEventListener('click', ()=> {
-                    const ct = dev.element.currentTime;
-                    const label = prompt('Label for marker (e.g., clap):','marker') || 'marker';
-                    dev.markers.push({label, time: ct});
-                    renderSyncDevices();
+            
+            // Separate audio and video files
+            const audioFiles = syncState.devices.filter(d => d.kind === 'audio');
+            const videoFiles = syncState.devices.filter(d => d.kind === 'video');
+            
+            // Determine order: if audio was loaded first, show it first; otherwise show videos first
+            const audioFirst = audioFiles.length > 0 && videoFiles.length > 0 && 
+                              syncState.devices.indexOf(audioFiles[0]) < syncState.devices.indexOf(videoFiles[0]);
+            
+            // Render audio section (flat layout)
+            if (audioFiles.length > 0) {
+                const audioSection = document.createElement('div');
+                audioSection.className = 'sync-tool-audio-section';
+                const audioTitle = document.createElement('h4');
+                audioTitle.textContent = 'Audio Files';
+                audioSection.appendChild(audioTitle);
+                
+                const audioList = document.createElement('div');
+                audioList.className = 'sync-tool-audio-list';
+                audioFiles.forEach(dev => {
+                    audioList.appendChild(createDeviceBox(dev));
                 });
-                const clearMarks = document.createElement('button'); clearMarks.textContent='Clear markers';
-                clearMarks.style.marginLeft='6px';
-                clearMarks.addEventListener('click', ()=> { dev.markers = []; renderSyncDevices(); });
-                mrow.appendChild(markBtn); mrow.appendChild(clearMarks);
-                box.appendChild(mrow);
-
-                if (dev.markers.length) {
-                    const mlist = document.createElement('div');
-                    mlist.innerHTML = '<small>Markers:</small><br/>' + dev.markers.map(m=>`${m.label}: ${fmtS(m.time)}`).join('<br/>');
-                    box.appendChild(mlist);
+                audioSection.appendChild(audioList);
+                
+                if (audioFirst) {
+                    syncDevicesEl.appendChild(audioSection);
+                } else {
+                    // Will append after videos
+                    syncDevicesEl._audioSection = audioSection;
                 }
-
-                const orow = document.createElement('div'); orow.className='sync-tool-row';
-                const offsetLabel = document.createElement('div'); offsetLabel.innerHTML = `<small>Offset (s):</small> <span class="sync-tool-timestamp">${(dev.offsetSeconds||0).toFixed(3)}</span>`;
-                orow.appendChild(offsetLabel);
-                box.appendChild(orow);
-
-                const refRow = document.createElement('div'); refRow.className='sync-tool-row';
-                const setRefFromMarker = document.createElement('button'); setRefFromMarker.textContent='Use marker as reference';
-                setRefFromMarker.addEventListener('click', ()=> {
-                    if (!dev.markers.length) return alert('No markers set.');
-                    const choices = dev.markers.map((m,i)=>`${i}: ${m.label} @ ${fmtS(m.time)}`).join('\n');
-                    const idx = prompt('Pick marker index to use as reference:\n' + choices, '0');
-                    const mi = parseInt(idx);
-                    if (isNaN(mi) || !dev.markers[mi]) return;
-                    dev._useMarkerIndex = mi;
-                    alert('This device marker will be used as reference marker when you compute offsets.');
+            }
+            
+            // Render video section (side by side panel)
+            if (videoFiles.length > 0) {
+                const videoSection = document.createElement('div');
+                videoSection.className = 'sync-tool-video-section';
+                const videoTitle = document.createElement('h4');
+                videoTitle.textContent = 'Video Files';
+                videoSection.appendChild(videoTitle);
+                
+                const videoPanel = document.createElement('div');
+                videoPanel.className = 'sync-tool-video-panel';
+                videoFiles.forEach(dev => {
+                    videoPanel.appendChild(createDeviceBox(dev));
                 });
-
-                box.appendChild(refRow);
-                refRow.appendChild(setRefFromMarker);
-
-                syncDevicesEl.appendChild(box);
-            });
+                videoSection.appendChild(videoPanel);
+                syncDevicesEl.appendChild(videoSection);
+            }
+            
+            // Append audio section after videos if it wasn't first
+            if (audioFiles.length > 0 && !audioFirst && syncDevicesEl._audioSection) {
+                syncDevicesEl.appendChild(syncDevicesEl._audioSection);
+                delete syncDevicesEl._audioSection;
+            }
 
             updateSyncRefSelect();
             updateSyncMasterSliderRange();
@@ -1028,6 +1153,45 @@
             syncMasterSlider.min = 0;
             syncMasterSlider.max = Math.max(1, maxDur);
             syncMasterSlider.step = 0.001;
+        }
+
+        function autoComputeOffsetsIfReady() {
+            // Check if we have a reference device with marker
+            let refDev = null, refMarkerTime = null;
+            for (const d of syncState.devices) {
+                if (typeof d._useMarkerIndex !== 'undefined' && d.markers.length > d._useMarkerIndex) {
+                    refDev = d;
+                    refMarkerTime = d.markers[d._useMarkerIndex].time;
+                    break;
+                }
+            }
+            if (!refDev) return;
+            
+            // Check if all devices have markers
+            const allHaveMarkers = syncState.devices.every(d => d.markers.length > 0);
+            if (!allHaveMarkers) return;
+            
+            // Compute offsets automatically
+            syncState.devices.forEach(d=>{
+                if (d === refDev) {
+                    d.offsetSeconds = 0;
+                } else {
+                    // Find marker with matching label or use first marker
+                    let chosen = null;
+                    if (d.markers.length === 1) chosen = d.markers[0];
+                    else if (d.markers.length > 1) {
+                        const refLabel = refDev.markers[refDev._useMarkerIndex].label;
+                        // Try to match by similar label pattern
+                        chosen = d.markers.find(m => m.label.includes('start') || m.label === refLabel) || d.markers[0];
+                    }
+                    if (chosen) {
+                        d.offsetSeconds = refMarkerTime - chosen.time;
+                    } else {
+                        d.offsetSeconds = NaN;
+                    }
+                }
+            });
+            renderSyncDevices();
         }
 
         document.getElementById('syncComputeOffsets').addEventListener('click', ()=> {
