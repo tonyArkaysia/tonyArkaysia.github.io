@@ -631,26 +631,23 @@
             <div class="sync-video-container">
                 <div class="sync-videos-wrapper">
                     <div class="sync-video-item">
-                        <iframe id="mainVideoSync" src="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/preview?t=82" allow="autoplay" allowfullscreen></iframe>
+                        <iframe id="mainVideoSync" src="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/preview?t=81" allow="autoplay" allowfullscreen></iframe>
                     </div>
                     <div class="sync-video-item">
                         <iframe id="spectroidVideo" src="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/preview" allow="autoplay" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="sync-controls">
-                    <button onclick="syncVideos()">Sync Videos</button>
-                    <button onclick="playBoth()">Play Both</button>
-                    <button onclick="pauseBoth()">Pause Both</button>
                     <div class="sync-info">
-                        <strong>Note:</strong> The main video (left) starts at 1:22, marked by a beep when the Spectroid app recording begins. The Spectroid app recording (right) starts from the beginning. Both videos are synchronized to play together.
+                        <strong>Note:</strong> The main video (left) starts at 1:21, giving you one second before the beep at 1:22 when the Spectroid app recording begins. The Spectroid app recording (right) starts from the beginning. Click play on both videos to watch them synchronized.
                     </div>
                 </div>
                 <div class="video-info">
                     <div class="video-title">Spectroid Frequency Analysis - Synchronized View</div>
                     <div class="video-meta">
-                        <span><strong>Left:</strong> Main Video (Sunday Church Session) - Starts at 1:22</span>
+                        <span><strong>Left:</strong> Main Video (Sunday Church Session) - Starts at 1:21</span>
                         <span><strong>Right:</strong> Spectroid App Screen Recording</span>
-                        <a href="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/view?usp=sharing" target="_blank" class="video-link">Open Spectroid Video in Google Drive ↗</a>
+                        <a href="https://drive.google.com/file/d/15W-qBKJGKfONyiTUiKKOhMchnoOCZ3ef/view?usp=drive_link" target="_blank" class="video-link">Open Spectroid Video in Google Drive ↗</a>
                     </div>
                 </div>
             </div>
@@ -659,6 +656,26 @@
                 <h3>Sound Level Meter Data Log</h3>
                 <p>Excel spreadsheet containing detailed sound level meter readings and measurements taken at various times and locations. Includes decibel levels, frequency data, and timestamp information.</p>
                 <a href="https://docs.google.com/spreadsheets/d/1gyuaCHxcx9-VKbD5z1MMdHxINM1I1EhY/edit?usp=sharing&ouid=118221274996717489135&rtpof=true&sd=true" target="_blank" class="document-link-button">View Sound Data Log ↗</a>
+            </div>
+        </section>
+
+        <section id="sync-tool">
+            <h2>Media Synchronization Tool</h2>
+            <p>For advanced synchronization of multiple audio/video files, you can download and use this standalone tool.</p>
+            
+            <div class="document-link-container">
+                <h3>Multi-Device Audio/Video Sync Tool</h3>
+                <p>This tool allows you to load up to 6 audio/video files and synchronize them using device timestamps or event markers (like a clap or beep). You can set a reference device, compute offsets, and play all files in sync with a master timeline control.</p>
+                <p><strong>Features:</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>Load multiple audio/video files (up to 6)</li>
+                    <li>Synchronize using device clock timestamps or event markers</li>
+                    <li>Master timeline control for synchronized playback</li>
+                    <li>Export/import sync session data (JSON)</li>
+                    <li>Works entirely in your browser - no server required</li>
+                </ul>
+                <a href="resources/media_sync_ui.html" target="_blank" class="document-link-button">Open Media Sync Tool ↗</a>
+                <a href="resources/media_sync_ui.html" download="media_sync_ui.html" class="document-link-button" style="margin-left: 10px; background: #8b4513;">Download Tool</a>
             </div>
         </section>
     </div>
@@ -686,56 +703,6 @@
             themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
         });
 
-        // Video Synchronization Functions
-        // Note: Google Drive iframes have limited API access, so manual sync may be needed
-        function syncVideos() {
-            // The main video is pre-offset to start at 1:22 (82 seconds)
-            // This function provides instructions for manual synchronization
-            alert('Video Sync Instructions:\n\n' +
-                  '1. Both videos are pre-synchronized:\n' +
-                  '   - Main video (left) starts at 1:22 (beep mark)\n' +
-                  '   - Spectroid video (right) starts from beginning\n' +
-                  '2. Click play on both videos to start synchronized playback\n' +
-                  '3. Use the play/pause controls on each video to keep them synchronized\n\n' +
-                  'Note: Due to Google Drive iframe limitations, automatic sync is not available. Both videos are pre-offset for alignment.');
-        }
-
-        function playBoth() {
-            // Attempt to play both videos (may require user interaction)
-            const mainVideo = document.getElementById('mainVideoSync');
-            const spectroidVideo = document.getElementById('spectroidVideo');
-            
-            // Try to send play commands (may not work due to iframe restrictions)
-            try {
-                if (mainVideo && mainVideo.contentWindow) {
-                    mainVideo.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                }
-                if (spectroidVideo && spectroidVideo.contentWindow) {
-                    spectroidVideo.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-                }
-            } catch (e) {
-                console.log('Auto-play may require user interaction');
-            }
-            
-            alert('Click play on both videos to start synchronized playback. The main video (left) starts at 1:22, synchronized with the Spectroid video (right) from the beginning.');
-        }
-
-        function pauseBoth() {
-            // Attempt to pause both videos
-            const mainVideo = document.getElementById('mainVideoSync');
-            const spectroidVideo = document.getElementById('spectroidVideo');
-            
-            try {
-                if (mainVideo && mainVideo.contentWindow) {
-                    mainVideo.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-                }
-                if (spectroidVideo && spectroidVideo.contentWindow) {
-                    spectroidVideo.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-                }
-            } catch (e) {
-                console.log('Pause command may not work due to iframe restrictions');
-            }
-        }
     </script>
 </body>
 </html>

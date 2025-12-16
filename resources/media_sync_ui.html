@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Multi-Device Audio/Video Sync Tool — A_LABS</title>
+<style>
+  body{font-family:Inter,system-ui,Segoe UI,Arial;margin:18px;background:#f7f8fb;color:#111}
+  h1{margin:0 0 8px}
+  .row{display:flex;gap:12px;align-items:center;margin:8px 0}
+  label{font-size:13px}
+  .device{border:1px solid #dde6f2;padding:10px;border-radius:8px;background:#fff}
+  .controls{margin-top:12px}
+  button{padding:8px 10px;border-radius:6px;border:1px solid #1f6feb;background:#1f6feb;color:white}
+  input[type="file"]{width:100%}
+  input, select {padding:6px;border-radius:6px;border:1px solid #c8d7ef}
+  .master{margin-top:18px;padding:12px;border-radius:8px;background:#fff;border:1px solid #dde6f2}
+  .devices-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-top:12px}
+  small{color:#445}
+  .timestamp{font-family:monospace}
+  .export{margin-left:10px}
+</style>
+</head>
+<body>
+  <h1>Multi-Device Sync Tool</h1>
+  <p>Load up to 6 files (audio/video). For each file either enter the device clock timestamp of the file start (wall clock) or set a marker during playback to align a common event (clap). Then pick a reference device and press <em>Compute Offsets</em>.</p>
+
+  <div>
+    <input id="fileInput" type="file" multiple accept="audio/*,video/*" />
+  </div>
+
+  <div class="devices-list" id="devices"></div>
+
+  <div class="master">
+    <div class="row">
+      <button id="playAll">Play All</button>
+      <button id="pauseAll">Pause All</button>
+      <button id="computeOffsets">Compute Offsets</button>
+      <select id="refSelect"></select>
+      <button id="exportJSON" class="export">Export JSON</button>
+      <button id="importJSON">Import JSON</button>
+      <input type="file" id="importFile" style="display:none" accept="application/json"/>
+    </div>
+
+    <div style="margin-top:12px">
+      <input id="masterSlider" type="range" min="0" max="1" step="0.0001" value="0" style="width:70%"/>
+      <span id="masterTimeLabel" class="timestamp">00:00:00.000</span>
+    </div>
+
+    <div class="controls">
+      <small>Reference timeline = wall-clock time or reference marker. Master timeline advances in seconds from reference start.</small>
+    </div>
+  </div>
+
+<script>
+/* Utility helpers */
+function fmtS(secs) {
+  if (!isFinite(secs)) return "--:--:--.---";
+  const sign = secs < 0 ? "-" : "";
+  secs = Math.abs(secs);
+  const h = Math.floor(secs/3600);
+  const m = Math.floor(secs%3600/60);
+  const s = Math.floor(secs%60);
+  const ms = Math.floor((secs - Math.floor(secs)) * 1000);
+  return sign + [h,m,s].map(n=>String(n).padStart(2,"0")).join(":") + "." + String(ms).padStart(3,"0");
+}
+function parseLocalDatetimeToEpoch(s) {
+  // s from <input type=datetime-local> -> local timezone
+  if (!s) return null;
+  const d = new Date(s);
+  if (isNaN(d)) return null;
+  return d.getTime()/1000;
+}
+
+/* App state */
+const state = {
+  devices: [], // {id, file, url, kind, duration, element, deviceTimestamp (epoch seconds), markers:[], offsetSeconds}
+  masterStartEpoch: null // optional: reference wall-clock start (seconds)
+};
+
+const devicesEl = document.getElementById('devices');
+const fileInput = document.getElementById('fileInput');
+const refSelect = document.getElementById('refSelect');
+const masterSlider = document.getElementById('masterSlider');
+const masterTimeLabel = document.getElementById('masterTimeLabel');
+
+fileInput.addEventListener('change', handleFiles, false);
+
+function handleFiles(ev) {
+  const files = Array.from(ev.target.files);
+  for (const f of files) addDevice(f);
+  renderDevices();
+}
+
+function addDevice(file) {
+  const id = 'd' + Math.random().toString(36).slice(2,9);
+  const url = URL.createObjectURL(file);
+  const kind = file.type.startsWith('video') ? 'video' : 'audio';
+  const el = document.createElement(kind === 'video' ? 'video' : 'audio');
+  el.controls = true;
+  el.src = url;
+  el.preload = "metadata";
+  // when metadata loads, record duration
+  el.addEventListener('loadedmetadata', ()=> {
+    const dev = state.devices.find(d=>d.id===id);
+    if (dev) {
+      dev.duration = el.duration;
+      updateMasterSliderRange();
+      renderDevices();
+    }
+  });
+  const dev = {id, file, url, kind, duration: NaN, element: el, deviceTimestamp: null, markers: [], offsetSeconds: 0};
+  state.devices.push(dev);
+  // update ref list
+  updateRefSelect();
+}
+
+function updateRefSelect() {
+  refSelect.innerHTML = '';
+  const optDefault = document.createElement('option'); optDefault.value='__none'; optDefault.text='Choose reference (none)'; refSelect.appendChild(optDefault);
+  state.devices.forEach(d=>{
+    const o = document.createElement('option'); o.value=d.id; o.text = d.file.name; refSelect.appendChild(o);
+  });
+}
+
+function renderDevices() {
+  devicesEl.innerHTML = '';
+  state.devices.forEach(dev => {
+    const box = document.createElement('div'); box.className='device';
+    const titleRow = document.createElement('div'); titleRow.className='row';
+    const name = document.createElement('div'); name.innerHTML = `<strong>${dev.file.name}</strong><br/><small>${dev.kind.toUpperCase()} · ${Math.round(dev.file.size/1024)} KB</small>`;
+    titleRow.appendChild(name);
+    box.appendChild(titleRow);
+
+    // Embed player
+    const playerWrap = document.createElement('div'); playerWrap.appendChild(dev.element);
+    box.appendChild(playerWrap);
+
+    // timestamp input
+    const trow = document.createElement('div'); trow.className='row';
+    const tlabel = document.createElement('label'); tlabel.textContent = 'Device clock for START (optional): ';
+    const tinput = document.createElement('input'); tinput.type='datetime-local'; tinput.value = dev.deviceTimestamp ? (new Date(dev.deviceTimestamp*1000)).toISOString().slice(0,16) : '';
+    tinput.addEventListener('change', ()=> {
+      const epoch = parseLocalDatetimeToEpoch(tinput.value);
+      dev.deviceTimestamp = epoch;
+    });
+    trow.appendChild(tlabel); trow.appendChild(tinput);
+    box.appendChild(trow);
+
+    // marker controls
+    const mrow = document.createElement('div'); mrow.className='row';
+    const markBtn = document.createElement('button'); markBtn.textContent = 'Set Marker (current playback)';
+    markBtn.addEventListener('click', ()=> {
+      const ct = dev.element.currentTime;
+      const label = prompt('Label for marker (e.g., clap):','marker') || 'marker';
+      dev.markers.push({label, time: ct});
+      renderDevices();
+    });
+    const clearMarks = document.createElement('button'); clearMarks.textContent='Clear markers';
+    clearMarks.style.marginLeft='6px';
+    clearMarks.addEventListener('click', ()=> { dev.markers = []; renderDevices(); });
+    mrow.appendChild(markBtn); mrow.appendChild(clearMarks);
+    box.appendChild(mrow);
+
+    // list markers
+    if (dev.markers.length) {
+      const mlist = document.createElement('div');
+      mlist.innerHTML = '<small>Markers:</small><br/>' + dev.markers.map(m=>`${m.label}: ${fmtS(m.time)}`).join('<br/>');
+      box.appendChild(mlist);
+    }
+
+    // show computed offset
+    const orow = document.createElement('div'); orow.className='row';
+    const offsetLabel = document.createElement('div'); offsetLabel.innerHTML = `<small>Offset (s):</small> <span class="timestamp">${(dev.offsetSeconds||0).toFixed(3)}</span>`;
+    orow.appendChild(offsetLabel);
+    box.appendChild(orow);
+
+    // set as reference start from this file's device timestamp or marker
+    const refRow = document.createElement('div'); refRow.className='row';
+    const setRefFromStart = document.createElement('button'); setRefFromStart.textContent = 'Use this file START as reference (wall-clock)';
+    setRefFromStart.addEventListener('click', ()=> {
+      if (!dev.deviceTimestamp) return alert('Set device clock timestamp first.');
+      state.masterStartEpoch = dev.deviceTimestamp; // seconds
+      alert('Master reference set to this device start time (wall clock).');
+    });
+    const setRefFromMarker = document.createElement('button'); setRefFromMarker.textContent='Use marker as reference';
+    setRefFromMarker.style.marginLeft='6px';
+    setRefFromMarker.addEventListener('click', ()=> {
+      if (!dev.markers.length) return alert('No markers set.');
+      const choices = dev.markers.map((m,i)=>`${i}: ${m.label} @ ${fmtS(m.time)}`).join('\n');
+      const idx = prompt('Pick marker index to use as reference:\n' + choices, '0');
+      const mi = parseInt(idx);
+      if (isNaN(mi) || !dev.markers[mi]) return;
+      // we pick marker on this device: masterStartEpoch will be arbitrary zero reference; instead we'll compute offsets later relative to this marker index
+      dev._useMarkerIndex = mi;
+      alert('This device marker will be used as reference marker when you compute offsets.');
+    });
+
+    box.appendChild(refRow);
+    refRow.appendChild(setRefFromStart);
+    refRow.appendChild(setRefFromMarker);
+
+    // append
+    devicesEl.appendChild(box);
+  });
+
+  updateRefSelect();
+  updateMasterSliderRange();
+}
+
+function updateMasterSliderRange() {
+  // set slider max to max duration + buffer if any
+  let maxDur = 0;
+  state.devices.forEach(d=>{ if (d.duration && isFinite(d.duration)) maxDur = Math.max(maxDur, d.duration) });
+  // set slider range as 0 .. maxDur (reference timeline seconds). We'll set step to small.
+  masterSlider.min = 0;
+  masterSlider.max = Math.max(1, maxDur);
+  masterSlider.step = 0.001;
+}
+
+/* Compute offsets:
+   Options:
+   - If masterStartEpoch is set (wall-clock), and device.deviceTimestamp is set: offset = deviceTimestamp - masterStartEpoch.
+     DeviceTimestamp = epoch secs at device file start. We want offsetSeconds such that:
+       file_time (media.currentTime) + deviceTimestamp = masterTimeEpoch (if masterTimeEpoch = masterStartEpoch + masterSliderValue)
+     For mapping we convert master slider's "seconds from reference" to epoch: masterEpoch = masterStartEpoch + masterSeconds.
+     Then desired: media.currentTime = masterEpoch - deviceTimestamp
+     So set dev.offsetSeconds = deviceTimestamp - masterStartEpoch? Let's compute as below carefully.
+
+   Implementation:
+   define masterSeconds t_master (slider value).
+   Define masterEpoch = masterStartEpoch + t_master (if masterStartEpoch exists).
+   For device d:
+     deviceEpochAtMediaTime0 = d.deviceTimestamp (if given)
+     mapping: media.currentTime = masterEpoch - deviceEpochAtMediaTime0
+     So when masterSeconds = 0, media.currentTime = masterStartEpoch - deviceTimestamp (could be negative -> clamp)
+
+   We'll store dev.offsetSeconds = deviceTimestamp (epoch); and app will compute currentTime = masterStartEpoch + masterSeconds - dev.deviceTimestamp
+
+   If using markers:
+     choose a reference device+marker -> refDevice and its marker time markerRef
+     For each device with marker mTime = device.marker.time:
+       offsetSeconds = (markerRefEpoch) - (deviceStartEpoch + mTime)
+     But since we don't have deviceStartEpoch, we treat the markers relative to chosen marker: set symbolic masterStartEpoch = 0 at reference marker and compute dev.offsetSeconds such that media.currentTime = masterSeconds - dev.offsetSeconds
+*/
+
+document.getElementById('computeOffsets').addEventListener('click', ()=> {
+  // Two modes: wall-clock reference (state.masterStartEpoch set) OR marker reference (look for device._useMarkerIndex flagged)
+  // If wall-clock:
+  if (state.masterStartEpoch) {
+    state.devices.forEach(d=>{
+      if (d.deviceTimestamp) {
+        // mapping used during play: media.currentTime = (masterStartEpoch + masterSeconds) - d.deviceTimestamp
+        d.offsetSeconds = d.deviceTimestamp - state.masterStartEpoch;
+      } else {
+        d.offsetSeconds = NaN;
+      }
+    });
+    alert('Offsets computed from wall-clock device timestamps. Reference is masterStartEpoch.');
+    renderDevices();
+    return;
+  }
+
+  // marker-based: find reference device with _useMarkerIndex set, else prompt user to choose reference device and marker
+  let refDev = null, refMarkerTime = null;
+  for (const d of state.devices) {
+    if (typeof d._useMarkerIndex !== 'undefined') {
+      refDev = d;
+      refMarkerTime = d.markers[d._useMarkerIndex].time;
+      break;
+    }
+  }
+  if (!refDev) {
+    alert('No wall-clock reference set and no reference marker chosen on any device. Please: (1) set a device start timestamp and press "Use this file START as reference" or (2) set marker on one device and click "Use marker as reference".');
+    return;
+  }
+  // We'll set master timeline zero point at reference device marker time (arbitrary epoch 0).
+  // For reference device: offsetSeconds = refMarkerTime (so media.currentTime = masterSeconds - offsetSeconds -> when masterSeconds=refMarkerTime -> media.currentTime=0? Wait let's pick a consistent mapping)
+  // Better: choose mapping: masterSeconds is seconds since reference event. So when masterSeconds=0, players should be at their marker times.
+  // Therefore for device d: media.currentTime = masterSeconds + (d.markerTime - refMarkerTime)
+  // Rearr: media.currentTime = masterSeconds - offsetSeconds  => offsetSeconds = refMarkerTime - d.markerTime
+  state.devices.forEach(d=>{
+    // find marker on device that best matches ref label - prompt user to pick matching markers or pick first marker if single.
+    if (d === refDev) {
+      // reference device offset = refMarkerTime - refMarkerTime = 0
+      d.offsetSeconds = 0;
+    } else {
+      // choose marker with same label if possible
+      let chosen = null;
+      if (d.markers.length === 1) chosen = d.markers[0];
+      else if (d.markers.length > 1) {
+        // try to find marker with same label as reference marker
+        const refLabel = refDev.markers[refDev._useMarkerIndex].label;
+        chosen = d.markers.find(m=>m.label === refLabel) || d.markers[0];
+      }
+      if (chosen) {
+        d.offsetSeconds = refMarkerTime - chosen.time; // offset in seconds: media.currentTime = masterSeconds - offsetSeconds => when master=0 => media.currentTime = -offsetSeconds = chosen.time
+        // rewrite to mapping below
+      } else {
+        d.offsetSeconds = NaN;
+      }
+    }
+  });
+  alert('Offsets computed from reference marker. Master timeline zero = reference marker.');
+  renderDevices();
+});
+
+/* Play/pause all and master slider mapping */
+document.getElementById('playAll').addEventListener('click', ()=> {
+  // resume all players at mapped times
+  const t_master = parseFloat(masterSlider.value);
+  state.devices.forEach(d=> {
+    setMediaTimeFromMaster(d, t_master);
+    // play
+    try { d.element.play(); } catch(e){}
+  });
+  startMasterClock(); // auto-advance slider in sync with real time
+});
+document.getElementById('pauseAll').addEventListener('click', ()=> {
+  state.devices.forEach(d=> { try{d.element.pause();}catch(e){} });
+  stopMasterClock();
+});
+
+function setMediaTimeFromMaster(d, masterSeconds) {
+  // Two mapping modes:
+  // 1) wall-clock master: if state.masterStartEpoch set: media.currentTime = (state.masterStartEpoch + masterSeconds) - d.deviceTimestamp
+  if (state.masterStartEpoch && d.deviceTimestamp) {
+    const desired = (state.masterStartEpoch + masterSeconds) - d.deviceTimestamp;
+    d.element.currentTime = clamp(desired,0,d.duration||d.element.duration||0);
+    return;
+  }
+  // 2) marker-based / offsetSeconds given:
+  if (typeof d.offsetSeconds === 'number' && isFinite(d.offsetSeconds)) {
+    // mapping: media.currentTime = masterSeconds - d.offsetSeconds
+    const desired = masterSeconds - d.offsetSeconds;
+    d.element.currentTime = clamp(desired,0,d.duration||d.element.duration||0);
+    return;
+  }
+  // fallback: attempt to align by setting to masterSeconds if durations are similar
+  if (isFinite(d.duration)) {
+    d.element.currentTime = clamp(masterSeconds, 0, d.duration);
+  }
+}
+
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+
+/* Master slider logic */
+let masterClockInterval = null;
+function startMasterClock() {
+  stopMasterClock();
+  const start = performance.now();
+  const startVal = parseFloat(masterSlider.value);
+  masterClockInterval = setInterval(()=>{
+    const elapsed = (performance.now() - start)/1000;
+    const newMaster = startVal + elapsed;
+    masterSlider.value = newMaster;
+    masterTimeLabel.textContent = fmtS(newMaster);
+    // set media times
+    state.devices.forEach(d => setMediaTimeFromMaster(d, newMaster));
+  }, 40);
+}
+function stopMasterClock(){ if (masterClockInterval) { clearInterval(masterClockInterval); masterClockInterval=null; } }
+
+masterSlider.addEventListener('input', ()=>{
+  const t = parseFloat(masterSlider.value);
+  masterTimeLabel.textContent = fmtS(t);
+  state.devices.forEach(d => setMediaTimeFromMaster(d, t));
+});
+
+/* Export / Import JSON */
+document.getElementById('exportJSON').addEventListener('click', ()=> {
+  const out = { masterStartEpoch: state.masterStartEpoch, devices: state.devices.map(d=>({
+    name: d.file.name,
+    offsetSeconds: d.offsetSeconds,
+    deviceTimestamp: d.deviceTimestamp,
+    markers: d.markers
+  }))};
+  const blob = new Blob([JSON.stringify(out, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'sync_session.json'; a.click();
+});
+
+document.getElementById('importJSON').addEventListener('click', ()=> document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change', ev=>{
+  const f = ev.target.files[0];
+  const reader = new FileReader();
+  reader.onload = ()=> {
+    try {
+      const j = JSON.parse(reader.result);
+      if (j.masterStartEpoch) state.masterStartEpoch = j.masterStartEpoch;
+      if (Array.isArray(j.devices)) {
+        // match by filename
+        j.devices.forEach(sd=>{
+          const dev = state.devices.find(d=>d.file.name === sd.name);
+          if (dev) {
+            dev.offsetSeconds = sd.offsetSeconds;
+            dev.deviceTimestamp = sd.deviceTimestamp;
+            if (sd.markers) dev.markers = sd.markers;
+          }
+        });
+      }
+      renderDevices();
+      alert('Imported JSON. Make sure files loaded match session files.');
+    } catch(e) {
+      alert('Invalid JSON');
+    }
+  };
+  reader.readAsText(f);
+});
+
+/* Utility: allow removing devices by clicking X (not implemented UI) - left as exercise */
+</script>
+</body>
+</html>
