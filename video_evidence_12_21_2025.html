@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Evidence - December 21, 2025 | Sunday Session Analysis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf9f7;
+            color: #2c2c2c;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 10px 0;
+            border-bottom: 3px solid #8b4513;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            min-height: 70px;
+        }
+
+        .top-bar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: #ffffff;
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+            margin-top: 100px;
+            margin-bottom: 0;
+        }
+
+        /* Document Header */
+        .document-header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+
+        .document-header h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.4rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .document-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #5a5a5a;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.9rem;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b4513;
+        }
+
+        h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        /* Video Container */
+        .video-container {
+            margin: 30px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: #000000;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 20px;
+            background: #faf9f7;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .video-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.3rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .video-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #5a5a5a;
+            flex-wrap: wrap;
+        }
+
+        .video-link {
+            color: #4682B4;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .video-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Timeline Notes Table */
+        .notes-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #faf9f7;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .notes-section h4 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .notes-search {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .notes-search input {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            color: #2c2c2c;
+            min-width: 200px;
+            font-size: 0.9rem;
+        }
+
+        .notes-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .notes-table th {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .notes-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: top;
+        }
+
+        .notes-table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .time-stamp {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #8b4513;
+            white-space: nowrap;
+            min-width: 100px;
+        }
+
+        .audio-sync {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #4682B4;
+            white-space: nowrap;
+        }
+
+        .note-content {
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        .note-highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .note-technical {
+            background: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Key Findings Box */
+        .key-findings {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-left: 4px solid #8b4513;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .key-findings h4 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .key-findings ul {
+            margin-left: 20px;
+        }
+
+        .key-findings li {
+            margin-bottom: 10px;
+            color: #3a3a3a;
+        }
+
+        /* Equipment List */
+        .equipment-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .equipment-item {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .equipment-item .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .equipment-item .name {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .equipment-item .desc {
+            font-size: 0.85rem;
+            color: #5a5a5a;
+            margin-top: 5px;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Dark Mode Styles */
+        html.dark body {
+            background: #000000;
+            color: #faf9f7;
+        }
+
+        html.dark .container {
+            background: #0f0f0f;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        }
+
+        html.dark .document-header {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .document-header h1,
+        html.dark h2, html.dark h3, html.dark h4 {
+            color: #faf9f7;
+        }
+
+        html.dark p, html.dark .note-content {
+            color: #e0e0e0;
+        }
+
+        html.dark .video-container, html.dark .notes-section {
+            border-color: #2a2a2a;
+        }
+
+        html.dark .video-info, html.dark .notes-section {
+            background: #0a0a0a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .notes-table td {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .notes-table tr:hover {
+            background: #1a1a1a;
+        }
+
+        html.dark .key-findings {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-color: #2a2a2a;
+        }
+
+        html.dark .equipment-item {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .notes-search input {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+            color: #faf9f7;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 20px;
+                margin-top: 100px;
+            }
+
+            .document-header h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .notes-table {
+                font-size: 0.9rem;
+            }
+
+            .notes-table th,
+            .notes-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="nav-links">
+                <a href="technical_analysis.html">Technical Analysis</a>
+                <a href="video_evidence.html">Dec 14 Video</a>
+                <a href="#video">Video</a>
+                <a href="#timeline">Timeline Notes</a>
+                <a href="#findings">Key Findings</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="document-header">
+            <h1>Sunday Session Sound Analysis</h1>
+            <div class="document-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Date:</span>
+                    <span>December 21, 2025</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Start Time:</span>
+                    <span>11:23 AM</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Location:</span>
+                    <span>47-08 92nd Street, Elmhurst, NY</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Document Type:</span>
+                    <span>Audio/Video Evidence with Frequency Analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <p>This page summarizes observations from a multi-room recording session (sound level meter + frequency visualization). The goal is to provide time-synced reference points for an acoustical professional to evaluate potential low-frequency transmission pathways (airborne vs. structure-coupled) and to recommend confirmatory testing.</p>
+        
+        <div class="key-findings" style="border-left-color: #2c3e50; margin-top: 25px;">
+            <h4>📋 Purpose / Questions for Expert Review</h4>
+            <ul>
+                <li>Based on the time-stamped observations, does the ~59–60 Hz tonal component and the 80/120 Hz energy appear more consistent with <strong>airborne bass</strong>, <strong>structure-coupled vibration</strong>, or <strong>mixed transmission</strong>?</li>
+                <li>What tests would you recommend to confirm: calibrated spectrum analysis, vibration/accelerometer logging, STC/IIC testing, flanking path inspection, HVAC/duct evaluation, electrical hum isolation?</li>
+                <li>What mitigation options would be appropriate once the mechanism is confirmed (decoupling, sealing penetrations, isolation mounts, duct lining, structural damping, etc.)?</li>
+            </ul>
+        </div>
+
+        <section id="equipment">
+            <h2>Recording Equipment Used</h2>
+            <div class="equipment-list">
+                <div class="equipment-item">
+                    <div class="icon">📊</div>
+                    <div class="name">Sound Level Meter</div>
+                    <div class="desc">dB(C) weighted measurements</div>
+                </div>
+                <div class="equipment-item">
+                    <div class="icon">📱</div>
+                    <div class="name">Spectroid App</div>
+                    <div class="desc">Frequency Analyzer (Hz visualization)</div>
+                </div>
+                <div class="equipment-item">
+                    <div class="icon">🎙️</div>
+                    <div class="name">Zoom H4N Pro</div>
+                    <div class="desc">Audio recorder (WAV format)</div>
+                </div>
+                <div class="equipment-item">
+                    <div class="icon">📹</div>
+                    <div class="name">Video Camera</div>
+                    <div class="desc">Visual documentation</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="video">
+            <h2>Video Recording</h2>
+            
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <iframe src="https://drive.google.com/file/d/1tU0-0EkZOu9NIRMl8T2AMf9zglr4PqGx/preview" allow="autoplay" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">December 21, 2025 - Sunday Session Multi-Room Sound Analysis</div>
+                    <p style="margin-top: 10px; margin-bottom: 10px;">Multi-room recording session showing sound level meter readings and frequency visualization via Spectroid app. Intended as reference material for professional acoustical evaluation of potential low-frequency transmission pathways.</p>
+                    <div class="video-meta">
+                        <span><strong>Date:</strong> December 21, 2025</span>
+                        <span><strong>Start Time:</strong> 11:23 AM</span>
+                        <span><strong>Duration:</strong> ~1hr 39min</span>
+                        <a href="https://drive.google.com/file/d/1tU0-0EkZOu9NIRMl8T2AMf9zglr4PqGx/view?usp=drive_link" target="_blank" class="video-link">Open in Google Drive ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="findings">
+            <h2>Observations Summary</h2>
+            
+            <div class="key-findings">
+                <h4>🔊 Observations Noted (for Professional Interpretation)</h4>
+                <ul>
+                    <li><strong>Bass energy observed</strong> at approximately 80Hz and 120Hz, with sound level meter readings around 70 dB(C) during church session</li>
+                    <li><strong>Persistent low-frequency tonal component near ~59–60 Hz</strong> detected; pattern does not appear to follow musical rhythm</li>
+                    <li><strong>SPL meter readings</strong> trend from mid-40s dB(C) to mid-50s dB(C) when the ~59–60 Hz component is visible (equipment not calibrated)</li>
+                    <li><strong>Contact/placement sensitivity:</strong> When device placed on floor, tonal band appears to increase in relative intensity; when lifted or placed on elevated surface (printer drawer), intensity decreases. This is consistent with vibration-coupled transmission and <strong>warrants confirmatory testing</strong> (vibration/accelerometer + professional instrumentation)</li>
+                    <li><strong>Location variance:</strong> Moving device ~2 feet shows similar pattern throughout space</li>
+                </ul>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666;"><em>Note: Spectroid's "-30 dB" values are relative to the app's display scale, not calibrated SPL measurements. Sound level meter readings are presented as observed but equipment calibration was not verified.</em></p>
+            </div>
+        </section>
+
+        <section id="timeline">
+            <h2>Detailed Timeline Notes</h2>
+            <p>Use the timestamps below to navigate through the video. Audio recording sync times (ste-001) are provided where applicable.</p>
+            
+            <div class="notes-section">
+                <div class="notes-header">
+                    <h4>📝 Timeline Notes with Audio Sync Points</h4>
+                    <div class="notes-search">
+                        <input type="text" id="notesSearch" placeholder="🔍 Search notes...">
+                    </div>
+                </div>
+                
+                <table class="notes-table" id="notesTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 100px;">Video Time</th>
+                            <th style="width: 120px;">Audio Sync</th>
+                            <th>Observation / Note</th>
+                        </tr>
+                    </thead>
+                    <tbody id="notesTableBody">
+                        <tr>
+                            <td class="time-stamp">31:28</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Bass can be seen hitting upwards of <span class="note-highlight">70 dB(C)</span>, and <span class="note-technical">-30 dB at approximately 80Hz</span> on the Spectroid Frequency Analyzer App.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">34:34</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Bass again at around <span class="note-technical">120Hz</span>, hitting <span class="note-highlight">70.1 dB(C)</span> and <span class="note-technical">-30 dB</span> on the Spectroid Frequency Analyzer App.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:03:05</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">A <strong>persistent tonal component near ~59–60 Hz</strong> becomes visible on the spectrum display. At the same time, the SPL meter shows a rise from typical mid-40s dB(C) to <span class="note-highlight">mid-50s dB(C)</span> (equipment not calibrated).</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:11:15</td>
+                            <td class="audio-sync">~50:00 (Mark 2)</td>
+                            <td class="note-content">Begin moving the camera and Spectroid app. Start by <strong>unplugging the fridge</strong> to eliminate any operational noises. Afterwards, device brought back into parent's room briefly - frequency still present and hovering.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:13:11</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Device placed onto the floor in the living room. When the device is placed on the floor, the tonal band appears to increase in relative intensity; when lifted, it decreases. <strong>This contact sensitivity is noted for expert interpretation</strong> (possible vibration coupling vs. device/mic coupling). [Spectroid time: ~1:12:30 - 1:13:35]</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:14:55</td>
+                            <td class="audio-sync">53:30</td>
+                            <td class="note-content">All 3 devices now placed in the living room.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:16:05</td>
+                            <td class="audio-sync">55:00</td>
+                            <td class="note-content">Camera moved along with audio around the space to show any possible sources of sound. <strong>Windows shown closed.</strong> Light turned off to avoid buzzing noise from light bulbs.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:17:47</td>
+                            <td class="audio-sync">56:30 (Mark 5)</td>
+                            <td class="note-content">Move the Tablet (Spectroid App) onto the printer drawer.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:18:31</td>
+                            <td class="audio-sync">57:07</td>
+                            <td class="note-content">When moved to the side of the printer drawer (elevated surface), <span class="note-highlight">the tonal band diminishes</span> and SPL readings trend down toward <span class="note-highlight">mid-40s dB(C)</span>.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:19:57</td>
+                            <td class="audio-sync">58:45</td>
+                            <td class="note-content">When placed back on the floor, <span class="note-highlight">the tonal band returns quickly</span>. This repeated pattern is documented as a <strong>potential indicator of structure-coupled transmission</strong> for expert evaluation.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:22:00</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Two frequencies visible bouncing side by side, starting to deintensify a bit.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:27:30</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Note: The 80Hz frequency band has been hovering as prominent frequency while the 59Hz was not as intense, moving in a different pattern.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:28:13</td>
+                            <td class="audio-sync">1:06:49</td>
+                            <td class="note-content">Move camera and Spectroid Tablet ~2 feet to the center of the living room and more towards the window. <strong>Same pattern persists.</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:34:48</td>
+                            <td class="audio-sync">1:13:24</td>
+                            <td class="note-content">Take audio recorder around the room for sound sample, starting by the window.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:35:13</td>
+                            <td class="audio-sync">1:13:49</td>
+                            <td class="note-content">Audio recorder moved to the fridge location.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:36:04</td>
+                            <td class="audio-sync">1:14:40</td>
+                            <td class="note-content">Video and audio recorders taken into the <strong>bathroom</strong>. Fan of the 3rd floor can be heard through the vents. Note: No one home on second floor at this time - they leave for temple every Sunday.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:36:23</td>
+                            <td class="audio-sync">1:15:00</td>
+                            <td class="note-content">Recording now in <strong>my room</strong>, towards the front of the house. All windows closed except crack open for security cam wire (shown in video).</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">1:38:00</td>
+                            <td class="audio-sync">1:17:13</td>
+                            <td class="note-content"><strong>All devices moved back into parent's room.</strong> Spectroid app turns sideways and freezes momentarily. When it returns, dB(C) appears ambient in mid to low 40's with microphone thumping sounds - demonstrating that sounds don't have to be loud to be disturbing or disruptive, especially to ear drum pressure.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">~1:39:00</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content"><strong>Video ends</strong> at approximately 1:39 PM, towards the end of their session.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="interpretation">
+            <h2>Observations for Professional Review</h2>
+            <h3>Contact/Placement Sensitivity (1:13:11 - 1:19:57)</h3>
+            <p>The floor-contact vs. lifted-device comparison is <strong>suggestive of vibration-coupled transmission</strong>. However, consumer microphones and phone/tablet housings can also change response depending on surface coupling. A professional assessment (including vibration measurement and calibrated spectrum analysis) is recommended to confirm mechanism and source.</p>
+            <ul style="margin-left: 25px; margin-bottom: 20px;">
+                <li>When device placed <strong>on floor</strong>: tonal band appears to increase in relative intensity</li>
+                <li>When <strong>lifted off floor</strong>: tonal band decreases</li>
+                <li>When placed on <strong>printer drawer (elevated surface)</strong>: SPL meter readings trend toward mid-40s dB(C)</li>
+                <li>When placed <strong>back on floor</strong>: tonal band returns quickly</li>
+            </ul>
+            <p>This repeated pattern is documented as a <strong>potential indicator of structure-coupled transmission</strong> for expert evaluation.</p>
+
+            <h3>Working Hypothesis</h3>
+            <p>One working hypothesis is that structural or air-gap transmission pathways may exist at shared boundaries (e.g., wall/floor junctions, penetrations, ducts, cavities). <strong>Confirmatory inspection and testing is required before attributing cause.</strong></p>
+
+            <h3>The ~59–60 Hz Tonal Component</h3>
+            <p>A persistent low-frequency tonal component near ~59–60 Hz was observed starting at 1:03:05. It does not appear to follow a musical rhythm. Possible sources for expert consideration:</p>
+            <ul style="margin-left: 25px;">
+                <li>Electrical interference (60Hz AC power with slight deviation)</li>
+                <li>HVAC or mechanical equipment resonance</li>
+                <li>Structural resonance from bass frequencies exciting building elements</li>
+                <li>Other sources to be evaluated by professional inspection</li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        });
+
+        // Notes Search Filter
+        const notesSearch = document.getElementById('notesSearch');
+        const notesTableBody = document.getElementById('notesTableBody');
+
+        if (notesSearch && notesTableBody) {
+            notesSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                const rows = notesTableBody.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+

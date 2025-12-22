@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructive Eviction Case: 47-08 92nd Street, Elmhurst, NY</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #faf9f7;
+            color: #2c2c2c;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 10px 0;
+            border-bottom: 3px solid #8b4513;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            min-height: 70px;
+        }
+
+        .top-bar-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            max-width: 500px;
+        }
+
+        .nav-links a {
+            color: #d0d0d0;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: #ffffff;
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
+            margin-top: 100px;
+            margin-bottom: 0;
+        }
+
+        /* Document Header */
+        .document-header {
+            border-bottom: 3px solid #1a1a1a;
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+
+        .document-header h1 {
+            font-family: 'Crimson Text', serif;
+            font-size: 2.4rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .document-meta {
+            display: flex;
+            gap: 30px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #5a5a5a;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.9rem;
+            color: #1a1a1a;
+            margin-bottom: 25px;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8b4513;
+        }
+
+        h3 {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #3a3a3a;
+            text-align: justify;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        /* Case Overview - document style */
+        .case-overview {
+            background: #faf9f7;
+            padding: 30px;
+            border-left: 4px solid #8b4513;
+            margin: 30px 0;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .case-overview:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border-left-color: #1a1a1a;
+            transform: translateX(2px);
+        }
+
+        .case-overview p {
+            margin-bottom: 22px;
+        }
+
+        /* Case Overview Slider */
+        .case-slider {
+            position: relative;
+            padding-bottom: 0;
+        }
+
+        .case-slide {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .case-slide.active {
+            display: block;
+        }
+
+        .case-slider-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px 24px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin-top: 10px;
+        }
+
+        .case-slider-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .case-slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            background: #d4d4d4;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .case-slider-dot.active {
+            background: #8b4513;
+        }
+
+        .case-slider-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .case-slider-button {
+            border: 1px solid #d4d4d4;
+            background: #ffffff;
+            color: #1a1a1a;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .case-slider-button:hover {
+            border-color: #8b4513;
+            color: #8b4513;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Evidence Section */
+        .evidence-category {
+            background: #faf9f7;
+            border: 1px solid #e0e0e0;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 3px solid #1a1a1a;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .evidence-category:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border-left-color: #8b4513;
+            transform: translateX(2px);
+        }
+
+        .evidence-category h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+            color: #3a3a3a;
+        }
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #1a1a1a;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: 2px solid #1a1a1a;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: #8b4513;
+            border-color: #8b4513;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+        }
+
+        /* Legal Context */
+        .legal-item {
+            background: #faf9f7;
+            border-left: 4px solid #1a1a1a;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .legal-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border-left-color: #8b4513;
+            transform: translateX(2px);
+        }
+
+        .legal-item h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        .legal-item p {
+            margin-bottom: 0;
+        }
+
+        /* Relief Sought */
+        .relief-list {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .relief-list li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .relief-list li:last-child {
+            border-bottom: none;
+        }
+
+        .relief-list li:before {
+            content: "§";
+            position: absolute;
+            left: 0;
+            color: #8b4513;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .relief-list li strong {
+            color: #1a1a1a;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Contact Section */
+        .contact-box {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 35px;
+            text-align: center;
+            border: 2px solid #8b4513;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .contact-box:hover {
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .contact-box h2 {
+            color: #ffffff;
+            border-bottom: 2px solid #8b4513;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-box p {
+            color: #e0e0e0;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .contact-box a {
+            color: #ffffff;
+            text-decoration: underline;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .contact-box a:hover {
+            color: #d0d0d0;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #d0d0d0;
+            padding: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 0;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Dark Mode Styles - Reversed Colors */
+        html.dark body {
+            background: #000000;
+            color: #faf9f7;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        html.dark .container {
+            background: #0f0f0f;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(139, 69, 19, 0.15), 0 0 30px rgba(139, 69, 19, 0.1);
+        }
+
+        html.dark .document-header {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .document-header h1 {
+            color: #faf9f7;
+        }
+
+        html.dark .meta-label {
+            color: #faf9f7;
+        }
+
+        html.dark .document-meta {
+            color: #d0d0d0;
+        }
+
+        html.dark section {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark h2 {
+            color: #faf9f7;
+        }
+
+        html.dark h3 {
+            color: #faf9f7;
+        }
+
+        html.dark p {
+            color: #e0e0e0;
+        }
+
+        html.dark .case-overview {
+            background: #0a0a0a;
+            border-left-color: #8b4513;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 0 0 1px rgba(139, 69, 19, 0.15), 0 0 20px rgba(139, 69, 19, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .case-overview:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6), 0 0 0 1px rgba(139, 69, 19, 0.4), 0 0 35px rgba(139, 69, 19, 0.25);
+            border-left-color: rgba(139, 69, 19, 0.8);
+        }
+
+        html.dark .case-overview p {
+            color: #e0e0e0;
+        }
+
+        html.dark .evidence-category {
+            background: #0a0a0a;
+            border-color: #2a2a2a;
+            border-left-color: rgba(250, 249, 247, 0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 0 0 1px rgba(139, 69, 19, 0.12), 0 0 15px rgba(139, 69, 19, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .evidence-category:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6), 0 0 0 1px rgba(139, 69, 19, 0.5), 0 0 30px rgba(139, 69, 19, 0.25);
+            border-left-color: rgba(139, 69, 19, 0.8);
+            border-color: rgba(139, 69, 19, 0.4);
+        }
+
+        html.dark ul {
+            color: #e0e0e0;
+        }
+
+        html.dark .legal-item {
+            background: #0a0a0a;
+            border-left-color: rgba(250, 249, 247, 0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 0 0 1px rgba(139, 69, 19, 0.12), 0 0 15px rgba(139, 69, 19, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .legal-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6), 0 0 0 1px rgba(139, 69, 19, 0.5), 0 0 30px rgba(139, 69, 19, 0.25);
+            border-left-color: rgba(139, 69, 19, 0.8);
+        }
+
+        html.dark .relief-list li {
+            border-bottom-color: #2a2a2a;
+        }
+
+        html.dark .relief-list li strong {
+            color: #faf9f7;
+        }
+
+        html.dark .button-group {
+            border-top-color: #2a2a2a;
+        }
+
+        html.dark .btn {
+            box-shadow: 0 0 15px rgba(139, 69, 19, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .btn:hover {
+            box-shadow: 0 0 30px rgba(139, 69, 19, 0.4), 0 4px 8px rgba(139, 69, 19, 0.3);
+        }
+
+        html.dark .contact-box {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5), 0 0 0 1px rgba(139, 69, 19, 0.3), 0 0 25px rgba(139, 69, 19, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        html.dark .contact-box:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255, 255, 255, 0.4), 0 0 40px rgba(139, 69, 19, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Media Evidence Boxes */
+        .evidence-media {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .media-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .evidence-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #ffffff;
+            border: 1px solid #8b4513;
+            border-radius: 4px;
+            color: #8b4513;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .evidence-btn:hover {
+            background: #8b4513;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+        }
+
+        .evidence-btn:active {
+            transform: translateY(0);
+        }
+
+        .evidence-btn[style*="opacity"]:hover {
+            background: #ffffff;
+            color: #8b4513;
+            transform: none;
+            box-shadow: none;
+        }
+
+        html.dark .evidence-media {
+            border-top-color: #2a2a2a;
+        }
+
+        html.dark .evidence-btn {
+            background: #0a0a0a;
+            border-color: #8b4513;
+            color: #f0d7c0;
+        }
+
+        html.dark .evidence-btn:hover {
+            background: #8b4513;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.4);
+        }
+
+        html.dark .evidence-btn[style*="opacity"]:hover {
+            background: #0a0a0a;
+            color: #f0d7c0;
+            transform: none;
+            box-shadow: none;
+        }
+
+        html.dark div[style*="font-weight: 600; color: #1a1a1a"] {
+            color: #faf9f7 !important;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 20px;
+            }
+
+            .document-header h1 {
+                font-size: 1.8rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .top-bar-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .case-overview {
+                padding: 20px;
+            }
+
+            p {
+                text-align: left;
+            }
+        }
+
+        @media print {
+            .top-bar {
+                display: none;
+            }
+            
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#evidence">Evidence</a>
+                <a href="#legal">Legal</a>
+                <a href="#relief">Relief</a>
+                <a href="#technical-protocol">Testing</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="document-header">
+            <h1>Constructive Eviction Case: 47-08 92nd Street, Elmhurst, NY</h1>
+            <div class="document-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Document Type:</span>
+                    <span>Housing Attorney Briefing</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Property:</span>
+                    <span>47-08 92nd Street, Elmhurst, NY</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Case Type:</span>
+                    <span>Constructive Eviction & Habitability</span>
+                </div>
+            </div>
+        </div>
+
+        <section id="overview">
+            <h2>Case Overview</h2>
+            <div class="case-overview case-slider" id="caseOverviewSlider">
+                <div class="case-slide active" data-index="0">
+                <p>For over a decade, my family has endured severe and overlapping noise issues from three primary sources: a nearby church, a bar across the street, and an industrial sewing machine located directly above my bedroom. Together, these sources generate continuous low-frequency noise and vibration that have made our home unlivable. Despite repeated complaints, the responsible parties—including our landlords—have failed to take any meaningful action to stop it.</p>
+
+                <p>After receiving multiple violations for excessive noise, the church attempted to install soundproofing at the end of May 2024 without professional oversight. The improper installation amplified low-frequency vibration throughout our home and triggered serious hearing and health conditions for me and my family. Following the installation, I developed intense symptoms and spent more than six months seeking diagnosis and treatment without success. It wasn't until January 2025 that I was finally able to begin proper medical care and gradually reach a state where I could function day to day. Yet each time I returned home, my symptoms worsened again—leading us to request a proper inspection and environmental testing.</p>
+                </div>
+
+                <div class="case-slide" data-index="1">
+                <p>When we informed the landlords of my injury and requested an investigation, they took no action. Instead, they verbally dismissed our concerns. We hired an attorney, who formally notified them of the situation and requested appropriate repairs, but the letter was ignored. Unable to afford private counsel long-term, we brought an HPD case ourselves. HPD's inspection revealed multiple violations—including locks, pests, and detector issues—that further demonstrated the landlords' neglect. These were not even our primary complaints; they simply reflected the same pattern of disregard.</p>
+
+                <p>During this process, it also became clear that the landlords were contributing directly to the problem through daily use of an industrial sewing machine above our apartment. The machine's low-frequency vibration combines with the church's faulty soundproofing and the bar's heavy nighttime bass to create constant structural resonance. Despite knowing the impact this has on our health, the activity has continued without mitigation.</p>
+                </div>
+
+                <div class="case-slide" data-index="2">
+                <p>Before the housing court could even review the case, the first appearance on August 12, 2025, was adjourned because the landlord required a translator. No findings or orders were issued at that time—only an adjournment for due process. Yet the very next day, on August 13, 2025, the landlord's attorney drafted an eviction notice, which was later served on August 22, just days after we returned to court. The timing shows clear retaliation: the eviction paperwork was prepared before any substantive discussion or court direction even occurred. The judge had granted us six months to obtain an engineer's report to verify the building's defects, but before we could complete that process or present our evidence, we were served with termination papers. This move effectively obstructs our ability to prove our claims and continues to threaten our health and stability.</p>
+
+                <p>What is happening is not simply negligence—it is retaliation and constructive eviction. By ignoring hazardous conditions, continuing disruptive activity, and then issuing eviction papers to silence our complaints, the landlords have turned a health crisis into a housing crisis.</p>
+                </div>
+
+                <div class="case-slider-footer">
+                    <div class="case-slider-dots">
+                        <button class="case-slider-dot active" data-slide="0" aria-label="Case overview slide 1"></button>
+                        <button class="case-slider-dot" data-slide="1" aria-label="Case overview slide 2"></button>
+                        <button class="case-slider-dot" data-slide="2" aria-label="Case overview slide 3"></button>
+                    </div>
+                    <div class="case-slider-controls">
+                        <button class="case-slider-button" data-control="prev">&larr; Previous</button>
+                        <button class="case-slider-button" data-control="next">Next &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="evidence">
+            <h2>Supporting Evidence</h2>
+            
+            <div class="evidence-category">
+                <h3>Pending Violations</h3>
+                <ul>
+                    <li>HPD Class B violations (multiple violations including locks, pests, and detector issues) - <a href="https://hpdonline.nyc.gov/hpdonline/building/502545/overview" target="_blank" style="color: #8b4513; text-decoration: underline;">View on HPD Online</a></li>
+                    <li>DEP noise violations for excessive noise from church and bar</li>
+                    <li>Open violations pending at time of eviction notice service</li>
+                </ul>
+                
+                <div class="evidence-media">
+                    <div style="font-weight: 600; color: #1a1a1a; margin-bottom: 10px; font-size: 0.9rem;">Supporting Evidence:</div>
+                    <div class="media-grid">
+                        <a href="https://hpdonline.nyc.gov/hpdonline/building/502545/overview" target="_blank" class="evidence-btn">HPD Violation Notice</a>
+                        <a href="https://hpdonline.nyc.gov/hpdonline/building/502545/violations" target="_blank" class="evidence-btn">HPD Inspection Report</a>
+                        <a href="hpd_violation_media.html" target="_blank" class="evidence-btn">Violation Media</a>
+                            </div>
+                </div>
+            </div>
+
+            <div class="evidence-category">
+                <h3>Medical Documentation</h3>
+                <ul>
+                    <li>Hearing and health condition diagnoses linked to environmental factors</li>
+                    <li>Treatment records from January 2025 onward</li>
+                    <li>Documentation of symptom exacerbation upon returning home</li>
+                    <li>Timeline of medical care and diagnosis attempts</li>
+                </ul>
+                
+                <div class="evidence-media">
+                    <div style="font-weight: 600; color: #1a1a1a; margin-bottom: 10px; font-size: 0.9rem;">Supporting Evidence:</div>
+                    <div class="media-grid">
+                        <a href="medical_diagnoses.html" target="_blank" class="evidence-btn">Medical Diagnoses</a>
+                        <a href="medical_diagnoses.html#testing" target="_blank" class="evidence-btn">Treatment Records</a>
+                        <a href="medical_timeline.html" target="_blank" class="evidence-btn">Medical Timeline</a>
+                            </div>
+                </div>
+            </div>
+
+            <div class="evidence-category">
+                <h3>Engineer Consultation</h3>
+                <ul>
+                    <li>Pending engineering report to verify building defects</li>
+                    <li>Six-month court-granted period for report completion</li>
+                    <li>Environmental testing requests and documentation</li>
+                </ul>
+                
+                <div class="evidence-media">
+                    <div style="font-weight: 600; color: #1a1a1a; margin-bottom: 10px; font-size: 0.9rem;">Supporting Evidence:</div>
+                    <div class="media-grid">
+                        <a href="technical_aspects.html" target="_blank" class="evidence-btn">Client Technical Analysis Report</a>
+                            </div>
+                </div>
+            </div>
+
+            <div class="evidence-category">
+                <h3>Legal Documentation</h3>
+                <ul>
+                    <li>Formal attorney letter to landlords requesting repairs (ignored)</li>
+                    <li>HPD case filings and inspection reports</li>
+                    <li>Court docket and hearing records</li>
+                    <li>Eviction notice dated August 13, 2025, served August 22, 2025</li>
+                    <li>Timeline demonstrating retaliatory timing</li>
+                </ul>
+                
+                <div class="evidence-media">
+                    <div style="font-weight: 600; color: #1a1a1a; margin-bottom: 10px; font-size: 0.9rem;">Supporting Evidence:</div>
+                    <div class="media-grid">
+                        <a href="legal_correspondence.html" target="_blank" class="evidence-btn">Attorney Letter</a>
+                        <span class="evidence-btn" style="cursor: default; opacity: 0.7;">HPD Case Filing</span>
+                        <a href="eviction_notice.html" target="_blank" class="evidence-btn">Eviction Notice</a>
+                        <span class="evidence-btn" style="cursor: default; opacity: 0.7;">Court Docket</span>
+                        </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="https://hpdonline.nyc.gov/hpdonline/building/502545/overview" target="_blank" class="btn">View HPD Violations</a>
+                <a href="medical_timeline.html" target="_blank" class="btn">View Medical Timeline</a>
+                <a href="hpd_violation_media.html" target="_blank" class="btn">View Violation Media</a>
+                <a href="medical_diagnoses.html" target="_blank" class="btn">View Medical Diagnoses</a>
+            </div>
+        </section>
+
+        <section id="legal">
+            <h2>Legal Context</h2>
+            
+            <div class="legal-item">
+                <h3>Warranty of Habitability</h3>
+                <p>The landlords have breached the implied warranty of habitability by failing to address severe noise and vibration issues that render the premises unlivable. The continuous low-frequency noise, structural resonance, and resulting health impacts constitute a fundamental breach of the landlord's duty to maintain habitable premises.</p>
+            </div>
+
+            <div class="legal-item">
+                <h3>Retaliatory Eviction (RPL §223-b)</h3>
+                <p>The eviction notice served on August 22, 2025, was drafted on August 13, 2025—the day after the first court appearance was adjourned for due process. This timing, combined with the lack of any substantive court findings or orders, demonstrates clear retaliation for the tenant's good faith complaints and HPD case filing. The eviction notice was prepared before any meaningful court discussion could occur, indicating retaliatory intent.</p>
+            </div>
+
+            <div class="legal-item">
+                <h3>Good Cause Eviction (RPL §231-c)</h3>
+                <p>Under New York's Good Cause Eviction Law, landlords must demonstrate good cause for eviction. In this case, the eviction notice was issued in direct response to the tenant's protected activity of reporting violations and seeking relief through housing court. No legitimate cause has been demonstrated, and the timing strongly suggests retaliation.</p>
+            </div>
+
+            <div class="legal-item">
+                <h3>HPD Class B Violation Status</h3>
+                <p>Multiple HPD Class B violations were open and pending at the time the eviction notice was issued. These violations, combined with the ongoing noise and habitability issues, demonstrate a pattern of neglect and failure to maintain the premises in habitable condition. <a href="https://hpdonline.nyc.gov/hpdonline/building/502545/overview" target="_blank" style="color: #8b4513; text-decoration: underline;">View violations on HPD Online</a>.</p>
+            </div>
+
+            <div class="legal-item">
+                <h3>Constructive Eviction</h3>
+                <p>The combination of unaddressed noise violations, structural issues, health impacts, and retaliatory eviction efforts constitutes constructive eviction. The premises have been rendered effectively unlivable, and the landlord's actions have forced the tenant to seek relief while simultaneously threatening their tenancy.</p>
+            </div>
+        </section>
+
+        <section id="relief">
+            <h2>Relief Sought</h2>
+            <ul class="relief-list">
+                <li>
+                    <strong>Right-to-Counsel Representation</strong>
+                    Request for appointment of counsel under New York City's right-to-counsel program to ensure proper representation in housing court proceedings.
+                </li>
+                <li>
+                    <strong>Enforcement of Habitability Standards</strong>
+                    Request for court order requiring landlords to abate all noise violations, repair structural issues, and ensure compliance with warranty of habitability.
+                </li>
+                <li>
+                    <strong>Rent Abatement</strong>
+                    Request for abatement of rent for all periods during which the premises were unlivable due to noise, vibration, and resulting health impacts.
+                </li>
+                <li>
+                    <strong>Preservation of Tenancy</strong>
+                    Request to preserve tenancy while environmental and engineering testing proceeds, and to prevent retaliatory eviction during the pendency of habitability claims.
+                </li>
+                <li>
+                    <strong>Injunctive Relief</strong>
+                    Request for immediate cessation of landlord's industrial sewing machine operation and other activities contributing to structural resonance until proper mitigation is implemented.
+                </li>
+                <li>
+                    <strong>Damages</strong>
+                    Request for damages related to health impacts, medical expenses, and the constructive eviction itself.
+                </li>
+            </ul>
+        </section>
+
+        <section id="technical-protocol">
+            <h2>Technical Testing Protocol & Court Petition Framework</h2>
+            
+            <div class="urgent-note" style="background: rgba(139, 69, 19, 0.1); border-left: 4px solid #8b4513; padding: 20px; margin-bottom: 30px; border-radius: 6px;">
+                <h3 style="color: #8b4513; margin-bottom: 15px;">Strategic Legal Approach - Phased Petition</h3>
+                <p style="margin-bottom: 12px; line-height: 1.9;">
+                    This comprehensive technical testing protocol outlines a three-phase legal strategy for establishing evidence of noise violations and structural defects contributing to habitability issues. The approach emphasizes independent acoustical testing, baseline evidence gathering, and evidence-based court orders against all responsible parties.
+                </p>
+                <p style="margin-bottom: 15px; line-height: 1.9;">
+                    <strong>Phase 1:</strong> Petition landlord for immediate access to conduct independent acoustical testing while all noise sources (church, bar, landlord equipment) operate normally. Preserve tenancy during investigation.
+                </p>
+                <p style="margin-bottom: 15px; line-height: 1.9;">
+                    <strong>Phase 2:</strong> Gather baseline evidence through continuous monitoring (unannounced to church/bar). Document violations, peak events, and multi-source contributions with spectral analysis.
+                </p>
+                <p style="margin-bottom: 20px; line-height: 1.9;">
+                    <strong>Phase 3:</strong> Use Phase 2 evidence to compel church and bar participation in controlled testing, equipment documentation, and joint remediation plan with all responsible parties.
+                </p>
+                <div style="text-align: center; margin-top: 25px;">
+                    <a href="technical_testing_protocol.html" target="_blank" style="display: inline-block; padding: 12px 30px; background: #8b4513; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);">
+                        View Complete Technical Testing Protocol →
+                    </a>
+                </div>
+            </div>
+
+            <div class="legal-item" style="background: rgba(139, 69, 19, 0.05); border-left: 4px solid #8b4513;">
+                <h3>Key Components</h3>
+                <ul style="margin-left: 30px; line-height: 1.9;">
+                    <li><strong>Comprehensive Measurement Campaign:</strong> 24/7 sound level monitoring, vibration monitoring, spatial mapping, and transfer function analysis</li>
+                    <li><strong>Source Testing and Path Analysis:</strong> Controlled on/off cycles, equipment documentation, flanking path testing, and installation records</li>
+                    <li><strong>Room and Structure Modeling:</strong> FEM/SEA modeling to identify structural modal peaks and triple-leaf assembly analysis</li>
+                    <li><strong>Clinical-Exposure Correlation Study:</strong> Time-synced symptom logs, away-home comparisons, and medical records integration</li>
+                    <li><strong>Confidentiality Orders:</strong> Critical non-interference provisions to prevent landlord from warning church/bar during baseline monitoring</li>
+                    <li><strong>Evidence-Based Remediation:</strong> Data-driven remediation plans with post-remediation verification testing</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="contact-box">
+                <h2>Contact Information</h2>
+                <p>To discuss representation or review evidence, contact:</p>
+                <p style="margin-top: 15px;">
+                    <a href="mailto:tonyarkaysia@gmail.com">tonyarkaysia@gmail.com</a>
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Housing Attorney Briefing Document | 47-08 92nd Street, Elmhurst, NY</p>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            html.classList.add('dark');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = html.classList.contains('dark');
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark Mode';
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light Mode';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Case overview slider
+        const caseSlider = document.getElementById('caseOverviewSlider');
+        if (caseSlider) {
+            const slides = caseSlider.querySelectorAll('.case-slide');
+            const dots = caseSlider.querySelectorAll('.case-slider-dot');
+            const buttons = caseSlider.querySelectorAll('.case-slider-button');
+            let current = 0;
+
+            const showSlide = (index) => {
+                current = (index + slides.length) % slides.length;
+                slides.forEach((slide, idx) => slide.classList.toggle('active', idx === current));
+                dots.forEach((dot, idx) => dot.classList.toggle('active', idx === current));
+            };
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const direction = button.dataset.control === 'next' ? 1 : -1;
+                    showSlide(current + direction);
+                });
+            });
+
+            dots.forEach(dot => {
+                dot.addEventListener('click', () => {
+                    const idx = Number(dot.dataset.slide);
+                    if (!Number.isNaN(idx)) {
+                        showSlide(idx);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
