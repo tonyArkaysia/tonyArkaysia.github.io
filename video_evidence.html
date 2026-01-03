@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Documentation</title>
+    <title>Video Evidence - December 14, 2025 | Sunday Session Analysis</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -389,9 +389,113 @@
             line-height: 1.6;
         }
 
+        .note-highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+
+        .note-technical {
+            background: #e3f2fd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
         .note-placeholder {
             color: #999;
             font-style: italic;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .notes-search {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .notes-search input {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            color: #2c2c2c;
+            min-width: 200px;
+            font-size: 0.9rem;
+        }
+
+        .audio-sync {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #4682B4;
+            white-space: nowrap;
+        }
+
+        /* Key Findings Box */
+        .key-findings {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-left: 4px solid #8b4513;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .key-findings h4 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .key-findings ul {
+            margin-left: 20px;
+        }
+
+        .key-findings li {
+            margin-bottom: 10px;
+            color: #3a3a3a;
+        }
+
+        /* Equipment List */
+        .equipment-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .equipment-item {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .equipment-item .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .equipment-item .name {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .equipment-item .desc {
+            font-size: 0.85rem;
+            color: #5a5a5a;
+            margin-top: 5px;
         }
 
         /* Theme Toggle Button */
@@ -505,6 +609,16 @@
             color: #e0e0e0;
         }
 
+        html.dark .note-highlight {
+            background: #4a3a1a;
+            color: #ffd700;
+        }
+
+        html.dark .note-technical {
+            background: #1a2a3a;
+            color: #87ceeb;
+        }
+
         html.dark .document-link-container {
             background: #0a0a0a;
             border-color: #2a2a2a;
@@ -512,6 +626,22 @@
 
         html.dark .document-link-container p {
             color: #e0e0e0;
+        }
+
+        html.dark .key-findings {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-color: #2a2a2a;
+        }
+
+        html.dark .equipment-item {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+        }
+
+        html.dark .notes-search input {
+            background: #1a1a1a;
+            border-color: #2a2a2a;
+            color: #faf9f7;
         }
 
         /* Mobile Responsive */
@@ -556,7 +686,10 @@
         <div class="top-bar-content">
             <div class="nav-links">
                 <a href="technical_analysis.html">Technical Analysis</a>
-                <a href="#videos">Videos</a>
+                <a href="video_evidence_12_21_2025.html">Dec 21 Video</a>
+                <a href="#video">Video</a>
+                <a href="#timeline">Timeline Notes</a>
+                <a href="#findings">Key Findings</a>
             </div>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
                 <span id="themeIcon">🌙</span>
@@ -567,35 +700,66 @@
 
     <div class="container">
         <div class="document-header">
-            <h1>Technical Documentation</h1>
+            <h1>Sunday Session Sound Analysis</h1>
             <div class="document-meta">
                 <div class="meta-item">
-                    <span class="meta-label">Property:</span>
+                    <span class="meta-label">Date:</span>
+                    <span>December 14, 2025</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Start Time:</span>
+                    <span>11:28 AM</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Location:</span>
                     <span>47-08 92nd Street, Elmhurst, NY</span>
                 </div>
                 <div class="meta-item">
                     <span class="meta-label">Document Type:</span>
-                    <span>Audio/Video Evidence</span>
+                    <span>Audio/Video Evidence with Frequency Analysis</span>
                 </div>
             </div>
         </div>
 
         <p>This page documents a single-day example from December 14, 2025, showing current sound levels and conditions during a Sunday morning church session in my parent's room. This represents a recent, current occurrence demonstrating the ongoing noise and vibration issues at the property.</p>
+        
+        <div class="key-findings" style="border-left-color: #2c3e50; margin-top: 25px;">
+            <h4>📋 Purpose / Questions for Expert Review</h4>
+            <ul>
+                <li>Based on the time-stamped observations, does the ~59 Hz tonal component and the bass energy spikes appear more consistent with <strong>airborne bass</strong>, <strong>structure-coupled vibration</strong>, or <strong>mixed transmission</strong>?</li>
+                <li>What tests would you recommend to confirm: calibrated spectrum analysis, vibration/accelerometer logging, STC/IIC testing, flanking path inspection, HVAC/duct evaluation, electrical hum isolation?</li>
+                <li>What mitigation options would be appropriate once the mechanism is confirmed (decoupling, sealing penetrations, isolation mounts, duct lining, structural damping, etc.)?</li>
+            </ul>
+        </div>
 
-
-        <section id="audio-recordings">
-            <h2>Audio Recordings</h2>
-            <p>High-quality audio recordings captured at the property documenting noise and vibration conditions.</p>
-            
-            <div class="document-link-container">
-                <h3>Audio Files</h3>
-                <p>Raw audio recordings (WAV format) captured using the H4N Pro audio recorder. Files include recordings from different times of day and locations within the property. The audio syncs with the main video at 0:28 seconds (28 seconds into the video).</p>
-                <a href="https://drive.google.com/drive/folders/1pjMGOI-tSjBlho9P764wBiyi4qfO6BIH?usp=sharing" target="_blank" class="document-link-button">View Audio Files in Google Drive ↗</a>
+        <section id="equipment">
+            <h2>Recording Equipment Used</h2>
+            <div class="equipment-list">
+                <div class="equipment-item">
+                    <div class="icon">📊</div>
+                    <div class="name">Sound Level Meter</div>
+                    <div class="desc">dB(C) weighted measurements</div>
+                </div>
+                <div class="equipment-item">
+                    <div class="icon">📱</div>
+                    <div class="name">Spectroid App</div>
+                    <div class="desc">Frequency Analyzer (Hz visualization)</div>
+                </div>
+                <div class="equipment-item">
+                    <div class="icon">🎙️</div>
+                    <div class="name">Zoom H4N Pro</div>
+                    <div class="desc">Audio recorder (WAV format)</div>
+                </div>
+                <div class="equipment-item">
+                    <div class="icon">📹</div>
+                    <div class="name">Video Camera</div>
+                    <div class="desc">Visual documentation</div>
+                </div>
             </div>
         </section>
 
-        <section id="videos">
-            <h2>Video Recordings</h2>
+        <section id="video">
+            <h2>Video Recording</h2>
 
             <!-- Video 1 -->
             <div class="video-container">
@@ -607,33 +771,148 @@
                     <p style="margin-top: 10px; margin-bottom: 10px;">This video shows a recording of sound levels in my parent's room during a Sunday morning church session. The recorder used for audio is the Zoom H4N Pro. The sound meter's time display can be aligned with the video timeline to verify synchronization.</p>
                     <div class="video-meta">
                         <span><strong>Date:</strong> December 14, 2025</span>
-                        <span><strong>Time:</strong> 11:30 A.M.</span>
+                        <span><strong>Start Time:</strong> 11:28 AM</span>
                         <span><strong>Location:</strong> Parents' Room</span>
-                        <a href="https://drive.google.com/drive/folders/1Xes3xT6OAODsYKFtVV2EGWXeQoG8HzJI?usp=sharing" target="_blank" class="video-link">Open in Google Drive ↗</a>
+                        <a href="https://drive.google.com/file/d/1W0JbKt1EFE7eAZK8dQKRS-c9lOFWHzNb/view?usp=drive_link" target="_blank" class="video-link">Open in Google Drive ↗</a>
                     </div>
                 </div>
             </div>
 
+        <section id="findings">
+            <h2>Observations Summary</h2>
+            
+            <div class="key-findings">
+                <h4>🔊 Observations Noted (for Professional Interpretation)</h4>
+                <ul>
+                    <li><strong>Bass energy observed</strong> with sound level meter readings reaching <span class="note-highlight">70+ dB(C)</span> during church session, with peaks up to <span class="note-highlight">74 dB(C)</span></li>
+                    <li><strong>Persistent low-frequency tonal component near ~59 Hz</strong> detected during quiet ambient segments; pattern does not appear to follow musical rhythm</li>
+                    <li><strong>SPL meter readings</strong> trend from lower 40's dB(C) during quiet periods to <span class="note-highlight">70+ dB(C)</span> during active music sessions</li>
+                    <li><strong>Multiple music sessions</strong> documented throughout the recording with bass levels consistently reaching 70+ dB(C)</li>
+                    <li><strong>Frequency visualization</strong> shows clear bass spikes and low-frequency energy visible on Spectroid app during music sessions</li>
+                </ul>
+                <p style="margin-top: 15px; font-size: 0.9rem; color: #666;"><em>Note: Sound level meter readings are presented as observed but equipment calibration was not verified.</em></p>
+            </div>
+        </section>
+
+        <section id="timeline">
+            <h2>Detailed Timeline Notes</h2>
+            <p>Use the timestamps below to navigate through the video. Audio recording sync times (ste-001) are provided where applicable.</p>
+            
             <div class="notes-section">
-                <h4>Timeline Notes</h4>
-                <table class="notes-table">
+                <div class="notes-header">
+                    <h4>📝 Timeline Notes with Audio Sync Points</h4>
+                    <div class="notes-search">
+                        <input type="text" id="notesSearch" placeholder="🔍 Search notes...">
+                    </div>
+                </div>
+                
+                <table class="notes-table" id="notesTable">
                     <thead>
                         <tr>
-                            <th>Time</th>
+                            <th style="width: 100px;">Video Time</th>
+                            <th style="width: 120px;">Audio Sync</th>
                             <th>Observation / Note</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="notesTableBody">
                         <tr>
                             <td class="time-stamp">00:00</td>
-                            <td class="note-content note-placeholder">The video starts with a musical session underway. The normal starting time of their late morning session is 11:00 A.M. Loud bass and music can be heard in the background throughout the video at several different times.</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">The video starts as a musical church session is already underway. I begin calibrating the sound level meter. Location is in my parent's room, on my mom's dresser, next to the wall we share.</td>
                         </tr>
                         <tr>
-                            <td class="time-stamp">00:01</td>
-                            <td class="note-content">More notes will be added...</td>
+                            <td class="time-stamp">00:27</td>
+                            <td class="audio-sync">ste-001</td>
+                            <td class="note-content">I start the audio, which starts at <span class="note-technical">WAV ste-001</span> for this video session.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">01:22</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">The Spectroid App starts recording.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">01:32</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">I play a tone from the sound level calibrator at <span class="note-technical">1000 Hz</span> which can be seen across all the devices, and serves as a sync point.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">01:47</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">I get the official date and time on the NIST time.gov website, which shows it is about to be <span class="note-highlight">11:28 AM</span> in real time.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">03:03</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">The music stops and there is ambient house noise, and quiet for a brief moment until the next musical session at <span class="time-stamp">05:00</span> minutes into the video.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">05:00</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">The music starts again for several minutes and bass levels or low frequency spikes from their music can be clearly seen here.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">08:55</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">A section of the music where the bass ramps up in sound level above <span class="note-highlight">70 decibels</span> with very little interference from other sounds.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">09:36</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">A marker of where the <span class="note-technical">dB(C)</span> sound level hits <span class="note-highlight">70.0 decibels</span>.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">15:50</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">This music session ends and a quiet ambient segment follows which shows the decibel meter in the range averaging in the lower 40's. However, on the Spectroid app you can see visually the <span class="note-technical">59 Hz</span> is hovering above the other frequencies.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">36:24</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Music begins again with rapid drumming and foot stomping.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">43:50</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Rapid drumming continues, with loud bass spikes from music and bass coming into the music, and average sound levels rise significantly. The music can be seen visually on the Spectroid app as well.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">44:04</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Music reaches <span class="note-highlight">70 dB(C)</span> visually on the sound meter.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">01:03:49</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Music ends and speech portion begins. After a while, the <span class="note-technical">59 Hz</span> and a few other frequencies show a streaking pattern visually compared to the ambient blend of the rest of the sounds.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">02:07:40</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Music begins again.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">02:08:19</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Music reaches <span class="note-highlight">72.9 dB(C)</span> visually on the sound meter.</td>
+                        </tr>
+                        <tr>
+                            <td class="time-stamp">02:09:10</td>
+                            <td class="audio-sync">-</td>
+                            <td class="note-content">Music begins to reach <span class="note-highlight">70+ dB(C)</span> visually on the sound meter, as high as <span class="note-highlight">74 dB(C)</span>.</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </section>
+
+        <section id="audio-recordings">
+            <h2>Audio Recordings</h2>
+            <p>High-quality audio recordings captured at the property documenting noise and vibration conditions.</p>
+            
+            <div class="document-link-container">
+                <h3>Audio Files</h3>
+                <p>Raw audio recordings (WAV format) captured using the H4N Pro audio recorder. Files include recordings from different times of day and locations within the property. The audio syncs with the main video at <span class="note-technical">00:27</span> (27 seconds into the video) starting at <span class="note-technical">WAV ste-001</span>.</p>
+                <a href="https://drive.google.com/drive/folders/1pjMGOI-tSjBlho9P764wBiyi4qfO6BIH?usp=sharing" target="_blank" class="document-link-button">View Audio Files in Google Drive ↗</a>
             </div>
         </section>
 
@@ -656,7 +935,7 @@
                         <strong>Synchronization Instructions:</strong><br/>
                         1. Start the video on the left first<br/>
                         2. When the left video reaches 1 minute and 21-22 seconds, press play on the Spectroid app video (right). This is the sync point marked by a beep.<br/>
-                        3. <strong>Audio sync point:</strong> The audio recordings at the top of the page syncs with the left video at 0:28 seconds (28 seconds into the video on the left).
+                        3. <strong>Audio sync point:</strong> The audio recordings sync with the left video at <span class="note-technical">00:27</span> (27 seconds into the video on the left), starting at <span class="note-technical">WAV ste-001</span>.
                     </div>
                 </div>
                 <div class="video-info">
@@ -700,6 +979,25 @@
             themeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
         });
 
+        // Notes Search Filter
+        const notesSearch = document.getElementById('notesSearch');
+        const notesTableBody = document.getElementById('notesTableBody');
+
+        if (notesSearch && notesTableBody) {
+            notesSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                const rows = notesTableBody.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
